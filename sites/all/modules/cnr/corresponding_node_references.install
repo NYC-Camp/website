@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Install file providing corresponding node reference schema.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function corresponding_node_references_schema() {
+  $schema['corresponding_node_references'] = array(
+    'description' => t('Saves the content types and node reference fields for which the corresponding node reference is enabled'),
+    'fields' => array(
+      'node_types_content_fields' => array('type' => 'varchar', 'length' => 200, 'not null' => TRUE, 'default' => ''),
+      'enabled' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+    ),
+    'primary key' => array('node_types_content_fields'),
+    'export' => array(
+      'key' => 'node_types_content_fields',
+      'primary key' => 'node_types_content_fields',
+      'key name' => 'Corresponding node reference',
+      'identifier' => 'cnr_obj',
+      'api' => array(
+        'api' => 'default_corresponding_node_references_presets',
+        'owner' => 'corresponding_node_references',
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+    ),
+  );
+  return $schema;
+}

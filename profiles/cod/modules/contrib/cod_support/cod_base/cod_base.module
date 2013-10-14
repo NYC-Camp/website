@@ -1,0 +1,119 @@
+<?php
+/**
+ * @file
+ * Code for the COD Base feature.
+ */
+
+include_once('cod_base.features.inc');
+
+
+/**
+ * Implements hook_menu().
+ */
+function cod_base_menu() {
+  $items = array();
+
+  // Top level "Store" container.
+  $items['admin/conference'] = array(
+    'title' => 'Conference',
+    'description' => 'Administer your conference.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file path' => drupal_get_path('module', 'system'),
+    'file' => 'system.admin.inc',
+    'weight' => -7,
+  );
+  $items['admin/conference/config'] = array(
+    'title' => 'Configuration',
+    'description' => 'Configure settings and business rules for your store.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 50,
+    'file path' => drupal_get_path('module', 'system'),
+    'file' => 'system.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function cod_base_theme() {
+  return array(
+    'cod_base_formatter_cod_base_user_full_name' => array(
+      'arguments' => array('element' => NULL),
+    ),
+  );
+}
+
+
+/**
+ *
+ * Helper function to generate a user's full name.
+ */
+function cod_base_full_name($account) {
+  return $account->field_profile_first[LANGUAGE_NONE][0]['value'] . ' ' . $account->field_profile_last[LANGUAGE_NONE][0]['value'];
+}
+
+
+/**
+ *
+ * Helper function to generate a user's full name.
+ */
+function theme_cod_base_formatter_cod_base_user_full_name($element) {
+  $output = '';
+  if (!empty($element)) {
+    $names = array();
+    foreach($element as $key => $value) {
+      if (isset($value['uid']) && is_numeric($value['uid'])) {
+        $uid = $value['uid'];
+        $account = user_load($uid);
+        $full_name = cod_base_full_name($account);
+        $names[] = l($full_name, 'user/'. $account->uid);
+      }
+    }
+    $output = implode(', ', $names);
+  }
+  return $output;
+}
+
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function cod_base_field_formatter_info() {
+  return array(
+    'cod_base_user_full_name' => array(
+      'label' => t("Full name (First Last) of the user(s)"),
+      'field types' => array('user_reference'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function cod_base_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $elements = array();
+  foreach ($items as $delta => $item) {
+    $elements[$delta] = array(
+      '#markup' => theme('cod_base_formatter_'. $display['type'], array('element' => $item, 'field' => $instance)),
+    );
+  }
+  return $elements;
+}
+
+/**
+* Implements hook_entity_info_alter().
+*/
+function cod_base_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['listing'] = array(
+    'label' => t('Listing'),
+    'custom settings' => TRUE,
+  );
+}

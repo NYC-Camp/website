@@ -1,0 +1,32 @@
+<?php
+// Author: Harry Slaughter <harry@devbee.com>
+/**
+ * @file
+ * This module uses the sticky column of the node table
+ * to add weighting to nodes.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function weight_uninstall() {
+  // We need to unset any weighted nodes and reset sticky to normal values.
+  $weight_node_types = variable_get('weight_node_types', array());
+  if ($weight_node_types) {
+    db_update('node')
+      ->fields(array('sticky' => 1))
+      ->condition('sticky', 1, '>')
+      ->condition('type', $weight_node_types, 'IN')
+      ->execute();
+    db_update('node')
+      ->fields(array('sticky' => 0))
+      ->condition('sticky', 0, '<')
+      ->condition('type', $weight_node_types, 'IN')
+      ->execute();
+  }
+
+  // Delete our variables.
+  variable_del('weight_node_types');
+  variable_del('weight_range');
+  variable_del('weight_use_menu');
+}

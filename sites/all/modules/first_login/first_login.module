@@ -1,0 +1,239 @@
+<?php
+/**
+ * @file
+ * The .module file for the first_login -module.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function first_login_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#first_login':
+      $output = file_get_contents(drupal_get_path('module', 'first_login') . '/README.txt');
+      return module_exists('markdown') ? filter_xss_admin(module_invoke('markdown', 'filter', 'process', 0, -1, $output)) : '<pre>' . check_plain($output) . '</pre>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function first_login_menu() {
+  $items['admin/config/people/first_login'] = array(
+    'title' => 'First login settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('first_login_admin'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer first login'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function first_login_permission() {
+  return array(
+    'administer first login' => array(
+      'title' => t('Administer first login'),
+      'description' => t('Configure first login settings.'),
+    ),
+  );
+}
+
+/**
+ * Admin settings form.
+ */
+function first_login_admin() {
+  $form['first_login_num_of_logins'] = array(
+    '#type' => 'textfield',
+    '#size' => 5,
+    '#title' => t('Number of logins'),
+    '#description' => t('How many logins are allowed until the first login flag is removed?'),
+    '#default_value' => variable_get('first_login_num_of_logins', 1),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_user_insert().
+ *
+ * Insert the initial data on user insert.
+ */
+function first_login_user_presave(&$edit, $account, $category) {
+  // Make sure that our form value 'mymodule_foo' is stored as 'mymodule_bar'.
+  if (isset($edit['first_login'])) {
+    $edit['data']['first_login'] = $edit['first_login'];
+  }
+  else if(isset($account->is_new)) {
+    $edit['data']['first_login'] = array('status' => TRUE, 'count' => 0);
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ *
+ *  Increment first login count on user login.
+ */
+function first_login_user_login(&$edit, $account) {
+  // Do this only if we're not over logins
+  // (Or we don't have first_login status yet).
+  // And that we actually are a registered user.
+  if ($account->data['first_login']['status'] && ($account->data['first_login']['status'] != FALSE || !isset($account->data['first_login']['status'])) && isset($account->uid)) {
+
+    if (isset($account->data['first_login']['status']) && $account->data['first_login']['status'] === TRUE) {
+      $first_login = $account->data['first_login'];
+      $first_login['count']++;
+    }
+    else {
+      $first_login = array();
+      $first_login['status'] = TRUE;
+      $first_login['count'] = 1;
+    }
+
+    if ($account->data['first_login'] ===TRUE && isset($account->data['first_login']['count']) && $first_login['count'] > variable_get('first_login_num_of_logins', 1)) {
+      $first_login['status'] = FALSE;
+    }
+
+    // Save the login data.
+    first_login_set_data($account, $first_login);
+  }
+}
+
+/**
+ * Set First login data for the given user
+ *
+ * @param object $account
+ *   User object to be updated with first login data.
+ * @param array $data
+ *   Array of data to save into $account
+ * @param boolean $reset
+ *   Boolean to indicate whether to reset the parameters back to default
+ */
+function first_login_set_data($account, $data = array(), $reset = FALSE) {
+  // Reset the first login data if flag is set.
+  if(isset($account) && $reset) {
+    return user_save($account, array('first_login' => array('status' => TRUE, 'count' => 0)));
+  }
+
+  if (empty($data) || !is_object($account)) {
+    return;
+  }
+  $new_data = array();
+
+  // Get the old data-column from user.
+  $new_data = $account->data;
+
+  foreach ($data as $key => $value) {
+    $new_data['first_login'][$key] = $value;
+  }
+  $user = user_save($account, $new_data);
+}
+
+/**
+ * Get First login data for the given or current user
+ *
+ * @param int $uid
+ *   (optional) User UID whose first login data we want.
+ *   If omitted, the logged in user is used.
+ * @param string $key
+ *   (optional) Use a key here if specific data is required (i.e. 'status'
+ *   or 'count'
+ *
+ * @return array
+ *   Either an array containing all the first_login data
+ *   or string containing only requested data.
+ */
+function first_login_get_data($uid = NULL, $key = NULL) {
+  // Exit, if user is anonymous.
+  if ($uid === 0) {
+    return;
+  }
+  // Grab the data from users-table
+  // if we have a $uid.
+  if (!empty($uid)) {
+    $data = unserialize(db_query('SELECT data FROM {users} u WHERE u.uid = :uid', array(':uid' => $uid))->fetchField());
+    $first_login = $data['first_login'];
+  }
+  else {
+    // Use the active account if
+    // we didn't receive a $uid.
+    global $user;
+    $account = $user;
+    if(isset($account->first_login)) {
+      $first_login = $account->first_login;
+    }
+  }
+
+  // Return everything if we didn't
+  // get a specific $key to return.
+  if (!isset($key) && isset($first_login)) {
+    return $first_login;
+  }
+  elseif (!empty($key) && isset($first_login[$key])) {
+    // Return just the requested key.
+    return $first_login[$key];
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function first_login_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'first_login') . '/includes',
+  );
+}
+
+/**
+ * Implements hook_context_page_condition().
+ */
+  function first_login_context_page_condition() {
+
+    global $user;
+    // There is a bug in Memcache implementation which makes
+    // $user object not update when using global $user;
+    // See issue http://drupal.org/node/348885
+    // This is why we need to reload the user object.
+    if (module_exists('memcache')) {
+      $user = user_load($user->uid);
+    }
+
+    if (($plugin = context_get_plugin('condition', 'first_login_status')) && isset($user->data['first_login']['status'])) {
+      $plugin->execute($user);
+    }
+  }
+
+/**
+ * Implements hook_context_plugins().
+ */
+function first_login_context_plugins() {
+  $plugins = array();
+  $plugins['first_login_context_condition_status'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'first_login') . '/plugins',
+      'file' => 'first_login_context_condition_status.inc',
+      'class' => 'FirstLoginContextConditionStatus',
+      'parent' => 'context_condition',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_context_registry().
+ */
+function first_login_context_registry() {
+  return array(
+    'conditions' => array(
+      'first_login_status' => array(
+        'title' => t("User First login"),
+        'description' => t('Set context depending on the First login status of the current user.'),
+        'plugin' => 'first_login_context_condition_status',
+      ),
+    ),
+  );
+}

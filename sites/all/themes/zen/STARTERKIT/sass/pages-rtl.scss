@@ -1,0 +1,22 @@
+//
+// RTL companion for the pages.scss file.
+//
+
+@import "base";
+
+
+//
+// Header
+//
+#logo { // Wrapping link for logo
+  float: right;
+}
+
+
+//
+// Content
+//
+ul.links li { // List of links
+  display: inline-block; // Bug in Safari causes display: inline to fail.
+  padding: 0 0 0 1em;
+}

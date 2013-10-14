@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Take over the "Submitted by" theme function to allow different
+ * content types to have different strings.
+ */
+ 
+/**
+ * Implementation of hook_uninstall().
+ */
+function submitted_by_uninstall() {
+  // Remove any variables that we have set.
+  foreach (node_get_types('names') as $type => $name) {
+    variable_del('submitted_by_'. $type);
+    variable_del('submitted_by_comment_'. $type);
+  }
+}

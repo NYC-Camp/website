@@ -1,0 +1,194 @@
+***************
+*** 595,638 ****
+  ///////////////////////////////////////////////////////////////////
+  
+  /**
+-  * Switch between presets depending on logic
+-  * 
+   * Implementation of imagecache_hook_form()
+   *
+   * @param $action array of settings for this action
+   * @return a form definition
+   */
+  function canvasactions_aspect_form($action) {
+-   $defaults = array( 
+      'ratio_adjustment' => 1,
+      'portrait' => NULL,
+      'landscape' => NULL,
+    );
+-   $action = array_merge($defaults, (array)$action);
+-   
+    $form = array(
+      'help' => array(
+        '#type' => 'markup',
+-       '#value' => t('You must create the two presets to use <em>before</em> enabling this process.'),
+-     )
+    );
+  
+-   $presets = array();
+-   foreach (imagecache_presets(TRUE) as $preset) {
+-     $presets[$preset['presetid']] = $preset['presetname'];
+-   }
+  
+    $form['portrait'] = array(
+      '#type' => 'select',
+-     '#title' => t('Preset to use if the image is portrait (vertical)'),
+      '#default_value' => $action['portrait'],
+-     '#options' => $presets,
+    );
+    $form['landscape'] = array(
+      '#type' => 'select',
+-     '#title' => t('Preset to use if the image is landscape (horizontal)'),
+      '#default_value' => $action['landscape'],
+-     '#options' => $presets,
+    );
+  
+    $form['ratio_adjustment'] = array(
+--- 613,653 ----
+  ///////////////////////////////////////////////////////////////////
+  
+  /**
++  * Switch between styles depending on logic
++  *
+   * Implementation of imagecache_hook_form()
+   *
+   * @param $action array of settings for this action
+   * @return a form definition
+   */
+  function canvasactions_aspect_form($action) {
++   $defaults = array(
+      'ratio_adjustment' => 1,
+      'portrait' => NULL,
+      'landscape' => NULL,
+    );
++   $action = array_merge($defaults, (array) $action);
++ 
+    $form = array(
+      'help' => array(
+        '#type' => 'markup',
++       '#value' => t('You must create the two styles to use <em>before</em> enabling this process.'),
++     ),
+    );
+  
++   $styles = image_style_options(TRUE);
+  
+    $form['portrait'] = array(
+      '#type' => 'select',
++     '#title' => t('Style to use if the image is portrait (vertical)'),
+      '#default_value' => $action['portrait'],
++     '#options' => $styles,
+    );
+    $form['landscape'] = array(
+      '#type' => 'select',
++     '#title' => t('Style to use if the image is landscape (horizontal)'),
+      '#default_value' => $action['landscape'],
++     '#options' => $styles,
+    );
+  
+    $form['ratio_adjustment'] = array(
+***************
+*** 657,675 ****
+  /**
+   * Implementation of theme_hook() for imagecache_ui.module
+   */
+- function theme_canvasactions_aspect($element) {
+    $action = $element['#value'];
+-   $presets = imagecache_presets(TRUE); 
+    $ratio_adjustment = '';
+    if ($action['ratio_adjustment'] != 1) {
+      $ratio_adjustment = " (switch at 1:{$action['ratio_adjustment']})";
+    }
+-   return 'Portrait size: <strong>'. $presets[$action['portrait']]['presetname'] . '</strong>. Landscape size: <strong>'. $presets[$action['landscape']]['presetname'] .'</strong>'. $ratio_adjustment ;
+  }
+  
+  /**
+   * Choose the action and trigger that.
+-  * 
+   * Implementation of hook_image()
+   *
+   *
+--- 672,691 ----
+  /**
+   * Implementation of theme_hook() for imagecache_ui.module
+   */
++ function theme_canvasactions_aspect($variables) {
++   $element = $variables['element'];
+    $action = $element['#value'];
++   $styles = image_style_loads(TRUE);
+    $ratio_adjustment = '';
+    if ($action['ratio_adjustment'] != 1) {
+      $ratio_adjustment = " (switch at 1:{$action['ratio_adjustment']})";
+    }
++   return 'Portrait size: <strong>' . $styles[$action['portrait']]['presetname'] . '</strong>. Landscape size: <strong>' . $styles[$action['landscape']]['presetname'] . '</strong>' . $ratio_adjustment;
+  }
+  
+  /**
+   * Choose the action and trigger that.
++  *
+   * Implementation of hook_image()
+   *
+   *
+***************
+*** 682,710 ****
+      $ratio_adjustment = 1;
+    }
+    $aspect = $image->info['width'] / $image->info['height'];
+-   // width / height * adjustment. If > 1, it's wide. 
+-   $preset_id = (($aspect * $ratio_adjustment) > 1) ? $action['landscape'] : $action['portrait'];
+-   $preset = imagecache_preset($preset_id);
+  
+-   // Run the preset actions ourself. Cannot invoke a preset from the top as it handles filenames, not image objects.
+    // ripped from imagecache_build_derivative()
+-   foreach ($preset['actions'] as $sub_action) {
+  
+      // _imagecache_apply_action requires some of the values to be pre-cooked
+      // Identified in http://drupal.org/node/626168
+      // These actions really should interpret the parameters themselves.
+      foreach (array('height', 'width') as $param) {
+-       if (isset($sub_action['data'][$param])) {
+-         $sub_action['data'][$param] = _imagecache_percent_filter($sub_action['data'][$param], $image->info[$param]);
+        }
+      }
+-     foreach (array('xoffset' => 'width', 'yoffset' => 'height') as $param => $direction) {
+-       if (isset($sub_action['data'][$param])) {
+-         $sub_action['data'][$param] = _imagecache_keyword_filter($sub_action['data'][$param], $image->info[$direction], $sub_action['data'][$direction]);
+        }
+      }
+-     
+-     _imagecache_apply_action($sub_action, $image);
+    }
+    return TRUE;
+  }
+--- 698,729 ----
+      $ratio_adjustment = 1;
+    }
+    $aspect = $image->info['width'] / $image->info['height'];
++   // width / height * adjustment. If > 1, it's wide.
++   $style_name = (($aspect * $ratio_adjustment) > 1) ? $action['landscape'] : $action['portrait'];
++   $style = image_style_load($style_name);
+  
++   // Run the style actions ourself. Cannot invoke a preset from the top as it handles filenames, not image objects.
+    // ripped from imagecache_build_derivative()
++   foreach ($style['effects'] as $sub_effect) {
+  
+      // _imagecache_apply_action requires some of the values to be pre-cooked
+      // Identified in http://drupal.org/node/626168
+      // These actions really should interpret the parameters themselves.
+      foreach (array('height', 'width') as $param) {
++       if (isset($sub_effect['data'][$param])) {
++         $sub_effect['data'][$param] = imagecache_actions_percent_filter($sub_effect['data'][$param], $image->info[$param]);
+        }
+      }
++     foreach (array(
++       'xoffset' => 'width',
++       'yoffset' => 'height',
++     ) as $param => $direction) {
++       if (isset($sub_effect['data'][$param])) {
++         $sub_effect['data'][$param] = image_filter_keyword($sub_action['data'][$param], $image->info[$direction], $sub_action['data'][$direction]);
+        }
+      }
++ 
++     image_effect_apply($image, $sub_effect);
+    }
+    return TRUE;
+  }

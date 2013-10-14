@@ -1,0 +1,131 @@
+/**
+ * @file
+ * Positioning for responsive layout .
+ *
+ * Define CSS classes to create a table-free, 3-column, 2-column, or single
+ * column layout depending on whether blocks are enabled in the left or right
+ * columns.
+ *
+ * This layout uses the Zen Grids plugin for Compass: http://zengrids.com
+ */
+
+/*
+ * Center the page.
+ */
+
+#page,
+.region-bottom {
+  /* For screen sizes larger than 1200px, prevent excessively long lines of text
+     by setting a max-width. */
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+}
+
+/*
+ * Apply the shared properties of grid items in a single, efficient ruleset.
+ */
+
+#header,
+#content,
+#navigation,
+.region-sidebar-first,
+.region-sidebar-second,
+#footer {
+  padding-left: 10px;
+  padding-right: 10px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  _display: inline;
+  _overflow: hidden;
+  _overflow-y: visible;
+}
+
+/*
+ * Containers for grid items and flow items.
+ */
+
+#header,
+#main,
+#footer {
+  *position: relative;
+  *zoom: 1;
+}
+#header:before, #header:after,
+#main:before, #main:after,
+#footer:before, #footer:after {
+  content: "";
+  display: table;
+}
+#header:after,
+#main:after,
+#footer:after {
+  clear: both;
+}
+
+/*
+ * Navigation bar
+ */
+
+@media all and (min-width: 480px) {
+  #main {
+    padding-top: 3em; /* Move all the children of #main down to make room. */
+    position: relative;
+  }
+
+  #navigation {
+/*
+    position: absolute;
+    top: 0; /* Move the navbar up inside #main's padding. */
+    height: 3em;
+*/
+    width: 100%;
+  }
+}
+
+/*
+ * Use 3 grid columns for smaller screens.
+ */
+
+@media all and (min-width: 480px) and (max-width: 959px) {
+
+  /*
+   * The layout when there is only one sidebar, the left one.
+   */
+
+
+  /*
+   * The layout when there is only one sidebar, the right one.
+   */
+
+
+  /*
+   * The layout when there are two sidebars.
+   */
+
+}
+
+/*
+ * Use 5 grid columns for larger screens.
+ */
+
+@media all and (min-width: 960px) {
+
+  /*
+   * The layout when there is only one sidebar, the left one.
+   */
+
+
+  /*
+   * The layout when there is only one sidebar, the right one.
+   */
+
+
+  /*
+   * The layout when there are two sidebars.
+   */
+
+}

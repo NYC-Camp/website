@@ -1,0 +1,37 @@
+<?php
+/**
+ * Update the cod_events image field to not include 'cache' in the name
+ */
+function cod_events_update_7001() {
+  $num_updated = db_update('field_config') // Table name no longer needs {}
+    ->fields(array(
+      'field_name' => 'field_event_image',
+    ))
+    ->condition('field_name', 'field_image_cache', '=')
+    ->execute();
+
+  $num_updated = db_update('field_config_instance') // Table name no longer needs {}
+    ->fields(array(
+      'field_name' => 'field_event_image',
+    ))
+    ->condition('field_name', 'field_image_cache', '=')
+    ->execute();
+
+  if(db_table_exists('field_data_field_image_cache')) {
+    db_rename_table('field_data_field_image_cache', 'field_data_field_event_image');
+    db_change_field('field_data_field_event_image', 'field_image_cache_fid', 'field_event_image_fid', array('type' => 'int', 'not null' => FALSE));
+    db_change_field('field_data_field_event_image', 'field_image_cache_alt', 'field_event_image_alt', array('type' => 'varchar', 'length' => 512, 'not null' => FALSE));
+    db_change_field('field_data_field_event_image', 'field_image_cache_title', 'field_event_image_title', array('type' => 'varchar',  'length' => 1024, 'not null' => FALSE));
+    db_change_field('field_data_field_event_image', 'field_image_cache_width', 'field_event_image_width', array('type' => 'int', 'not null' => FALSE));
+    db_change_field('field_data_field_event_image', 'field_image_cache_height', 'field_event_image_height', array('type' => 'int', 'not null' => FALSE));
+  }
+  if(db_table_exists('field_revision_field_image_cache')) {
+    db_rename_table('field_revision_field_image_cache', 'field_revision_field_event_image');
+    db_change_field('field_revision_field_event_image', 'field_image_cache_fid', 'field_event_image_fid', array('type' => 'int', 'not null' => FALSE));
+    db_change_field('field_revision_field_event_image', 'field_image_cache_alt', 'field_event_image_alt', array('type' => 'varchar', 'length' => 512, 'not null' => FALSE));
+    db_change_field('field_revision_field_event_image', 'field_image_cache_title', 'field_event_image_title', array('type' => 'varchar',  'length' => 1024, 'not null' => FALSE));
+    db_change_field('field_revision_field_event_image', 'field_image_cache_width', 'field_event_image_width', array('type' => 'int', 'not null' => FALSE));
+    db_change_field('field_revision_field_event_image', 'field_image_cache_height', 'field_event_image_height', array('type' => 'int', 'not null' => FALSE));
+  }
+  return t('Event field_image_cache changed to field_event_image.');
+}

@@ -1,0 +1,12 @@
+ul#thumb-list li {
+  background: transparent;
+  height: 60px;
+  padding: 10px;
+  width: 60px;
+}
+ul#thumb-list li img {
+  width: auto;
+}
+ul#thumb-tray {
+  height: 130px;
+}

@@ -1,0 +1,14 @@
+; $Id: imagecache_testsuite.info,v 1.2.2.1 2011/02/03 21:26:11 dman Exp $
+core = 7.x
+dependencies[] = imagecache_actions
+description = Displays a collection of demo presets.
+features[image][] = 'corners_combo'
+name = Imagecache_actions Test Suite
+package = Image
+project = "imagecache_testsuite"
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "7.x-0.0"
+core = "7.x"
+project = "imagecache_actions"
+datestamp = "1296768752"
+

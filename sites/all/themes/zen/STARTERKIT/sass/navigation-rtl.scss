@@ -1,0 +1,26 @@
+//
+// RTL companion for the navigation.scss file.
+//
+
+@import "base";
+
+
+ul li.collapsed {
+  list-style-image: url(../images/menu-collapsed-rtl.png);
+}
+
+#navigation {
+  ul.links, // Main menu and secondary menu links
+  .content ul { // Menu block links
+    text-align: right;
+    
+    li { // A simple method to get navigation links to appear in one line.
+      float: right;
+      padding: 0 0 0 10px;
+    }
+  }
+}
+
+#secondary-menu {
+  float: left;
+}

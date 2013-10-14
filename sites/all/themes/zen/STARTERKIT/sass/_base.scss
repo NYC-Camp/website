@@ -1,0 +1,91 @@
+//
+// Partials to be shared with all .scss files.
+//
+// To make it easier to use all variables and mixins in any Sass file in this
+// theme, each .scss file has a @import "base" declaration. And this _base.scss
+// file is in charge of importing all the other partials needed for the theme.
+
+@import "compass/support"; // Add Compass' IE and vendor prefix support variables.
+@import "variables";       // Add your own shared variables here.
+
+@import "zen-columns";
+@import "compass/css3";
+
+
+//
+// Sass mixins
+//
+// To use a mixin in this file, add this line to the top of your .scss file:
+//   @import "base";
+// Then to use a mixin for a particular rule, add this inside the ruleset's
+// curly brackets:
+//   @include mix-in-name;
+
+
+// clearfix as defined by Drupal
+@mixin clearfix {
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  // IE6
+  @if $legacy-support-for-ie6 {
+    .ie6 & {
+      height: 1%;
+    }
+  }
+  // IE7
+  @if $legacy-support-for-ie7 {
+    .ie7 & {
+      min-height: 1%;
+    }
+  }
+}
+
+// element-invisible as defined by http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+@mixin element-invisible {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+    clip: rect(1px 1px 1px 1px); // IE6 and IE7 use the wrong syntax.
+  }
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+@mixin element-focusable {
+  @include element-invisible;
+
+  &:active,
+  &:focus {
+    position: static !important;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: auto;
+  }
+}
+
+// The word "Unpublished" displayed underneath unpublished nodes and comments.
+@mixin unpublished-div {
+  height: 0;
+  overflow: visible;
+  color: #d8d8d8;
+  font-size: 75px;
+  line-height: 1;
+  font-family: Impact, "Arial Narrow", Helvetica, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  word-wrap: break-word; // A very nice CSS3 property
+
+  @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+    .ie6-7 &>* {
+      position: relative; // Otherwise these elements will appear below the "Unpublished" text.
+    }
+  }
+}

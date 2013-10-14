@@ -1,0 +1,118 @@
+<?php
+// $Id: permissions_lock.test,v 1.1.2.2 2010/12/28 15:50:09 xeniox Exp $
+
+/**
+ * @file
+ * Test the permissions_lock module
+ *
+ * Terminology:
+ * - Restricted user = user with 'administer permissions' permission
+ *   (i.e. restricted by the permissions_lock settings)
+ * - Unrestricted user = user with 'administer permissions' and
+ *   manage permissions unrestricted' permissions
+ *   (i.e. not restricted by the permissions_lock settings)
+ *
+ * Test cases:
+ * - Restricted user cannot see locked permission
+ * - Unrestricted user can see locked permission
+ * - Restricted user cannot see locked role
+ * - Unrestricted user can see locked role
+ */
+
+class PermissionsLockRestrictedTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Restricted',
+      'description' => 'Tests for restricted users',
+      'group' => 'Permissions lock',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('permissions_lock'); // Enable modules required for the test
+    // lock the 'use PHP for settings' permission for testing purposes
+    variable_set('permissions_lock_locked_perm',
+      drupal_map_assoc(array('access site in maintenance mode'))
+    );
+
+    // lock the 'authenticated user' role
+    variable_set('permissions_lock_locked_roles', array('2' => '2'));
+
+    // Create and log in a user
+    $restricted_user = $this->drupalCreateUser(array('administer permissions'));
+    $this->drupalLogin($restricted_user);
+  }
+
+  public function testRestrictedPermission() {
+    // go to the permissions administration page
+    $this->drupalGet('admin/people/permissions');
+
+    // make sure we are on the administration page
+    $this->assertResponse(200, t('User has access to the administration page'));
+
+    // check if the defined permissions are locked
+    $this->assertNoText(t('Use the site in maintenance mode'));
+  }
+
+
+  public function testRestrictedRole() {
+    // go to the permissions administration page
+    $this->drupalGet('admin/people/permissions');
+
+    // make sure we are on the administration page
+    $this->assertResponse(200, t('User has access to the administration page'));
+
+    // check if the defined permissions are locked
+    $this->assertNoText(t('authenticated user'));
+  }
+}
+
+class PermissionsLockUnrestrictedTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Unrestricted',
+      'description' => 'Tests for unrestricted users',
+      'group' => 'Permissions lock',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('permissions_lock'); // Enable modules required for the test
+    // lock the 'use PHP for settings' permission for testing purposes
+    variable_set('permissions_lock_locked_perm',
+      drupal_map_assoc(array('access site in maintenance mode'))
+    );
+
+    // lock the 'authenticated user' role
+    variable_set('permissions_lock_locked_roles', array('2' => '2'));
+
+    // Create and log in a user
+    $unrestricted_user = $this->drupalCreateUser(
+      array('administer permissions', 'manage permissions unrestricted')
+    );
+    $this->drupalLogin($unrestricted_user);
+  }
+
+  public function testUnrestrictedPermission() {
+    // go to the permissions administration page
+    $this->drupalGet('admin/people/permissions');
+
+    // make sure we are on the administration page
+    $this->assertResponse(200, t('User has access to the administration page'));
+
+    // check if the defined permissions are locked
+    $this->assertText(t('Use the site in maintenance mode'));
+  }
+
+
+  public function testUnrestrictedRole() {
+    // go to the permissions administration page
+    $this->drupalGet('admin/people/permissions');
+
+    // make sure we are on the administration page
+    $this->assertResponse(200, t('User has access to the administration page'));
+
+    // check if the defined permissions are locked
+    $this->assertText(t('authenticated user'));
+  }
+}

@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * Install file for the First login module
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function first_login_uninstall() {
+  // Delete the variable.
+  variable_del('first_login_num_of_logins');
+}

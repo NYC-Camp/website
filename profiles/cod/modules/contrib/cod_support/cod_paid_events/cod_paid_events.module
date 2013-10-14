@@ -1,0 +1,18 @@
+<?php
+
+include_once('cod_paid_events.features.inc');
+
+/**
+ * Implements hook_node_presave().
+ *
+ * If this is a paid event we want to clear the field_registration values or 
+ * clear field_paid_event if it is free
+ */
+function cod_paid_events_node_presave($node) {
+  if($node->field_paid_event[ $node->language ][0]['value']) {
+    $node->field_registration[ $node->language ] = array();
+  } else {
+    $node->field_event_product[ $node->language ] = array();
+  }
+}
+

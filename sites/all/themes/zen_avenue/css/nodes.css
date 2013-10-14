@@ -1,0 +1,31 @@
+/**
+ * @file
+ * Node Styling
+ *
+ * Style anything that isn't in the $content variable.
+ */
+
+.node .user-picture { /* The picture of the node author */
+	float: left;
+	margin: 0 4% 1% 0;
+	width: 22%;
+}
+
+.node-unpublished p.unpublished,
+.comment-unpublished p.unpublished { /* The word "Unpublished" displayed underneath the content. */
+  height: 0;
+  overflow: visible;
+  color: #d8d8d8;
+  font-size: 75px;
+  line-height: 1;
+  font-family: Impact, "Arial Narrow", Helvetica, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  word-wrap: break-word; /* A very nice CSS3 property */
+}
+
+.lt-ie8 .node-unpublished p.unpublished > *,
+.lt-ie8 .comment-unpublished > * {
+  position: relative; /* Otherwise these elements will appear below the "Unpublished" text. */
+}

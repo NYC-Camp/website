@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Field Slideshow module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function field_slideshow_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'runtime') {
+    $t = get_t();
+
+    $path = libraries_get_path('jquery.cycle');
+    if (file_exists($path . '/jquery.cycle.all.min.js') || file_exists($path . '/jquery.cycle.all.js')) {
+      $requirements['field_slideshow_cycle_plugin'] = array(
+        'title'     => $t('JQuery Cycle plugin'),
+        'severity'  => REQUIREMENT_OK,
+        'value'     => $t('Installed'),
+      );
+    }
+    else {
+      $requirements['field_slideshow_cycle_plugin'] = array(
+        'title'       => $t('JQuery Cycle plugin'),
+        'value'       => $t('Not found'),
+        'severity'    => REQUIREMENT_ERROR,
+        'description' => $t('You need to download the !name and move the downloaded js file(s) into the %path folder of your server.', array('!name' => l(t('JQuery Cycle plugin'), 'http://jquery.malsup.com/cycle/download.html'), '%path' => $path)),
+      );
+    }
+
+    $path = libraries_get_path('jquery.jcarousel');
+    if (file_exists($path . '/lib/jquery.jcarousel.min.js') || file_exists($path . '/lib/jquery.jcarousel.js')) {
+      $requirements['field_slideshow_jcarousel_plugin'] = array(
+        'title'     => $t('JCarousel plugin'),
+        'severity'  => REQUIREMENT_OK,
+        'value'     => $t('Installed'),
+      );
+    }
+    else {
+      $requirements['field_slideshow_jcarousel_plugin'] = array(
+        'title'       => $t('JCarousel plugin'),
+        'value'       => $t('Not found'),
+        'severity'    => REQUIREMENT_ERROR,
+        'description' => $t('You need to download the !name and move the content of the downloaded folder into the %path folder of your server.', array('!name' => l(t('JCarousel plugin'), 'http://sorgalla.com/jcarousel/'), '%path' => $path)),
+      );
+    }
+
+  }
+
+  return $requirements;
+}

@@ -1,0 +1,14 @@
+name = Premium content
+description = Restrict access to premium content.
+core = 7.x
+dependencies[] = ctools
+configure = admin/structure/premium_levels
+files[] = premium.test
+
+
+; Information added by drupal.org packaging script on 2011-12-10
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "premium_content"
+datestamp = "1323532243"
+

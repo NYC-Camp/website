@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * @file
+ * Supersized context module file.
+ */
+
+/**
+ * Implements hook_context_plugins().
+ */
+function supersized_context_context_plugins() {
+  $plugins = array();
+  $plugins['supersized_context_condition'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'supersized_context'),
+      'file' => 'supersized_context_condition.inc',
+      'class' => 'supersized_context_condition',
+      'parent' => 'context_condition',
+    ),
+  );
+  $plugins['supersized_context_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'supersized_context'),
+      'file' => 'supersized_context_reaction.inc',
+      'class' => 'supersized_context_reaction',
+      'parent' => 'context_reaction',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_context_registry().
+ */
+function supersized_context_context_registry() {
+  $registry['conditions'] = array(
+    'supersized_context' => array(
+      'title' => t('Supersized'),
+      'plugin' => 'supersized_context_condition',
+    ),
+  );
+  $registry['reactions'] = array(
+    'supersized_context' => array(
+      'title' => t('Supersized'),
+      'plugin' => 'supersized_context_reaction',
+    ),
+  );
+  return $registry;
+}
+
+/**
+ * Implements hook_context_page_condition().
+ */
+function supersized_context_context_page_condition() {
+  if ($plugin = context_get_plugin('condition', 'supersized_context')) {
+    $plugin->execute();
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function supersized_context_menu() {
+  $items = array();
+  $items['supersized/autocomplete'] = array(
+    'title' => 'Autocomplete',
+    'page callback' => 'supersized_context_autocomplete',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Page callback for autocomplete.
+ */
+function supersized_context_autocomplete() {
+  $args = func_get_args();
+  $string = implode('/', $args);
+  $matches = _supersized_context_autocomplete($string);
+  drupal_json_output(drupal_map_assoc($matches));
+}
+
+/**
+ * A helper function for autocomplete.
+ */
+function _supersized_context_autocomplete($string) {
+  $output = array();
+  if (!$string) {
+    return $output;
+  }
+  $nodes = supersized_context_autocomplete_nodes($string);
+  return $nodes;
+}
+
+/**
+ * Fetch a list of nodes available for autocomplete.
+ */
+function supersized_context_autocomplete_nodes($string) {
+  $matches = array();
+  if (empty($string)) {
+    return $matches;
+  }
+
+  $query = db_select('node', 'n')
+    ->addTag('node_access')
+    ->fields('n', array('nid', 'tnid', 'title'))
+    ->range(0, 25);
+
+  $where_args = array();
+  global $user;
+  if (!user_access('administer nodes', $user)) {
+    $query->condition(db_or()->condition('n.status', 1)->condition('n.uid', $user->uid));
+  }
+
+  // Run a match to see if they're specifying by nid.
+  $preg_matches = array();
+  $match = preg_match('/\[nid: (\d+)\]/', $string, $preg_matches);
+  if (!$match) {
+    $match = preg_match('/^nid: (\d+)/', $string, $preg_matches);
+  }
+
+  if ($match) {
+    // If it found a nid via specification, reduce our resultset to just that
+    // nid.
+    $query->condition('n.nid', $preg_matches[1]);
+  }
+  else {
+    // Build the constant parts of the query.
+    $query->where('LOWER(n.title) LIKE LOWER(:string)', array(':string' => '%' . db_like($string) . '%'));
+  }
+
+  $query->addTag('i18n_select');
+  $result = $query->execute();
+
+  foreach ($result as $node) {
+    $matches[$node->nid] = check_plain($node->title) . " [nid: $node->nid]";
+  }
+
+  return $matches;
+}

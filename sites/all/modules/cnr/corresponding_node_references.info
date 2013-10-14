@@ -1,0 +1,11 @@
+name = Corresponding Node References
+description = Syncs the node reference between two node types which have a nodereference to each other.  
+core = 7.x
+dependencies[] = node_reference
+dependencies[] = ctools
+; Information added by drupal.org packaging script on 2011-11-16
+version = "7.x-4.22"
+core = "7.x"
+project = "cnr"
+datestamp = "1321480838"
+

@@ -1,0 +1,12 @@
+name = Publish button
+description = Inserts a publish button.
+core = 7.x
+
+files[] = publish_button_views_handler_node_link.inc
+
+; Information added by drupal.org packaging script on 2013-01-14
+version = "7.x-1.0-beta8"
+core = "7.x"
+project = "publish_button"
+datestamp = "1358158480"
+

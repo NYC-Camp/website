@@ -1,0 +1,6 @@
+name = "Codify module"
+description = "Provides useful functions to make COD7 more usable"
+core = "7.x"
+package = "Cod Extras"
+
+configure = admin/config/codify

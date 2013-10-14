@@ -1,0 +1,14 @@
+name = Registration API Test
+description = Support module for Registration API (Hooks)
+package = Registration
+core = 7.x
+
+dependencies[] = registration
+hidden = TRUE
+
+; Information added by drush on 2013-05-24
+version = "7.x-1.1+3-dev"
+core = "7.x"
+project = "registration"
+datestamp = "1369425868"
+

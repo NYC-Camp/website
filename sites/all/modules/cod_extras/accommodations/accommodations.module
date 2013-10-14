@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Accommodations feature.
+ */
+
+include_once 'accommodations.features.inc';

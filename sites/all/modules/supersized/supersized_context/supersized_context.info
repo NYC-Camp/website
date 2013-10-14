@@ -1,0 +1,14 @@
+name = Supersized context
+description = Provide context condition and reaction to determine and apply Supersized content.
+package = Other
+version = 7.x-1.0
+core = 7.x
+dependencies[] = supersized
+dependencies[] = context
+
+; Information added by drupal.org packaging script on 2013-02-18
+version = "7.x-1.1"
+core = "7.x"
+project = "supersized"
+datestamp = "1361152742"
+

@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Uninstall task
+ */
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Remove all the variables that are used.
+ */
+function publish_button_uninstall() {
+  $variables = db_query("SELECT name FROM {variable} WHERE name LIKE 'publish_button_%'");
+  foreach ($variables as $variable_name) {
+    variable_del($variable_name->name);
+  }
+}

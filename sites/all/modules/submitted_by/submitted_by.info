@@ -1,0 +1,12 @@
+name = Submitted By
+description = Customize the <em>Submitted by username on date</em> text on a per-nodetype basis.
+dependencies[] = token
+core = 7.x
+files[] = submitted_by.module
+files[] = submitted_by.install
+; Information added by drupal.org packaging script on 2011-02-25
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "submitted_by"
+datestamp = "1298620288"
+

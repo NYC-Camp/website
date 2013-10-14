@@ -1,0 +1,5 @@
+name = COD Extras
+description = Additional commonly needed functionality for COD
+version = 0.1
+core = 7.x
+package = COD Extras

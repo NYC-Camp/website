@@ -1,0 +1,10 @@
+
+/** Ctool export ui form **/
+#ctools-export-ui-edit-item-form .form-item-duration-unit {
+  float: left;
+  margin-left: 10px;
+}
+
+#ctools-export-ui-edit-item-form .form-item-duration {
+  float: left;
+}

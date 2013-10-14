@@ -1,0 +1,164 @@
+//
+// Layout Styling (DIV Positioning)
+//
+// Define CSS classes to create a table-free, 3-column, 2-column, or single
+// column layout depending on whether blocks are enabled in the left or right
+// columns.
+//
+// This layout is based on the Zen Columns layout method.
+//   http://drupal.org/node/201428
+//
+// Only CSS that affects the layout (positioning) of major elements should be
+// listed here.  Such as:
+//   display, position, float, clear, width, height, min-width, min-height
+//   margin, border, padding, overflow
+//
+
+@import "base";
+
+
+//
+// Body
+//
+body {
+}
+
+#page-wrapper,
+.region-bottom {
+  //
+  // If you want to make the page a fixed width and centered in the viewport,
+  // this is the standards-compliant way to do that.
+  //
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+}
+
+#page {
+}
+
+
+//
+// Header
+//
+#header {
+}
+
+#header .section {
+}
+
+.region-header {
+}
+
+
+//
+// Main container and its columns and navbar
+//
+
+
+// The layout when there are no sidebars.
+#main {
+  @include clearfix;
+
+  @include zen-columns (
+    // These mixin parameters describe the columns.
+    $selectors: ('#content'),
+    $widths: (960px),
+    $leading-direction: (),
+    $leading-gutters: (0),
+    $padding: (),
+
+    // These mixin parameters describe the navbar.
+    $navbar-selector: '#navigation',
+    $navbar-height: 3em,
+    $navbar-width: 960px,
+    $navbar-leading-gutter: 0,
+    $navbar-padding: 0
+  );
+}
+
+// The layout when there is only one sidebar, the left one.
+.sidebar-first #main {
+  @include zen-columns (
+    // These mixin parameters describe the columns.
+    $selectors: ('.region-sidebar-first', '#content'),
+    $widths: (180px, 760px),
+    $leading-direction: (),
+    $leading-gutters: (0, 20px),
+    $padding: (),
+
+    // These mixin parameters describe the navbar.
+    $navbar-selector: '#navigation',
+    $navbar-height: 3em,
+    $navbar-width: 960px,
+    $navbar-leading-gutter: 0,
+    $navbar-padding: 0
+  );
+}
+
+// The layout when there is only one sidebar, the right one.
+.sidebar-second #main {
+  @include zen-columns (
+    // These mixin parameters describe the columns.
+    $selectors: ('#content', '.region-sidebar-second'),
+    $widths: (760px, 180px),
+    $leading-direction: (),
+    $leading-gutters: (0, 20px),
+    $padding: (),
+
+    // These mixin parameters describe the navbar.
+    $navbar-selector: '#navigation',
+    $navbar-height: 3em,
+    $navbar-width: 960px,
+    $navbar-leading-gutter: 0,
+    $navbar-padding: 0
+  );
+}
+
+// The layout when there are two sidebars.
+.two-sidebars #main {
+  @include zen-columns (
+    // These mixin parameters describe the columns.
+    $selectors: ('.region-sidebar-first', '#content', '.region-sidebar-second'),
+    $widths: (180px, 560px, 180px),
+    $leading-direction: (),
+    $leading-gutters: (0, 20px, 20px),
+    $padding: (),
+
+    // These mixin parameters describe the navbar.
+    $navbar-selector: '#navigation',
+    $navbar-height: 3em,
+    $navbar-width: 960px,
+    $navbar-leading-gutter: 0,
+    $navbar-padding: 0
+  );
+}
+
+
+//
+// Footer
+//
+.region-footer {
+}
+
+
+//
+// Page bottom
+//
+.region-bottom { // See also the #page-wrapper declaration above that this div shares.
+}
+
+
+//
+// If a div.clearfix doesn't have any content after it and its bottom edge
+// touches the bottom of the viewport, Firefox and Safari will mistakenly
+// place several pixels worth of space between the bottom of the div and the
+// bottom of the viewport. Uncomment this CSS property to fix this.
+// Note: with some over-large content, this property might cause scrollbars
+// to appear on the #page-wrapper div.
+//
+/*
+#page-wrapper {
+  overflow-y: hidden;
+}
+*/

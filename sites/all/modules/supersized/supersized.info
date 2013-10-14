@@ -1,0 +1,17 @@
+name = Supersized
+description = To enabled Supersized JQuery plugin provided by a new field type.
+package = Other
+core = 7.x
+dependencies[] = file
+dependencies[] = image
+dependencies[] = imagecache_actions
+dependencies[] = imagecache_canvasactions
+dependencies[] = imagecache_coloractions
+dependencies[] = libraries (>=2)
+
+; Information added by drupal.org packaging script on 2013-02-18
+version = "7.x-1.1"
+core = "7.x"
+project = "supersized"
+datestamp = "1361152742"
+

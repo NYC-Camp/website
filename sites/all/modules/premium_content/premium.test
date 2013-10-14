@@ -1,0 +1,66 @@
+<?php
+/**
+ * @file
+ * Test basic Premium Content functionality.
+ *
+ * @todo
+ * Add tests for archive, latest modes.
+ */
+ 
+ class PremiumContentTestCase extends DrupalWebTestCase {
+
+  protected $auth_user;
+
+  // Sample content based on node.test
+  protected $default_node_settings_premium = array(
+    'type' => 'article',
+    'title' => 'Premium node',
+    'premium' => 'default',
+    'body' => array(LANGUAGE_NONE => array(array('value' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae arcu at leo cursus laoreet. Curabitur dui tortor, adipiscing malesuada tempor in, bibendum ac diam. Cras non tellus a libero pellentesque condimentum. What is a Drupalism? Suspendisse ac lacus libero. Ut non est vel nisl faucibus interdum nec sed leo. Pellentesque sem risus, vulputate eu semper eget, auctor in libero. Ut fermentum est vitae metus convallis scelerisque. Phasellus pellentesque rhoncus tellus, eu dignissim purus posuere id. Quisque eu fringilla ligula. Morbi ullamcorper, lorem et mattis egestas, tortor neque pretium velit, eget eleifend odio turpis eu purus. Donec vitae metus quis leo pretium tincidunt a pulvinar sem. Morbi adipiscing laoreet mauris vel placerat. Nullam elementum, nisl sit amet scelerisque malesuada, dolor nunc hendrerit quam, eu ultrices erat est in orci. Curabitur feugiat egestas nisl sed accumsan.'))),
+    'promote' => 1,
+  );
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Premium Content',
+      'description' => 'Test correct access to premium content.',
+      'group' => 'Premium Content',
+    );
+  }
+
+  /**
+   * Enable modules.
+   */
+  function setUp() {
+    parent::setUp('premium');
+
+    $level_options = premium_level_option_list();
+    $default_perm = _premium_permission_name($level_options['default']);
+
+    $this->auth_user = $this->drupalCreateUser(array($default_perm));
+  }
+
+  function testCreatePremiumNode() {
+    $levels = premium_default_premium_levels();
+    $access_denied_text = $levels['default']->denied_message;
+
+    $node1 = $this->drupalCreateNode($this->default_node_settings_premium);
+
+    // Request front page. Anon user should see teaser.
+    $this->drupalGet('node');
+    // The node teaser when it has 600 characters in length.
+    $expected = 'What is a Drupalism?';
+    $this->assertRaw($expected, t('Anon user can see node teaser.'), 'Premium');
+
+    // Request full node.
+    $this->drupalGet('node/1');
+    $this->assertText($access_denied_text, 'Anon user sees access denied text.');
+    $this->assertNoText($expected, 'Anon user does not see node content.');
+
+    // Login auth user.
+    $this->drupalLogin($this->auth_user);
+    $this->drupalGet('node/1');
+    $this->assertText($expected, 'Auth user sees node content.');
+    $this->assertNoText($access_denied_text, 'Auth user does not see access denied.');
+  }
+}

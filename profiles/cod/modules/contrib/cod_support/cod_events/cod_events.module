@@ -1,0 +1,94 @@
+<?php
+
+define('DEFAULT_EVENT','default_event');
+include_once('cod_events.features.inc');
+
+/*
+* Implements hook_ctools_plugin_directory -
+* This lets ctools know to scan my module for a content_type plugin file
+* Detailed docks in ctools/ctools.api.php
+*/
+function cod_events_ctools_plugin_directory($owner, $plugin_type) {
+  // we'll be nice and limit scandir() calls
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/content_types';
+  }
+}
+
+/**
+ * Helper function determines days there are time slots for.
+ */
+function cod_events_days($event_id = NULL) {
+  //if event id is null, we need to get all days in the system to build the forms
+  static $days;
+  if (empty($days)) {
+    $days = array();
+    if (db_table_exists('field_data_field_slot_datetime')) {
+      $event_join = 'INNER JOIN og_membership om ON n.nid = om.etid';
+      $event = 'om.gid = :event_id AND';
+
+      $sql = "SELECT n.nid AS nid, DATE_FORMAT(s.field_slot_datetime_value, :day) AS day
+        FROM {field_data_field_slot_datetime} s
+        INNER JOIN {node} n ON s.entity_id = n.nid AND s.revision_id = n.vid
+        $event_join
+        WHERE $event n.type = 'time_slot'
+        GROUP BY DATE_FORMAT(s.field_slot_datetime_value, :day)
+        ORDER BY s.field_slot_datetime_value ASC";
+      $result = db_query($sql, array(':day' => '%W %M, %d %Y', ':event_id' => $event_id));
+      foreach ($result as $record) {
+        $days[$record->day] = $record->nid;
+      }
+    } else {
+      return FALSE;
+    }
+  }
+  return $days;
+}
+
+/**
+ * Helper function for matching day to URL arguments
+ */
+function cod_events_day_url($day) {
+  $day = str_replace(' ','-',$day);
+  $day = str_replace(',','',$day);
+  return strtolower($day);
+}
+
+/**
+ * Make the event dashboard be an admin path
+ */
+function cod_events_admin_paths() {
+  $paths = array(
+    'node/*/dashboard' => TRUE,
+  );
+  return $paths;
+}
+
+/**
+ * Implements hook_form_alter().
+ * - Add default event to all new node types, this is based off a flagged
+ * entity
+ */
+function cod_events_form_alter(&$form, &$form_state, $form_id) {
+  $which_flag = flag_get_flags($entity_type = NULL, $content_subtype = NULL, $account = NULL);
+  $default_event = isset($which_flag['default_event']) ? $which_flag['default_event'] : FALSE;
+  $default_fid = 5;
+  if (empty($form['nid']['#value']) && !user_is_anonymous()) {
+    if ($default_event->name == 'default_event' && $default_event->fid == $default_fid) {
+      $form['og_group_ref']['und'][0]['default']['#default_value'] = _get_flag_etid($default_fid);
+    }
+  }
+}
+
+/**
+ * Helper function to get an etid assigned to a flag
+ * @param $fid: Flag id set
+ * @return content_id from {flag_content}
+ */
+function _get_flag_etid($fid) {
+  return db_select('flag_content', 'fc')
+    ->fields('fc', array('content_id'))
+    ->condition('fid', $fid)
+    ->execute()
+    ->fetchField();
+}

@@ -1,0 +1,32 @@
+; $Id: imagecache_canvasactions.info,v 1.2 2010/12/16 05:17:44 dman Exp $
+name = Imagecache Canvas Actions
+description = Actions for manipulating image canvases layers, including watermark and background effect. Also an aspect switcher (portrait/landscape)
+dependencies[] = imagecache_actions
+dependencies[] = image
+package = Image
+core = 7.x
+
+
+files[] = canvasactions.inc
+files[] = imagecache_canvasactions.install
+files[] = imagecache_canvasactions.module
+files[] = rounded_corners.inc
+files[] = tests/cheap_dropshadow.imagecache_preset.inc
+files[] = tests/keyword_positioning.imagecache_preset.inc
+files[] = tests/positioned_underlay.imagecache_preset.inc
+files[] = tests/rotate_alpha.imagecache_preset.inc
+files[] = tests/rotate_alpha_gif.imagecache_preset.inc
+files[] = tests/rotate_scale.imagecache_preset.inc
+files[] = tests/rotate_scale_alpha.imagecache_preset.inc
+files[] = tests/rounded.imagecache_preset.inc
+files[] = tests/rounded_bl.imagecache_preset.inc
+files[] = tests/rounded_flattened.imagecache_preset.inc
+files[] = tests/watermark_100.imagecache_preset.inc
+files[] = tests/watermark_50.imagecache_preset.inc
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "7.x-0.0"
+core = "7.x"
+project = "imagecache_actions"
+datestamp = "1296768752"
+

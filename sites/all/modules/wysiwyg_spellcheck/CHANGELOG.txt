@@ -1,0 +1,33 @@
+wysiwyg_spellcheck 7.x-1.x-dev
+------------------------------
+
+
+wysiwyg_spellcheck 7.x-1.1, 2012-05-02
+--------------------------------------
+[#1153466] mikeytown2: Add in support for ckeditor's aspell plugin
+[#1317516] Clarified plugin download instructions
+[#1525608] Instructions for CKEditor Aspell plugin in INSTALL.txt
+[#1525602] Verifying proper installation of CKEditor & ASpell
+[NOISSUE] Verify if Wysiwyg editor is present before verifying plugin installation
+
+
+wysiwyg_spellcheck 7.x-1.0, 2011-08-26
+--------------------------------------
+[NOISSUE] by iva2k: Created DRUPAL-7--1 branch
+[#793932] by seren10pity: Port to D7
+[NOISSUE] Renamed _wysiwyg_default_path() to _wysiwyg_spellcheck_default_path()
+[NOISSUE] Updated wysiwyg_spellcheck_wysiwyg_plugin() format to comply with http://drupal.org/node/767550
+
+
+wysiwyg_spellcheck 6.x-1.x-dev
+------------------------------
+[#755592] by iva2k: Test for TinyMCE spellchecker plugin presence
+[#490050] by iva2k: Move TinyMCE spellchecker plugin to sites/all/libraries/...
+[#774546] by iva2k: Redone dependency on wysiwyg_get_path()
+[NOISSUE] Renamed _wysiwyg_default_path() to _wysiwyg_spellcheck_default_path()
+[#1153466] mikeytown2: Add in support for ckeditor's aspell plugin
+[#1317516] Clarified plugin download instructions
+[#1525608] Instructions for CKEditor Aspell plugin in INSTALL.txt
+[#1525602] Verifying proper installation of CKEditor & ASpell
+[NOISSUE] Verify if Wysiwyg editor is present before verifying plugin installation
+

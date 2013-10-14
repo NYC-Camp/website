@@ -1,0 +1,15 @@
+; $Id: imagecache_autorotate.info,v 1.2 2010/12/16 05:17:44 dman Exp $
+name = Imagecache Autorotate
+description = Autorotate image based on EXIF Orientation.
+dependencies[] = image
+package = Image
+core = 7.x
+files[] = imagecache_autorotate.install
+files[] = imagecache_autorotate.module
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "7.x-0.0"
+core = "7.x"
+project = "imagecache_actions"
+datestamp = "1296768752"
+

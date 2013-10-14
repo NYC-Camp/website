@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the mailchimp module.
+ *
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mailchimp_schema() {
+  $schema['cache_mailchimp_user'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_mailchimp_user']['description'] = 'Cache table for the MailChimp module to store a list subscribers member info.';
+
+  return $schema;
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function mailchimp_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  if ($phase == 'update') {
+    $path = drupal_get_path('module', 'libraries') . '/libraries.info';
+    $info = drupal_parse_info_file($path);
+    if (version_compare($info['version'], '7.x-2.0', '<')) {
+      $requirements['mailchimp'] = array(
+        'title' => $t('Mailchimp'),
+        'value' => '7.x-2.x',
+        'description' => $t('libraries 2.x is required for MailChimp 7.x-2.8 or higher.'),
+        'severity' => REQUIREMENT_ERROR
+      );
+      return $requirements;
+    }
+  }
+
+  // Report Drupal version
+  if (in_array($phase, array('runtime', 'update'))) {
+    $library = libraries_detect('mailchimp');
+    $requirements['mailchimp'] = array(
+      'title' => $t('MailChimp'),
+    );
+
+    if ($library['installed']) {
+      $requirements['mailchimp'] += array(
+        'value' => $library['version'],
+        'description' => $t('The MailChimp MCAPI wrapper library is installed correctly.'),
+        'severity' => REQUIREMENT_OK
+      );
+    }
+    else {
+      $requirements['mailchimp'] += array(
+        'value' => $library['error'],
+        'description' => $library['error message'],
+        'severity' => REQUIREMENT_ERROR
+      );
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function mailchimp_uninstall() {
+  variable_del('mailchimp_api_key');
+  variable_del('mailchimp_batch_limit');
+  variable_del('mailchimp_use_secure');
+}
+
+/**
+ * Implements hook_update_N().
+ *   Create cache_mailchimp_user table and delete unused variables.
+ */
+function mailchimp_update_7201() {
+  // create cache_mailchimp_user table
+  db_create_table('cache_mailchimp_user', drupal_get_schema_unprocessed('mailchimp', 'cache_mailchimp_user'));
+
+  // delete old unused variables
+  variable_del('mailchimp_user_settings_title');
+  variable_del('mailchimp_subscription_failure_message');
+  variable_del('mailchimp_subscription_success_message');
+  variable_del('mailchimp_unsubscription_failure_message');
+  variable_del('mailchimp_unsubscription_success_message');
+  variable_del('mailchimp_subscribe_page_title');
+  variable_del('mailchimp_unsubscribe_page_description');
+  variable_del('mailchimp_unsubscribe_page_title');
+}
+

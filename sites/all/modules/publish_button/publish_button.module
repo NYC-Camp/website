@@ -1,0 +1,309 @@
+<?php
+/**
+ * @file
+ * Functions to create a publish button. Real simple, but could be needed.
+ *
+ * @todo
+ * Add permissions, expose to Views, better ctools integration, add simple class
+ * settings for css. Nice buttons should have colours.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function publish_button_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#publish_button':
+      return '<h2>' . t('Usage of Publish button') . '</h2>
+        <p>' . t('After installation, on each content type there are a
+        new setting, Publish button, and to activate publish/unpublish button
+        for that content type, you need to check "Use publish/unpublish button
+        for this content type" and then click save.') . '</p>
+        <p>' . t('Now you need to add permissions for which user roles which
+        are allowed to publsih content.') . '</p>
+        <p>' . t('Now, when you create a new node, there are a
+        publish or unpublish button for all the content types that have the
+        button settings.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Here we have both the settings for which content types that would have the
+ * button and the button itself.
+ */
+function publish_button_form_alter(&$form, &$form_state, $form_id) {
+  // Add settings for using content type on types/manage/my_content_type
+  if ($form_id == 'node_type_form') {
+
+    // After that a checkbox for settings.
+    $form['workflow']['publish_button_content_type'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use publish/unpublish button for this content type'),
+      // Getting/setting the variable that contains the setting for the content
+      // type.
+      '#default_value' => variable_get('publish_button_content_type_' . $form['#node_type']->type, FALSE),
+    );
+  }
+
+}
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function publish_button_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // Now for the button itself.
+  // For best practice, make the user object global, because we are checking
+  // permissions. Usually we have the object, but we should declare that we
+  // need it. We want to be the good guys, don't we?
+  global $user;
+  if (variable_get('publish_button_content_type_' . $form['#node']->type) == TRUE) {
+
+    // First we check if the node have the status TRUE. That could be TRUE
+    // also for unpublished nodes. A little bit sci-fi, isn't it?
+    if ($form['#node']->status == TRUE) {
+      // So we check if nid have value, so we do not try to unpublish a node
+      // that does not exists, that should destroy the universe. We do not
+      // want that.
+      if (isset($form['nid']['#value'])) {
+        if ($form['nid']['#value'] !== NULL) {
+          // Add the unpublish button to the actions array.
+          if (_publish_button_unpublish_permissions($form['#node']->type) == TRUE) {
+            // Check if we are on a delete confirm page.
+            if ($form['#form_id'] != 'node_delete_confirm') {
+              $form['actions']['unpublish'] = publish_button_render_unpublish_button();
+            }
+          }
+        }
+      }
+      else {
+        if (_publish_button_publish_permissions($form['#node']->type) == TRUE && (isset($form['actions']))) {
+          // Check if we are on a delete confirm page.
+          if ($form['#form_id'] != 'node_delete_confirm') {
+            $form['actions']['publish'] = publish_button_render_publish_button();
+          }
+        }
+      }
+    }
+    // Then we check if the node have status FALSE.
+    if ($form['#node']->status == FALSE) {
+      // Add the publish button to the action array.
+      if (_publish_button_publish_permissions($form['#node']->type) == TRUE && (isset($form['actions']))) {
+        // Check if we are on a delete confirm page.
+        if ($form['#form_id'] != 'node_delete_confirm') {
+          $form['actions']['publish'] = publish_button_render_publish_button();
+        }
+      }
+    }
+  }
+}
+/**
+ * Render publish button.
+ */
+function publish_button_render_publish_button() {
+  $publish_button = array(
+    '#type' => 'submit',
+    '#access' => TRUE,
+    '#value' => t('Publish'),
+    '#weight' => '30',
+    // Add the submit handler.
+    '#submit' => array('_publish_button_publish_node'),
+  );
+  return $publish_button;
+}
+
+/**
+ * Render unpublish button.
+ */
+function publish_button_render_unpublish_button() {
+  $unpublish_button = array(
+    '#type' => 'submit',
+    '#access' => TRUE,
+    '#value' => t('Unpublish'),
+    // Set a pretty high weight, so the button would come last, but
+    // still make it possible for other modules to add buttons after
+    // it.
+    '#weight' => '30',
+    // Add the submit handler.
+    '#submit' => array('_publish_button_unpublish_node'),
+  );
+  return $unpublish_button;
+}
+
+/**
+ * Submit handler to publish the node.
+ */
+function _publish_button_publish_node($form, &$form_state) {
+  // Set the node status as published. And that's it.
+  $form_state['values']['status'] = 1;
+  // Use the standard submit function. Do not go custom on me boy.
+  node_form_submit($form, $form_state);
+}
+
+/**
+ * Submit handler to unpublish the node.
+ */
+function _publish_button_unpublish_node($form, &$form_state) {
+  // Set the status as unpublished. And there is no more to that.
+  $form_state['values']['status'] = 0;
+  // Use the standard submit function.
+  node_form_submit($form, $form_state);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function publish_button_permission() {
+  $perms = array(
+    'publish button publish any content types' => array(
+      'title' => t('Publish any content types'),
+    ),
+    'publish button unpublish any content types' => array(
+      'title' => t('Unpublish any content types'),
+    ),
+  );
+  foreach (node_type_get_types() as $type) {
+    // First we need to check if there are a publish button for the content
+    // type.
+    if (variable_get('publish_button_content_type_' . $type->type, FALSE)) {
+      // And if there is, go through the content types that have the button
+      // and create permissions for them.
+      if (isset($type->type)) {
+        $perms['publish button publish any ' . $type->type] = array(
+          'title' => t('@type: Publish any', array('@type' => $type->name)));
+        $perms['publish button publish own ' . $type->type] = array(
+          'title' => t('@type: Publish own', array('@type' => $type->name)));
+        $perms['publish button publish editable ' . $type->type] = array(
+          'title' => t('@type: Publish editable', array('@type' => $type->name)));
+        $perms['publish button unpublish any ' . $type->type] = array(
+          'title' => t('@type: Unpublish any', array('@type' => $type->name)));
+        $perms['publish button unpublish own ' . $type->type] = array(
+          'title' => t('@type: Unpublish own', array('@type' => $type->name)));
+        $perms['publish button unpublish editable ' . $type->type] = array(
+          'title' => t('@type: Unpublish editable', array('@type' => $type->name)));
+      }
+    }
+  }
+  return $perms;
+}
+
+/**
+ * Checking publish permissions.
+ */
+function _publish_button_publish_permissions($type) {
+  global $user;
+  if (user_access('publish button publish any ' . $type) ||
+     user_access('publish button publish own ' . $type) ||
+     user_access('publish button publish editable ' . $type) ||
+     user_access('publish button publish any content types') == TRUE) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Checking unpublish permissions.
+ */
+function _publish_button_unpublish_permissions($type) {
+  global $user;
+  if (user_access('publish button unpublish any ' . $type) ||
+    user_access('publish button unpublish own ' . $type) ||
+    user_access('publish button unpublish editable ' . $type) ||
+    user_access('publish button unpublish any content types') == TRUE) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+
+// Start of views integration.
+/**
+ * Implements hook_views_api().
+ */
+function publish_button_views_api() {
+  return array('api' => 3);
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function publish_button_views_data_alter(&$data) {
+  $data['node']['publish_button'] = array(
+    'title' => t('Publish button'),
+    'help' => t('Display a publish button.'),
+    'field' => array(
+      'handler' => 'publish_button_views_handler_node_link',
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function publish_button_menu() {
+  $items['publish_button/%/publish'] = array(
+    'title' => 'Publish node',
+    'page callback' => 'publish_button_status',
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access callback' => '_publish_button_menu_access',
+    'access arguments' => array(1, 'publish'),
+  );
+  $items['publish_button/%/unpublish'] = array(
+    'title' => 'Unpublish node',
+    'page callback' => 'publish_button_status',
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access callback' => '_publish_button_menu_access',
+    'access arguments' => array(1, 'unpublish'),
+  );
+  return $items;
+}
+
+/**
+ * Check permissions to hook_menu call.
+ */
+function _publish_button_menu_access($nid, $status) {
+  if ($status == 'publish') {
+    $node = node_load($nid);
+    if (isset($node->type)) {
+      if (_publish_button_publish_permissions($node->type) == TRUE) {
+        return TRUE;
+      }
+    }
+  }
+  if ($status == 'unpublish') {
+    $node = node_load($nid);
+    if (isset($node->type)) {
+      if (_publish_button_unpublish_permissions($node->type) == TRUE) {
+        return TRUE;
+      }
+    }
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Callback to publish/unpublish node, preferable used via Views.
+ */
+function publish_button_status($nid) {
+  // Load the node in a object so we could use it.
+  $node = node_load($nid);
+  // If the node is published.
+  if ($node->status == 1) {
+    $node->status = 0;
+    node_save($node);
+  }
+  // If the node is unpublished.
+  elseif ($node->status == 0) {
+    $node->status = 1;
+    node_save($node);
+  }
+  drupal_goto(drupal_get_destination());
+}

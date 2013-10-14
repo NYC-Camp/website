@@ -1,0 +1,101 @@
+<?php
+/**
+ * @file
+ * Code for the COD BoF Session feature.
+ */
+
+include_once('cod_bof.features.inc');
+
+function cod_bof_views_pre_view(&$view, &$display_id, &$args) {
+
+  if($view->name == 'cod_bof_schedule' && $display_id == 'block_2' && $args[1] == 'bof_session') {
+    $footer_array = cod_bof_get_bof_link($args[0]);
+
+    $options = array(
+      'id' => 'area',
+      'table' => 'views',
+      'field' => 'area',
+      'empty' => $footer_array['display'],
+      'content' => $footer_array['content'],
+      'format' => 'full_html',
+      'tokenize' => 0,
+    );
+    $view->set_item('block_2', 'footer', 'area', $options);
+    $footer = $view->get_item('block_2', 'footer', 'area');
+  }
+}
+
+function cod_bof_form_bof_session_node_form_alter(&$form, &$form_state, $form_id) {
+  $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
+  if(!isset($form['#node']->nid) && $time_slot_id) {
+    unset($form['#fieldgroups']['group_bof_schedule']);
+    $form['field_session_timeslot']['#access'] = FALSE;
+    $form['og_group_ref']['#access'] = FALSE;
+  }
+}
+
+function cod_bof_node_presave($node) {
+  $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
+  if($time_slot_id && $node->is_new) {
+    $gid = _cod_bof_get_gid($time_slot_id);
+
+    $node->field_session_timeslot[LANGUAGE_NONE][0]['target_id'] = $time_slot_id;
+    $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $gid;
+    drupal_set_message("Bof created successfully! Please wait upto 5 minutes for it to appear on the BoF page");
+  }
+  return $node;
+}
+
+function cod_bof_get_bof_link($time_slot_entity) {
+  $field_collection_item = field_collection_item_load($time_slot_entity); // Load that field collection item.
+
+  $footer['display'] = FALSE;
+  $footer['content'] = '';
+
+  /* find out if there are any sessions currently assigned to a room at a given time */
+  $result = db_select('field_data_field_session_timeslot', 'f')
+    ->fields('f', array('field_session_timeslot_target_id'))
+    ->condition('field_session_timeslot_target_id', $time_slot_entity)
+    ->execute();
+  $bof_count = $result->rowCount();
+  $bof_allowed = FALSE;
+  foreach($field_collection_item->field_slot_types_allowed[LANGUAGE_NONE] AS $slot_types) {
+    if($slot_types['value'] == 'bof_session') {
+      $bof_allowed = TRUE;
+    }
+  }
+  if(!empty($field_collection_item->field_slot_types_capacity)) {
+    if($bof_allowed && $bof_count < $field_collection_item->field_slot_types_capacity[LANGUAGE_NONE][0]['value']) {
+      if(user_access('create bof_session content') && _cod_bof_get_gid($time_slot_entity)) {
+        $footer['content'] = l('Create a BoF','node/add/bof-session',array('query' => array('edit[field_session_timeslot][target_id]' => $time_slot_entity, 'destination' => 'node/'._cod_bof_get_gid($time_slot_entity).'/program/schedule/bofs')));
+        $footer['display'] = TRUE;
+      }
+    }
+  }
+  return $footer;
+}
+
+function cod_bof_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'views_pre_view') {
+    // Move views_pre_view() to the end of the list. module_implements()
+    // iterates through $implementations with a foreach loop which PHP iterates
+    // in the order that the items were added, so to move an item to the end of
+    // the array, we remove it and then add it.
+    $group = $implementations['cod_bof'];
+    unset($implementations['cod_bof']);
+    $implementations['cod_bof'] = $group;
+  }
+}
+
+function _cod_bof_get_gid($time_slot_id) {
+  return db_query('SELECT g.gid FROM og_membership g, field_data_field_slot_types_time_slot t
+        WHERE g.etid = t.field_slot_types_time_slot_target_id AND t.entity_id = :timeslotid', array(':timeslotid' => $time_slot_id))->fetchField();
+}
+
+function cod_bof_custom_theme() {
+  if (arg(4) == 'bofs' && arg(5) == 'sign') {
+    $path = drupal_get_path('module', 'cod_bof');
+    drupal_add_css($path . '/css/sign-style.css');
+    return 'seven';
+  }
+}

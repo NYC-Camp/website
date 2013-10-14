@@ -1,0 +1,286 @@
+/* Tablet (Portrait) = Design for a width of 730px
+	 Source: http://stackoverflow.com/questions/16704243/best-widths-for-apply-media-queries-for-a-responsive-website-satisfying-portrait
+	 and: http://www.javascriptkit.com/dhtmltutors/cssmediaqueries2.shtml
+================================================== */
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px){
+
+	#main, #header .section, #footer-wrapper-inner {
+		margin: 0 auto;
+		width: 94%;
+	}
+
+}
+
+
+/* Mobile (Landscape)
+================================================== */
+
+@media only screen and (max-width: 1024px) {
+
+	.region-sidebar-first {
+	width: 25%;
+	}
+	
+	.sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
+	width: 75%;
+	}
+
+	.region-live {
+	width: 67%;
+	}
+
+	.front #main .block {
+	width: 48%;
+	}
+
+}
+
+
+/* Mobile (Landscape and Portrait)
+================================================== */
+
+@media only screen and (max-width: 768px) {
+
+	#header {
+		position: relative;
+		top: auto;
+		left: auto;
+		width: 100%;
+		z-index: 1;
+	}
+
+	#menu-link {
+		display: block;
+	}
+
+	#main-menu, #block-nice-menus-1, #logo {
+		display: none;
+	}
+
+	#min-menu {
+		display: block;
+	}
+
+	#main, #header .section, #footer-wrapper-inner {
+		margin: 0 auto;
+		width: 94%;
+	}
+
+	/* MAIN */
+	#main {
+		padding: 0 0 20px; /* Reduce padding now that header is not fixed */
+	}
+
+	#footer-nav, .region-footer, .col-01, .col-02, .col-03, #block-menu-menu-footer-menu, .front #main .block, .front #aside , .not-front #aside, .front #content , .not-front #content, #sidebar-first, #sidebar-second, .region-sidebar-first, .sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper, .region-live .block.first, .region-live .block.last {
+		float: none;
+		margin: 0 auto 1em;
+		width: 100%;
+		min-height: inherit;
+		height: auto;
+		padding: 0;
+	}
+
+	.region-live, .region-featured #block-block-15 {
+		margin: 1em auto;
+		width: 92%;
+		float: none;
+		min-height: inherit;
+		height: auto;
+		padding: 0;
+	}
+
+	.panels-flexible-column {
+		padding: 0;
+		float: none !important;
+		clear: both !important;
+		width: 100% !important;
+	}
+
+	.sidebar-first #header .section {
+		padding: 0 15px 0 10px;
+	}
+
+	.sidebar-first #footer-wrapper {
+		margin-bottom: 0;
+	}
+
+	.region-sidebar-first {
+		background: none;
+		padding: 0;
+		position: relative;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+
+	.region-sidebar-first .block {
+		border-bottom: 1px dotted #777;
+		box-shadow: none;
+	}
+
+	.region-sidebar-first .block:hover {
+		background: none;
+	}
+	
+	.region-sidebar-first h2.block-title {
+		color: inherit;
+	}
+	
+	.region-sidebar-first .block, .region-sidebar-first .block a {
+		background: none;
+		color: inherit;
+	}
+
+	.region-featured {
+		margin: 0;
+	}
+
+	#main-wrapper {
+		width: 100%;
+		margin: 10px auto;
+		padding: 0;
+	}
+
+	.not-front #main, .maintenance-page #main {
+		padding: 20px 0;
+	}
+
+	#main h1.title {
+		font-size: 32px;
+	}
+
+	#main h1.title, #main h2.node-title, #main h2.block-title, #main h2.title, #main h2.comment-form, #main h3.title {
+		margin: 0 0 20px;
+	}
+
+	.region-footer, #footer-nav {
+		text-align: center;
+	}
+
+	.region-featured .welcome {
+		top: 20px;
+		left: 10%;
+		width: 80%
+	}
+
+	h2.welcome-title, h3.welcome-title {
+		font-size: 30px;
+		margin-top: 0;
+	}
+	
+	h3.welcome-title {
+		margin-bottom: 2px;
+	}
+	
+	#block-views-sponsors-block .views-row, .view-sponsors .views-row {
+		width: 50%;
+	}
+	
+	#block-block-6 .content {
+		font-size: 18px;
+	}
+
+	table {
+		font-size: 0.8em;
+	}
+	
+	.view-home .views-row {
+		float: none;
+		margin: 30px 0;
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.views-table .views-field-field-profile-interests {
+		display: none;
+	}
+	
+	.views-table th, .views-table td {
+		padding: 5px;
+	}
+	
+	#footer-wrapper ul.menu li {
+		float: none;
+		margin: 5px;
+		display: inline-block;
+		padding: 5px;
+	}
+	
+	.footer-copy {
+		text-align: center;
+	}
+	
+	#footer-nav #main-menu li a, #footer-wrapper ul.menu a {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.section-sponsor #content {
+		overflow-x: scroll;
+	}
+
+	#block-block-11 p, .region-sidebar-first h2, .region-sidebar-first h2.block-title, .region-sidebar-first div.view-header h2 a {
+		color: inherit;
+	}
+	
+	#block-system-user-menu {
+		position: relative;
+		top: auto;
+		right: auto;
+		font-size: 0.9em;
+		z-index: 10;
+		text-align: center;
+	}
+
+	#block-system-user-menu ul.menu li {
+		float: none;
+		display: inline-block;
+	}
+	
+	.view-nyccamp-schedule .view-grouping-content > h3 {
+		width: 100%;
+		font-weight: bold;
+	}
+
+	.view-nyccamp-schedule .view-grouping-content > table.views-view-grid {
+		width: 90%;
+		margin-left: 5%;
+	}
+
+	.view-nyccamp-schedule .view-grouping-content td, .view-sessions td {
+		width: 100%;
+		display: block;
+		float: left;
+	}
+	
+	.view-sessions .views-field-body p {
+		margin: 0;
+	}
+	
+	.view-sessions thead {
+		display: none;
+	}
+	
+	.not-front .region-featured {
+		margin-bottom: 0;
+	}
+	
+	.not-front #block-system-user-menu {
+		margin-top: 0;
+		width: 94%;
+	}
+
+}
+
+
+/* Mobile (Landscape)
+================================================== */
+
+    /* Note: Design for a width of 480px */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+
+}

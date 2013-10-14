@@ -1,0 +1,342 @@
+<?php
+/**
+ * @file
+ * Installation and upgrading code for Premium Content module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function premium_schema() {
+  $schema = array();
+
+  $schema['premium_nodes'] = array(
+    'description' => 'Stores the premium status of nodes.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'description' => 'The {node}.nid this record affects.',
+      ),
+      'level_name' => array(
+        'description' => 'The {premium_levels}.machine_name this node belongs to.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'start_ts' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+        'description' => 'Unix timestamp for when premium status starts.',
+      ),
+      'end_ts' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+        'description' => 'Unix timestamp for when premium status ends.',
+      ),
+    ),
+    'primary key' => array('nid', 'level_name'),
+  );
+
+  $schema['premium_levels'] = array(
+    'description' => 'Stores premium levels and their settings.',
+    'export' => array(
+      'key' => 'machine_name',
+      'key name' => 'Machine name',
+      'primary key' => 'level_id',
+      'identifier' => 'level', // Exports will be as $level
+      'api' => array(
+        'owner' => 'premium',
+        'api' => 'premium_levels', // Base name for api include files.
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+      'load callback' => 'premium_level_load',
+      'save callback' => 'premium_level_save',
+    ),
+    'fields' => array(
+      'level_id' => array(
+        'description' => 'The primary, atomic identifier for a premium level.',
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'name' => array(
+        'description' => 'The name of this level, always treated as non-markup plain text.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'machine_name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The Premium level machine name.',
+      ),
+      'protection_type' => array(
+        'description' => 'Type of protection for this Premium level. One of “all”, “archive”, or “latest”.',
+        'type' => 'varchar',
+        'length' => 32,
+      ),
+      'duration' => array(
+        'description' => 'Duration of the protection, dependent on unit.',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'duration_unit' => array(
+        'description' => 'Unit for the duration column, D for days, W for weeks, M for months, Y for years.',
+        'type' => 'varchar',
+        'mysql_type' => 'char',
+        'pgsql_type' => 'char',
+        'size' => 1,
+      ),
+      'denied_message' => array(
+        'description' => 'The message shown to the user when premium access is denied.',
+        'type' => 'text',
+      ),
+      'denied_message_format' => array(
+        'description' => 'The input format used by the denied message.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('level_id'),
+    'unique keys' => array('machine_name' => array('machine_name')),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function premium_uninstall() {
+  variable_del('premium_mode');
+  variable_del('premium_time_count');
+  variable_del('premium_time_unit');
+  variable_del('premium_message');
+  variable_del('premium_format');
+}
+
+/**
+ * Upgrade the database structure to the new multilevel structure.
+ */
+function premium_update_6000(&$sandbox) {
+  $ret = array();
+
+  // Since we are going to have more than one premium-related table, rename the original.
+  db_rename_table('premium', 'premium_nodes');
+
+  // Create table for premium levels.
+  db_create_table('premium_levels', array(
+    'description' => 'Stores premium levels and their settings.',
+    'fields' => array(
+      'level_id' => array(
+        'description' => 'The primary, atomic identifier for a premium level',
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'The name of this level, always treated as non-markup plain text.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'protection_type' => array(
+        'description' => 'Type of protection for this Premium level. One of “all”, “archive”, or “latest”',
+        'type' => 'varchar',
+        'length' => 32,
+      ),
+      'duration' => array(
+        'description' => 'Duration of the protection, dependent on unit.',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'duration_unit' => array(
+        'description' => 'Unit for the duration column, D for days, W for weeks, M for months, Y for years',
+        'type' => 'varchar',
+        'mysql_type' => 'char',
+        'pgsql_type' => 'char',
+        'size' => 1,
+      ),
+      'denied_message' => array(
+        'description' => 'The message shown to the user when premium access is denied.',
+        'type' => 'text',
+      ),
+      'denied_message_format' => array(
+        'description' => 'The input format used by the denied message.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('level_id'),
+  ));
+
+  // Extract the current configuration and insert it as the first level.
+  $protection_type = variable_get('premium_mode', 0);
+  $duration = variable_get('premium_time_count', '2');
+  $duration_unit = variable_get('premium_time_unit', 'W');
+  $message = variable_get('premium_message', t('Full text available to members only'));
+  $denied_message_format = variable_get('premium_format', 1);
+
+  // Transform a 0 type to 'all'.
+  if (!$protection_type || $protection_type == '0') {
+    $protection_type = 'all';
+  }
+
+  // TODO update_sql has been removed. Use the database API for any schema or data changes.
+  $ret[] = array() /* update_sql("INSERT INTO {premium_levels}
+      (name, protection_type, duration, duration_unit, denied_message, denied_message_format)
+      VALUES ('Members-only content', '$protection_type', $duration, '$duration_unit', '$message', $denied_message_format)
+  ") */;
+
+  // Get the ID of the level inserted into the database.
+  $level_id = db_last_insert_id('premium_levels', 'level_id');
+
+  // Remove the old settings variables.
+  variable_del('premium_mode');
+  variable_del('premium_time_count');
+  variable_del('premium_time_unit');
+  variable_del('premium_message');
+  variable_del('premium_format');
+
+  // Add the level_id field to the premium_nodes table.
+  db_add_field('premium_nodes', 'level_id', array(
+    'description' => 'The {premium_levels}.level_id this record affects.',
+    'type' => 'int',
+    'not null' => TRUE,
+    'unsigned' => TRUE,
+  ));
+
+  // Set the level ID for all preexisting premium node to the new level
+  // we created with the old settings.
+  // TODO update_sql has been removed. Use the database API for any schema or data changes.
+  $ret[] = array() /* update_sql("UPDATE {premium_nodes} SET level_id = $level_id") */;
+
+  // Remove the primary key, and re-add it, covering both the nid and
+  // level_id columns.
+  db_drop_primary_key('premium_nodes');
+  db_add_primary_key('premium_nodes', array('nid', 'level_id'));
+
+  // hook_update_N() no longer returns a $ret array. Instead, return
+  // nothing or a translated string indicating the update ran successfully.
+  // See http://drupal.org/node/224333#update_sql.
+  return t('TODO Add a descriptive string here to show in the UI.') /* $ret */;
+}
+
+/**
+ * Add machine name field for exportability.
+ */
+function premium_update_6001(&$sandbox) {
+  $ret = array();
+
+  // Add the machine_name field to the premium_levels table.
+  db_add_field('premium_levels', 'machine_name', array(
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+    'default' => '',
+    'description' => 'The Premium level machine name.',
+  ));
+
+  // Get all levels IDs.
+  $query = db_query("SELECT level_id FROM {premium_levels}");
+
+  // Generate a machine name for each.
+  while ($level_id = $query->fetchField()) {
+    // TODO update_sql has been removed. Use the database API for any schema or data changes.
+    $ret[] = array() /* update_sql("
+      UPDATE {premium_levels}
+      SET machine_name = 'level_$level_id'
+      WHERE level_id = $level_id
+    ") */;
+  }
+
+  // Add unique key index on the machine_name, as they are supposed to
+  // be unique for export.
+  db_add_unique_key('premium_levels', 'machine_name', array('machine_name'));
+
+  // hook_update_N() no longer returns a $ret array. Instead, return
+  // nothing or a translated string indicating the update ran successfully.
+  // See http://drupal.org/node/224333#update_sql.
+  return t('TODO Add a descriptive string here to show in the UI.') /* $ret */;
+}
+
+/**
+ * Update premium_nodes table to use machine name instead of level_id.
+ */
+function premium_update_6002(&$sandbox) {
+  $ret = array();
+
+  // Add the level_name field to the premium_nodes table.
+  db_add_field('premium_nodes', 'level_name', array(
+    'description' => 'The {premium_levels}.machine_name this record belongs to.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+    'default' => '',
+  ));
+
+  // Get all levels IDs and their corresponding level_ids.
+  $query = db_query("SELECT level_id, machine_name FROM {premium_levels}");
+  while ($row = db_fetch_object($query)) {
+    // TODO update_sql has been removed. Use the database API for any schema or data changes.
+    $ret[] = array() /* update_sql("
+      UPDATE {premium_nodes}
+      SET level_name = '{$row->machine_name}'
+      WHERE level_id = {$row->level_id}
+    ") */;
+  }
+
+  // Add an index on the new column.
+  db_add_index('premium_nodes', 'level_name', array('level_name'));
+
+  // hook_update_N() no longer returns a $ret array. Instead, return
+  // nothing or a translated string indicating the update ran successfully.
+  // See http://drupal.org/node/224333#update_sql.
+  return t('TODO Add a descriptive string here to show in the UI.') /* $ret */;
+}
+
+/**
+ * Remove the level_id from premium_nodes.
+ */
+function premium_update_6003(&$sandbox) {
+  $ret = array();
+
+  db_drop_field('premium_nodes', 'level_id');
+
+  // hook_update_N() no longer returns a $ret array. Instead, return
+  // nothing or a translated string indicating the update ran successfully.
+  // See http://drupal.org/node/224333#update_sql.
+  return t('TODO Add a descriptive string here to show in the UI.') /* $ret */;
+}
+
+/**
+ * Rename protection to protection.
+ */
+function premium_update_6004(&$sandbox) {
+  $ret = array();
+
+  db_change_field('premium_levels', 'protection_type', 'protection_type', array('type' => 'varchar', 'length' => 32));
+
+  // hook_update_N() no longer returns a $ret array. Instead, return
+  // nothing or a translated string indicating the update ran successfully.
+  // See http://drupal.org/node/224333#update_sql.
+  return t('Updated the column named protection_type to protection_type.');
+}

@@ -1,0 +1,15 @@
+name = "First login"
+description = "Marks users first login(s). This information can then be used in other modules to present content on first logins only."
+core = 7.x
+dependencies[] = user
+files[] = includes/first_login_handler_field_count.inc
+files[] = includes/first_login_handler_field_status.inc
+files[] = plugins/first_login_context_condition_status.inc
+configure = admin/config/people/first_login
+
+; Information added by drupal.org packaging script on 2012-04-18
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "first_login"
+datestamp = "1334708334"
+

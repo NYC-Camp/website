@@ -1,0 +1,13 @@
+; $Id: permissions_lock.info,v 1.1.2.1 2010/10/12 14:37:27 xeniox Exp $
+name = Permissions Lock
+description = "Lock permissions on the permissions administration pages for certain roles"
+core = 7.x
+files[] = permissions_lock.install
+files[] = permissions_lock.module
+files[] = permissions_lock.test
+; Information added by drupal.org packaging script on 2010-12-28
+version = "7.x-1.0"
+core = "7.x"
+project = "permissions_lock"
+datestamp = "1293553278"
+

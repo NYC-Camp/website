@@ -1,0 +1,19 @@
+; $Id: imagecache_coloractions.info,v 1.2 2010/12/16 05:17:44 dman Exp $
+name = Imagecache Color Actions
+description = Additional ImageCache actions, providing color-shifting, brightness and alpha transparency effects.
+dependencies[] = imagecache_actions
+dependencies[] = image
+package = Image
+core = 7.x
+
+files[] = imagecache_coloractions.install
+files[] = imagecache_coloractions.module
+files[] = transparency.inc
+files[] = tests/green.imagecache_preset.inc
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "7.x-0.0"
+core = "7.x"
+project = "imagecache_actions"
+datestamp = "1296768752"
+

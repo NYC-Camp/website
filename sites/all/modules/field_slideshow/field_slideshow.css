@@ -1,0 +1,25 @@
+.field-slideshow {
+  overflow: hidden;
+}
+
+.region-content ul.field-slideshow-pager {
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.field-slideshow-pager li {
+  float: left;
+  margin-right: 5px;
+}
+
+.jcarousel-clip {
+  overflow: hidden;
+}
+
+.field-slideshow-carousel li {
+  opacity: 0.6;
+}
+  .field-slideshow-carousel li.activeSlide {
+    opacity: 1;
+  }
