@@ -295,3 +295,14 @@
 		font-weight: normal;
 	}
 }
+
+@media only screen and (max-width: 360px) {
+	.welcome {
+		width: 100%;
+		left: 0;
+	}
+
+	.volunteer {
+		margin: .5em;
+	}
+}
