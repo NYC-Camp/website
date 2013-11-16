@@ -696,6 +696,6 @@ h2.feature-title {
 
 
 /** TEMP Login Adjustment until I can get info for how to disable certain panels */
-.field-group-fieldset .group-drupal-info, .field-group-tab .group-volunteer-info {
+.field-group-fieldset.group-drupal-info, .field-group-tab.group-volunteer-info {
 	display: none;
 }
