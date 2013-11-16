@@ -693,3 +693,9 @@ body.node-type-event div.form-type-select label {
 h2.feature-title {
 	margin-bottom: 5px;
 }
+
+
+/** TEMP Login Adjustment until I can get info for how to disable certain panels */
+.field-group-fieldset .group-drupal-info, .field-group-tab .group-volunteer-info {
+	display: none;
+}
