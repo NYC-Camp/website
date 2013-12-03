@@ -10,11 +10,11 @@
 function cod_session_evaluations_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: create session_evaluation content.
+  // Exported permission: 'create session_evaluation content'.
   $permissions['create session_evaluation content'] = array(
     'name' => 'create session_evaluation content',
     'roles' => array(
-      0 => 'authenticated user',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'node',
   );

@@ -12,10 +12,10 @@
  */
 function views_send_schema() {
   $schema['views_send_spool'] = array(
-    'description' => 'Table holds E-mails that are being send on cron.',
+    'description' => 'Table holds e-mails that are being send on cron.',
     'fields' => array(
       'eid' => array(
-        'description' => 'The primary identifier for an E-mail.',
+        'description' => 'The primary identifier for an e-mail.',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE),
@@ -51,7 +51,7 @@ function views_send_schema() {
         'not null' => FALSE,
         'default' => ''),
       'from_mail' => array(
-        'description' => 'The sender E-mail.',
+        'description' => 'The sender e-mail address.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
@@ -63,24 +63,24 @@ function views_send_schema() {
         'not null' => FALSE,
         'default' => ''),
       'to_mail' => array(
-        'description' => 'The recipient E-mail.',
+        'description' => 'The recipient e-mail address.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => ''),
       'subject' => array(
-        'description' => 'The E-mail subject.',
+        'description' => 'The e-mail subject.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => ''),
       'body' => array(
-        'description' => 'The E-mail body.',
+        'description' => 'The e-mail body.',
         'type' => 'text',
         'not null' => TRUE,
         'size' => 'big',),
       'headers' => array(
-        'description' => 'The E-mail additional headers.',
+        'description' => 'The e-mail additional headers.',
         'type' => 'text',
         'not null' => TRUE,
         'size' => 'big',),

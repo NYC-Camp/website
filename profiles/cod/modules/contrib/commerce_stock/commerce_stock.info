@@ -1,14 +1,16 @@
-name = Commerce Stock
-description = Manage stock levels of Commerce products
-package = Commerce (contrib)
+name = Commerce Stock API
+description = Provides a stock management framework based on rules to manage stock levels of commerce products.
+package = Commerce (stock)
 dependencies[] = number
 dependencies[] = commerce_product
 dependencies[] = commerce_order
+dependencies[] = rules
 core = 7.x
 configure = admin/commerce/config/stock
-; Information added by drupal.org packaging script on 2012-07-11
-version = "7.x-1.1"
+
+; Information added by drupal.org packaging script on 2013-08-05
+version = "7.x-2.0-rc1"
 core = "7.x"
 project = "commerce_stock"
-datestamp = "1342028183"
+datestamp = "1375728368"
 

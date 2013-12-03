@@ -13,7 +13,7 @@ function cod_sponsors_user_default_roles() {
   // Exported role: sponsor organizer.
   $roles['sponsor organizer'] = array(
     'name' => 'sponsor organizer',
-    'weight' => '3',
+    'weight' => 3,
   );
 
   return $roles;

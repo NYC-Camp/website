@@ -1,5 +1,5 @@
-name = "Views Send E-mail"
-descripion = "Provides a way to send e-mails from a list created with Views"
+name = "Views Send"
+description = "Provides a way to send e-mails from a list created with Views"
 dependencies[] = views
 configure = admin/config/system/views_send
 package = Views
@@ -8,9 +8,9 @@ core = 7.x
 files[] = views_send.rules.inc
 files[] = views/views_send_handler_field_selector.inc
 
-; Information added by drupal.org packaging script on 2012-06-13
-version = "7.x-1.0-alpha1"
+; Information added by drupal.org packaging script on 2013-05-12
+version = "7.x-1.0-rc3"
 core = "7.x"
 project = "views_send"
-datestamp = "1339581784"
+datestamp = "1368398411"
 

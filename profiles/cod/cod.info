@@ -1,0 +1,111 @@
+;This is a development version. Therefore most cod modules are disabled by default, and devel modules are enabled.
+name = cod
+description = A tool for building interactive conference websites.
+core = 7.x
+distribution_name = "Conference Organizing Distribution"
+exclusive = TRUE
+
+; Core modules.
+dependencies[] = block
+dependencies[] = comment
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = search
+dependencies[] = taxonomy
+;dependencies[] = forum
+
+; Contributed modules.
+dependencies[] = addressfield
+dependencies[] = admin_menu
+dependencies[] = admin_menu_toolbar
+dependencies[] = advanced_help
+dependencies[] = auto_nodetitle
+dependencies[] = content_access
+dependencies[] = context
+dependencies[] = contextual
+dependencies[] = context_ui
+dependencies[] = ctools
+dependencies[] = ckeditor
+dependencies[] = dashboard
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = date_popup
+dependencies[] = date_tools
+dependencies[] = date_views
+dependencies[] = devel
+dependencies[] = devel_generate
+dependencies[] = diff
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = entityreference_prepopulate
+dependencies[] = entity_token
+dependencies[] = features
+dependencies[] = field_group
+dependencies[] = field_permissions
+dependencies[] = field_select_ct
+dependencies[] = field_collection
+dependencies[] = field_sql_storage
+dependencies[] = filter
+dependencies[] = flag
+dependencies[] = jquery_update
+dependencies[] = link
+dependencies[] = libraries
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = og_context
+dependencies[] = og_ui
+dependencies[] = module_filter
+dependencies[] = pathauto
+dependencies[] = quicktabs
+dependencies[] = quicktabs_tabstyles
+dependencies[] = rules
+dependencies[] = rules_admin
+dependencies[] = strongarm
+dependencies[] = system
+dependencies[] = text
+dependencies[] = token
+dependencies[] = update
+dependencies[] = user
+dependencies[] = views
+dependencies[] = views_field_view
+dependencies[] = views_bulk_operations
+dependencies[] = views_content
+dependencies[] = views_data_export
+dependencies[] = views_ui
+dependencies[] = webform
+;disable UUID for now, its causing a WSOD upon install
+;dependencies[] = uuid
+;dependencies[] = uuid_features
+
+;cod specific modules
+dependencies[] = cod_base
+dependencies[] = cod_session
+dependencies[] = cod_events
+dependencies[] = cod_community
+dependencies[] = cod_sponsors
+;dependencies[] = cod_front_page
+;dependencies[] = cod_news
+
+;These are copied from commons into cod_support we will rename someday
+dependencies[] = cod_profile_base
+dependencies[] = cod_wysiwyg
+files[] = cod.profile
+
+; System Requirements.
+php_memory_limit = 128M
+
+; Information added by  packaging script on 2013-11-26
+version = "7.x-1.0-alpha4"
+core = "7.x"
+project = "cod"
+datestamp = "1385485741"
+

@@ -25,8 +25,9 @@ function cod_base_menu() {
   );
   $items['admin/conference/config'] = array(
     'title' => 'Configuration',
-    'description' => 'Configure settings and business rules for your store.',
-    'page callback' => 'system_admin_menu_block_page',
+    'description' => 'Configure settings and business rules for your conference.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cod_base_admin_settings'),
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
     'weight' => 50,
@@ -37,6 +38,25 @@ function cod_base_menu() {
   return $items;
 }
 
+function cod_base_admin_settings() {
+  $form = array();
+
+  $form['cod_base_default'] = array(
+    '#markup' => 'Conference organizing settings page',
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_date_format_types().
+ */
+function cod_base_date_format_types() {
+  $format_types = array();
+  // Exported date format type: date_no_time_
+  $format_types['date_no_time_'] = 'Date (no time)';
+  return $format_types;
+}
 
 /**
  * Implements hook_theme().

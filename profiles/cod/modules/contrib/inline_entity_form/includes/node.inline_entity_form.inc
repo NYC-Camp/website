@@ -19,6 +19,20 @@ class NodeInlineEntityFormController extends EntityInlineEntityFormController {
   }
 
   /**
+   * Overrides EntityInlineEntityFormController::tableFields().
+   */
+  public function tableFields($bundles) {
+    $fields = parent::tableFields($bundles);
+    $fields['status'] = array(
+      'type' => 'property',
+      'label' => t('Status'),
+      'weight' => 100,
+    );
+
+    return $fields;
+  }
+
+  /**
    * Overrides EntityInlineEntityFormController::entityForm().
    */
   public function entityForm($entity_form, &$form_state) {
@@ -40,6 +54,15 @@ class NodeInlineEntityFormController extends EntityInlineEntityFormController {
       '#maxlength' => 255,
       // The label might be missing if the Title module has replaced it.
       '#weight' => !empty($extra_fields['title']) ? $extra_fields['title']['weight'] : -5,
+    );
+    $entity_form['status'] = array(
+      '#type' => 'radios',
+      '#access' => user_access('administer nodes'),
+      '#title' => t('Status'),
+      '#default_value' => $node->status,
+      '#options' => array(1 => t('Published'), 0 => t('Unpublished')),
+      '#required' => TRUE,
+      '#weight' => 99,
     );
 
     $langcode = entity_language('node', $node);

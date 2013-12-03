@@ -11,7 +11,7 @@ function cod_news_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'news';
+  $view->name = 'cod_news';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'node';
@@ -105,7 +105,7 @@ function cod_news_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $export['news'] = $view;
+  $export['cod_news'] = $view;
 
   return $export;
 }

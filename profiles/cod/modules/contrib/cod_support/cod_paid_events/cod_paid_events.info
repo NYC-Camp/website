@@ -2,7 +2,6 @@ name = COD Paid Events
 description = Provides paid events options
 core = 7.x
 package = COD
-php = 5.2.4
 project = cod_paid_events
 dependencies[] = cod_events
 dependencies[] = commerce
@@ -16,9 +15,20 @@ dependencies[] = list
 dependencies[] = registration
 features[commerce_product_type][] = cod_paid_event
 features[conditional_fields][] = node:event
-features[features_api][] = api:1
-features[field][] = commerce_product-cod_paid_event-commerce_price
-features[field][] = commerce_product-cod_paid_event-field_registration
-features[field][] = node-event-field_event_product
-features[field][] = node-event-field_paid_event
+features[features_api][] = api:2
+features[field_base][] = commerce_price
+features[field_base][] = field_event_product
+features[field_base][] = field_paid_event
+features[field_instance][] = commerce_product-cod_paid_event-commerce_price
+features[field_instance][] = commerce_product-cod_paid_event-field_registration
+features[field_instance][] = node-event-field_event_product
+features[field_instance][] = node-event-field_paid_event
 features[registration_type][] = paid_event
+
+
+; Information added by drush on 2013-11-26
+version = "7.x-1.0-alpha4+0-dev"
+core = "7.x"
+project = "cod_support"
+datestamp = "1385485749"
+

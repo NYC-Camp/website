@@ -9,10 +9,9 @@ include_once('cod_paid_events.features.inc');
  * clear field_paid_event if it is free
  */
 function cod_paid_events_node_presave($node) {
-  if($node->field_paid_event[ $node->language ][0]['value']) {
-    $node->field_registration[ $node->language ] = array();
-  } else {
-    $node->field_event_product[ $node->language ] = array();
+  if ($node->type == 'event') {
+    $field_type_event = $node->field_paid_event[$node->language][0]['value'] ? 'field_registration' : 'field_event_product';
+    $node->{$field_type_event}[$node->language] = array();
   }
 }
 

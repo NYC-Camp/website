@@ -9,15 +9,15 @@ General settings can be configured at: Site Configuration > Views Send
 
 USAGE
 
- 1. Create a view and add at least one column containing E-mail addresses.
+ 1. Create a view and add at least one column containing e-mail addresses.
  2. [Optional] Expose Views filters to let the user easily build list of
     recipients using UI.
- 3. Add the "Global: Send E-mail" field to your view. This field provides the checkboxes
+ 3. Add the "Global: Send e-mail" field to your view. This field provides the checkboxes
     that allow the user to select multiple rows.
  4. Save the view, load the page, use exposed filters to build the list, select
     all or some rows and choose "Send e-mail".
- 5. Fill the message form to configure the E-mail. Use tokens to personalize
-    your E-mail.
+ 5. Fill the message form to configure the e-mail. Use tokens to personalize
+    your e-mail.
  6. Preview and send the message.
 
 DEPENDENCIES & INTEGRATION
@@ -31,6 +31,14 @@ DEPENDENCIES & INTEGRATION
     available even if Tokens module is disabled.
   o Rules. When the Rules module is enabled, the user can define actions 
     for when emails are sent and/or placed in the spool.
+
+FOR DEVELOPERS / HOOKS
+
+The module provides two hooks: 
+ * hook_views_send_mail_queued($message, $view, $row_id)
+   Called just after each message is queued. 
+ * hook_views_send_mail_alter(&$message)
+   Called just before each message is queued.
 
 SIMILAR MODULES
 
@@ -49,6 +57,9 @@ HOW CAN YOU GET INVOLVED?
 
 MAINTAINERS & SPONSORS
 
- * Module author & maintainer
+ * Module maintainer
+   Hans Fredrik Nordhaug (hansfn) | http://drupal.org/user/40521
+ * Module author of original Drupal 6 version
    Claudiu Cristea (claudiu.cristea) | http://drupal.org/user/56348
- * This module is sponsored by Grafit SRL | http://www.grafitsolutions.ro
+ * The Drupal 6 version of this module was sponsored by Grafit SRL, 
+   now Webikon | http://www.webikon.com

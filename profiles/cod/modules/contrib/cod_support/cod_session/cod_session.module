@@ -133,7 +133,7 @@ function cod_session_form_alter(&$form, &$form_state, $form_id) {
       // on new session creation.
       if (empty($form['#node']->nid)) {
         global $user;
-        $form['field_speakers'][LANGUAGE_NONE][0]['uid']['#default_value'] = $user->uid;
+        $form['field_speakers'][LANGUAGE_NONE][0]['target_id']['#default_value'] = "$user->name ($user->uid)";
       }
     }
 
@@ -344,14 +344,24 @@ function cod_session_is_scheduled($node) {
 * Helper function to determine whether a session is accepted.
 */
 function cod_session_is_accepted($node) {
-  return $node->field_accepted[LANGUAGE_NONE][0]['value'] == 1;
+  if(isset($node->field_accepted[LANGUAGE_NONE])) {
+    return $node->field_accepted[LANGUAGE_NONE][0]['value'] == 1;
+  }
+  else {
+    return FALSE;
+  }
 }
 
 /**
 * Helper function to determine whether a session is declined.
 */
 function cod_session_is_declined($node) {
-  return $node->field_accepted[LANGUAGE_NONE][0]['value'] == 2;
+  if(isset($node->field_accepted[LANGUAGE_NONE])) {
+    return $node->field_accepted[LANGUAGE_NONE][0]['value'] == 2;
+  }
+  else {
+    return FALSE;
+  }
 }
 /**
  * Helper function to determien whether a given user is a speaker on a session.

@@ -11,167 +11,77 @@
  * Provides an action to adjust stock level of a certain product
  * by a certain quantity.
  */
-function commerce_stock_rules_action_info() {
-  $actions = array();
-/*
-  $actions['commerce_stock_adjust'] = array(
-    'label' => t('Adjust the product stock level by a set amount'),
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function commerce_stock_rules_event_info() {
+  $events = array();
+
+  $events['commerce_stock_add_to_cart_check_product'] = array(
+    'label' => t('Check if a product is in stock when adding to cart'),
     'group' => t('Commerce Stock'),
-    'parameter' => array(
-      'commerce_product' => array(
-        'type' => 'commerce_product',
-        'label' => t('Product'),
-        'save' => TRUE //save the changes after executing the rule
-      ),
-      'amount' => array(
-        'type' => 'integer',
-        'label' => t('Amount')
-      ),
-    ),
+    'variables' => commerce_stock_rules_event_variables(),
+    'access callback' => 'commerce_stock_rules_access',
   );
 
-  $actions['commerce_stock_adjust_by_order'] = array(
-    'label' => t('Adjust the product stock level, given an order'),
+  $events['commerce_stock_check_add_to_cart_form_state'] = array(
+    'label' => t('Check if a product add to cart form should be enabled (is in stock)'),
     'group' => t('Commerce Stock'),
-    'parameter' => array(
-      'commerce_order' => array(
-        'type' => 'commerce_order',
-        'label' => t('Order')
-      ),
-    ),
-  );
-*/
-  $actions['commerce_stock_decrease_by_line_item'] = array(
-    'label' => t('Decrease the product stock level, given a line item'),
-    'group' => t('Commerce Stock'),
-    'parameter' => array(
-      'commerce_line_item' => array(
-        'type' => 'commerce_line_item',
-        'label' => t('Line item')
-      ),
-    ),
+    'variables' => commerce_stock_rules_cart_event_variables(),
+    'access callback' => 'commerce_stock_rules_access',
   );
 
-  // 'Adjust by line item' was the old name. To avoid breaking existing
-  // installations we'll keep a copy around. Sad. Couldn't figure out
-  // a way to update it using hook_update_N().
-  $actions['commerce_stock_adjust_by_line_item'] = $actions['commerce_stock_decrease_by_line_item'];
-  $actions['commerce_stock_adjust_by_line_item']['label'] = t('(legacy) Decrease the product stock level');
-
-  $actions['commerce_stock_increase_by_line_item'] = array(
-    'label' => t('Increase the product stock level, given a line item'),
+  $events['commerce_stock_check_product_checkout'] = array(
+    'label' => t('Check if a product is in stock before continuing to checkout'),
     'group' => t('Commerce Stock'),
-    'parameter' => array(
-      'commerce_line_item' => array(
-        'type' => 'commerce_line_item',
-        'label' => t('Line item')
-      ),
-    ),
+    'variables' => commerce_stock_rules_cart_event_variables(),
+    'access callback' => 'commerce_stock_rules_access',
   );
 
-  return $actions;
+  return $events;
 }
 
 /**
- * TODO finish
-function commerce_stock_adjust_by_order($order) {
-watchdog('commerce_stock',var_export($order,true));
+ * Returns a variables array for stock check event.
  */
-//loop order line items
-
-//commerce_order
-//each (product) line item, adjust stock
-
-//}
-
-/**
- * If the line item is stock-enabled, subtract the sold amount in a line item
- * from stock.
- *
- * @param $line_item
- *   A line item object.
- */
-function commerce_stock_decrease_by_line_item($line_item) {
-  if(in_array($line_item->type, commerce_product_line_item_types())) {
-    // The product SKU that will have its stock level adjusted.
-    $sku = $line_item->line_item_label;
-    $product = commerce_product_load_by_sku($sku);
-    $product_wrapper = entity_metadata_wrapper('commerce_product', $product);
-    if (commerce_stock_product_type_enabled($product->type)) {
-      if (!(commerce_stock_product_type_override_enabled($product->type)
-           && isset($product_wrapper->commerce_stock_override) && $product_wrapper->commerce_stock_override->value() == 1)) {
-
-        $qty = (int) $line_item->quantity;
-        // Subtract the sold amount from the available stock level.
-        commerce_stock_adjust($product, -$qty);
-      }
-    }
-  }
+function commerce_stock_rules_event_variables() {
+  $variables = array(
+    'commerce_product' => array(
+      'label' => t('Product'),
+      'type' => 'commerce_product',
+    ),
+    'stock_requested_quantity' => array(
+      'label' => t('Requested Quantity'),
+      'type' => 'decimal',
+    ),
+    'stock_already_ordered' => array(
+      'label' => t('Quantity already ordered (in the cart)'),
+      'type' => 'decimal',
+    ),
+    'stock_requested_total' => array(
+      'label' => t('Quantity requested + already ordered'),
+      'type' => 'decimal',
+    ),
+  );
+  return $variables;
 }
 
 /**
- * For backward compatibility, keep a function by the old name.
- *
- * @todo: Remove this after a decent interval.
- *
- * @param $line_item
+ * Returns a variables array for stock enable cart check event.
  */
-function commerce_stock_adjust_by_line_item($line_item) {
-  commerce_stock_decrease_by_line_item($line_item);
-}
-
-/**
- * If the line item is stock-enabled, add the sold amount in a line item
- * to stock. Typically used when a line item is removed from an order
- * (as when items are added to and removed from cart).
- *
- * @param $line_item
- *   A line item object.
- */
-function commerce_stock_increase_by_line_item($line_item) {
-  if(in_array($line_item->type, commerce_product_line_item_types())) {
-    // The product SKU that will have its stock level adjusted.
-    $sku = $line_item->line_item_label;
-    $product = commerce_product_load_by_sku($sku);
-    $product_wrapper = entity_metadata_wrapper('commerce_product', $product);
-    if (commerce_stock_product_type_enabled($product->type)) {
-      if (!(commerce_stock_product_type_override_enabled($product->type)
-          && isset($product_wrapper->commerce_stock_override) && $product_wrapper->commerce_stock_override->value() == 1)) {
-
-        $qty = (int) $line_item->quantity;
-        // Subtract the sold amount from the available stock level.
-        commerce_stock_adjust($product, $qty);
-      }
-    }
-  }
-}
-
-/**
- * Adjusts a particular product SKU by a certain value.
- * A positive integer will add to stock, a negative integer will remove from
- * stock. Somewhat the equivalent of uc_stock_adjust().
- *
- * @param $product
- *   The product for which to change the stock level.
- * @param $qty
- *   The quantity to add to the stock level.
- */
-function commerce_stock_adjust($product, $qty) {
-  if (!commerce_stock_product_type_enabled($product->type)) {
-    return;
-  }
-
-  $wrapper = entity_metadata_wrapper('commerce_product', $product);
-
-  $new_stock = $wrapper->commerce_stock->value() + intval($qty);
-  $wrapper->commerce_stock->set($new_stock);
-  $result = $wrapper->save();
-
-  if ($result) {
-    watchdog('commerce_stock', 'Modified stock level of product %sku by %amount', array('%sku' => $product->sku, '%amount' => $qty));
-  } else {
-    watchdog('commerce_stock', 'Failed attempt to modify stock level of product %sku by %amount', array('%sku' => $product->sku, '%amount' => $qty), WATCHDOG_ERROR);
-  }
+function commerce_stock_rules_cart_event_variables() {
+  $variables = array(
+    'commerce_product' => array(
+      'label' => t('Product'),
+      'type' => 'commerce_product',
+    ),
+    'stock_already_ordered' => array(
+      'label' => t('Quantity already ordered (in the cart)'),
+      'type' => 'decimal',
+    ),
+  );
+  return $variables;
 }
 
 /**
@@ -193,18 +103,6 @@ function commerce_stock_rules_condition_info() {
       'execute' => 'commerce_stock_rules_order_has_out_of_stock',
     ),
   );
-  $conditions['commerce_stock_stock_enabled_on_line_item'] = array(
-    'label' => t('Line item has a product of product type that has stock management enabled'),
-    'parameter' => array(
-      'type' => 'commerce_line_item',
-      'label' => t('Product'),
-    ),
-    'group' => t('Commerce Stock'),
-    'callbacks' => array(
-      'execute' => 'commerce_stock_line_item_product_enabled',
-    ),
-  );
-
   return $conditions;
 }
 
@@ -213,4 +111,329 @@ function commerce_stock_rules_condition_info() {
  */
 function commerce_stock_rules_order_has_out_of_stock($order) {
   return commerce_stock_order_has_out_of_stock($order);
+}
+
+/**
+ * Implementation of hook_rules_action_info().
+ */
+function commerce_stock_rules_action_info() {
+  $actions = array();
+
+  // The Stock cart state action.
+  $actions['commerce_stock_add_to_cart_set_state'] = array(
+    'label' => t('Set the result of an add to cart stock check'),
+    'parameter' => array(
+      'stock_action' => array(
+        'type' => 'decimal',
+        'label' => t('Stock Action'),
+        'description' => t('the action to take .'),
+        'options list' => 'commerce_stock_check_state_options_list',
+      ),
+      'message' => array(
+        'type' => 'text',
+        'label' => t('User message'),
+      ),
+      'approved_quantity' => array(
+        'type' => 'decimal',
+        'label' => t('Approved Quantity'),
+      ),
+    ),
+    'group' => t('Commerce Stock'),
+    'callbacks' => array(
+      'execute' => 'commerce_stock_rules_add_to_cart_set_state',
+    ),
+  );
+
+  // The stock disable cart action.
+  $actions['commerce_stock_set_add_to_cart_form_state'] = array(
+    'label' => t('Set the state of the add to cart form'),
+    'parameter' => array(
+      'disabled' => array(
+        'type' => 'boolean',
+        'label' => t('Disable the add to cart?'),
+      ),
+      'text' => array(
+        'type' => 'text',
+        'label' => t('The text to set the action to'),
+      ),
+      'class_name' => array(
+        'type' => 'text',
+        'label' => t('add a class to the add to cart form'),
+      ),
+    ),
+    'group' => t('Commerce Stock'),
+    'callbacks' => array(
+      'execute' => 'commerce_stock_rules_set_add_to_cart_form_state',
+    ),
+  );
+
+  // The stock custom cart action.
+  $actions['commerce_stock_custom_cart_form_state'] = array(
+    'label' => t('Advanced configuration of the add to cart form'),
+    'parameter' => array(
+      'hide_qty' => array(
+        'type' => 'boolean',
+        'label' => t('Hide the Quantity field if it is visible'),
+      ),
+      'text' => array(
+        'type' => 'text',
+        'label' => t('The text to set the action to'),
+      ),
+      'class_name' => array(
+        'type' => 'text',
+        'label' => t('Add a class to the add to cart form'),
+      ),
+      'action_prefix' => array(
+        'type' => 'text',
+        'label' => t('Prefix'),
+        'optional' => TRUE,
+      ),
+      'action_suffix' => array(
+        'type' => 'text',
+        'label' => t('Suffix'),
+        'optional' => TRUE,
+      ),
+      'stock_action' => array(
+        'type' => 'decimal',
+        'label' => t('Stock Action'),
+        'description' => t('The action to take.'),
+        'options list' => 'commerce_stock_custom_cart_form_state_action_options_list',
+        'default value' => 0,
+      ),
+      'disabled_cart' => array(
+        'type' => 'boolean',
+        'label' => t('Disable the add to cart?'),
+        'description' => t('Only aplicable if Normal Submit was chosen as the Stock Action'),
+      ),
+      'custom_submit' => array(
+        'type' => 'text',
+        'label' => t('A new custom submit function'),
+        'optional' => TRUE,
+        'description' => t('Only aplicable if Custom Submit was chosen as the Stock Action'),
+      ),
+      'custom_submit_clear' => array(
+        'type' => 'boolean',
+        'label' => t('Clear the submit array first'),
+        'description' => t('Only aplicable if Custom Submit was chosen as the Stock Action'),
+      ),
+      'custom_validate' => array(
+        'type' => 'text',
+        'label' => t('a new of a custom validation function'),
+        'description' => t('Only aplicable if Custom Submit was chosen as the Stock Action'),
+        'optional' => TRUE,
+      ),
+      'custom_validate_clear' => array(
+        'type' => 'boolean',
+        'label' => t('Clear the validation array first'),
+        'description' => t('Only aplicable if Custom Submit was chosen as the Stock Action'),
+      ),
+      'custom_url' => array(
+        'type' => 'text',
+        'label' => t('Custom URL'),
+        'description' => t('Only aplicable if URL Action was chosen as the Stock Action  (all submit and validation will be ignored). You can use the [product_id] token and [url] for a return path'),
+        'optional' => TRUE,
+
+      ),
+      'custom_html' => array(
+        'type' => 'text',
+        'label' => t('Custom HTML'),
+        'description' => t('Only aplicable if Custom HTML was chosen as the Stock Action  (all submit and validation will be ignored). You can use the [product_id] token and [url] for a return path'),
+        'optional' => TRUE,
+      ),
+    ),
+    'group' => t('Commerce Stock'),
+    'callbacks' => array(
+      'execute' => 'commerce_stock_custom_cart_form_state',
+    ),
+  );
+
+  // The Stock checkout check action.
+  $actions['commerce_stock_checkout_state'] = array(
+    'label' => t('Set the state of the checkout process (called one per an item)'),
+    'parameter' => array(
+      'stock_action' => array(
+        'type' => 'decimal',
+        'label' => t('Stock Action'),
+        'description' => t('the action to take .'),
+        'options list' => 'commerce_stock_check_state_options_list',
+      ),
+      'message' => array(
+        'type' => 'text',
+        'label' => t('User message'),
+      ),
+      'approved_quantity' => array(
+        'type' => 'decimal',
+        'label' => t('Approved Quantity'),
+      ),
+    ),
+    'group' => t('Commerce Stock'),
+    'callbacks' => array(
+      'execute' => 'commerce_stock_rules_set_checkout_state',
+    ),
+  );
+
+  return $actions;
+}
+
+/**
+ * Rules integration access callback.
+ */
+function commerce_stock_rules_access() {
+  return user_access('Make rule based changes to commerce stock');
+}
+
+/**
+ * Rules action: updates an order's status.
+ *
+ * updates an order's status to the default status of the given order state.
+ */
+function commerce_stock_rules_add_to_cart_set_state($stock_action, $message, $approved_quantity) {
+  if ($approved_quantity < 0) {
+    $approved_quantity = 0;
+    // If zero transection must be blocked as it you are not allowed
+    // to add zero quantity to the cart.
+    $stock_action = 1;
+  }
+  // Set the global stock check array.
+  global $stock_check_data;
+  $stock_check_data['state'] = $stock_action;
+  $stock_check_data['message'] = $message;
+  $stock_check_data['qty'] = $approved_quantity;
+}
+
+/**
+ * Rules action:
+ * @todo: Define this function.
+ */
+function commerce_stock_rules_set_add_to_cart_form_state($disabled, $text, $class_name) {
+  global $stock_cart_check_data;
+  $stock_cart_check_data['form']['submit']['#value'] = $text;
+  $stock_cart_check_data['form']['submit']['#disabled'] = $disabled;
+  $stock_cart_check_data['form']['#attributes']['class']['stock'] = $class_name;
+}
+
+/**
+ * @todo: Define this function.
+ */
+function commerce_stock_custom_cart_form_state($hide_qty, $text, $class_name,
+          $action_prefix, $action_suffix, $stock_action, $disabled_cart,
+          $custom_submit, $custom_submit_clear, $custom_validate,
+          $custom_validate_clear, $custom_url, $custom_html) {
+  global $stock_cart_check_data;
+
+  // Read form values.
+  $form_action = $stock_cart_check_data['form']['#action'];
+  if (isset ($stock_cart_check_data['form']['product_id']['#value'])) {
+    $prod_id = $stock_cart_check_data['form']['product_id']['#value'];
+  }
+  elseif (isset ($stock_cart_check_data['form']['product_id']['#default_value'])) {
+    $prod_id = $stock_cart_check_data['form']['product_id']['#default_value'];
+  }
+
+  // Class.
+  $stock_cart_check_data['form']['#attributes']['class']['stock'] = $class_name;
+
+  // Quantity field.
+  if ($hide_qty) {
+    $stock_cart_check_data['form']['quantity']['#access'] = FALSE;
+  }
+
+  // Prefix & sufix.
+  $stock_cart_check_data['form']['submit']['#prefix'] = $action_prefix;
+  $stock_cart_check_data['form']['submit']['#suffix'] = $action_suffix;
+
+  switch ($stock_action) {
+
+    // Normal Submit.
+    case 0:
+      $stock_cart_check_data['form']['submit']['#value'] = $text;
+      $stock_cart_check_data['form']['submit']['#disabled'] = $disabled_cart;
+      break;
+
+    // Custom Submit.
+    case 1:
+      $stock_cart_check_data['form']['submit']['#value'] = $text;
+      // Should we clear the submit array.
+      if ($custom_submit_clear) {
+        $stock_cart_check_data['form']['#submit'] = array();
+      }
+      // Should we clear the validate array.
+      if ($custom_validate_clear) {
+        $stock_cart_check_data['form']['#validate'] = array();
+      }
+      // Add custom submit function.
+      if (!empty($custom_submit)) {
+        $stock_cart_check_data['form']['#submit'][] = $custom_submit;
+      }
+      // Sdd custom validation function.
+      if (!empty($custom_validate)) {
+        $stock_cart_check_data['form']['#validate'][] = $custom_validate;
+      }
+      break;
+
+    // URL Action.
+    case 2:
+      if (!empty($custom_url)) {
+        // Custom url.
+        $custom_url = str_replace('[product_id]', $prod_id, $custom_url);
+        $custom_url = str_replace('[url]', $form_action, $custom_url);
+        $stock_cart_check_data['form']['submit']['#type'] = 'link';
+        $stock_cart_check_data['form']['submit']['#title'] = $text;
+        $stock_cart_check_data['form']['submit']['#href'] = $custom_url;
+      }
+      break;
+
+    // Custom HTML.
+    case 3:
+      if (!empty($custom_html)) {
+        // Custom url.
+        $custom_html = str_replace('[product_id]', $prod_id, $custom_html);
+        $custom_html = str_replace('[url]', $form_action, $custom_html);
+        $stock_cart_check_data['form']['submit']['#type'] = 'markup';
+        $stock_cart_check_data['form']['submit']['#markup'] = $custom_html;
+      }
+      break;
+
+    default:
+      break;
+  }
+}
+
+/**
+ * Rules action: Set the state of the checkout process (called one per an item).
+ */
+function commerce_stock_rules_set_checkout_state($stock_action, $message, $approved_quantity) {
+  if ($approved_quantity < 0) {
+    $approved_quantity = 0;
+    // If zero transection must be blocked as it you are not allowed
+    // to add zero quantity to the cart.
+    $stock_action = 1;
+  }
+  // Set the global stock check array.
+  global $stock_check_data;
+  $stock_check_data['state'] = $stock_action;
+  $stock_check_data['message'] = $message;
+  $stock_check_data['qty'] = $approved_quantity;
+}
+
+/**
+ * Options for stock actions.
+ */
+function commerce_stock_check_state_options_list() {
+  return array(
+    0 => 'do nothing' ,
+    1 => 'block transection',
+    2 => 'display message only');
+}
+
+/**
+ * Options for Advanced configuration of the add to cart form actions.
+ */
+function commerce_stock_custom_cart_form_state_action_options_list() {
+  return array(
+    0 => 'Normal Submit' ,
+    1 => 'Custom Submit',
+    2 => 'URL Action',
+    3 => 'Custom HTML');
+
 }

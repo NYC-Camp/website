@@ -53,7 +53,7 @@ function views_send_send_from_spool() {
 
       // Break if exceded.
       if (timer_read('views_send') / 1000 > .8 * $max_execution_time) {
-        watchdog('views_send', 'PHP maximum execution time almost exceeded. Remaining E-mail messages will be sent during the next cron run. If this warning occurs regularly you should reduce the cron throttle setting.', NULL, WATCHDOG_WARNING);
+        watchdog('views_send', 'PHP maximum execution time almost exceeded. Remaining e-mail messages will be sent during the next cron run. If this warning occurs regularly you should reduce the cron throttle setting.', NULL, WATCHDOG_WARNING);
         break;
       }
     }
@@ -65,40 +65,6 @@ function views_send_send_from_spool() {
       array('%ok' => $ok, '%sec' => timer_read('views_send') / 1000, '%fail' => $fail)
     );
   }
-}
-
-/**
- * Sending the message take from spool.
- *
- * @param $message
- *   Database object containing the spooled message being send.
- *
- * @return
- *   Boolean indicating if the message was sent successfully.
- */
-function views_send_deliver($message) {
-  $key = 'direct';
-  $headers = unserialize($message->headers);
-  $to = _views_send_format_address($message->to_mail, $message->to_name);
-  $from = _views_send_format_address($message->from_mail, $message->from_name);
-
-  $mail = array(
-    'to' => $to,
-    'subject' => $message->subject,
-    'body' => $message->body,
-    'from' => $from,
-    'headers' => $headers,
-  );
-
-  if (VIEWS_SEND_MIMEMAIL) {
-    $mail['subject'] = mime_header_encode($message->subject);
-    mailsystem_set(array(
-      "views_send_$key" => 'MimeMailSystem'
-    ));
-  }
-
-  $system = drupal_mail_system('views_send', $key);
-  return $system->mail($mail);
 }
 
 /**
