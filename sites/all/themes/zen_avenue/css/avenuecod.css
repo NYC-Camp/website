@@ -36,7 +36,7 @@ h2.block-title a {
 
 .region-featured .welcome {
 	position: absolute;
-	top: 35%;
+	top: 30%;
 	text-align: center;
 	width: 70%;
 	left: 15%;
@@ -93,15 +93,25 @@ h2.welcome-title {
 	padding: 2px 0 0;
 	box-shadow: 1px 2px 2px rgba(0,0,0,.3);
 }
-	.register-now a:hover {
-		-webkit-opacity: 1;
-		-moz-opacity: 1;
-		filter:alpha(opacity=100);
-	  opacity: 1;
-	}
-	.register-now a:active {
-		box-shadow: none;
-	}
+
+.register-now a:hover {
+	-webkit-opacity: 1;
+	-moz-opacity: 1;
+	filter:alpha(opacity=100);
+  opacity: 1;
+}
+
+.register-now a:active {
+	box-shadow: none;
+}
+
+.volunteer {
+  margin-top: 3em;
+  font-weight: bold;
+  background: #ffffff;
+  padding: .75em;
+}
+
 
 #block-block-8, #block-block-9 {
 	margin-top: 90px;
@@ -682,4 +692,10 @@ body.node-type-event div.form-type-select label {
 
 h2.feature-title {
 	margin-bottom: 5px;
+}
+
+
+/** TEMP Login Adjustment until I can get info for how to disable certain panels */
+.field-group-fieldset.group-drupal-info, .field-group-fieldset.group-volunteer-info {
+	display: none;
 }

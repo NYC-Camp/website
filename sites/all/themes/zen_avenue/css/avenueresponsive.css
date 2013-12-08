@@ -282,5 +282,27 @@
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 
+}
 
+
+/* Mobile -- Front page temp only
+================================================== */
+@media only screen and (max-width: 480px) {
+  .volunteer {
+		margin-top: .5em;
+		padding: .35em .5em;
+		font-size: 95%;
+		font-weight: normal;
+	}
+}
+
+@media only screen and (max-width: 360px) {
+	.region-featured .welcome {
+		width: 100%;
+		left: 0;
+	}
+
+	.volunteer {
+		margin: .5em;
+	}
 }
