@@ -244,7 +244,13 @@ function node_field_display_node_alter(&$display, $context) {
 }
 
 /**
- * Implements callback_entity_info_uri().
+ * Entity URI callback.
+ *
+ * @param $node
+ *   A node entity.
+ *
+ * @return array
+ *   An array with 'path' as the key and the path to the node as its value.
  */
 function node_uri($node) {
   return array(
@@ -1587,9 +1593,6 @@ function node_permission() {
     ),
     'access content overview' => array(
       'title' => t('Access the content overview page'),
-      'description' => user_access('access content overview')
-        ? t('Get an overview of <a href="@url">all content</a>.', array('@url' => url('admin/content')))
-        : t('Get an overview of all content.'),
     ),
     'access content' => array(
       'title' => t('View published content'),

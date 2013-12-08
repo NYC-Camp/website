@@ -12,7 +12,6 @@ class Registration extends Entity {
 
   public
     $registration_id,
-    $type,
     $entity_id,
     $entity_type,
     $anon_mail = NULL,
@@ -31,7 +30,7 @@ class Registration extends Entity {
     $host = $wrapper->entity->value();
     if ($host) {
       return t('Registration for !title', array(
-          '!title' => entity_label($this->entity_type, $host),
+          '!title' => entity_label($this->entity_type, $host)
         )
       );
     }
@@ -41,8 +40,7 @@ class Registration extends Entity {
   /**
    * Build content for Registration.
    *
-   * @return array
-   *   Render array for a registration entity.
+   * @return render array
    */
   public function buildContent($view_mode = 'full', $langcode = NULL) {
     $build = parent::buildContent($view_mode, $langcode);
@@ -61,13 +59,14 @@ class Registration extends Entity {
     $author_uri = $author ? entity_uri('user', $author) : NULL;
     $account_uri = $user ? entity_uri('user', $user) : NULL;
 
+    // Mail
     $build['mail'] = array(
       '#prefix' => '<div class="field registration-mail"><div class="field-label">' . t('Email Address') . '</div>',
       '#markup' => $wrapper->mail->value(),
       '#suffix' => '</div>',
     );
 
-    // Link to host entity.
+    // Link to host entity
     $host_entity_link_label = (isset($host_entity_type_info['bundles'][$host_entity_bundle]['label'])) ? '<div class="field-label">' . $host_entity_type_info['bundles'][$host_entity_bundle]['label'] . '</div>' : '';
     $build['host_entity_link'] = array(
       '#prefix' => '<div class="field registration-entity-link">' . $host_entity_link_label,
@@ -75,18 +74,21 @@ class Registration extends Entity {
       '#suffix' => '</div>',
     );
 
+    // Date created
     $build['created'] = array(
       '#prefix' => '<div class="field registration-created"><div class="field-label">' . t('Created') . '</div>',
       '#markup' => format_date($this->created),
       '#suffix' => '</div>',
     );
 
+    // Date updated
     $build['updated'] = array(
       '#prefix' => '<div class="field registration-updated"><div class="field-label">' . t('Updated') . '</div>',
       '#markup' => format_date($this->updated),
       '#suffix' => '</div>',
     );
 
+    // Slots used
     $build['slots'] = array(
       '#prefix' => '<div class="field registration-slots"><div class="field-label">' . t('Slots Used') . '</div>',
       '#markup' => $this->count,
@@ -117,10 +119,10 @@ class Registration extends Entity {
   /**
    * Save registration.
    *
-   * @see entity_save()
+   * @return mixed
    */
   public function save() {
-    // Set a default state if not provided.
+    // set a default state if not provided
     $wrapper = entity_metadata_wrapper('registration', $this);
     $state = $wrapper->state->value();
     if (!$state) {
@@ -130,7 +132,9 @@ class Registration extends Entity {
       }
     }
 
-    $this->updated = REQUEST_TIME;
+    if (empty($this->updated)) {
+      $this->updated = REQUEST_TIME;
+    }
 
     if (!$this->registration_id && empty($this->created)) {
       $this->created = REQUEST_TIME;
@@ -139,7 +143,7 @@ class Registration extends Entity {
   }
 
   /**
-   * Specify URI.
+   * Specify URI
    */
   protected function defaultUri() {
     return array('path' => 'registration/' . $this->internalIdentifier());
@@ -148,10 +152,10 @@ class Registration extends Entity {
   /**
    * Determine registrant type relative to a given account.
    *
-   * @object $account
+   * @param $account
    *   A Drupal user
    *
-   * @return string|NULL
+   * @return mixed string|NULL
    *   Can be me, user, anon or NULL if account is empty and no anon email set.
    */
   public function registrant_type($account) {

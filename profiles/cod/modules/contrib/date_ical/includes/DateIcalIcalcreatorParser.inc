@@ -12,16 +12,13 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
    *
    * Includes additional field for the handler for output.
    *
-   * NOTE: The name and description strings would be t()'d, but PHP doesn't allow that:
-   * http://stackoverflow.com/questions/3960323/why-dont-php-attributes-allow-functions
-   *
    * @see DateIcalFeedsParser::getMappingSources().
    * @see DateIcalFeedsParser::getSourceElement().
    */
   static protected $sources = array(
     'summary' => array(
       'name' => 'Summary',
-      'description' => 'A short summary, or title, for the calendar component.',
+      'description' => 'A short summary or title for the calendar component.',
       'date_ical_parse_handler' => 'formatText',
     ),
     'description' => array(
@@ -73,7 +70,7 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
       'date_ical_parse_handler' => 'formatCategories',
     ),
   );
-  
+
   /**
    * Load and run parser implementation of FeedsParser::parse().
    *
@@ -81,15 +78,20 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
    */
   public function parse(FeedsSource $source, FeedsFetcherResult $fetcher_result) {
     self::loadLibrary();
-    
-    // Read the iCal feed into memory.
-    $ical_feed_contents = $fetcher_result->getRaw();
-    
-    // Create the calendar object and parse the feed.
-    $calendar = new vcalendar();
-    if (!$calendar->parse($ical_feed_contents)) {
-      $url = $source->config[$source->importer->config['fetcher']['plugin_key']]['source'];
-      throw new DateIcalParseException(t('Error parsing iCal feed: %url', array('%url' => $url)));
+
+    // Get the path to the temporary file created by the feed download.
+    $filename = $fetcher_result->getFilePath();
+
+    //
+    // Create the calendar object and parser the file.
+    //
+    $config = array(
+      'unique_id' => '', // do we need one for incoming parsing?
+      'url' => $filename, // it's a stream wrapper, so url
+    );
+    $calendar = new vcalendar($config);
+    if (!$calendar->parse()) {
+      throw new DateIcalParseException(t('Error parsing %source iCal file %file', array('%source' => 'todo', '%file' => $filename)));
     }
     
     // Allow modules to alter the vcalendar object before we interpret its properties.
@@ -103,14 +105,14 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     // Set a result object.
     //
     $result = new DateIcalParserResult();
-    
+
     // FeedsResult properties
     $xcalname = $calendar->getProperty('X-WR-CALNAME');
     $result->title = !empty($xcalname) ? $xcalname[1] : '';
     $xcaldesc = $calendar->getProperty('X-WR-CALDESC');
     $result->description = !empty($xcaldesc) ? $xcaldesc[1] : '';
     $result->link = NULL;
-    
+
     // Additional DateIcalParserResult properties
     $xtimezone = $calendar->getProperty('X-WR-TIMEZONE');
     if (!empty($xtimezone)) {
@@ -123,25 +125,21 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
       }
     }
     
-    // DEV NOTES:
-    // Due to the way that the loop after this one manipulates the $components array, all the work that gets done in here
-    // gets overridden. However, we probably *should* be using this, somehow, since I think it was in the old version
-    // in order to handle non-standard VTIMEZONES. Maybe?
     $components = array();
-    while ($component = $calendar->getComponent('VTIMEZONE')) {
+    while ($component = $calendar->getComponent('TIMEZONE')) {
       $components[$component->getProperty('tzid')] = new DateIcalIcalcreatorComponent($component);
     }
     $result->timezones = $components;
-    
-    // Separate the individual feed items into DateIcalIcalcreatorComponents.
+
+    // Separate the individual feed items into DateIcalIcalcreatorComponent objects, to be treated as
+    // separate parsed elements.
     $components = array();
-    $component_types = array('vevent', 'vtodo', 'vjournal', 'vfreebusy', 'valarm');
+    $component_types = array('vevent', 'vtodo', 'vjournal', 'vfreebusy', 'valarm'); // @todo: admin per feed configurable; check each makes sense.
     foreach ($component_types as $component_type) {
       while ($component = $calendar->getComponent($component_type)) {
         $component = new DateIcalIcalcreatorComponent($component);
         
-        // Allow modules to alter the DateIcalIcalcreatorComponent before we
-        // parse it into Feeds-readable data.
+        // Allow modules to alter the DateIcalIcalcreatorComponent before we parse it into Feeds-readable data.
         $context = array(
           'calendar' => $calendar,
           'source' => $source,
@@ -154,16 +152,16 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
       }
     }
     $result->items = $components;
-    
+
     return $result;
   }
-  
+
   /******
    * Source output formatters.
    *
-   * TODO: Could be in a class of their own?
+   * Could be in a class of their own?
    **/
-  
+
   /**
    * Format text fields.
    *
@@ -176,7 +174,7 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     
     // Allow modules to alter the text before it's mapped to the target.
     drupal_alter('date_ical_feeds_object', $text, $context);
-    
+        
     return $text;
   }
   
@@ -194,10 +192,10 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     
     // Allow modules to alter the param text before it's mapped to the target.
     drupal_alter('date_ical_feeds_object', $text, $context);
-    
+        
     return $text;
   }
-  
+
   /**
    * Format date fields.
    *
@@ -207,12 +205,11 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     $context = get_defined_vars();
     $date_array = $property['value'];
     
-    // It's frustrating that iCalcreator gives us date data in a different
-    // format than what it expects us to give back.
+    // It's frustrating that iCalcreator gives us date data in a different format than it expects to receive date data.
     if (isset($property['params']['TZID'])) {
       $date_array['tz'] = $property['params']['TZID'];
     }
-    
+
     if (isset($property['params']['VALUE']) && $property['params']['VALUE'] == 'DATE') {
       /**
        * DATE values are All Day events, with no time-of-day.
@@ -220,6 +217,7 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
        * FeedsDateTime sets the granularity correctly.
        * However the granularity is not used yet.
        * All Day events handling is not finalized at the time of writing.
+       * Multi-day All Day events are not handled at this time.
        * http://drupal.org/node/874322 To Date & All Day Date Handling
        */
       if ($property_key == 'dtend') {
@@ -229,11 +227,12 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
           $start_array['tz'] =  $start_prop['params']['TZID'];
         }
         
-        if (module_exists('date_all_day')) {
-          // If the Date All Day module is installed, we need to rewind the
-          // DTEND by one day, because of the problem with FeedsDateTime
-          // mentioned below.
-          $date_array['day'] -= 1;
+        if ($start_array['year'] == $date_array['year'] && $start_array['month'] == $date_array['month'] && $start_array['day'] == $date_array['day'] - 1) {
+          // Single day, all day event.
+          // iCal DATE has start on day, end on next day.
+          // Presently handled date.module by having same start and end dates.
+          // See notes about timezone handling in issue above however.
+          $date_array = $start_array;
         }
       }
       // The order in which the source -> target mapping is set up matters here: dtstart has to come before dtend.
@@ -251,40 +250,34 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
           $item->setProperty('dtend', $end_array);
         }
       }
-      // FeedsDateTime's implementation of setTimezone() assumes that dates with no time element should just ignore
-      // timezone changes, so I had to add the 00:00:00 explicitly, even though it shouldn't be necessary.
-      $date_string = sprintf('%d-%d-%d 00:00:00', $date_array['year'], $date_array['month'], $date_array['day']);
-      // Set the timezone for All Day events to the server's timezone, rather than letting them default to UTC,
-      // so that they don't get improperly offset when saved to the DB.
-      $parsed_datetime = new FeedsDateTime($date_string, new DateTimeZone(date_default_timezone_get()));
+      
+      $parsed_datetime = new FeedsDateTime(sprintf('%d-%d-%d', $date_array['year'], $date_array['month'], $date_array['day']));
     }
     else {
       // Date with time.
       $date_string = iCalUtilityFunctions::_format_date_time($date_array);
-      
+
       $tz = NULL;
       if (isset($date_array['tz'])) {
-        // 'Z' == 'Zulu' == 'UTC'. DateTimeZone won't acept Z, so change it to UTC.
-        if (strtoupper($date_array['tz']) == 'Z') {
-          $date_array['tz'] = 'UTC';
-        }
-        // Allow modules to alter the timezone string before it gets converted into a DateTimeZone.
-        drupal_alter('date_ical_timezone', $date_array['tz'], $context);
-        
-        try {
-          $tz = new DateTimeZone($date_array['tz']);
-        }
-        catch (Exception $e) {
-          $source->log('parse', t('"%tzid" is not recognized by PHP as a valid timezone, so UTC was used instead. Try implementing hook_date_ical_timezone_alter() in a custom module to fix this problem.',
-            array('%tzid' => $date_array['tz'])), array(), WATCHDOG_WARNING);
-          drupal_set_message(t('"%tzid" is not recognized by PHP as a valid timezone, so UTC was used instead. Try implementing hook_date_ical_timezone_alter() in a custom module to fix this problem.',
-            array('%tzid' => $date_array['tz'])), 'warning');
-        }
+        $tz = $date_array['tz'];
       }
-      // If there was no timezone in the date array itself, add one if we have one.
-      else if (!empty($result->timezone)) {
-        // Use the timezone that was detected for the entire iCal feed.
-        $tz = $result->timezone;
+      else {
+        // If there was no timezone in the date array itself, add one if we have one.
+        if (!empty($property['params']['TZID'])) {
+          // Use the timezone from this DATE-TIME component
+          try {
+            $tz = new DateTimeZone($property['params']['TZID']);
+            // note: these should relate to the DateIcalParserResult::$timezones but see comment on property.
+          }
+          catch (Exception $e) {
+            $source->log('parse', 'DATE-TIME TZID "%tzid" not recognized by PHP: %error',
+              array('%tzid' => $property['params']['TZID'], '%error' => $e->getMessage()), WATCHDOG_NOTICE);
+          }
+        }
+        elseif (!empty($result->timezone)) {
+          // Use the timezone that was detected for the entire iCal feed.
+          $tz = $result->timezone;
+        }
       }
       
       // If this iCal object has no DTEND, but it does have a DURATION, emulate DTEND as DTSTART + DURATION.
@@ -302,7 +295,7 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     
     return $parsed_datetime;
   }
-  
+
   /**
    * Format Categories
    *
@@ -328,27 +321,37 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
     $context = get_defined_vars();
     // Allow modules to alter the RRULE before it's mapped to the target.
     drupal_alter('date_ical_feeds_object', $property, $context);
-    // RRULEs must have an INTERVAL, or Date Repeat will throw errors.
-    if (!isset($property['value']['INTERVAL'])) {
-      $property['value']['INTERVAL'] = '1';
-    }
     $item->setRrule($property);
-
-
+    /*
+    // I'm not really sure it makes sense to let users alter these, and since you can have more than one of each,
+    // it's probbaly not worth the effort to program it correctly. But here's my attempts so far, if anyone wants
+    // to finish it.
+    $rdate = $item->getProperty('rdate');
+    if (!empty($rdate)) {
+      $context['property_key'] = 'rdate';
+      drupal_alter('date_ical_feeds_object', $rdate, $context);
+      $item->setRdate($rdate);
+    }
+    $exdate = $item->getProperty('exdate');
+    if (!empty($rdate)) {
+      $context['property_key'] = 'exdate';
+      drupal_alter('date_ical_feeds_object', $exdate, $context);
+      $item->setExdate($exdate);
+    }
+    */
+    
     $rrule = $item->getRrule();
     $exdate = $item->getExdate();
     $rdate = $item->getRdate();
     return trim("$rrule\n$exdate\n$rdate");
   }
-  
+
   /**
    * Load the iCalcreator library.
    */
   static public function loadLibrary() {
-    $library = libraries_load('iCalcreator');
-    if (!$library['loaded']) {
-      throw new DateIcalParseException(t('Unable to load the iCalcreator library. Please ensure that it is properly installed.'));
-    }
+    $creator_path = libraries_get_path('iCalcreator');
+    require_once($creator_path . '/iCalcreator.class.php');
   }
 }
 
@@ -356,9 +359,9 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
  * A wrapper on iCalcreator component class.
  */
 class DateIcalIcalcreatorComponent implements DateIcalComponentInterface {
-  public $component;
+  protected $component;
   private $_serialized_component;
-  
+
   /**
    * Constructor.
    *
@@ -368,7 +371,7 @@ class DateIcalIcalcreatorComponent implements DateIcalComponentInterface {
   public function __construct(calendarComponent $component) {
     $this->component = $component;
   }
-  
+
   /**
    * Serialization helper.
    */
@@ -376,7 +379,7 @@ class DateIcalIcalcreatorComponent implements DateIcalComponentInterface {
     $this->_serialized_component = serialize($this->component);
     return array('_serialized_component');
   }
-  
+
   /**
    * Unserialization helper.
    */
@@ -384,15 +387,15 @@ class DateIcalIcalcreatorComponent implements DateIcalComponentInterface {
     DateIcalIcalcreatorParser::loadLibrary();
     $this->component = unserialize($this->_serialized_component);
   }
-  
+
   public function getComponentType() {
     return $this->component->objName;
   }
-  
+
   public function getProperty($name) {
     return $this->component->getProperty($name, FALSE, TRUE);
   }
-  
+
   // $args should be an array of arguments to be sent to the set$Name()
   // function of calendarComponent. If $args is not an array, it'll be
   // wrapped as one. This is necessary because the iCalcreator API has different
@@ -415,7 +418,7 @@ class DateIcalIcalcreatorComponent implements DateIcalComponentInterface {
   public function getRrule() {
     return trim($this->component->createRrule());
   }
-  
+
   public function setRdate($rdate) {
     return $this->component->rdate[0] = $rdate;
   }

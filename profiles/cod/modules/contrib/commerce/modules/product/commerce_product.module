@@ -736,13 +736,9 @@ function commerce_product_autocomplete($entity_type, $field_name, $bundle, $stri
 
   if (count($args) <= 5) {
     drupal_json_output($matches);
-    return;
   }
 
-  // Trim off leading arguments from other modules such as Locale.
-  $offset = array_search('commerce_product', $args);
-
-  array_splice($args, 0, 5 + $offset);
+  array_splice($args, 0, 5);
   $string = implode('/', $args);
 
   // The user enters a comma-separated list of tags. We only autocomplete the last tag.

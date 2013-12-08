@@ -95,7 +95,7 @@ class RegistrationMetadataController extends EntityDefaultMetadataController {
       'schema field' => 'entity',
       'description' => t("The host entity."),
       'getter callback' => 'registration_property_host_get',
-      'setter callback' => 'registration_property_host_set',
+      'setter callback' => 'entity_property_verbatim_set',
     );
 
     $properties['author'] = array(

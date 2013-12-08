@@ -26,11 +26,7 @@ function cod_bof_views_pre_view(&$view, &$display_id, &$args) {
 }
 
 function cod_bof_form_bof_session_node_form_alter(&$form, &$form_state, $form_id) {
-  $time_slot_id = FALSE;
-  if (isset($_GET['edit']['field_session_timeslot']['target_id'])) {
-    $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
-  }
-
+  $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
   if(!isset($form['#node']->nid) && $time_slot_id) {
     unset($form['#fieldgroups']['group_bof_schedule']);
     $form['field_session_timeslot']['#access'] = FALSE;
@@ -39,11 +35,7 @@ function cod_bof_form_bof_session_node_form_alter(&$form, &$form_state, $form_id
 }
 
 function cod_bof_node_presave($node) {
-  $time_slot_id = FALSE;
-  if (isset($_GET['edit']['field_session_timeslot']['target_id'])) {
-    $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
-  }
-
+  $time_slot_id = check_plain($_GET['edit']['field_session_timeslot']['target_id']);
   if($time_slot_id && $node->is_new) {
     $gid = _cod_bof_get_gid($time_slot_id);
 
@@ -96,7 +88,7 @@ function cod_bof_module_implements_alter(&$implementations, $hook) {
 }
 
 function _cod_bof_get_gid($time_slot_id) {
-  return db_query('SELECT g.gid FROM {og_membership} g, field_data_field_slot_types_time_slot t
+  return db_query('SELECT g.gid FROM og_membership g, field_data_field_slot_types_time_slot t
         WHERE g.etid = t.field_slot_types_time_slot_target_id AND t.entity_id = :timeslotid', array(':timeslotid' => $time_slot_id))->fetchField();
 }
 

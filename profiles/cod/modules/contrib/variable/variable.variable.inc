@@ -93,7 +93,6 @@ function variable_variable_type_info() {
     'element' => array('#type' => 'textfield', '#size' => 15, '#maxlength' => 10),
     'token' => TRUE,
     'validate callback' => 'variable_validate_number',
-    'format callback' => 'variable_format_number',
   );
   // Select multiple options from multiple choices
   $type['options'] = array(
@@ -273,21 +272,6 @@ function variable_format_boolean($variable, $options = array()) {
  */
 function variable_format_empty($variable) {
   return isset($variable['empty']) ? $variable['empty'] : t('Empty');
-}
-
-/**
- * Format variable as number.
- */
-function variable_format_number($variable, $options = array()) {
-  if (is_numeric($variable['value'])) {
-    return (string)$variable['value'];
-  }
-  elseif (empty($variable['value'])) {
-    return '';
-  }
-  else {
-    return check_plain($variable['value']);
-  }
 }
 
 /**

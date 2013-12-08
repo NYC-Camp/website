@@ -11,9 +11,9 @@ function cod_sponsors_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'cod_sponsors';
+  $view->name = 'sponsors';
   $view->description = '';
-  $view->tag = 'cod sponsors';
+  $view->tag = 'default';
   $view->base_table = 'node';
   $view->human_name = 'Sponsors';
   $view->core = 7;
@@ -186,12 +186,12 @@ function cod_sponsors_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'sponsor' => 'sponsor',
   );
-  $export['cod_sponsors'] = $view;
+  $export['sponsors'] = $view;
 
   $view = new view();
-  $view->name = 'cod_sponsors_admin';
+  $view->name = 'sponsors_admin';
   $view->description = '';
-  $view->tag = 'cod sponsors';
+  $view->tag = 'default';
   $view->base_table = 'node';
   $view->human_name = 'Sponsors Admin';
   $view->core = 7;
@@ -324,7 +324,7 @@ function cod_sponsors_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
-  $export['cod_sponsors_admin'] = $view;
+  $export['sponsors_admin'] = $view;
 
   return $export;
 }

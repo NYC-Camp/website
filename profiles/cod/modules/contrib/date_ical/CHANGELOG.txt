@@ -1,0 +1,36 @@
+Date iCal 7.x
+===================
+
+===================
+Version 7.x-2.0
+===================
+- Issue #1721678, incorporate abandoned Parser iCal module's Feeds plugin, allowing Date iCal to parse iCal feeds.
+- Issue #1833362, convert to using the iCalcreator library, rather than the theme system, for formatting iCal data.
+- Many other issues, which were closed during the week of Jan 14, 2013. 
+
+===================
+Version 7.x-1.2
+===================
+- Issue #1793868, fix error when adding iCal view mode to non-standard entities.
+- Issue #1863448, Remove extraneous div around the feed icon.
+- Many other issues, which were closed during the week of Jan 14, 2013. 
+
+===================
+Version 7.x-1.1
+===================
+
+- Issue #1535312, Use feed_icon class for ical icon.
+- Better methods to hide the title and comments.
+- Issue #1529326, Hide the links.
+- Add dependency on Entity module.
+- Add the Date/Time package to .info file.
+
+===================
+Version 7.x-1.0
+===================
+
+- Issue #1447194 by tim.plunkett, Prevent date_ical_preprocess from running for every theme function.
+- Issue #1447118 by tim.plunkett: Use properly namespaced template functions.
+- Issue #1447104 by tim.plunkett: Fixed code clean-up and undefined notices.
+- Issue #1446936 by tim.plunkett: Views display format will not save.
+- Initial commit of D7 code.

@@ -88,12 +88,5 @@ function flag_features_providing_module() {
       $modules[$key] = $module;
     }
   }
-
-  // Any entity type without a providing module will be provided for by the flag module
-  foreach (entity_get_info() as $entity_type => $entity) {
-    if (!isset($modules[$entity_type]) && empty($entity['configuration'])) {
-      $modules[$entity_type] = 'flag';
-    }
-  }
   return $modules;
 }

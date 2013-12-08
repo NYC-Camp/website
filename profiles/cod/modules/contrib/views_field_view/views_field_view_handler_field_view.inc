@@ -3,6 +3,7 @@
 /**
  * @file
  * Views field view field handler class.
+ * 
  */
 
 class views_field_view_handler_field_view extends views_handler_field {
@@ -10,7 +11,7 @@ class views_field_view_handler_field_view extends views_handler_field {
    * If query aggregation is used, all of the arguments for the child view.
    *
    * This is a multidimensional array containing field_aliases for the argument's
-   * fields and containing a linear array of all of the results to be used as
+   * fields and containing a linear array of all of the results to be used as 
    * arguments in various fields.
    */
   public $child_arguments = array();
@@ -31,13 +32,6 @@ class views_field_view_handler_field_view extends views_handler_field {
 
   /**
    * Disable this handler from being used as a 'group by'.
-   */
-  function use_group_by() {
-    return FALSE;
-  }
-
-  /**
-   * Disable this handler from being used as a 'group by' in style plugins.
    */
   function use_string_group_by() {
     return FALSE;
@@ -152,7 +146,6 @@ class views_field_view_handler_field_view extends views_handler_field {
         '#type' => 'textfield',
         '#default_value' => $this->options['arguments'],
         '#fieldset' => 'views_field_view',
-        '#maxlength' => '256',
       );
       $form['available_tokens'] = array(
         '#type' => 'fieldset',
@@ -179,7 +172,7 @@ class views_field_view_handler_field_view extends views_handler_field {
 
       // Ensure we're working with a SQL view.
       $views_data = views_fetch_data($view->base_table);
-      if (isset($views_data['table']['base']['query class']) && $views_data['table']['base']['query class'] == 'views_query') {
+      if ($views_data['table']['base']['query class'] == 'views_query') {
         $form['query_aggregation']['#disabled'] = TRUE;
       }
     }
@@ -391,21 +384,14 @@ class views_field_view_handler_field_view extends views_handler_field {
             // Find a proper start value for the ascening pager IDs.
             $start = 0;
             $pager = $view->display_handler->get_option('pager');
-            if (isset($this->query->pager->options['id'])) {
+            if (isset($this->query->pager->options)) {
               $start = (int) $this->query->pager->options['id'];
             }
 
-            // Set the index at 1, as we will always want this to be atleast
-            // 1 higher than the start ID.
-            $index = 1;
             // Set the pager ID before initializing the pager, so
             // views_plugin_pager::set_current_page works as expected, which is
-            // called from view::init_pager(). There wont always be a row_index
-            // set so test for this.
-            if (isset($this->view->row_index)) {
-              $index += $this->view->row_index;
-            }
-            $pager['options']['id'] = $start + $index;
+            // called from view::init_pager()
+            $pager['options']['id'] = $start + 1 + $this->view->row_index;
             $view->display_handler->set_option('pager', $pager);
             $view->init_pager();
           }
@@ -445,7 +431,6 @@ class views_field_view_handler_field_view extends views_handler_field {
               unset($child_view->style_plugin->rendered_fields);
             }
 
-            $child_view->pre_execute();
             $output = $child_view->render();
           }
 
@@ -457,11 +442,9 @@ class views_field_view_handler_field_view extends views_handler_field {
       $output = t('Recursion, stop!');
     }
 
-    // We only add the output to the $values object for field handlers. Area
-    // handlers will not use this.
-    if (($this->handler_type == 'field') && !empty($output)) {
-      // Add the rendered output back to the $values object so it is available
-      // in $view->result objects.
+    if (!empty($output)) {
+      // Add the rendered output back to the $values object
+      // so it is available in $view->result objects.
       $values->{'views_field_view_' . $this->options['id']} = $output;
     }
 
@@ -470,12 +453,12 @@ class views_field_view_handler_field_view extends views_handler_field {
 
   /**
    * Get field values from tokens.
-   *
+   * 
    * @param string $token
    *  token string. E.g. explode(',', $this->options['args']);
    * @param View $view
    *  Full view object to get token values from.
-   *
+   * 
    * @return array
    *  An array of raw argument values, returned in the same order as the token
    *  were passed in.
@@ -598,13 +581,13 @@ class views_field_view_handler_field_view extends views_handler_field {
     $this->document_self_tokens($options[t('Fields')]);
 
     // Default text.
-    $output = '<p>' . t('You must add some additional fields to this display before using this field.
-      These fields may be marked as <em>Exclude from display</em> if you prefer. Note that due to rendering order,
+    $output = '<p>' . t('You must add some additional fields to this display before using this field. 
+      These fields may be marked as <em>Exclude from display</em> if you prefer. Note that due to rendering order, 
       you cannot use fields that come after this field; if you need a field not listed here, rearrange your fields.') . '</p>';
 
     // We have some options, so make a list.
     if (!empty($options)) {
-      $output = '<p>' . t('The following tokens are available for this field. Note that due to rendering order,
+      $output = '<p>' . t('The following tokens are available for this field. Note that due to rendering order, 
         you cannot use fields that come after this field; if you need a field that is not listed here, re-arrange your fields.') . '</p>';
 
       foreach (array_keys($options) as $type) {
@@ -622,7 +605,7 @@ class views_field_view_handler_field_view extends views_handler_field {
       }
     }
 
-    $output .= '<p><em>' . t('Using rendered (%) tokens can cause unexpected behaviour, as this will use the last output of the field.
+    $output .= '<p><em>' . t('Using rendered (%) tokens can cause unexpected behaviour, as this will use the last output of the field. 
       This could be re written output also. If no prefix is used in the token pattern, "!" will be used as a default.') . '</em></p>';
 
     return $output;

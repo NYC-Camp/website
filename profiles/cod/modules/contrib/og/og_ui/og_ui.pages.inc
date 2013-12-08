@@ -9,16 +9,14 @@
 /**
  * Subscribe the current user to a group.
  *
- * @param $entity_type
- *   The group entity type.
- * @param $etid
- *   The group entity ID.
- * @param $field_name
- *   Optional; Group audience field name. Defaults to first best matching field.
+ * @param $node
+ *   The group node entity.
+ * @param $uid
+ *   Optional; The user ID of the subscribing user. If empty the current user
+ *   will be used.
  */
 function og_ui_subscribe($entity_type, $etid, $field_name = NULL) {
   global $user;
-
   $entity_info = entity_get_info($entity_type);
   if (!$entity_type || !$entity_info) {
     // Not a valid entity type.
@@ -123,32 +121,22 @@ function og_ui_subscribe($entity_type, $etid, $field_name = NULL) {
  * Confirm subscribe form.
  */
 function og_ui_confirm_subscribe($form, &$form_state, $group_type, $gid, $account, $field_name) {
-  $wrapper = entity_metadata_wrapper($group_type, $gid);
-
-  // Indicate the OG membership state (active or pending).
-  $state = og_user_access($group_type, $gid, 'subscribe without approval') ? OG_STATE_ACTIVE : OG_STATE_PENDING;
-
-  if ($wrapper->access('view')) {
-    $label = $wrapper->label();
-  }
-  else {
-    $label = t('Private group');
-    if ($state == OG_STATE_ACTIVE) {
-      // Determine if a user can subscribe to a private group, when OG-access
-      // module is enabled, and the group is set to private.
-      $state = variable_get('og_ui_deny_subscribe_without_approval', TRUE) ? OG_STATE_PENDING : OG_STATE_ACTIVE;
-    }
-  }
+  $values = array('state' => og_user_access($group_type, $gid, 'subscribe without approval') ? OG_STATE_ACTIVE : OG_STATE_PENDING);
 
   // Add group membership form.
-  $og_membership = og_membership_create($group_type, $gid, 'user', $account->uid, $field_name, array('state' => $state));
+  $og_membership = og_membership_create($group_type, $gid, 'user', $account->uid, $field_name, $values);
   $form_state['og_membership'] = $og_membership;
   field_attach_form('og_membership', $og_membership, $form, $form_state);
 
-  if ($state == OG_STATE_ACTIVE && !empty($form[OG_MEMBERSHIP_REQUEST_FIELD])) {
+  if (og_user_access($group_type, $gid, 'subscribe without approval')) {
     // Hide the user request field.
-    $form[OG_MEMBERSHIP_REQUEST_FIELD]['#access'] = FALSE;
+    if (!empty($form[OG_MEMBERSHIP_REQUEST_FIELD])) {
+      $form[OG_MEMBERSHIP_REQUEST_FIELD]['#access'] = FALSE;
+    }
   }
+
+  $wrapper = entity_metadata_wrapper($group_type, $gid);
+  $label = $wrapper->access('view') ? $wrapper->label() : t('Private group');
 
   $form['group_type'] = array('#type' => 'value', '#value' => $group_type);
   $form['gid'] = array('#type' => 'value', '#value' => $gid);
@@ -179,17 +167,7 @@ function og_ui_confirm_subscribe_submit($form, &$form_state) {
   $gid = $form_state['values']['gid'];
   $group = entity_load_single($group_type, $gid);
 
-  if (entity_access('view', $group_type, $group)) {
-    $redirect = entity_uri($group_type, $group);
-  }
-  else {
-    // User doesn't have access to the group entity, so redirect to front page,
-    // with a message.
-    $redirect = '';
-    drupal_set_message(t('Your subscription request was sent.'));
-  }
-
-  $form_state['redirect'] = $redirect;
+  $form_state['redirect'] = entity_uri($group_type, $group);
 }
 
 

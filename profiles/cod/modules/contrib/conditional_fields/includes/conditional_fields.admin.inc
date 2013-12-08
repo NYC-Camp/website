@@ -137,23 +137,12 @@ function conditional_fields_dependency_add_form($form, &$form_state, $entity_typ
 
   if ($dependencies) {
     $destination = drupal_get_destination();
-    $grouping_count = array();
 
     foreach ($dependencies['dependents'] as $dependent => $dependees) {
       uasort($dependees, '_conditional_fields_sort_dependees');
 
-      // Enable row grouping by operator.
-      $first_row = $show_AND = $show_OR = $show_XOR = TRUE;
-      if (!isset($grouping_count[$dependent])) {
-        $grouping_count[$dependent] = array(
-          'AND' => 0,
-          'OR' => 0,
-          'XOR' => 0,
-        );
-        foreach ($dependees as $dependency) {
-          $grouping_count[$dependent][$dependency['options']['grouping']]++;
-        }
-      }
+      $first_row = TRUE;
+      $show_AND = $show_OR = $show_XOR = TRUE;
 
       foreach ($dependees as $id => $dependency) {
         $form['table']['dependencies'][$id] = array();
@@ -182,7 +171,7 @@ function conditional_fields_dependency_add_form($form, &$form_state, $entity_typ
           if (${'show_' . $dependency['options']['grouping']}) {
             $row['group'] = array(
               '#markup' => $dependency['options']['grouping'],
-              '#rowspan' => $grouping_count[$dependent][$dependency['options']['grouping']],
+              '#rowspan' => $dependee_count,
             );
             ${'show_' . $dependency['options']['grouping']} = FALSE;
           }

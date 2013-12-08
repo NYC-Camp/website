@@ -9,6 +9,8 @@ are built and can be turned off on most production sites.
 Requirements
 ------------
 - Context, Context UI modules enabled (`admin/modules`)
+- [jQuery UI 1.x][1] and [Admin 2.x][2] to use the inline context editor.
+  Optional.
 
 
 Basic usage
@@ -57,17 +59,16 @@ be configured.
 
 Using the inline editor
 -----------------------
-The inline editor allows you to manage the block reaction for active
-contexts within the context of a page rather than through the admin
-interface. This can also be helpful when managing block ordering among
-multiple contexts.
+If you have installed jQuery UI and Admin, you can enable the inline context
+editor:
 
-1. As an administrative user go to `admin/structure/context/settings`.
-2. Check the 'Use Context Editor Dialog' block and save. You should also
-   check the show all regions box.
-3. When viewing a page with one or more active contexts, you will see
-   the option to configure layout in the contextual links on all blocks
-   on the page. This will allow you to manage the blocks placed by the
-   block reaction for contexts.
+1. As an administrative user go to `admin/settings/admin`.
+2. Check the 'Context editor' block and save.
+3. When viewing a page with one or more active contexts, you will see the
+  `Context editor` in the admin toolbar.
 4. You can use the context editor to adjust the conditions under which each
-   context is active and alter its reactions.
+  context is active and alter its reactions.
+
+
+[1]: http://drupal.org/project/jquery_ui
+[2]: http://drupal.org/project/admin

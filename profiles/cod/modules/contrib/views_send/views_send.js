@@ -1,5 +1,5 @@
 (function ($) {
-  Drupal.behaviors.viewsSend = {
+  Drupal.behaviors.vbo = {
     attach: function(context) {
       $('.views-send-selection-form', context).each(function() {
         Drupal.viewsSend.initTableBehaviors(this);

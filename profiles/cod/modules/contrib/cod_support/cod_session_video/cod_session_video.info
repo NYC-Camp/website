@@ -9,10 +9,3 @@ features[user_permission][] = "view field_video"
 name = "COD Session Video"
 package = "COD"
 project = "cod_session_video"
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-

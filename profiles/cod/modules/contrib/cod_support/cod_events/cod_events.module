@@ -16,20 +16,6 @@ function cod_events_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
- * Implements hook_forms().
- */
-function cod_events_forms() {
-  $forms = array();
-  $days = cod_events_days();
-  if ($days = cod_events_days()) {
-    foreach ($days as $day_nid) {
-      $forms['cod_events_timeslots_'. $day_nid . '_form']['callback'] = 'cod_events_timeslots_form';
-    }
-  }
-  return $forms;
-}
-
-/**
  * Helper function determines days there are time slots for.
  */
 function cod_events_days($event_id = NULL) {
@@ -38,7 +24,7 @@ function cod_events_days($event_id = NULL) {
   if (empty($days)) {
     $days = array();
     if (db_table_exists('field_data_field_slot_datetime')) {
-      $event_join = 'INNER JOIN {og_membership} om ON n.nid = om.etid';
+      $event_join = 'INNER JOIN og_membership om ON n.nid = om.etid';
       $event = 'om.gid = :event_id AND';
 
       $sql = "SELECT n.nid AS nid, DATE_FORMAT(s.field_slot_datetime_value, :day) AS day
@@ -68,7 +54,7 @@ function cod_events_day_url($day) {
   return strtolower($day);
 }
 
-/*
+/**
  * Make the event dashboard be an admin path
  */
 function cod_events_admin_paths() {
@@ -78,67 +64,20 @@ function cod_events_admin_paths() {
   return $paths;
 }
 
-/*
- * Add the default event select box for choosing a default event.
- */
-function cod_events_form_cod_base_admin_settings_alter(&$form, &$form_state, $form_id) {
-  $form['cod_events'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('COD Events'),
-    '#weight' => 5,
-    '#collapsible' => FALSE,
-    '#collapsed' => FALSE,
-  );
-
-  $options = array(t('No Default Event'));
-  $eventQuery = new EntityFieldQuery();
-  $event_list =  $eventQuery->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', 'event')
-    ->propertyCondition('status', 1)
-    ->propertyOrderBy('title')
-    ->execute();
-  if (count($event_list['node']) == 1) {
-    $default_event = array_pop(array_keys($event_list['node']));
-    variable_set('cod_events_default_event', $default_event);
-    $form['cod_events']['#description'] = "Node $default_event is the only event, and set to default";
-  }
-  else if (!empty($event_list['node'])) {
-    $events = entity_load('node', array_keys($event_list['node']));
-    foreach($events AS $event) {
-      $options[$event->nid] = $event->title;
-    }
-
-    $form['cod_events']['cod_events_default_event'] = array(
-      '#type' => 'select',
-      '#title' => t('Default Event'),
-      '#options' => $options,
-      '#default_value' => variable_get('cod_events_default_event', 0),
-    );
-  }
-  else {
-    $form['cod_events']['#markup'] = "You currently have no events";
-    variable_set('cod_events_default_event', 0);
-  }
-
-}
 /**
-* Implements hook_form_alter().
-* - Add default event to all new node types, using the default event setting.
-*/
+ * Implements hook_form_alter().
+ * - Add default event to all new node types, this is based off a flagged
+ * entity
+ */
 function cod_events_form_alter(&$form, &$form_state, $form_id) {
   $which_flag = flag_get_flags($entity_type = NULL, $content_subtype = NULL, $account = NULL);
   $default_event = isset($which_flag['default_event']) ? $which_flag['default_event'] : FALSE;
   $default_fid = 5;
-  if (empty($form['nid']['#value']) && !user_is_anonymous() && !empty($default_event) && isset($form['og_group_ref'])) {
+  if (empty($form['nid']['#value']) && !user_is_anonymous()) {
     if ($default_event->name == 'default_event' && $default_event->fid == $default_fid) {
       $form['og_group_ref']['und'][0]['default']['#default_value'] = _get_flag_etid($default_fid);
-      $form['og_group_ref']['#disabled'] = TRUE;
     }
   }
-}
-
-function cod_events_views_default_views_alter(&$views) {
-  $views['cod_events_admin']->display['default']->display_options['header']['area']['content'] .= '<ul class="action-links"><li>' . l('Add Event', 'node/add/event') . '</li></ul>';
 }
 
 /**

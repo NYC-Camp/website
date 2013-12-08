@@ -7,13 +7,16 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function cod_events_ctools_plugin_api($module = NULL, $api = NULL) {
+function cod_events_ctools_plugin_api() {
+  list($module, $api) = func_get_args();
   if ($module == "page_manager" && $api == "pages_default") {
     return array("version" => "1");
   }
+  list($module, $api) = func_get_args();
   if ($module == "panels" && $api == "layouts") {
     return array("version" => "1");
   }
+  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -22,8 +25,8 @@ function cod_events_ctools_plugin_api($module = NULL, $api = NULL) {
 /**
  * Implements hook_views_api().
  */
-function cod_events_views_api($module = NULL, $api = NULL) {
-  return array("api" => "3.0");
+function cod_events_views_api() {
+  return array("version" => "3.0");
 }
 
 /**
@@ -35,7 +38,7 @@ function cod_events_flag_default_flags() {
   $flags['default_event'] = array(
     'content_type' => 'node',
     'title' => 'Default Event',
-    'global' => 1,
+    'global' => '1',
     'types' => array(
       0 => 'event',
     ),
@@ -49,10 +52,10 @@ function cod_events_flag_default_flags() {
     'link_type' => 'normal',
     'roles' => array(
       'flag' => array(
-        0 => 2,
+        0 => '2',
       ),
       'unflag' => array(
-        0 => 2,
+        0 => '2',
       ),
     ),
     'weight' => 0,
@@ -62,11 +65,11 @@ function cod_events_flag_default_flags() {
     'show_on_teaser' => 1,
     'show_contextual_link' => 0,
     'i18n' => 0,
+    'api_version' => 2,
     'module' => 'cod_events',
     'locked' => array(
       0 => 'name',
     ),
-    'api_version' => 2,
   );
   return $flags;
 

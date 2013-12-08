@@ -2,17 +2,10 @@ name = COD Front Page
 description = Displays promoted content, sessions, and news on front page.
 core = 7.x
 package = COD
+php = 5.2.4
 project = cod_front_page
 dependencies[] = cod_news
 dependencies[] = cod_session
 dependencies[] = ctools
 features[ctools][] = context:context:3
-features[features_api][] = api:2
-
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-
+features[features_api][] = api:1

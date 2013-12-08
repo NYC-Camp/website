@@ -34,18 +34,20 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
   }
 
   /**
-   * Overrides EntityInlineEntityFormController::tableFields().
+   * Overrides EntityInlineEntityFormController::defaultFields().
    */
-  public function tableFields($bundles) {
+  public function defaultFields($bundles) {
     $fields = array();
     $fields['title'] = array(
       'type' => 'property',
       'label' => t('Variation title'),
+      'visible' => TRUE,
       'weight' => 1,
     );
     $fields['sku'] = array(
       'type' => 'property',
-      'label' => t('SKU'),
+      'label' => 'SKU',
+      'visible' => TRUE,
       'weight' => 2,
     );
 
@@ -58,18 +60,13 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
 
         // If the product has an imagefield, show it.
         if ($field['type'] == 'image') {
-          // Determine the correct image style to use.
-          $image_style = 'thumbnail';
-          if (!empty($instance['widget']['settings']['preview_image_style'])) {
-            $image_style = $instance['widget']['settings']['preview_image_style'];
-          }
-
           $fields[$field_name] = array(
             'type' => 'field',
             'label' => $instance['label'],
             'formatter' => 'image',
-            'settings' => array('image_style' => $image_style),
+            'settings' => array('image_style' => 'thumbnail'),
             'delta' => 0,
+            'visible' => TRUE,
             'weight' => -10,
           );
           // Don't add any other imagefields. One is enough.
@@ -94,6 +91,8 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
             'type' => 'field',
             'label' => $attribute['instance']['label'],
             'formatter' => $field_type['default_formatter'],
+            'settings' => array(),
+            'visible' => TRUE,
             'weight' => ++$weight,
           );
         }
@@ -104,11 +103,14 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
       'type' => 'field',
       'label' => t('Price'),
       'formatter' => 'commerce_price_formatted_amount',
+      'settings' => array(),
+      'visible' => TRUE,
       'weight' => 99,
     );
     $fields['status'] = array(
       'type' => 'property',
       'label' => t('Status'),
+      'visible' => TRUE,
       'weight' => 100,
     );
 
@@ -172,6 +174,11 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
       '#type' => 'fieldset',
       '#title' => t('Details'),
       '#attributes' => array('class' => array('ief-product-details', 'ief-entity-fieldset')),
+    );
+    $entity_form['product_image'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('@label image', array('@label' => drupal_ucfirst($labels['singular']))),
+      '#attributes' => array('class' => array('ief-product-image', 'ief-entity-fieldset')),
     );
 
     $entity_form['sku'] = array(
@@ -248,12 +255,35 @@ class CommerceProductInlineEntityFormController extends EntityInlineEntityFormCo
       }
     }
 
-    // Arrange non-attribute fields.
+    // Arrange images and other non-attribute fields.
+    $imagefields = array();
     foreach (field_info_instances('commerce_product', $product->type) as $name => $instance) {
       $field_name = $instance['field_name'];
       $field = field_info_field($field_name);
-      if (!isset($attributes[$field_name])) {
+
+      if ($field['type'] == 'image') {
+        $entity_form[$field_name]['#fieldset'] = 'product_image';
+        $imagefields[] = $field_name;
+      }
+      elseif (!isset($attributes[$field_name])) {
         $entity_form[$field_name]['#fieldset'] = 'product_details';
+      }
+    }
+
+    if (count($imagefields) == 0) {
+      // The fieldset is empty, hide it.
+      $entity_form['product_image']['#access'] = FALSE;
+    }
+    elseif (count($imagefields) == 1) {
+      // There's only one image on the product, no need to show its title, the
+      // fieldset title is enough.
+      $field_name = reset($imagefields);
+      $language = $entity_form[$field_name]['#language'];
+      unset($entity_form[$field_name][$language][0]['#title']);
+      // Prevent multi-value imagefields from rendering their own fieldsets.
+      if (isset($entity_form[$field_name][$language]['#theme_wrappers']) && in_array('fieldset', $entity_form[$field_name][$language]['#theme_wrappers'])) {
+        $key = array_search('fieldset', $entity_form[$field_name][$language]['#theme_wrappers']);
+        unset($entity_form[$field_name][$language]['#theme_wrappers'][$key]);
       }
     }
 

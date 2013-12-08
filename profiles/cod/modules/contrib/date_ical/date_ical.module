@@ -8,17 +8,6 @@
  */
 
 /**
- * The version number of the current release. This is inserted into the PRODID
- * value of the iCal feeds created by Date iCal.
- */
-define('DATE_ICAL_VERSION', '2.13');
-
-/**
- * Exception for when the date field for a row in the ical_fields row plugin is blank.
- */
-class BlankDateFieldException extends Exception { }
-
-/**
  * Implements hook_views_api().
  */
 function date_ical_views_api() {
@@ -34,37 +23,35 @@ function date_ical_views_api() {
 function date_ical_theme($existing, $type, $theme, $path) {
   return array(
     'date_ical_icon' => array(
-      'variables' => array('url' => NULL, 'tooltip' => NULL),
+      'variables' => array('url' => NULL),
     ),
   );
 }
 
 /**
  * The theme for the ical icon.
- * Available variables are:
- * $variables['tooltip'] - The tooltip to be used for the ican feed icon.
- * $variables['url'] - The url to the actual iCal feed.
- * $variables['view'] - The view object from which the iCal feed is being
- *   built (useful for contextual information).
  */
 function theme_date_ical_icon($variables) {
-  if (empty($variables['tooltip'])) {
-    $variables['tooltip'] = t('Add this event to my calendar');
-  }
-  $variables['path'] = drupal_get_path('module', 'date_ical') . '/images/ical-feed-icon-34x14.png';
-  $variables['alt'] = $variables['title'] = $variables['tooltip'];
+  $url = $variables['url'];
+  $variables = array(
+    'path' => drupal_get_path('module', 'date_ical') . '/images/ical-feed-icon-34x14.png',
+    'title' => t('Add to my calendar'),
+    'alt' => t('Add to my calendar'),
+  );
+  // Change the scheme to webcal:// so that calendar clients can automatically
+  // subscribe via the iCal link.
+  $url = str_replace('http://', 'webcal://', $url);
   if ($image = theme('image', $variables)) {
-    return "<a href='{$variables['url']}' class='ical-icon'>$image</a>";
-  }
-  else {
-    return "<a href='{$variables['url']}' class='ical-icon'>{$variables['tooltip']}</a>";
+    return '<a href="' . check_url($url) . '" class="ical-icon" title="ical">' . $image . '</a>';
   }
 }
 
 /**
  * Implements hook_preprocess_HOOK() for nodes.
  *
- * Hide extraneous information when rendering the iCal view mode of a node.
+ * Hide extraneous information when printing an iCal node. The same thing can be
+ * done in the theme for other entities, and this function can be overridden in
+ * the theme to produce different results for nodes.
  */
 function date_ical_preprocess_node(&$variables) {
   if (isset($variables['view_mode']) && $variables['view_mode'] == 'ical') {
@@ -72,15 +59,14 @@ function date_ical_preprocess_node(&$variables) {
     // The display of the body and other fields will be controlled
     // by the Manage Display settings for the iCal view mode.
     
-    // Trick the default node template into not displaying the page title by
-    // telling it this is a page.
+    // Trick the default node template into not displaying the page title by telling it this is page.
     $variables['page'] = TRUE;
     $variables['title_prefix'] = '';
     $variables['title_suffix'] = '';
-    
+
     // We don't want to see the author information in our feed.
     $variables['display_submitted'] = FALSE;
-    
+
     // Comments and links don't belong in an iCal feed.
     if (isset($variables['content']['comments'])) {
       unset($variables['content']['comments']);
@@ -104,9 +90,7 @@ function date_ical_entity_info_alter(&$entity_info) {
     $entity_info[$entity_type]['view modes'] += array(
       'ical' => array(
         'label' => t('iCal'),
-        // Set the iCal view mode to default to same settings as the "default"
-        // view mode, so it won't pollute Features.
-        'custom settings' => FALSE,
+        'custom settings' => TRUE,
       ),
     );
   }
@@ -118,8 +102,8 @@ function date_ical_entity_info_alter(&$entity_info) {
 function date_ical_libraries_info() {
   $libraries['iCalcreator'] = array(
     'name' => 'iCalcreator',
-    'vendor url' => 'http://github.com/iCalcreator/iCalcreator',
-    'download url' => 'http://github.com/iCalcreator/iCalcreator',
+    'vendor url' => 'http://kigkonsult.se/iCalcreator/index.php',
+    'download url' => 'http://kigkonsult.se/downloads/index.php#icalcreator',
     'version arguments' => array(
       'file' => 'iCalcreator.class.php',
       'pattern' => "/define\( 'ICALCREATOR_VERSION', 'iCalcreator ([\d\.]+)' \);/",
@@ -129,7 +113,7 @@ function date_ical_libraries_info() {
       'php' => array('iCalcreator.class.php'),
     ),
   );
-  
+
   return $libraries;
 }
 
@@ -159,7 +143,7 @@ function date_ical_feeds_plugins() {
   );
   $info['DateIcalIcalcreatorParser'] = array(
     'name' => 'iCal parser',
-    'description' => t('Use the iCalcreator library to parse iCal feeds.'),
+    'description' => 'Use the iCalcreator library to parse iCal feeds.',
     'help' => 'Parse iCal feeds.',
     'handler' => array(
       'parent' => 'DateIcalFeedsParser',
@@ -171,6 +155,7 @@ function date_ical_feeds_plugins() {
   
   return $info;
 }
+
 
 /**
  * Implements hook_feeds_processor_targets_alter().
@@ -191,31 +176,6 @@ function date_ical_feeds_processor_targets_alter(&$targets, $entity_type, $bundl
       );
     }
   }
-}
-
-/**
- * Reformats the provided text to be compliant with the iCal spec.
- * If the text contains HTML tags, those tags will be stripped (with <p> tags
- * converted to "\n\n" and link tags converted to footnotes), and uneeded
- * whitespace will be cleaned up.
- *
- * @param $text
- *   The text to be sanitized.
- */
-function date_ical_sanitize_text($text = '') {
-  // Use Drupal's built-in HTML to Text converter, which does a mostly adequate
-  // job of making the text iCal-compliant.
-  $text = trim(drupal_html_to_text($text));
-  // Replace instances of more than one space with exactly one space. This
-  // cleans up the whitespace mess that gets left behind by drupal_html_to_text().
-  $text = preg_replace("/  +/", " ", $text);
-  // The call to drupal_html_to_text() above converted <p> to \n\n, and also
-  // shoved a \n into the string every 80 characters. We don't want those
-  // single \n's lying around, because iCalcreator will properly "fold" long
-  // text fields for us. So, we need to remove all instances of \n which
-  // are neither immediately preceeded, nor followed, by another \n.
-  $text = preg_replace("/(?<!\n)\n(?!\n)/", " ", $text);
-  return $text;
 }
 
 /**
@@ -255,16 +215,17 @@ function date_ical_feeds_set_rrule($source, $entity, $target, $feed_element) {
  * giving up completely.
  */
 function date_ical_build_repeating_dates($rrule = NULL, $rrule_values = NULL, $field, $item) {
+
   module_load_include('inc', 'date_api', 'date_api_ical');
   $field_name = $field['field_name'];
-  
+
   if (empty($rrule)) {
     $rrule = date_api_ical_build_rrule($rrule_values);
   }
   elseif (empty($rrule_values)) {
     $rrule_values = date_ical_parse_rrule(NULL, $rrule);
   }
-  
+
   // By the time we get here, the start and end dates have been
   // adjusted back to UTC, but we want localtime dates to do
   // things like '+1 Tuesday', so adjust back to localtime.
@@ -285,7 +246,7 @@ function date_ical_build_repeating_dates($rrule = NULL, $rrule_values = NULL, $f
   }
   $duration = $start->difference($end);
   $start_datetime = date_format($start, DATE_FORMAT_DATETIME);
-  
+
   if (!empty($rrule_values['UNTIL']['datetime'])) {
     $end = date_ical_date($rrule_values['UNTIL'], $timezone);
     $end_datetime = date_format($end, DATE_FORMAT_DATETIME);
@@ -300,7 +261,7 @@ function date_ical_build_repeating_dates($rrule = NULL, $rrule_values = NULL, $f
     $rrule = substr_replace($rrule, 'COUNT=52;', 6, 0);
     $end_datetime = NULL;
   }
-  
+
   // Split the RRULE into RRULE, EXDATE, and RDATE parts.
   $parts = date_repeat_split_rrule($rrule);
   $parsed_exceptions = (array) $parts[1];
@@ -309,14 +270,14 @@ function date_ical_build_repeating_dates($rrule = NULL, $rrule_values = NULL, $f
     $date = date_ical_date($exception, $timezone);
     $exceptions[] = date_format($date, 'Y-m-d');
   }
-  
+
   $parsed_rdates = (array) $parts[2];
   $additions = array();
   foreach ($parsed_rdates as $rdate) {
     $date = date_ical_date($rdate, $timezone);
     $additions[] = date_format($date, 'Y-m-d');
   }
-  
+
   $dates = date_repeat_calc($rrule, $start_datetime, $end_datetime, $exceptions, $timezone, $additions);
   $value = array();
   foreach ($dates as $delta => $date) {
@@ -346,7 +307,7 @@ function date_ical_build_repeating_dates($rrule = NULL, $rrule_values = NULL, $f
 function date_ical_get_location_fields($base = 'node', $reset = FALSE) {
   static $fields = array();
   $empty = array('name' => array(), 'alias' => array());
-  
+
   if (empty($fields[$base]) || $reset) {
     $cid = 'date_ical_location_fields_' . $base;
     if (!$reset && $cached = cache_get($cid, 'cache_views')) {
@@ -362,14 +323,13 @@ function date_ical_get_location_fields($base = 'node', $reset = FALSE) {
 
 /**
  *  Identify all potential LOCATION fields.
- *  This is a cut down version of _date_views_fields() from date_views_fields.inc
- *  in date_views module.
+ *  This is a cut down version of _date_views_fields() from date_views_fields.inc in date_views module.
  *
  *  @return
  *    array with fieldname, type, and table.
  *  @see
- *    date_views_date_views_fields(), which implements hook_date_views_fields()
- *    for the core date fields.
+ *    date_views_date_views_fields() which implements
+ *    the hook_date_views_fields() for the core date fields.
  */
 function _date_ical_get_location_fields($base = 'node') {
   // Make sure $base is never empty.
@@ -392,7 +352,7 @@ function _date_ical_get_location_fields($base = 'node') {
     // Skip unsupported field types and fields that weren't defined through
     // the Field module.
     $info = field_info_field($field_name);
-    if (!$info || !in_array($info['type'], array('text', 'text_long', 'text_with_summary', 'node_reference', 'addressfield'))) {
+    if (!$info || !in_array($info['type'], array('text', 'node_reference'))) {
       continue;
     }
     
@@ -412,83 +372,6 @@ function _date_ical_get_location_fields($base = 'node') {
     $fields['alias'][$alias] = $fields['name'][$name];
   }
   
-  cache_set($cid, $fields, 'cache_views');
-  return $fields;
-}
-
-
-/**
- *  Identify all potential fields that could populate the custom SUMMARY field
- */
-function date_ical_get_summary_fields($base = 'node', $reset = FALSE) {
-  static $fields = array();
-  $empty = array('name' => array(), 'alias' => array());
-
-  if (empty($fields[$base]) || $reset) {
-    $cid = 'date_ical_summary_fields_' . $base;
-    if (!$reset && $cached = cache_get($cid, 'cache_views')) {
-      $fields[$base] = $cached->data;
-    }
-    else {
-      $fields[$base] = _date_ical_get_summary_fields($base);
-    }
-  }
-  // Make sure that empty values will be arrays in the expected format.
-  return !empty($fields) && !empty($fields[$base]) ? $fields[$base] : $empty;
-}
-
-/**
- *  Identify all potential SUMMARY fields.
- *  This is a cut down version of _date_views_fields() from date_views_fields.inc
- *  in date_views module.
- *
- *  @return
- *    array with fieldname, type, and table.
- *  @see
- *    date_views_date_views_fields(), which implements hook_date_views_fields()
- *    for the core date fields.
- */
-function _date_ical_get_summary_fields($base = 'node') {
-  // Make sure $base is never empty.
-  if (empty($base)) {
-    $base = 'node';
-  }
-
-  $cid = 'date_ical_summary_fields_' . $base;
-  cache_clear_all($cid, 'cache_views');
-
-  // Iterate over all the fields that Views knows about.
-  $all_fields = date_views_views_fetch_fields($base, 'field');
-  $fields = array();
-  foreach ($all_fields as $alias => $val) {
-    $name = $alias;
-    $tmp = explode('.', $name);
-    $field_name = $tmp[1];
-    $table_name = $tmp[0];
-
-    // Skip unsupported field types and fields that weren't defined through
-    // the Field module.
-    $info = field_info_field($field_name);
-    if (!$info || !in_array($info['type'], array('text', 'text_long', 'text_with_summary', 'node_reference', 'taxonomy_term_reference'))) {
-      continue;
-    }
-
-    // Build an array of the field info that we'll need.
-    $alias = str_replace('.', '_', $alias);
-    $fields['name'][$name] = array(
-      'label' => "{$val['group']}: {$val['title']} ($field_name)",
-      'table_name' => $table_name,
-      'field_name' => $field_name,
-      'type' => $info['type'],
-    );
-
-    // These are here only to make this $field array conform to the same format
-    // as the one returned by _date_views_fields(). They're probably not needed,
-    // but I thought that consistency would be a good idea.
-    $fields['name'][$name]['real_field_name'] = $field_name;
-    $fields['alias'][$alias] = $fields['name'][$name];
-  }
-
   cache_set($cid, $fields, 'cache_views');
   return $fields;
 }

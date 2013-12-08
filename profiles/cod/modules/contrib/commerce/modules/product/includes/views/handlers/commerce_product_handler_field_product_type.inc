@@ -24,16 +24,15 @@ class commerce_product_handler_field_product_type extends commerce_product_handl
   }
 
   function render($values) {
-    if ($type = $this->get_value($values)) {
-      // Return the raw value if specified.
-      if (!empty($this->options['use_raw_value'])) {
-        return $this->sanitize_value($type);
-      }
+    $type = $this->get_value($values);
 
-      $value = commerce_product_type_get_name($type);
-      return $this->render_link($this->sanitize_value($value), $values);
+    // Return the raw value if specified.
+    if (!empty($this->options['use_raw_value'])) {
+      return $this->sanitize_value($type);
     }
 
-    return '';
+    $value = commerce_product_type_get_name($type);
+
+    return $this->render_link($this->sanitize_value($value), $values);
   }
 }

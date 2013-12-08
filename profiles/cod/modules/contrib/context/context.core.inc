@@ -105,8 +105,7 @@ function context_ctools_render_alter($info, $page, $data) {
 function context_entity_prepare_view($prepare, $entity_type) {
   if ($entity_type === 'taxonomy_term' && count($prepare) === 1) {
     $term = reset($prepare);
-    $menu = menu_get_object('taxonomy_term', 2);
-    if ($menu && $term->tid == $menu->tid && $plugin = context_get_plugin('condition', 'taxonomy_term')) {
+    if ($term === menu_get_object('taxonomy_term', 2) && $plugin = context_get_plugin('condition', 'taxonomy_term')) {
       $plugin->execute($term, 'view');
     }
   }
@@ -340,7 +339,7 @@ function context_context_page_reaction() {
 }
 
 /**
- * Implementation of hook_preprocess_page().
+ * Implementation of hook_page_alter().
  */
 function context_preprocess_page(&$vars) {
   if ($plugin = context_get_plugin('reaction', 'menu')) {

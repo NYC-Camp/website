@@ -37,10 +37,3 @@ features[views][] = "sponsorships"
 features[views_api][] = "api:2"
 name = "COD Sponsorship Sales"
 package = "COD"
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-

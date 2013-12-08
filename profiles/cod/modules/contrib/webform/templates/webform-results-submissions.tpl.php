@@ -7,7 +7,7 @@
  *
  * Available variables:
  * - $node: The node object for this webform.
- * - $submissions: The Webform submissions array.
+ * - $submission: The Webform submission array.
  * - $total_count: The total number of submissions to this webform.
  * - $pager_count: The number of results to be shown per page.
  * - is_submissions: The user is viewing the node/NID/submissions page.

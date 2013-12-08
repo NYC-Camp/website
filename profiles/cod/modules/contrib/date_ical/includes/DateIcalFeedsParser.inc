@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @file
  * Basic classes.
  */
 
@@ -21,7 +20,7 @@ abstract class DateIcalFeedsParser extends FeedsParser {
    * );
    */
   static protected $sources;
-  
+
   /**
    * Implementation of FeedsParser::getMappingSources().
    */
@@ -40,7 +39,7 @@ abstract class DateIcalFeedsParser extends FeedsParser {
     // Call parent::getMappingSources() to trigger additional target creation.
     return $sources + parent::getMappingSources();
   }
-  
+
   /**
    * Override FeedsParser::getSourceElement().
    */
@@ -49,7 +48,7 @@ abstract class DateIcalFeedsParser extends FeedsParser {
     if (substr($property_key, 0, 7) == 'parent:') {
       return parent::getSourceElement($source, $result, $property_key);
     }
-    
+
     // Otherwise retrieve the current DateIcalComponent from the DateIcalParserResult.
     if ($item = $result->currentItem()) {
       if ($position = strpos($property_key, ':')) {
@@ -83,7 +82,7 @@ interface DateIcalComponentInterface {
 class DateIcalParserResult extends FeedsParserResult {
   // Feed extension timezone (X-WR-TIMEZONE)
   public $timezone;
-  
+
   // Feed RFC 5545 timezones; we can't use these at
   // present, only PHP timezonedb tz will be actually recognized.
   // So this is more here as reminder/explanation.

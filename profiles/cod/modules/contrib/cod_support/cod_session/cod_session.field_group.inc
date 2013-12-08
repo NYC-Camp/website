@@ -32,7 +32,7 @@ function cod_session_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
-        'classes' => ' group-audience field-group-hidden',
+        'classes' => '',
       ),
     ),
   );
@@ -58,7 +58,7 @@ function cod_session_field_group_info() {
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(
-        'classes' => ' group-audience field-group-fieldset',
+        'classes' => '',
         'required_fields' => 1,
       ),
     ),
@@ -85,7 +85,7 @@ function cod_session_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-schedule-info field-group-fieldset',
+        'classes' => '',
       ),
     ),
   );
@@ -111,7 +111,7 @@ function cod_session_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-schedule-info field-group-fieldset',
+        'classes' => '',
       ),
     ),
   );
@@ -138,7 +138,7 @@ function cod_session_field_group_info() {
       'label' => 'Schedule Info',
       'instance_settings' => array(
         'required_fields' => 0,
-        'classes' => ' group-schedule field-group-fieldset',
+        'classes' => '',
         'description' => '',
       ),
       'formatter' => 'collapsible',
@@ -166,7 +166,7 @@ function cod_session_field_group_info() {
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(
-        'classes' => ' group-schedule field-group-fieldset',
+        'classes' => '',
         'required_fields' => 1,
       ),
     ),

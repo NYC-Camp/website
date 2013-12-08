@@ -104,21 +104,18 @@ function title_field_formatter_view($entity_type, $entity, $field, $instance, $l
     $output = l($output, $uri['path'], array('html' => TRUE));
   }
 
-  $wrap_tag = empty($settings['title_style']) ? '_none' : $settings['title_style'];
+  $wrap_tag = isset($settings['title_style']) ? $settings['title_style'] : '_none';
 
   if ($wrap_tag != '_none') {
-    $element = array(
+    $output = theme('html_tag', array(
       'element' => array(
         '#tag' => $wrap_tag,
+        '#attributes' => array(
+          'class' => $settings['title_class'],
+        ),
         '#value' => $output,
       ),
-    );
-
-    if (!empty($settings['title_class'])) {
-      $element['#attributes'] = array('class' => $settings['title_class']);
-    }
-
-    $output = theme('html_tag', $element);
+    ));
   }
 
   $element = array(

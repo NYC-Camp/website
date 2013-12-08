@@ -1,41 +1,38 @@
-Commerce Stock Module 7.x-2.0
-==============================
+Commerce Stock Module
+=====================
+
 This module provides stock management for Drupal Commerce stores.
+Commerce Stock 7.x-1.0-alpha3 is now compatible with Drupal Commerce 7.x-1.0-rc1+
 
-This module includes three modules:
-- Commerce Stock API: A common API for managing stock using sub modules.
-  Implements validation events and actions.
-- Commerce Simple Stock: A basic stock sub-module providing a stock field.
-- Commerce Simple Stock Rules: A set of rules to control stock (it can be
-  configured by modifying the rules or creating new ones). Varlidation rules
-  created:
-  - Disabling add to cart
-  - Validate add to cart
-  - Validate checkout
+To install and configure
+
+   1. Install and enable the module.
+   2. Visit admin/commerce/config/stock to enable stock tracking on your product type(s).
+   3. Set the starting value of stock on each product.
 
 
-To install and get working
-============================
-1. Download commerce_stock.
-2. Enable the Commerce Stock API, Commerce Simple Stock, and Commerce Simple
-   Stock Rules modules.
-3. Go to people > permissions  and make sure that that you and other relevent
-   roles have the "Administer commerce stock settings".
-4. Go to Home > Administration > Store > Configuration > Stock management.
-5. Select the "simple stock management" tab.
-6. Check the product types you want simple stock to manage and hit submit.
+he stock module does two main things
 
+   1. Maintain stock levels
+   2. Implement validation of stock to prevent users from ordering out of stock items
 
-Important:
-  You may need to clear caches after installing and enabling stock for your
-  products. Rules will show errors for the stock rules until you enable stock on
-  at least one product.
+The module does the following stock validation checks
 
-If you want to be able to disable stock checking for individual products check
-the "Allow stock override for Product <product>".
+   1. Disable the add to cart button for out of stock products.
+   2. Validates the add to cart quantity widget.
+   3. Checks that all products and quantities in the shopping cart (/cart) are in stock
+   4. On Checkout if you attempt to continue with out of stock items you get redirected to the shopping cart.
 
+If you are using multiple products per display and are not using attributes:
 
-rules configuration
-===================
-If you need to make changes to rules you also need the permission
-"Make rule based changes to commerce stock".
+   1. Marks items as out of stock in the dropdown
+
+Management of stock
+
+Each product type that is to be stock controlled is to be enabled using the admin interface.
+Enabled product types will have a stock field added to them; this field will hold the current stock count.
+You can disable stock checking for specific products this is useful if an organisation has a “flagship” product that’s always in stock.
+
+A rule is created by the module to decrease the stock level when an order is complete.
+
+The modules also provides some rule conditions and actions (increase / decrease stock) for you to create your own custom rules

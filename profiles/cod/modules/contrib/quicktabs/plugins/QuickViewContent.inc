@@ -55,8 +55,6 @@ class QuickViewContent extends QuickContent {
     if (module_exists('views')) views_add_js('ajax_view');
     $this->settings['view_path'] = rawurlencode($_GET['q']);
     $this->settings['view_dom_id'] = self::$view_dom_id++;
-    $args_array = array();
-    $ajax_args = '';
     if (isset($item['args'])) {
       $url_args = arg();
       $args = $item['args'];
@@ -66,12 +64,15 @@ class QuickViewContent extends QuickContent {
       }
       $args = preg_replace(',/?(%\d),', '', $args);
       if (!empty($args)) {
-        $ajax_args = rawurlencode($args);
+        $this->settings['ajax_args'] = rawurlencode($args);
         $args_array = explode('/', $args);
       }
+      else {
+        $this->settings['ajax_args'] = '';
+        $args_array = array();
+      }
+      $this->settings['actual_args'] = $args_array;
     }
-    $this->settings['ajax_args'] = $ajax_args;
-    $this->settings['actual_args'] = $args_array;
   }
 
   public function render($hide_empty = FALSE, $args = array()) {

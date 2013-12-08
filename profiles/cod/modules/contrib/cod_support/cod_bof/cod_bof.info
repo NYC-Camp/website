@@ -2,8 +2,9 @@ name = COD BoF Session
 description = BoFs are self-scheduled, unconference style sessions
 core = 7.x
 package = COD
+php = 5.2.4
 dependencies[] = cod_session
-dependencies[] = cod_wysiwyg
+dependencies[] = commons_wysiwyg
 dependencies[] = entityreference
 dependencies[] = features
 dependencies[] = field_group
@@ -15,11 +16,11 @@ dependencies[] = views_field_view
 features[ctools][] = field_group:field_group:1
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
-features[features_api][] = api:2
+features[features_api][] = api:1
+features[field][] = node-bof_session-body
+features[field][] = node-bof_session-field_session_timeslot
+features[field][] = node-bof_session-og_group_ref
 features[field_group][] = group_bof_schedule|node|bof_session|form
-features[field_instance][] = node-bof_session-body
-features[field_instance][] = node-bof_session-field_session_timeslot
-features[field_instance][] = node-bof_session-og_group_ref
 features[node][] = bof_session
 features[user_permission][] = create bof_session content
 features[user_permission][] = delete any bof_session content
@@ -44,11 +45,3 @@ features[variable][] = node_preview_bof_session
 features[variable][] = node_submitted_bof_session
 features[views_view][] = cod_bof_schedule
 features[views_view][] = cod_bof_schedule_entity
-
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-

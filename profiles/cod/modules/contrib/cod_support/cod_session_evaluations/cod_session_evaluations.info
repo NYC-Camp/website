@@ -2,8 +2,8 @@ name = COD Session Evaluations
 description = Allow users to provide feedback about sessions
 core = 7.x
 package = COD
+php = 5.2.4
 project = cod_session_evaluations
-dependencies[] = cod_events
 dependencies[] = cod_session
 dependencies[] = content_access
 dependencies[] = entityreference
@@ -14,10 +14,9 @@ dependencies[] = views
 dependencies[] = views_data_export
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
-features[features_api][] = api:2
-features[field_base][] = field_eval_session
-features[field_instance][] = node-session_evaluation-body
-features[field_instance][] = node-session_evaluation-field_eval_session
+features[features_api][] = api:1
+features[field][] = node-session_evaluation-body
+features[field][] = node-session_evaluation-field_eval_session
 features[node][] = session_evaluation
 features[user_permission][] = create session_evaluation content
 features[variable][] = ant_pattern_session_evaluation
@@ -36,13 +35,5 @@ features[variable][] = menu_parent_session_evaluation
 features[variable][] = node_options_session_evaluation
 features[variable][] = node_preview_session_evaluation
 features[variable][] = node_submitted_session_evaluation
-features[views_view][] = cod_session_evaluations_report
-features[views_view][] = cod_session_evaluations_speaker_review
-
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-
+features[views_view][] = sessions_eval_report
+features[views_view][] = sessions_speaker_review

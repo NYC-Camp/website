@@ -68,7 +68,7 @@ function quicktabs_clone($qt) {
 /**
  * Build the quicktab creation and edit form.
  */
-function quicktabs_form($form, &$form_state, $formtype, $qt = NULL) {
+function quicktabs_form($form, $form_state, $formtype, $qt = NULL) {
   if (!isset($qt)) {
     $qt = new stdClass;
   }
@@ -97,10 +97,7 @@ function quicktabs_form($form, &$form_state, $formtype, $qt = NULL) {
     $form_state['num_tabs']--;
   }
 
-  $tab_titles = array(
-    QUICKTABS_DELTA_NONE => t('- None -'),
-  );
-
+  $tab_titles = array();
   // Add current tabs to the form.
   foreach ($qt->tabs as $delta => $tab) {
     $tab['delta'] = $delta;
@@ -488,16 +485,19 @@ function quicktabs_form_submit($form, &$form_state) {
 
     $exists = quicktabs_load($qt->machine_name);
     if ($exists && empty($exists->in_code_only)) {
-      if (quicktabs_update($qt)) {
+      $ret = drupal_write_record('quicktabs', $qt, 'machine_name');
+      if ($ret == SAVED_UPDATED) {
         drupal_set_message(t('The Quicktabs instance has been updated.'));
       }
     }
     else {
-      if (quicktabs_save($qt)) {
+      $ret = drupal_write_record('quicktabs', $qt);
+      if ($ret == SAVED_NEW) {
         drupal_set_message(t('The Quicktabs instance has been created.'));
       }
     }
-    $form_state['redirect'] = 'admin/structure/quicktabs';
+    quicktabs_i18n_update_strings(array($qt->machine_name));
+    drupal_goto('admin/structure/quicktabs');
   }
 }
 
@@ -514,7 +514,7 @@ function quicktabs_block_delete($form, $form_state, $qt) {
  * Submit handler for quicktab block deletion.
  */
 function quicktabs_block_delete_submit($form, &$form_state) {
-  quicktabs_delete($form_state['values']['machine_name']);
+  db_query('DELETE FROM {quicktabs} WHERE machine_name = :machine_name', array(':machine_name' => $form_state['values']['machine_name']));
   drupal_set_message(t('The Quicktabs instance %name has been removed.', array('%name' => $form_state['values']['title'])));
   cache_clear_all();
   $form_state['redirect'] = 'admin/structure/quicktabs';
@@ -526,7 +526,10 @@ function quicktabs_block_delete_submit($form, &$form_state) {
 function quicktabs_export_form($form, &$form_state, $qt) {
   ctools_include('export');
   // Generate export code
-  $code = ctools_export_object('quicktabs', $qt, '');
+  $code = '$items = array();' ."\n";
+  $code .= ctools_export_object('quicktabs', $qt, '');
+  $code .= '$items["'. $qt->machine_name .'"] = $quicktabs;' ."\n";
+  $code .= 'return $items;';
 
   // Create form
   $form = array();

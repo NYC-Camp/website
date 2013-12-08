@@ -42,7 +42,7 @@ form.views-send-preview label {
 }
 
 form.views-send-preview .views-send-preview-value {
-  margin-left: 100px;
+  margin-left: 70px;
   overflow: auto;
   border: 1px solid #bbbbbb;
   padding: 2px;
@@ -57,7 +57,7 @@ form.views-send-preview .views-send-preview-value {
   white-space:pre;
 }
 
-#views-send-preview-headers, #views-send-preview-attachments {
+#views-send-preview-headers {
   height: 80px;
   font-family: monospace;
 }

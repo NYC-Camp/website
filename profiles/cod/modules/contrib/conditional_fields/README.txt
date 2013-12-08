@@ -23,7 +23,7 @@ You can, for example, define a custom “Article teaser" field that is shown onl
 
 Dependencies:
 --------------------
-- Drupal core: version 7.14 or higher.
+- Drupal core: 7.x (Version 7.14 or higher recommended).
 
 
 Installation:

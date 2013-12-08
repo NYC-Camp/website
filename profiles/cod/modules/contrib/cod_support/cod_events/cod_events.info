@@ -2,6 +2,7 @@ name = COD Events
 description = Provides base event managment
 core = 7.x
 package = COD
+php = 5.2.4
 project = cod_events
 dependencies[] = cod_base
 dependencies[] = commerce_cart
@@ -25,18 +26,12 @@ features[ctools][] = page_manager:pages_default:1
 features[ctools][] = panels:layouts:1
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
-features[features_api][] = api:2
-features[field_base][] = body
-features[field_base][] = field_dates
-features[field_base][] = field_event_image
-features[field_base][] = field_registration
-features[field_base][] = group_group
-features[field_instance][] = node-event-body
-features[field_instance][] = node-event-field_dates
-features[field_instance][] = node-event-field_event_image
-features[field_instance][] = node-event-field_registration
-features[field_instance][] = node-event-group_group
-features[flag][] = default_event
+features[features_api][] = api:1
+features[field][] = node-event-body
+features[field][] = node-event-field_dates
+features[field][] = node-event-field_event_image
+features[field][] = node-event-field_registration
+features[field][] = node-event-group_group
 features[node][] = event
 features[page_manager_pages][] = events_dashboard
 features[panels_layout][] = cod_events_dashboard_tabs
@@ -66,12 +61,3 @@ features[variable][] = node_options_event
 features[variable][] = node_preview_event
 features[variable][] = node_submitted_event
 features[views_view][] = cod_events_admin
-features[variable][] = pathauto_node_event_pattern
-
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
-core = "7.x"
-project = "cod_support"
-datestamp = "1385485749"
-

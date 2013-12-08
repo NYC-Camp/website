@@ -116,6 +116,17 @@ function theme_cod_events_timeslots_form($variables) {
 
 }
 
+function cod_events_forms() {
+  $forms = array();
+  $days = cod_events_days();
+  if ($days = cod_events_days()) {
+    foreach ($days as $day_nid) {
+      $forms['cod_events_timeslots_'. $day_nid . '_form']['callback'] = 'cod_events_timeslots_form';
+    }
+  }
+  return $forms;
+}
+
 /*
  * The main form shown to users wishing to make the master schedule grid. This loops through rooms and timeslots, showing the user
  * rendered form elements from the field_collection field info.

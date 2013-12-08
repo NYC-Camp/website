@@ -10,32 +10,29 @@
 function cod_sponsors_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: 'create sponsor content'.
+  // Exported permission: create sponsor content.
   $permissions['create sponsor content'] = array(
     'name' => 'create sponsor content',
     'roles' => array(
-      'administrator' => 'administrator',
-      'sponsor organizer' => 'sponsor organizer',
+      0 => 'sponsor organizer',
     ),
     'module' => 'node',
   );
 
-  // Exported permission: 'delete any sponsor content'.
+  // Exported permission: delete any sponsor content.
   $permissions['delete any sponsor content'] = array(
     'name' => 'delete any sponsor content',
     'roles' => array(
-      'administrator' => 'administrator',
-      'sponsor organizer' => 'sponsor organizer',
+      0 => 'sponsor organizer',
     ),
     'module' => 'node',
   );
 
-  // Exported permission: 'edit any sponsor content'.
+  // Exported permission: edit any sponsor content.
   $permissions['edit any sponsor content'] = array(
     'name' => 'edit any sponsor content',
     'roles' => array(
-      'administrator' => 'administrator',
-      'sponsor organizer' => 'sponsor organizer',
+      0 => 'sponsor organizer',
     ),
     'module' => 'node',
   );

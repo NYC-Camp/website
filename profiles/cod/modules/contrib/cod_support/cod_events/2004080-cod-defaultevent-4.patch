@@ -1,0 +1,195 @@
+diff --git a/cod_events/cod_events.features.inc b/cod_events/cod_events.features.inc
+index e12e24a..2051fef 100644
+--- a/cod_events/cod_events.features.inc
++++ b/cod_events/cod_events.features.inc
+@@ -30,6 +30,52 @@ function cod_events_views_api() {
+ }
+ 
+ /**
++ * Implements hook_flag_default_flags().
++ */
++function cod_events_flag_default_flags() {
++  $flags = array();
++  // Exported flag: "Default Event".
++  $flags['default_event'] = array(
++    'content_type' => 'node',
++    'title' => 'Default Event',
++    'global' => '1',
++    'types' => array(
++      0 => 'event',
++    ),
++    'flag_short' => 'Set as default event',
++    'flag_long' => '',
++    'flag_message' => '',
++    'unflag_short' => 'Remove default event',
++    'unflag_long' => '',
++    'unflag_message' => '',
++    'unflag_denied_text' => '',
++    'link_type' => 'normal',
++    'roles' => array(
++      'flag' => array(
++        0 => '2',
++      ),
++      'unflag' => array(
++        0 => '2',
++      ),
++    ),
++    'weight' => 0,
++    'show_on_form' => 0,
++    'access_author' => '',
++    'show_on_page' => 1,
++    'show_on_teaser' => 1,
++    'show_contextual_link' => 0,
++    'i18n' => 0,
++    'api_version' => 2,
++    'module' => 'cod_events',
++    'locked' => array(
++      0 => 'name',
++    ),
++  );
++  return $flags;
++
++}
++
++/**
+  * Implements hook_node_info().
+  */
+ function cod_events_node_info() {
+diff --git a/cod_events/cod_events.module b/cod_events/cod_events.module
+index 5698e2e..e055e8a 100644
+--- a/cod_events/cod_events.module
++++ b/cod_events/cod_events.module
+@@ -1,5 +1,6 @@
+ <?php
+ 
++define('DEFAULT_EVENT','default_event');
+ include_once('cod_events.features.inc');
+ 
+ /*
+@@ -53,13 +54,41 @@ function cod_events_day_url($day) {
+   return strtolower($day);
+ }
+ 
+-/*
++/**
+  * Make the event dashboard be an admin path
+  */
+-
+ function cod_events_admin_paths() {
+   $paths = array(
+     'node/*/dashboard' => TRUE,
+   );
+   return $paths;
+-}
+\ No newline at end of file
++}
++
++/**
++ * Implements hook_form_alter().
++ * - Add default event to all new node types, this is based off a flagged
++ * entity
++ */
++function cod_events_form_alter(&$form, &$form_state, $form_id) {
++  $which_flag = flag_get_flags($entity_type = NULL, $content_subtype = NULL, $account = NULL);
++  $default_event = isset($which_flag['default_event']) ? $which_flag['default_event'] : FALSE;
++  $default_fid = 5;
++  if (empty($form['nid']['#value']) && !user_is_anonymous()) {
++    if ($default_event->name == 'default_event' && $default_event->fid == $default_fid) {
++      $form['og_group_ref']['und'][0]['default']['#default_value'] = _get_flag_etid($default_fid);
++    }
++  }
++}
++
++/**
++ * Helper function to get an etid assigned to a flag
++ * @param $fid: Flag id set
++ * @return content_id from {flag_content}
++ */
++function _get_flag_etid($fid) {
++  return db_select('flag_content', 'fc')
++    ->fields('fc', array('content_id'))
++    ->condition('fid', $fid)
++    ->execute()
++    ->fetchField();
++}
+diff --git a/cod_events/cod_events.pages_default.inc b/cod_events/cod_events.pages_default.inc
+index ee9be0d..be04659 100644
+--- a/cod_events/cod_events.pages_default.inc
++++ b/cod_events/cod_events.pages_default.inc
+@@ -44,6 +44,8 @@ function cod_events_default_page_manager_pages() {
+       ),
+     ),
+     'logic' => 'and',
++    'type' => 'none',
++    'settings' => NULL,
+   );
+   $page->menu = array(
+     'type' => 'tab',
+diff --git a/cod_events/cod_events.rules_defaults.inc b/cod_events/cod_events.rules_defaults.inc
+new file mode 100644
+index 0000000..4da8f4a
+--- /dev/null
++++ b/cod_events/cod_events.rules_defaults.inc
+@@ -0,0 +1,28 @@
++<?php
++/**
++ * @file
++ * cod_events.rules_defaults.inc
++ */
++
++/**
++ * Implements hook_default_rules_configuration().
++ */
++function cod_events_default_rules_configuration() {
++  $items = array();
++  $items['rules_default_event_flag'] = entity_import('rules_config', '{ "rules_default_event_flag" : {
++      "LABEL" : "Default event flag",
++      "PLUGIN" : "reaction rule",
++      "REQUIRES" : [ "flag" ],
++      "ON" : [ "flag_flagged_default_event" ],
++      "DO" : [
++        { "flag_trim" : {
++            "flag" : "default_event",
++            "flagging_user" : [ "flagging_user" ],
++            "cutoff_size" : "1"
++          }
++        }
++      ]
++    }
++  }');
++  return $items;
++}
+diff --git a/cod_events/cod_events.views_default.inc b/cod_events/cod_events.views_default.inc
+index 394a7a4..be82e1a 100644
+--- a/cod_events/cod_events.views_default.inc
++++ b/cod_events/cod_events.views_default.inc
+@@ -45,6 +45,14 @@ function cod_events_views_default_views() {
+ </ul>
+ ';
+   $handler->display->display_options['header']['area']['format'] = 'filtered_html';
++  /* Relationship: Flags: default_event */
++  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
++  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
++  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
++  $handler->display->display_options['relationships']['flag_content_rel']['label'] = 'Default event';
++  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
++  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'default_event';
++  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
+   /* Field: Content: Title */
+   $handler->display->display_options['fields']['title']['id'] = 'title';
+   $handler->display->display_options['fields']['title']['table'] = 'node';
+@@ -79,6 +87,14 @@ function cod_events_views_default_views() {
+   $handler->display->display_options['fields']['nothing_1']['alter']['make_link'] = TRUE;
+   $handler->display->display_options['fields']['nothing_1']['alter']['path'] = 'node/[nid]/dashboard';
+   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
++  /* Field: Flags: Flag link */
++  $handler->display->display_options['fields']['ops']['id'] = 'ops';
++  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
++  $handler->display->display_options['fields']['ops']['field'] = 'ops';
++  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
++  $handler->display->display_options['fields']['ops']['label'] = '';
++  $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
++  $handler->display->display_options['fields']['ops']['link_type'] = 'normal';
+   /* Sort criterion: Content: Post date */
+   $handler->display->display_options['sorts']['created']['id'] = 'created';
+   $handler->display->display_options['sorts']['created']['table'] = 'node';
