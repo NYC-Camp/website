@@ -695,7 +695,30 @@ h2.feature-title {
 }
 
 
+
+
 /** TEMP Login Adjustment until I can get info for how to disable certain panels */
 .field-group-fieldset.group-drupal-info, .field-group-fieldset.group-volunteer-info {
 	display: none;
+}
+
+
+
+
+
+/* PODCASTS */
+
+.node-type-podcast .field-name-field-podcast-image {
+  float: right;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.node-type-podcast .field-name-field-podcast-date {
+  font-size: .75em;
+  margin-bottom: 1em;
+}
+
+.node-type-podcast .field-name-field-podcast-description {
+  margin-top: 1em;  
 }
