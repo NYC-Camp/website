@@ -1,0 +1,206 @@
+<?php
+
+/**
+ * @file
+ * Provides basic content protection for media files accessed with jPlayer.
+ */
+
+function jplayer_protect_menu() {
+  $items = array();
+
+  $items['admin/reports/jplayer-protect'] = array(
+    'title' => 'jPlayer content protection statistics',
+    'page callback' => 'jplayer_protection_statistics',
+    'access arguments' => array('access site reports'),
+    'description' => 'View statistics related to content protection for jPlayer.',
+    'file' => 'jplayer_protect.admin.inc',
+    'file path' => drupal_get_path('module', 'jplayer_protect'),
+  );
+
+  $items['jplayer_protect/authorize'] = array(
+    'title' => 'jPlayer content authorization',
+    'page callback' => 'jplayer_protect_authorize',
+    'delivery callback' => 'ajax_deliver',
+    'access arguments' => array('access content'),
+    'description' => 'jPlayer callback to authorize a sound file to be accessed.',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Menu callback to authorize access to a file.
+ */
+function jplayer_protect_authorize($filepath, $timestamp) {
+  $filepath = base64_decode($filepath);
+  $timestamp = (int)base64_decode($timestamp);
+
+  if (!isset($_SESSION['jplayer_protect'])) {
+    $_SESSION['jplayer_protect'] = array();
+  }
+
+  if ($timestamp < (REQUEST_TIME + variable_get('jplayer_access_time', 30))) {
+    $_SESSION['jplayer_protect'][$filepath] = $timestamp;
+  }
+
+  return drupal_json_encode(REQUEST_TIME + variable_get('jplayer_access_time', 30));
+}
+
+/**
+ * Implements hook_cron().
+ */
+function jplayer_protect_cron() {
+  // Delete records older than a week.
+  // TODO Needs dbtng.
+  db_query("DELETE FROM {jplayer_protect_denied} WHERE timestamp < :time", array(':time' => time() - 604800));
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function jplayer_protect_file_download($uri) {
+  if (!variable_get('jplayer_protect', FALSE)) {
+    return NULL;
+  }
+
+  // We need to determine if we are responsible for this file.
+  // TODO dbtng.
+  // TODO use EntityFieldQuery.
+  $result = db_query("SELECT fid FROM {file_managed} WHERE uri = :uri", array(':uri' => $uri));
+  $file = file_load($result->fetchField());
+
+  // If the file is not found in the database, we're not responsible for it.
+  if (empty($file)) {
+    return NULL;
+  }
+
+  // Find out if any file field contains this file, and if so, which field
+  // and node it belongs to. Required for later access checking.
+  $instances = array();
+  $entities = array();
+  foreach (field_info_fields() as $field_name => $field) {
+    if ($field['type'] == 'file') {
+      $query = new EntityFieldQuery();
+      $query->fieldCondition($field_name, 'fid', $file->fid, '=');
+      $entities = $query->execute();
+      if (empty($entities)) {
+        continue;
+      }
+
+      foreach ($entities as $entity_type => $entity_list) {
+        foreach ($entity_list as $entity) {
+          $bundle_name = $entity->type;
+          $instances[$field_name] = field_info_instance($entity_type, $field_name, $bundle_name);
+        }
+      }
+    }
+  }
+
+  // If any of the displays for this field are for jPlayer, then we need to
+  // protect the file.
+  $display_found = FALSE;
+  foreach ($instances as $field_name => $instance) {
+    foreach ($instance['display'] as $display_mode => $display) {
+      // Neither the teaser or the full formatter for this field is a jPlayer
+      // display.
+      if ($display['type'] == 'jplayer_player') {
+        $display_found = TRUE;
+        break;
+      }
+    }
+  }
+  if (!$display_found) {
+    return NULL;
+  }
+
+  $access_key = file_create_url($uri);
+  $filepath = str_replace($GLOBALS['base_url'], '', $access_key);
+
+  if (isset($_SESSION['jplayer_protect'][$access_key])) {
+    $started = (int)$_SESSION['jplayer_protect'][$access_key];
+  }
+  else {
+    // We need to figure out how the browser would have URL-encoded the file
+    // name. If mod_rewrite is modifying the URL, it will decode URL-encoded
+    // characters, so we need to check both.
+    $encoded = str_replace($file->filename, rawurlencode($file->filename), $filepath);
+    // TODO replace this with the path to the files directory?
+    $encoded = str_replace('sites/default/files', 'system/files', $encoded);
+    // For some reason ampersands are encoded twice by the browser.
+    $encoded = str_replace("%26", "%2526", $encoded);
+    $encoded_access_key = $GLOBALS['base_url'] . '/' . $encoded;
+
+    if (isset($_SESSION['jplayer_protect'][$encoded_access_key])) {
+      $access_key = $encoded_access_key;
+      $started = (int)$_SESSION['jplayer_protect'][$access_key];
+    }
+  }
+
+  // Now we know that content protection is enabled, at least one display for
+  // the field uses jPlayer, and we know when the player last started to access
+  // the file.
+  if (isset($started) && $started) {
+    if (time() <= ($started + variable_get('jplayer_access_time', 30))) {
+      // Allow access, and immediately expire access to the file. Some browsers
+      // (such as Chrome) send multiple HTTP requests for an <audio> element,
+      // so if the RANGE header is set we continue to allow access. Also,
+      // AppleCoreMedia in OS X 10.7 makes multiple requests in an attempt to
+      // fetch metadata about the audio. So, we ignore those requests until the
+      // agent indicates that the connection can be closed.
+      if (!isset($_SERVER['HTTP_RANGE']) && !(strpos($_SERVER['HTTP_USER_AGENT'], 'AppleCoreMedia') !== FALSE && strpos($_SERVER['HTTP_CONNECTION'], "keep-alive") !== FALSE)) {
+        unset($_SESSION['jplayer_protect'][$access_key]);
+      }
+      return NULL;
+    }
+  }
+
+  // Otherwise, deny access as the last played time is too far in the past.
+  $denied = new stdClass();
+  $denied->uid = $GLOBALS['user']->uid;
+  $denied->fid = $file->fid;
+  $denied->hostname = ip_address();
+  $denied->timestamp = REQUEST_TIME;
+  drupal_write_record('jplayer_protect_denied', $denied);
+  return -1;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function jplayer_protect_form_jplayer_settings_form_alter(&$form, &$form_state, $form_id) {
+  module_load_include('inc', 'jplayer_protect', 'jplayer_protect.admin');
+  jplayer_protect_settings_form($form, $form_state);
+}
+
+/**
+ * Implements hook_jplayer_add_js().
+ */
+function jplayer_protect_jplayer_add_js() {
+  if (!variable_get('jplayer_protect', FALSE)) {
+    return;
+  }
+
+  $settings = array(
+    'jPlayer' => array(
+      'protect' => variable_get('jplayer_protect', FALSE),
+    ),
+  );
+  drupal_add_js($settings, array('type' => 'setting'));
+
+  return array(
+    'jplayer_protect' => array(
+      '#attached' => array(
+        'js' => array(
+          drupal_get_path('module', 'jplayer_protect') . '/jplayer-protect.js' => array(
+            'type' => 'file',
+            'scope' => 'footer',
+            'group' => JS_DEFAULT,
+          ),
+        ),
+      ),
+    ),
+  );
+
+}
+
