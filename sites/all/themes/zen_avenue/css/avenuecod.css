@@ -706,7 +706,56 @@ h2.feature-title {
 
 
 
-/* PODCASTS */
+/* PODCASTS - Teaser */
+
+.page-podcasts h2.pane-title {
+	font-size: 36px;
+	margin-bottom: 20px;
+	margin-top: -5px;
+	text-transform: none;
+}
+
+.node-podcast.node-teaser h3 {
+	font-weight: bold;
+}
+
+
+.node-page.view-mode-intro .field-name-field-page-image,
+.field-name-field-podcast-image {
+	width: 25%;
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+
+.node-page.view-mode-intro .field-name-field-page-image img,
+.field-name-field-podcast-image img {
+	width: 100%;
+	height: auto;
+}
+
+.node-podcast .field-type-datetime span {
+	font-style: italic;
+	font-size: 80%;
+}
+
+.node-podcast.node-teaser {
+	margin-bottom: 2em!important;
+}
+
+.node-podcast.node-teaser p {
+	margin-top: .5em!important;
+	margin-bottom: .5em!important;
+}
+
+.node-podcast.node-teaser .field-name-node-link a {
+	font-style: italic;
+	font-size: 90%;
+}
+
+
+/* PODCASTS - Full */
 
 .node-type-podcast .field-name-field-podcast-image {
   float: right;
@@ -722,3 +771,6 @@ h2.feature-title {
 .node-type-podcast .field-name-field-podcast-description {
   margin-top: 1em;  
 }
+
+
+
