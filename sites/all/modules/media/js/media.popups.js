@@ -82,13 +82,11 @@ Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOpti
       return;
     }
     onSelect(selected);
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   dialogOptions.buttons[cancel] = function () {
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   Drupal.media.popups.setDialogPadding(mediaIframe.dialog(dialogOptions));
@@ -100,8 +98,6 @@ Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOpti
 
 Drupal.media.popups.mediaBrowser.mediaBrowserOnLoad = function (e) {
   var options = e.data;
-  if (this.contentWindow.Drupal.media == undefined) return;
-
   if (this.contentWindow.Drupal.media.browser.selectedMedia.length > 0) {
     var ok = (Drupal && Drupal.t) ? Drupal.t('OK') : 'OK';
     var ok_func = $(this).dialog('option', 'buttons')[ok];
@@ -131,8 +127,7 @@ Drupal.media.popups.mediaBrowser.finalizeSelection = function () {
     return;
   }
   onSelect(selected);
-  $(this).dialog("destroy");
-  $(this).remove();
+  $(this).dialog("close");
 }
 
 /**
@@ -183,13 +178,11 @@ Drupal.media.popups.mediaStyleSelector = function (mediaFile, onSelect, options)
       return;
     }
     onSelect(formattedMedia);
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   dialogOptions.buttons[cancel] = function () {
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   Drupal.media.popups.setDialogPadding(mediaIframe.dialog(dialogOptions));
@@ -253,22 +246,17 @@ Drupal.media.popups.mediaFieldEditor = function (fid, onSelect, options) {
   var dialogOptions = Drupal.media.popups.getDialogOptions();
 
   dialogOptions.buttons[ok] = function () {
-    alert('hell yeah');
-    return "poo";
-
     var formattedMedia = this.contentWindow.Drupal.media.formatForm.getFormattedMedia();
     if (!formattedMedia) {
       alert(notSelected);
       return;
     }
     onSelect(formattedMedia);
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   dialogOptions.buttons[cancel] = function () {
-    $(this).dialog("destroy");
-    $(this).remove();
+    $(this).dialog("close");
   };
 
   Drupal.media.popups.setDialogPadding(mediaIframe.dialog(dialogOptions));
@@ -305,15 +293,18 @@ Drupal.media.popups.getDialogOptions = function () {
     modal: true,
     draggable: false,
     resizable: false,
-    minWidth: 500,
-    width: 670,
-    height: 280,
+    minWidth: 600,
+    width: 800,
+    height: 550,
     position: 'center',
     overlay: {
       backgroundColor: '#000000',
       opacity: 0.4
     },
-    zIndex: 10000
+    zIndex: 10000,
+    close: function (event, ui) {
+      $(event.target).remove();
+    }
   };
 };
 
