@@ -1,5 +1,4 @@
 <?php
-// $Id: utility-form.inc,v 1.2 2010/12/16 05:17:44 dman Exp $
 /**
  * @file Utility form, conversion and rendering functions for image processes
  */
@@ -51,7 +50,7 @@ function imagecache_actions_validate_number(&$element, &$form_state) {
 
 /**
  * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * @see https://drupal.org/node/1354
  */
 function imagecache_actions_validate_alpha(&$element, &$form_status) {
   if (!is_numeric($element['#value']) || $element['#value'] < 1 || $element['#value'] > 100) {

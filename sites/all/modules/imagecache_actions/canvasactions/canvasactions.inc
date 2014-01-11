@@ -1,41 +1,165 @@
 <?php
-// $Id: canvasactions.inc,v 1.2.2.1 2011/01/31 12:10:53 dman Exp $
 /**
- * @file Helper functions for the text2canvas action for imagecache
+ * @file Helper functions for the canvas actions for imagecache
  *
  * @author Dan Morrison http://coders.co.nz
  *
  * Individually configurable rounded corners logic contributed by canaryMason
- * 2009 03 http://drupal.org/node/402112
+ * 2009 03 https://drupal.org/node/402112
  *
  * Better algorithm for trimming rounded corners from donquixote
- * 2009 09 http://drupal.org/node/564036
+ * 2009 09 https://drupal.org/node/564036
  *
  */
 
-if (! function_exists('imageapi_image_overlay') ) {
-  module_load_include('inc', 'imagecache_actions', 'imageapi_image_overlay');
+if (!function_exists('image_overlay')) {
+  module_load_include('inc', 'imagecache_actions', 'image_overlay');
 }
-if (! function_exists('imagecache_actions_pos_form') ) {
+if (!function_exists('imagecache_actions_pos_form')) {
   module_load_include('inc', 'imagecache_actions', 'utility-form');
 }
-if (! function_exists('imagecache_actions_keyword_filter') ) {
+if (!function_exists('imagecache_actions_keyword_filter')) {
   module_load_include('inc', 'imagecache_actions', 'utility');
+}
+
+/**
+ * Image effect form callback for the image mask effect.
+ *
+ * @param array $data
+ *   The current configuration for this image effect.
+ *
+ * @return array
+ *   The form definition for this effect.
+ */
+function canvasactions_imagemask_form(array $data) {
+  // @todo: add offset/positioning/scaling support - currently the mask is applied to the supplied image without resizing and positioned at (0,0)
+  $form = array();
+  $form['effect_help_text'] = array(
+    '#type' => 'item',
+    '#title' => t('Image mask'),
+    '#description' => t('This effect will add (or replace) a transparency channel to your image. The mask file should be a grayscale image where black is fully transparent and white is fully opaque. The referenced mask will be applied to the top left of the image.'),
+  );
+  $form['path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Mask file name'),
+    '#default_value' => isset($data['path']) ? $data['path'] : '',
+    '#description' => imagecache_actions_file_field_description(),
+    '#element_validate' => array('imagecache_actions_validate_file'),
+  );
+  return $form;
+}
+
+/**
+ * Implements theme_hook() for the image mask effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
+ */
+function theme_canvasactions_imagemask_summary(array $variables) {
+  $data = $variables['data'];
+  return 'file: ' . $data['path'];
+}
+
+/**
+ * Image effect callback for the image mask effect.
+ *
+ * @param stdClass $image
+ * @param array $data
+ *
+ * @return bool
+ *   true on success, false otherwise.
+ */
+function canvasactions_imagemask_effect(stdClass $image, array $data = array()) {
+  $mask = imagecache_actions_image_load($data['path'], $image->toolkit);
+  if ($mask) {
+    // @todo: (sydneyshan) Consider best way to add offset support - I assume we
+    // would position the mask somewhere (top/left/offset px etc) and choose if
+    // the surrounding area is white or black (opaque or transparent) using an
+    // extra form element (radio). Assess existing positioning code first to
+    // reduce duplication of code. Pass the results to the following function as
+    // array($mask, $data). Perhaps add a 'scale mask to fit image'/'scale image
+    // to fit mask'/'no scale' radio group?
+    return image_toolkit_invoke('imagemask', $image, array($mask));
+  }
+  return FALSE;
+}
+
+/**
+ * GD toolkit specific implementation of the image mask effect.
+ *
+ * @param stdClass $image
+ *   Image object containing the GD image resource to operate on.
+ * @param stdClass $mask
+ *   An image object containing the image to use as mask.
+ *
+ * @return bool
+ *   true on success, false otherwise.
+ */
+function image_gd_imagemask(stdClass $image, stdClass $mask) {
+  $newPicture = imagecreatetruecolor($image->info['width'], $image->info['height']);
+  imagesavealpha($newPicture, TRUE);
+  imagealphablending($newPicture, TRUE);
+  $transparent = imagecolorallocatealpha($newPicture, 0, 0, 0, 127);
+  imagefill($newPicture, 0, 0, $transparent);
+
+  // Perform pixel-based alpha map application.
+  for ($x = 0; $x < $image->info['width']; $x++) {
+    for ($y = 0; $y < $image->info['height']; $y++) {
+      // Deal with images with mismatched sizes
+      if ($x >= $mask->info['width'] || $y >= $mask->info['height']) {
+        imagesetpixel($newPicture, $x, $y, $transparent);
+      }
+      else {
+        $alpha = imagecolorsforindex($mask->resource, imagecolorat($mask->resource, $x, $y));
+        $alpha = 127 - floor($alpha['red'] / 2);
+        $color = imagecolorsforindex($image->resource, imagecolorat($image->resource, $x, $y));
+        imagesetpixel($newPicture, $x, $y, imagecolorallocatealpha($newPicture, $color['red'], $color['green'], $color['blue'], $alpha));
+      }
+    }
+  }
+
+  // Copy back to original picture.
+  imagedestroy($image->resource);
+  $image->resource = $newPicture;
+
+  return TRUE;
 }
 
 
 /**
- * Implementation of imagecache_hook_form()
+ * Imagemagick toolkit specific implementation of the image mask effect.
  *
- * Settings for preparing a canvas.
+ * @param stdClass $image
+ *   Image object containing the image resource to operate on.
+ * @param stdClass $mask
+ *   An image object containing the image to use as mask.
  *
- * @param $action array of settings for this action
- * @return a form definition
+ * @return bool
+ *   true on success, false otherwise.
  */
-function canvasactions_definecanvas_form($action) {
-  if (image_get_toolkit() != 'gd') {
-    drupal_set_message('Define Canvas using imagemagick currently in review. Use at own risk, but let us know the results on http://drupal.org/node/818798', 'warning');
-  }
+function image_imagemagick_imagemask(stdClass $image, stdClass $mask) {
+  $image->ops[] = escapeshellarg($mask->source);
+  $image->ops[] = '-alpha Off -compose CopyOpacity -composite';
+  return TRUE;
+}
+
+
+/**
+ * Image effect form callback for the define canvas effect.
+ *
+ * @param array $data
+ *   The current configuration for this image effect.
+ *
+ * @return array
+ *   The form definition for this effect.
+ */
+function canvasactions_definecanvas_form(array $data) {
+  module_load_include('inc', 'imagecache_actions', 'utility-color');
   $defaults = array(
     'RGB' => array(
       'HEX' => '#333333',
@@ -54,20 +178,19 @@ function canvasactions_definecanvas_form($action) {
       'bottomdiff' => '',
     ),
   );
-  $action = array_merge($defaults, (array) $action);
+  $data += $defaults;
 
   $form = array(
-    'RGB' => imagecache_rgb_form($action['RGB']),
+    'RGB' => imagecache_rgb_form($data['RGB']),
     'help' => array(
-      '#type' => 'markup',
-      '#value' => t('Enter no color value for transparent. This will have the effect of adding clear margins around the image.'),
+      '#markup' => t('Enter no color value for transparent. This will have the effect of adding clear margins around the image.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ),
     'under' => array(
       '#type' => 'checkbox',
       '#title' => t('Resize canvas <em>under</em> image (possibly cropping)'),
-      '#default_value' => $action['under'],
+      '#default_value' => $data['under'],
       '#description' => t('If <em>not</em> set, this will create a solid flat layer, probably totally obscuring the source image'),
     ),
   );
@@ -77,28 +200,27 @@ function canvasactions_definecanvas_form($action) {
     '#collapsible' => TRUE,
     '#title' => 'Exact size',
     'help' => array(
-      '#type' => 'markup',
-      '#value' => t('Set the canvas to a precise size, possibly cropping the image. Use to start with a known size.'),
+      '#markup' => t('Set the canvas to a precise size, possibly cropping the image. Use to start with a known size.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ),
     'width' => array(
       '#type' => 'textfield',
       '#title' => t('Width'),
-      '#default_value' => $action['exact']['width'],
+      '#default_value' => $data['exact']['width'],
       '#description' => t('Enter a value in pixels or percent'),
       '#size' => 5,
     ),
     'height' => array(
       '#type' => 'textfield',
       '#title' => t('Height'),
-      '#default_value' => $action['exact']['height'],
+      '#default_value' => $data['exact']['height'],
       '#description' => t('Enter a value in pixels or percent'),
       '#size' => 5,
     ),
   );
-  $form['exact'] = array_merge($form['exact'], imagecache_actions_pos_form($action['exact']));
-  if (! $action['exact']['width'] && !$action['exact']['height']) {
+  $form['exact'] = array_merge($form['exact'], imagecache_actions_pos_form($data['exact']));
+  if (!$data['exact']['width'] && !$data['exact']['height']) {
     $form['exact']['#collapsed'] = TRUE;
   }
 
@@ -107,39 +229,40 @@ function canvasactions_definecanvas_form($action) {
     '#collapsible' => TRUE,
     '#title' => t('Relative size'),
     'help' => array(
-      '#type' => 'markup',
-      '#value' => '<p>' . t('Set the canvas to a relative size, based on the current image dimensions. Use to add simple borders or expand by a fixed amount. Negative values may crop the image.') . '</p>',
+      '#markup' => t('Set the canvas to a relative size, based on the current image dimensions. Use to add simple borders or expand by a fixed amount. Negative values may crop the image.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ),
     'leftdiff' => array(
       '#type' => 'textfield',
       '#title' => t('left difference'),
-      '#default_value' => $action['relative']['leftdiff'],
+      '#default_value' => $data['relative']['leftdiff'],
       '#size' => 6,
       '#description' => t('Enter an offset in pixels.'),
     ),
     'rightdiff' => array(
       '#type' => 'textfield',
       '#title' => t('right difference'),
-      '#default_value' => $action['relative']['rightdiff'],
+      '#default_value' => $data['relative']['rightdiff'],
       '#size' => 6,
       '#description' => t('Enter an offset in pixels.'),
     ),
     'topdiff' => array(
       '#type' => 'textfield',
       '#title' => t('top difference'),
-      '#default_value' => $action['relative']['topdiff'],
+      '#default_value' => $data['relative']['topdiff'],
       '#size' => 6,
       '#description' => t('Enter an offset in pixels.'),
     ),
     'bottomdiff' => array(
       '#type' => 'textfield',
       '#title' => t('bottom difference'),
-      '#default_value' => $action['relative']['bottomdiff'],
+      '#default_value' => $data['relative']['bottomdiff'],
       '#size' => 6,
       '#description' => t('Enter an offset in pixels.'),
     ),
   );
-  if (! $action['relative']['leftdiff'] && !$action['relative']['rightdiff'] && !$action['relative']['topdiff'] && !$action['relative']['bottomdiff']) {
+  if (!$data['relative']['leftdiff'] && !$data['relative']['rightdiff'] && !$data['relative']['topdiff'] && !$data['relative']['bottomdiff']) {
     $form['relative']['#collapsed'] = TRUE;
   }
 
@@ -148,80 +271,80 @@ function canvasactions_definecanvas_form($action) {
 }
 
 /**
- * Implementation of theme_hook() for imagecache_ui.module
+ * Implements theme_hook() for the define canvas effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
  */
-function theme_canvasactions_definecanvas($variables) {
-  $element = $variables['element'];
-  $action = $element['#value'];
-  if ($action['exact']['width'] || $action['exact']['width']) {
-    $output = $action['exact']['width'] . 'x' . $action['exact']['height'];
-    $output .= " (" . $action['exact']['xpos'] . ', ' . $action['exact']['ypos'] . ") ";
+function theme_canvasactions_definecanvas_summary(array $variables) {
+  $data = $variables['data'];
+  if ($data['exact']['width'] || $data['exact']['height']) {
+    $w = !empty($data['exact']['width']) ? $data['exact']['width'] : '100%';
+    $h = !empty($data['exact']['height']) ? $data['exact']['height'] : '100%';
+    $x = !empty($data['exact']['xpos']) ? $data['exact']['xpos'] : '0';
+    $y = !empty($data['exact']['ypos']) ? $data['exact']['ypos'] : '0';
+    $output = "{$w}x{$h} ($x, $y)";
   }
   else {
-    $output = ' left:' . $action['relative']['leftdiff'];
-    $output .= ' right:' . $action['relative']['rightdiff'];
-    $output .= ' top:' . $action['relative']['topdiff'];
-    $output .= ' bottom:' . $action['relative']['bottomdiff'];
+    $output = ' left:' . $data['relative']['leftdiff'];
+    $output .= ' right:' . $data['relative']['rightdiff'];
+    $output .= ' top:' . $data['relative']['topdiff'];
+    $output .= ' bottom:' . $data['relative']['bottomdiff'];
   }
-  $output .= theme('imagecacheactions_rgb', array('rgb' => $action['RGB']));
-  $output .= ($action['under']) ? t(" <b>under</b> image ") : t(" <b>over</b> image ");
+  $output .= theme('imagecacheactions_rgb', array('RGB' => $data['RGB']));
+  $output .= ($data['under']) ? t(" <b>under</b> image ") : t(" <b>over</b> image ");
   return $output;
 }
 
 /**
- * Implementation of hook_image()
+ * Image effect callback for the define canvas effect.
  *
- * Creates a solid background canvas
+ * @param stdClass $image
+ * @param array $data
  *
- * Process the imagecache action on the passed image
- *
- * @param $image
- * array defining an image file, including  :
- *
- *   $image- >source as the filename,
- *
- *   $image->info array
- *
- *   $image->resource handle on the image object
+ * @return boolean
+ *   true on success, false otherwise.
  */
-function canvasactions_definecanvas_image($image, $action = array()) {
-
+function canvasactions_definecanvas_effect(stdClass $image, array $data) {
   // May be given either exact or relative dimensions.
-  // ED: check on width OR height
-  //if ($action['exact']['width'] || $action['exact']['width']) {
-  if ($action['exact']['width'] || $action['exact']['height']) {
+  if ($data['exact']['width'] || $data['exact']['height']) {
     // Allows only one dimension to be used if the other is unset.
-    if (! $action['exact']['width']) {
-      $ction['exact']['width'] = $image->info['width'];
+    if (!$data['exact']['width']) {
+      $data['exact']['width'] = $image->info['width'];
     }
-    if (! $action['exact']['height']) {
-      $action['exact']['height'] = $image->info['height'];
+    if (!$data['exact']['height']) {
+      $data['exact']['height'] = $image->info['height'];
     }
 
-    $targetsize['width'] = imagecache_actions_percent_filter($action['exact']['width'], $image->info['width']);
-    $targetsize['height'] = imagecache_actions_percent_filter($action['exact']['height'], $image->info['height']);
+    $targetsize['width'] = imagecache_actions_percent_filter($data['exact']['width'], $image->info['width']);
+    $targetsize['height'] = imagecache_actions_percent_filter($data['exact']['height'], $image->info['height']);
 
-    $targetsize['left'] = image_filter_keyword($action['exact']['xpos'], $targetsize['width'], $image->info['width']);
-    $targetsize['top'] = image_filter_keyword($action['exact']['ypos'], $targetsize['height'], $image->info['height']);
+    $targetsize['left'] = image_filter_keyword($data['exact']['xpos'], $targetsize['width'], $image->info['width']);
+    $targetsize['top'] = image_filter_keyword($data['exact']['ypos'], $targetsize['height'], $image->info['height']);
 
   }
   else {
-    // calculate relative size
-    $targetsize['width'] = $image->info['width'] + $action['relative']['leftdiff'] +  $action['relative']['rightdiff'];
-    $targetsize['height'] = $image->info['height'] + $action['relative']['topdiff'] +  $action['relative']['bottomdiff'];
-    $targetsize['left'] = $action['relative']['leftdiff'];
-    $targetsize['top'] = $action['relative']['topdiff'];
+    // Calculate relative size.
+    $targetsize['width'] = $image->info['width'] + $data['relative']['leftdiff'] + $data['relative']['rightdiff'];
+    $targetsize['height'] = $image->info['height'] + $data['relative']['topdiff'] + $data['relative']['bottomdiff'];
+    $targetsize['left'] = $data['relative']['leftdiff'];
+    $targetsize['top'] = $data['relative']['topdiff'];
   }
 
-  // convert from hex (as it is stored in the UI)
-  if ($action['RGB']['HEX'] && $deduced = imagecache_actions_hex2rgba($action['RGB']['HEX'])) {
-    $action['RGB'] = array_merge($action['RGB'], $deduced);
+  // Convert from hex (as it is stored in the UI).
+  if ($data['RGB']['HEX'] && $deduced = imagecache_actions_hex2rgba($data['RGB']['HEX'])) {
+    $data['RGB'] = array_merge($data['RGB'], $deduced);
   }
 
-  // All the maths is done, now defer to the api toolkits;
-  $action['targetsize'] = $targetsize;
+  // All the math is done, now defer to the toolkit in use.
+  $data['targetsize'] = $targetsize;
 
-  $success = image_toolkit_invoke('definecanvas', $image, array($action));
+  $success = image_toolkit_invoke('definecanvas', $image, array($data));
   if ($success) {
     $image->info['width'] = $targetsize['width'];
     $image->info['height'] = $targetsize['height'];
@@ -230,42 +353,79 @@ function canvasactions_definecanvas_image($image, $action = array()) {
 }
 
 /**
- * Draw a color (or transparency) behind an image
+ * Image dimensions callback for the define canvas effect.
  *
- * $targetsize is an array expected to contain a width,height and a left,top
- * offset.
+ * @param array $dimensions
+ *   Dimensions to be modified - an associative array containing the items
+ *   'width' and 'height' (in pixels).
+ * @param array $data
+ *   An associative array containing the effect data.
  */
-function image_gd_definecanvas($image, $action = array()) {
-  $targetsize = $action['targetsize'];
-  $RGB = $action['RGB'];
+function canvasactions_definecanvas_dimensions(array &$dimensions, array $data) {
+  // May be given either exact or relative dimensions.
+  if ($data['exact']['width'] || $data['exact']['height']) {
+    // Allows only one dimension to be used if the other is unset.
+    if (!$data['exact']['width']) {
+      $data['exact']['width'] = $dimensions['width'];
+    }
+    if (!$data['exact']['height']) {
+      $data['exact']['height'] = $dimensions['height'];
+    }
 
-  $newcanvas = imagecreatetruecolor($targetsize['width'], $targetsize['height']);
-
-  if ($RGB['HEX']) {
-    $background = imagecolorallocate($newcanvas, $RGB['red'], $RGB['green'], $RGB['blue']);
+    $dimensions['width'] = imagecache_actions_percent_filter($data['exact']['width'], $dimensions['width']);
+    $dimensions['height'] = imagecache_actions_percent_filter($data['exact']['height'], $dimensions['height']);
   }
   else {
-    // No color, attempt transparency, assume white
+    // Calculate relative sizes (only possible if we have the current size).
+    if ($dimensions['width'] !== NULL) {
+      $dimensions['width'] = $dimensions['width'] + (int) $data['relative']['leftdiff'] + (int) $data['relative']['rightdiff'];
+    }
+    if ($dimensions['height'] !== NULL) {
+      $dimensions['height'] = $dimensions['height'] + (int) $data['relative']['topdiff'] + (int) $data['relative']['bottomdiff'];
+    }
+  }
+}
+
+/**
+ * GD toolkit specific implementation of the define canvas effect.
+ *
+ * @param stdClass $image
+ * @param array $data
+ *   The parameters for this effect. $data['targetsize'] is an array expected to
+ *   contain a width, height and a left, top.
+ *
+ * @return bool
+ *   true on success, false otherwise.
+ */
+function image_gd_definecanvas(stdClass $image, array $data = array()) {
+  $targetsize = $data['targetsize'];
+  $RGB = $data['RGB'];
+
+  $newcanvas = imagecreatetruecolor($targetsize['width'], $targetsize['height']);
+  imagesavealpha($newcanvas, TRUE);
+  imagealphablending($newcanvas, FALSE);
+  imagesavealpha($image->resource, TRUE);
+  if ($RGB['HEX']) {
+    // Set color, allow it to define transparency, or assume opaque.
+    $background = imagecolorallocatealpha($newcanvas, $RGB['red'], $RGB['green'], $RGB['blue'], $RGB['alpha']);
+  }
+  else {
+    // No color, attempt transparency, assume white.
     $background = imagecolorallocatealpha($newcanvas, 255, 255, 255, 127);
-    imagesavealpha($newcanvas, TRUE);
-    imagealphablending($newcanvas, FALSE);
-    imagesavealpha($image->resource, TRUE);
   }
   imagefilledrectangle($newcanvas, 0, 0, $targetsize['width'], $targetsize['height'], $background);
-  #  imagealphablending($newcanvas, TRUE);
 
-  if ($action['under']) {
-    $canvas_object = (object) array(
-      'resource' => $newcanvas,
-      'info' => array(
+  if ($data['under']) {
+    $canvas_object = new stdClass();
+    $canvas_object->resource = $newcanvas;
+    $canvas_object->info = array(
         'width' => $targetsize['width'],
         'height' => $targetsize['height'],
-        'mime_type' => 'image/png',
-        'extension' => 'png',
-      ),
-      'toolkit' => $image->toolkit,
-    );
-    imageapi_image_overlay($canvas_object, $image, $targetsize['left'], $targetsize['top'], 100, TRUE);
+        'mime_type' => $image->info['mime_type'],
+        'extension' => $image->info['extension'],
+      );
+    $canvas_object->toolkit = $image->toolkit;
+    image_overlay($image, $canvas_object, $targetsize['left'], $targetsize['top'], 100, TRUE);
   }
   else {
     $image->resource = $newcanvas;
@@ -274,52 +434,49 @@ function image_gd_definecanvas($image, $action = array()) {
 }
 
 /**
- * Draw a color (or transparency) behind an image
- * $targetsize is an array expected to contain a width,height and a left,top
- * offset.
+ * Imagemagick toolkit specific implementation of the define canvas effect.
  *
- * Patched with code at issue http://drupal.org/node/844386
+ * @param stdClass $image
+ * @param array $data
+ *   The parameters for this effect. $data['targetsize'] is an array expected to
+ *   contain a width, height and a left, top.
+ *
+ * @return bool
+ *   true on success, false otherwise.
+ *
+ * @see http://www.imagemagick.org/script/command-line-options.php#extent
  */
-function image_imageapi_imagemagick_definecanvas($image, $action = array()) {
-  $targetsize = $action['targetsize'];
-  $RGB = $action['RGB'];
-  $backgroundcolor = $RGB['HEX'] != '' ? '#' . $RGB['HEX'] : 'None';
-  $backgroundcolor = escapeshellarg($backgroundcolor);
+function image_imagemagick_definecanvas(stdClass $image, $data = array()) {
+  // Reset any gravity settings from earlier effects.
+  $image->ops[] = '-gravity None';
 
-  # TODO needs work.
-  #
-  $background = "-background $backgroundcolor";
-  $crop = "-crop {$targetsize['width']}x{$targetsize['height']}-{$targetsize['left']}-{$targetsize['top']}!";
+  $backgroundcolor = $data['RGB']['HEX'] != '' ? '#' . $data['RGB']['HEX'] : 'None';
+  $image->ops[] = '-background ' . escapeshellarg($backgroundcolor);
 
-  if ($action['under']) {
-    $extent = "-extent {$targetsize['width']}x{$targetsize['height']}-{$targetsize['left']}-{$targetsize['top']}!";
-    $compose = "$background $crop $extent";
+  $compose_operator = $data['under'] ? 'src-over' : 'dst-over';
+  $image->ops[] = "-compose $compose_operator";
+
+  $targetsize = $data['targetsize'];
+  $geometry = sprintf('%dx%d', $targetsize['width'], $targetsize['height']);
+  if ($targetsize['left'] || $targetsize['top']) {
+    $geometry .= sprintf('%+d%+d', -$targetsize['left'], -$targetsize['top']);
   }
-  else {
-    // see http://www.imagemagick.org/Usage/canvas/#solid
-    $draw = "+matte -fill $backgroundcolor -colorize 100%";
-    $compose = "$background $crop $draw";
-  }
+  $image->ops[] = '-extent ' . escapeshellarg($geometry);
 
-  $image->ops[] = $compose;
   return TRUE;
 }
 
-////////////////////////////////////////////////
 
 /**
- * Place a given image under the current canvas
+ * Image effect form callback for the underlay (background) effect.
  *
- * Implementation of imagecache_hook_form()
+ * @param array $data
+ *   The current configuration for this image effect.
  *
- * @param $action array of settings for this action
- * @return a form definition
+ * @return array
+ *   The form definition for this effect.
  */
-function canvasactions_canvas2file_form($action) {
-  if (image_get_toolkit() != 'gd') {
-    drupal_set_message('Overlays are not currently supported by using imagemagick. This effect requires GD image toolkit only.', 'warning');
-  }
-
+function canvasactions_canvas2file_form(array $data) {
   $defaults = array(
     'xpos' => '0',
     'ypos' => '0',
@@ -327,27 +484,27 @@ function canvasactions_canvas2file_form($action) {
     'path' => '',
     'dimensions' => 'original',
   );
-  $action = array_merge($defaults, (array) $action);
+  $data = array_merge($defaults, (array) $data);
 
-  $form = imagecache_actions_pos_form($action);
+  $form = imagecache_actions_pos_form($data);
   $form['alpha'] = array(
     '#type' => 'textfield',
     '#title' => t('opacity'),
-    '#default_value' => $action['alpha'],
+    '#default_value' => $data['alpha'],
     '#size' => 6,
     '#description' => t('Opacity: 0-100. Be aware that values other than 100% may be slow to process.'),
   );
   $form['path'] = array(
     '#type' => 'textfield',
     '#title' => t('file name'),
-    '#default_value' => $action['path'],
-    '#description' => t('File may be in the "files/" folder, or relative to the Drupal siteroot.'),
-    '#element_validate' => array('canvasactions_file2canvas_validate_file'),
+    '#default_value' => $data['path'],
+    '#description' => imagecache_actions_file_field_description(),
+    '#element_validate' => array('imagecache_actions_validate_file'),
   );
   $form['dimensions'] = array(
     '#type' => 'radios',
     '#title' => t('final dimensions'),
-    '#default_value' => $action['dimensions'],
+    '#default_value' => $data['dimensions'],
     '#options' => array(
       'original' => 'original (dimensions are retained)',
       'background' => 'background (image will be forced to match the size of the background)',
@@ -360,114 +517,145 @@ function canvasactions_canvas2file_form($action) {
 }
 
 /**
- * Implementation of theme_hook() for imagecache_ui.module
+ * Implements theme_hook() for the underlay (background) effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
  */
-function theme_canvasactions_canvas2file($variables) {
-  $element = $variables['element'];
-  $data = $element['#value'];
-
-  $filepath = $data['path'];
-  if (!file_exists($filepath) ) {
-    $filepath = file_default_scheme() . '://' . $data['path'];
-  }
-  $file_url = url($filepath);
-  return "xpos:{$data['xpos']} , ypos:{$data['ypos']} alpha:{$data['alpha']}%. file path: <a href='$file_url'>" . basename($data['path']) . "</a>, dimensions:{$data['dimensions']}";
+function theme_canvasactions_canvas2file_summary($variables) {
+  $data = $variables['data'];
+  $file = $data['path'];
+  return "xpos:{$data['xpos']} , ypos:{$data['ypos']} alpha:{$data['alpha']}%. file: $file, dimensions:{$data['dimensions']}";
 }
 
 /**
- * Place the source image on the current background
+ * Image effect callback for the underlay (background) effect.
  *
- * Implementation of hook_image()
+ * @param stdClass $image
+ * @param array $data
  *
- * Note - this is currently incompatable with imagemagick, due to the way it
- * addresses $image->resource directly - a gd only thing.
- *
- * @param $image
- * @param $action
+ * @return boolean
+ *   true on success, false otherwise.
  */
-function canvasactions_canvas2file_image(&$image, $action = array()) {
-  // Search for full (siteroot) paths, then file dir paths, then relative to the current theme
-  $filepath = $action['path'];
-  if (!file_exists($filepath) ) {
-    $filepath = file_default_scheme() . '://' . $action['path'];
-  }
-  if (! file_exists($filepath) ) {
-    trigger_error("Failed to load underlay image $filepath.", E_USER_ERROR);
-    return FALSE;
-  }
+function canvasactions_canvas2file_effect(stdClass $image, array $data = array()) {
+  $underlay = imagecache_actions_image_load($data['path'], $image->toolkit);
+  if ($underlay) {
+    // To handle odd sizes, we will resize/crop the background image to the
+    // desired dimensions before starting the merge. The built-in
+    // imagecopymerge, and the watermark library both do not allow overlays to
+    // be bigger than the target.
 
-  $underlay = image_load($filepath, $image->toolkit);
+    // Adjust size.
+    $crop_rules = array(
+      'xoffset' => 0,
+      'yoffset' => 0,
+    );
+    if (empty($data['dimensions'])) {
+      $data['dimensions'] = 'original';
+    }
+    switch ($data['dimensions']) {
+      case 'original':
+        // If the underlay is smaller than the target size,
+        // then when preparing the underlay by cropping it,
+        // the offsets may need to be negative
+        // which will produce a 'cropped' image larger than the original.
+        // In this case, we need to calculate the position of the bg image
+        // in relation to the space it will occupy under the top layer
+        //$crop_rules['xoffset'] = $underlay->info['width'] - $image->info['width'] ;
 
-  // To handle odd sizes, we will resize/crop the background image to the desired dimensions before
-  // starting the merge. The built-in imagecopymerge, and the watermark library both do not
-  // allow overlays to be bigger than the target.
-  // Adjust size
-  $crop_rules = array(
-    'xoffset' => 0,
-    'yoffset' => 0,
-  );
-  if (empty($action['dimensions'])) {
-    $action['dimensions'] = 'original';
+        $crop_rules['width'] = $image->info['width'];
+        $crop_rules['height'] = $image->info['height'];
+        break;
+      case 'background':
+        $crop_rules['width'] = $underlay->info['width'];
+        $crop_rules['height'] = $underlay->info['height'];
+        break;
+      case 'minimum':
+        $crop_rules['width'] = min($underlay->info['width'], $image->info['width']);
+        $crop_rules['height'] = min($underlay->info['height'], $image->info['height']);
+        break;
+      case 'maximum':
+        $crop_rules['width'] = max($underlay->info['width'], $image->info['width']);
+        $crop_rules['height'] = max($underlay->info['height'], $image->info['height']);
+        break;
+    }
+    // imageapi crop assumes upsize is legal.
+
+    // Crop both before processing to avoid unwanted processing.
+    image_crop_effect($underlay, $crop_rules);
+    // @todo: BUG - this doesn't position either
+    // Actually this fails because imagecache_crop fills it with solid color when 'cropping' to a larger size.
+    //imagecache_crop_image($image, $crop_rules);
+    //dpm(get_defined_vars());
+    // This func modifies the underlay image by ref, placing the current canvas on it.
+    if (image_overlay($image, $underlay, $data['xpos'], $data['ypos'], $data['alpha'], TRUE)) {
+      //$image->resource = $underlay->resource;
+      $image = $underlay; //@todo: this is a no-op.
+      return TRUE;
+    }
   }
-  switch ($action['dimensions']) {
-    case 'original':
-      // If the underlay is smaller than the target size,
-      // then when preparing the underlay by cropping it,
-      // the offsets may need to be negative
-      // which will produce a 'cropped' image larger than the original
-      // In this case, we need to calculate the position of the bg image
-      // in relation to the space it will occupy under the top layer
-      #$crop_rules['xoffset'] = $underlay->info['width'] - $image->info['width'] ;
+  return FALSE;
+}
 
-      $crop_rules['width'] = $image->info['width'];
-      $crop_rules['height']  = $image->info['height'];
+/**
+ * Image dimensions callback for the underlay (background) effect.
+ *
+ * @param array $dimensions
+ *   Dimensions to be modified - an associative array containing the items
+ *   'width' and 'height' (in pixels).
+ * @param array $data
+ *   An associative array containing the effect data.
+ */
+function canvasactions_canvas2file_dimensions(array &$dimensions, array $data) {
+  if ($data['dimensions'] !== 'original') {
+    $underlay = imagecache_actions_image_load($data['path']);
+    if ($underlay) {
+      // If the new dimensions are taken from the background, we don't need to
+      // know the original dimensions, we can just set the new dimensions to the
+      // dimensions of the background. Otherwise, we need to know the old
+      // dimensions. If unknown we have to leave them unknown.
+      switch ($data['dimensions']) {
+        case 'background':
+          $dimensions['width'] = $underlay->info['width'];
+          $dimensions['height'] = $underlay->info['height'];
+          break;
+        case 'minimum':
+          if ($dimensions['width'] !== NULL) {
+            $dimensions['width'] = min($underlay->info['width'], $dimensions['width']);
+          }
+          if ($dimensions['height'] !== NULL) {
+            $dimensions['height'] = min($underlay->info['height'], $dimensions['height']);
+          }
+          break;
+        case 'maximum':
+          if ($dimensions['width'] !== NULL) {
+            $dimensions['width'] =  max($underlay->info['width'], $dimensions['width']);
+          }
+          if ($dimensions['height'] !== NULL) {
+            $dimensions['height'] = max($underlay->info['height'], $dimensions['height']);
+          }
       break;
-    case 'background':
-      $crop_rules['width'] = $underlay->info['width'];
-      $crop_rules['height'] = $underlay->info['height'];
-      break;
-    case 'minimum':
-      $crop_rules['width'] = min($underlay->info['width'], $image->info['width']);
-      $crop_rules['height'] = min($underlay->info['height'], $image->info['height']);
-      break;
-    case 'maximum':
-      $crop_rules['width'] = max($underlay->info['width'], $image->info['width']);
-      $crop_rules['height'] = max($underlay->info['height'], $image->info['height']);
-      break;
-  }
-  // imageapi crop assumes upsize is legal.
-  imagecache_include_standard_actions(); // ensure the library is loaded.
-
-  // Crop both before processing to avoid unwanted processing.
-  image_crop_effect($underlay, $crop_rules);
-  # BUG - this doesn't position either
-  // Actually this fails because imagecache_crop fills it with solid color when 'cropping' to a larger size.
-  #imagecache_crop_image($image, $crop_rules);
-  #dpm(get_defined_vars());
-  // This func modifies the underlay image by ref, placing the current canvas on it
-  //TODO: module image, function: image_effect_apply does not pass by reference, does this work?
-  if (imageapi_image_overlay($underlay, $image, $action['xpos'], $action['ypos'], $action['alpha'], TRUE)) {
-    #$image->resource = $underlay->resource;
-    $image = $underlay;
-    return TRUE;
+      }
+    }
   }
 }
 
-////////////////////////////////////////////////
-
 
 /**
- * Place a given image on top of the current canvas
+ * Image effect form callback for the overlay (watermark) effect.
  *
- * Implementation of imagecache_hook_form()
+ * @param array $data
+ *   The current configuration for this image effect.
  *
- * @param $action array of settings for this action
- * @return a form definition
+ * @return array
+ *   The form definition for this effect.
  */
-function canvasactions_file2canvas_form($action) {
-  if (image_get_toolkit() != 'gd') {
-    drupal_set_message('Overlays are not currently supported by using imagemagick. This effect requires GD image toolkit only.', 'warning');
-  }
+function canvasactions_file2canvas_form(array $data) {
 
   $defaults = array(
     'xpos' => '',
@@ -475,185 +663,177 @@ function canvasactions_file2canvas_form($action) {
     'alpha' => '100',
     'path' => '',
   );
-  $action = array_merge($defaults, (array) $action);
+  $data = array_merge($defaults, (array) $data);
 
   $form = array(
     'help' => array(
-      '#type' => 'markup',
-      '#value' => t('Note that using a transparent overlay that is larger than the source image may result in unwanted results - a solid background.'),
+      '#markup' => t('Note that using a transparent overlay that is larger than the source image may result in unwanted results - a solid background.'),
     ),
   );
-  $form += imagecache_actions_pos_form($action);
+  $form += imagecache_actions_pos_form($data);
   $form['alpha'] = array(
     '#type' => 'textfield',
     '#title' => t('opacity'),
-    '#default_value' => $action['alpha'],
+    '#default_value' => $data['alpha'],
     '#size' => 6,
     '#description' => t('Opacity: 0-100. <b>Warning:</b> Due to a limitation in the GD toolkit, using an opacity other than 100% requires the system to use an algorithm that\'s much slower than the built-in functions. If you want partial transparency, you are better to use an already-transparent png as the overlay source image.'),
   );
   $form['path'] = array(
     '#type' => 'textfield',
     '#title' => t('file name'),
-    '#default_value' => $action['path'],
-    '#description' => t('File may be in the "files/" folder, or relative to the Drupal siteroot.'),
-    '#element_validate' => array('canvasactions_file2canvas_validate_file'),
+    '#default_value' => $data['path'],
+    '#description' => imagecache_actions_file_field_description(),
+    '#element_validate' => array('imagecache_actions_validate_file'),
   );
   return $form;
 }
 
-
 /**
- * Check if the named file is available
+ * Implements theme_hook() for the overlay (watermark) effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
  */
-function canvasactions_file2canvas_validate_file(&$element, &$form_status) {
-  if (! file_exists($element['#value']) && ! file_exists(file_default_scheme() . '://' . $element['#value'])) {
-    form_error($element, t("Unable to find the named file '%filepath' in either the site or the files directory. Please check the path. Use relative paths only.", array('%filepath' => $element['#value'])) );
-  }
+function theme_canvasactions_file2canvas_summary(array $variables) {
+  $data = $variables['data'];
+  return '<strong>' . $data['path'] . '</strong> x:' . $data['xpos'] . ', y:' . $data['ypos'] . ' alpha:' . (@$data['alpha'] ? $data['alpha'] : 100) . '%';
 }
 
 /**
- * Implementation of theme_hook() for imagecache_ui.module
+ * Image effect callback for the overlay (watermark) image effect.
+ *
+ * @param stdClass $image
+ * @param array $data
+ *
+ * @return boolean
+ *   true on success, false otherwise.
  */
-function theme_canvasactions_file2canvas($variables) {
-  $element = $variables['element'];
-  $action = $element['#value'];
-  return '<strong>' . basename($action['path']) . '</strong> x:' . $action['xpos'] . ', y:' . $action['ypos'] . ' alpha:' . (@$action['alpha'] ? $action['alpha'] : 100) . '%';
+function canvasactions_file2canvas_effect(stdClass $image, array $data = array()) {
+  $overlay = imagecache_actions_image_load($data['path']);
+  if ($overlay) {
+    if (!isset($data['alpha'])) {
+      $data['alpha'] = 100;
+    }
+    return image_overlay($image, $overlay, $data['xpos'], $data['ypos'], $data['alpha']);
+  }
+  return FALSE;
 }
 
-/**
- * Place the source image on the current background
- *
- * Implementation of hook_image()
- *
- *
- * @param $image
- * @param $action
- */
-function canvasactions_file2canvas_image($image, $action = array()) {
-  // search for full (siteroot) paths, then file dir paths, then relative to the current theme
-  if (file_exists($action['path'])) {
-    $overlay = image_load($action['path'], $image->toolkit);
-  }
-  else if (file_exists(file_default_scheme() . '://' . $action['path'])) {
-    $overlay = image_load(file_default_scheme() . '://' . $action['path'], $image->toolkit);
-  }
-  if (! isset($overlay) || ! $overlay) {
-    trigger_error(t("Failed to find overlay image %path for imagecache_actions file-to-canvas action. File was not found in the sites 'files' path or the current theme folder.", array('%path' => $action['path'])), E_USER_WARNING);
-    // return FALSE;
-    // Warn, but continue anyway
-    return TRUE;
-  }
-  if (! isset($action['alpha']) ) {
-    $action['alpha'] = 100;
-  }
-  return imageapi_image_overlay($image, $overlay, $action['xpos'], $action['ypos'], $action['alpha']);
-}
-
-///////////////////////////////////////////////////////////////////
 
 /**
- * Place the source image on top of the current canvas
+ * Image effect form callback for the overlay: source image to canvas effect.
  *
- * Implementation of imagecache_hook_form()
+ * @param array $data
+ *   The current configuration for this image effect.
  *
- *
- *
- * @param $action array of settings for this action
- * @return a form definition
+ * @return array
+ *   The form definition for this effect.
  */
-function canvasactions_source2canvas_form($action) {
+function canvasactions_source2canvas_form($data) {
   $defaults = array(
     'xpos' => '',
     'ypos' => '',
     'alpha' => '100',
     'path' => '',
   );
-  $action = array_merge($defaults, (array) $action);
+  $data = array_merge($defaults, (array) $data);
 
-  $form = imagecache_actions_pos_form($action);
+  $form = imagecache_actions_pos_form($data);
   $form['alpha'] = array(
     '#type' => 'textfield',
     '#title' => t('opacity'),
-    '#default_value' => $action['alpha'],
+    '#default_value' => $data['alpha'],
     '#size' => 6,
     '#description' => t('Opacity: 0-100.'),
   );
   return $form;
 }
 
-
-
 /**
- * Implementation of theme_hook() for imagecache_ui.module
+ * Implements theme_hook() for the overlay: source img to canvas effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
  */
-function theme_canvasactions_source2canvas($variables) {
-  $element = $variables['element'];
-  $data = $element['#value'];
+function theme_canvasactions_source2canvas_summary(array $variables) {
+  $data = $variables['data'];
   return 'xpos:' . $data['xpos'] . ', ypos:' . $data['ypos'] . ' alpha:' . $data['alpha'] . '%';
 }
 
 /**
- * Place the source image on the current background
+ * Image effect callback for the overlay: source image to canvas effect.
  *
- * Implementation of hook_image()
+ * @param stdClass $image
+ * @param array $data
  *
- *
- * @param $image
- * @param $action
+ * @return boolean
+ *   true on success, false otherwise.
  */
-function canvasactions_source2canvas_image($image, $action = array()) {
-  $overlay = image_load($image->source); // this probably means opening the image twice. c'est la vie
-  return imageapi_image_overlay($image, $overlay, $action['xpos'], $action['ypos'], $action['alpha']);
+function canvasactions_source2canvas_effect(stdClass $image, array $data = array()) {
+  $overlay = image_load($image->source, $image->toolkit);
+  return image_overlay($image, $overlay, $data['xpos'], $data['ypos'], $data['alpha']);
 }
 
-///////////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////////
 
 /**
- * Switch between presets depending on logic
+ * Image effect form callback for the aspect switcher effect.
  *
- * Implementation of imagecache_hook_form()
+ * @param array $data
+ *   The current configuration for this image effect.
  *
- * @param $action array of settings for this action
- * @return a form definition
+ * @return array
+ *   The form definition for this effect.
  */
-function canvasactions_aspect_form($action) {
+function canvasactions_aspect_form(array $data) {
   $defaults = array(
     'ratio_adjustment' => 1,
-    'portrait' => NULL,
-    'landscape' => NULL,
+    'portrait' => '',
+    'landscape' => '',
   );
-  $action = array_merge($defaults, (array)$action);
+  $data = array_merge($defaults, (array) $data);
 
   $form = array(
     'help' => array(
-      '#type' => 'markup',
-      '#value' => t('You must create the two presets to use <em>before</em> enabling this process.'),
+      '#markup' => t('You must create the two presets to use <em>before</em> enabling this process.'),
     )
   );
 
-  $styles = image_style_options(TRUE);
+  // The PASS_THROUGH parameter is new as of D7.23, and is added here to prevent
+  // image_style_options() from double-encoding the human-readable image style
+  // name, since the form API will already sanitize options in a select list.
+  $styles = image_style_options(TRUE, PASS_THROUGH);
+  // @todo: remove the current style to prevent (immediate) recursion?
 
   $form['portrait'] = array(
     '#type' => 'select',
     '#title' => t('Style to use if the image is portrait (vertical)'),
-    '#default_value' => $action['portrait'],
+    '#default_value' => $data['portrait'],
     '#options' => $styles,
+    '#description' => t('If you choose none, no extra processing will be done.'),
   );
   $form['landscape'] = array(
     '#type' => 'select',
     '#title' => t('Style to use if the image is landscape (horizontal)'),
-    '#default_value' => $action['landscape'],
+    '#default_value' => $data['landscape'],
     '#options' => $styles,
+    '#description' => t('If you choose none, no extra processing will be done.'),
   );
 
   $form['ratio_adjustment'] = array(
     '#type' => 'textfield',
     '#title' => t('Ratio Adjustment (advanced)'),
     '#size' => 3,
-    '#default_value' => $action['ratio_adjustment'],
+    '#default_value' => $data['ratio_adjustment'],
     '#description' => t("
 This allows you to bend the rules for how different the proportions need to be to trigger the switch.
 <br/>If the (width/height)*n is greater than 1, use 'landscape', otherwise use 'portrait'.
@@ -662,74 +842,97 @@ This allows you to bend the rules for how different the proportions need to be t
 If n < 1 then blunt portraits will be treated as landscape.
     "),
   );
-
-
   return $form;
 }
 
 
 /**
- * Implementation of theme_hook() for imagecache_ui.module
+ * Implements theme_hook() for the aspect switcher effect summary.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: The current configuration for this image effect.
+ *
+ * @return string
+ *   The HTML for the summary of this image effect.
+ * @ingroup themeable
  */
-function theme_canvasactions_aspect($variables) {
-  $element = $variables['element'];
-  $action = $element['#value'];
-  $styles = image_style_loads(TRUE);
-  $ratio_adjustment = '';
-  if ($action['ratio_adjustment'] != 1) {
-    $ratio_adjustment = " (switch at 1:{$action['ratio_adjustment']})";
+function theme_canvasactions_aspect_summary(array $variables) {
+  $data = $variables['data'];
+
+  $label = imagecache_actions_get_style_label($data['portrait']);
+  $output = t('Portrait size: %label', array('%label' => $label));
+  $label = imagecache_actions_get_style_label($data['landscape']);
+  $output .= ', ' . t('Landscape size: %label', array('%label' => $label));
+  if ($data['ratio_adjustment'] != 1) {
+    $output .= ', ' . t("(switch at 1:@ratio_adjustment)", array('@ratio_adjustment' => $data['ratio_adjustment']));
   }
-  return 'Portrait size: <strong>'. $action['portrait'] . '</strong>. Landscape size: <strong>'. $action['landscape'] .'</strong>'. $ratio_adjustment ;
+  return trim($output);
 }
 
 /**
- * Choose the action and trigger that.
+ * Image effect callback for the aspect switcher effect.
  *
- * Implementation of hook_image()
+ * @param stdClass $image
+ * @param array $data
  *
- * @param $image
- * @param $action
+ * @return boolean
+ *   true on success, false otherwise.
  */
-function canvasactions_aspect_image($image, $action = array()) {
-  $ratio_adjustment = 0 + $action['ratio_adjustment'];
-  if (!$ratio_adjustment) {
-    $ratio_adjustment = 1;
-  }
+function canvasactions_aspect_effect(stdClass $image, array $data = array()) {
+  $ratio_adjustment = isset($data['ratio_adjustment']) ? floatval( $data['ratio_adjustment']) : 1;
   $aspect = $image->info['width'] / $image->info['height'];
+
   // width / height * adjustment. If > 1, it's wide.
-  $style_name = (($aspect * $ratio_adjustment) > 1) ? $action['landscape'] : $action['portrait'];
+  $style_name = (($aspect * $ratio_adjustment) > 1) ? $data['landscape'] : $data['portrait'];
+
+  if (empty($style_name)) {
+    // Do nothing. just return what we've got.
+    return TRUE;
+  }
+
   $style = image_style_load($style_name);
 
-  if (empty($preset)) {
+  if (empty($style)) {
     // Required preset has gone missing?
-    watchdog('imagecache_canvasactions', "When running 'aspect' action, I was unable to load sub-action %preset_name. Either it's been deleted or the DB needs an update", array('%preset_name' => $preset_name), WATCHDOG_ERROR);
+    watchdog('imagecache_canvasactions', "When running 'aspect' action, I was unable to load sub-action %style_name. Either it's been deleted or the DB needs an update", array('%style_name' => $style_name), WATCHDOG_ERROR);
     return FALSE;
   }
 
-  // Run the preset actions ourself. Cannot invoke a preset from the top as it handles filenames, not image objects.
-  // ripped from imagecache_build_derivative()
+  // Run the preset actions ourself.
   foreach ($style['effects'] as $sub_effect) {
-
-    // These actions really should interpret the parameters themselves.
-    foreach (array('height', 'width') as $param) {
-     if (isset($sub_effect['data'][$param])) {
-       $sub_effect['data'][$param] = imagecache_actions_percent_filter($sub_effect['data'][$param], $image->info[$param]);
-      }
-    }
-
-    foreach (array(
-      'xoffset' => 'width',
-      'yoffset' => 'height',
-    ) as $param => $direction) {
-      if (isset($sub_effect['data'][$param])) {
-        $sub_effect['data'][$param] = image_filter_keyword($sub_effect['data'][$param], $image->info[$direction], $sub_action['data'][$direction]);
-      }
-    }
-
     image_effect_apply($image, $sub_effect);
   }
   return TRUE;
 }
 
-
-///////////////////////////////////////////////////////////////////
+/**
+ * Image dimensions callback for the aspect switcher effect.
+ *
+ * @param array $dimensions
+ *   Dimensions to be modified - an associative array containing the items
+ *   'width' and 'height' (in pixels).
+ * @param array $data
+ *   An associative array containing the effect data.
+ */
+function canvasactions_aspect_dimensions(array &$dimensions, array $data) {
+  if (!isset($dimensions['width']) || !isset($dimensions['height'])) {
+    // We cannot know which preset would be executed and thus cannot know the
+    // resulting dimensions, unless both styles return the same dimensions:
+    $landscape_dimensions = $portrait_dimensions = $dimensions;
+    image_style_transform_dimensions($data['landscape'], $landscape_dimensions);
+    image_style_transform_dimensions($data['portrait'], $portrait_dimensions);
+    if ($landscape_dimensions == $portrait_dimensions) {
+      $dimensions = $landscape_dimensions;
+    }
+    else {
+      $dimensions['width'] = $dimensions['height'] = NULL;
+    }
+  }
+  else {
+    $ratio_adjustment = isset($data['ratio_adjustment']) ? floatval( $data['ratio_adjustment']) : 1;
+    $aspect = $dimensions['width'] / $dimensions['height'];
+    $style_name = (($aspect * $ratio_adjustment) > 1) ? $data['landscape'] : $data['portrait'];
+    image_style_transform_dimensions($style_name, $dimensions);
+  }
+}

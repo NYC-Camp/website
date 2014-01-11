@@ -1,5 +1,4 @@
 <?php
-// $Id: transparency.inc,v 1.2.2.2 2011/02/03 21:26:11 dman Exp $
 /**
  * @file Helper functions for the alpha action for imagecache
  *
@@ -19,17 +18,20 @@ function imagecache_alpha_form($action) {
   $defaults = array(
     'flatten' => FALSE,
     'RGB' => array('HEX' => '#000000'),
+    'opacity' => 0.5,
   );
   $action = array_merge($defaults, (array) $action);
 
   $form = array();
-  $form['help'] = array('#value' => t(
-    "<p>You can <em>either</em> set the alpha values of the image to a fixed
+  $form['help'] = array(
+    '#markup' => t("
+      <p>You can <em>either</em> set the alpha values of the image to a fixed
       amount by defining opacity, <em>or</em> choose a color and let the
       darkness of the image pixels define an opacity.
       These are different effects. Don't do both
       or you will just get a plain block of color of a certain opacity.
-    "));
+    ")
+  );
 
   $form['opacity'] = array(
     '#type' => 'textfield',
@@ -172,10 +174,10 @@ function imagecache_alpha_image($image, $data = array()) {
  *
  * This algorithm runs maths per-pixel, and therefore is incredibly much more
  * inefficient than any native routine. Will kill the server on large images.
+ * 
+ * @param $opacity between 0 transparent and 1 solid.
  */
 function png_color2alpha($image, $color, $opacity = NULL) {
-  #$image->info['extension'] = 'png';
-  #$image->info['mime_type'] = 'image/png';
   $info = $image->info;
   if (!$info) {
     return FALSE;
@@ -191,35 +193,42 @@ function png_color2alpha($image, $color, $opacity = NULL) {
   $width = imagesx($im1);
   $height = imagesy($im1);
 
-  if (($width * $height) > (600 * 600)) {
+  if (($width * $height) > (1200 * 1200)) {
     watchdog('imagecache_actions', __FUNCTION__ . " on {$image->source}. Image is TOO BIG to run the per-pixel algorithm. Aborting.");
     return TRUE;
   }
-  dpm(get_defined_vars());
-  for ($i = 0; $i < $height; $i++) { //this loop traverses each row in the image
-    for ($j = 0; $j < $width; $j++) { //this loop traverses each pixel of each row
+  for ($i = 0; $i < $height; $i++) {
+    //this loop traverses each row in the image
+    for ($j = 0; $j < $width; $j++) { 
+      //this loop traverses each pixel of each row
       // Get the color & alpha info of the current pixel.
       $retrieved_color = imagecolorat($im1, $j, $i); // an index
       $rgba_array = imagecolorsforindex($im1, $retrieved_color);
+      $alpha = 127;
 
-      if ($opacity) {
-        // It's a user-defined alpha value
-        $alpha = (1 -$opacity) * 127;
-      }
-      else {
-        // Calculate the total shade value of this pixel.
+      // Calculate the total shade value of this pixel.
+      
+      // If the rule sets a color, then the darkness of the existing 
+      // pixel will define the desired alpha value.
+      if ($color) {
         $lightness = ( $rgba_array['red'] + $rgba_array['green'] + $rgba_array['blue'] ) / 3;
         // Need to flip the numbers around before doing maths.
         #$opacity = 1-($rgba_array['alpha']/127);
         #$darkness = 1-($lightness/256); // 0 is white, 1 is black
         #$visibility = $darkness * $opacity;
         #$alpha = (1-$visibility) * 127;
-
         $alpha = (1 - ((1 -($lightness / 256)) * (1 -($rgba_array['alpha'] / 127)))) * 127;
       }
+      // If color is NOT set, then the existing color is passed though, only 
+      // made somewhat transparent.
       if (!$color) {
         $background = $rgba_array;
       }
+      if ($opacity) {
+        // It's a user-defined alpha value
+        $alpha = $alpha * $opacity;
+      }
+      
       // Paint the pixel.
       $color_to_paint = imagecolorallocatealpha($image->resource, $background['red'], $background['green'], $background['blue'], $alpha);
       imagesetpixel($image->resource, $j, $i, $color_to_paint);

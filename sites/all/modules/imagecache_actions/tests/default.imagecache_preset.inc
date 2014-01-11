@@ -1,5 +1,4 @@
 <?php
-// $ID:  $
 /**
  * @file
  *   Test imagecache preset.
@@ -10,7 +9,7 @@
  */
 
 $presets['default'] = array (
-  'presetname' => 'default',
+  'name' => 'default',
   '#weight' => -1,
-  'actions' => array(),
+  'effects' => array(),
 );

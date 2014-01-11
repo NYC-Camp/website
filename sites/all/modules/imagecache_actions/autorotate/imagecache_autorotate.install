@@ -1,28 +1,13 @@
 <?php
-// $Id: imagecache_autorotate.install,v 1.2 2010/12/16 05:17:44 dman Exp $
 /**
- * @file
- * Ensure Imagecache recognises our new actions, per http://drupal.org/node/290101.
+ * @file (un)install and (dis/en)able hooks for imagecache autorotate module.
  */
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implements hook_enable().
  */
 function imagecache_autorotate_enable() {
-  if (function_exists('imagecache_action_definitions') ) {
-    imagecache_action_definitions(TRUE);
+  if (!function_exists('exif_read_data')) {
+    drupal_set_message(t('The exif_read_data() function is not available in this PHP installation. You probably will have to enable the exif extension.'), 'warning');
   }
-  cache_clear_all('imagecache_actions', 'cache');
-}
-
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
-function imagecache_autorotate_disable() {
-  if (function_exists('imagecache_action_definitions') ) {
-    imagecache_action_definitions(TRUE);
-  }
-  cache_clear_all('imagecache_actions', 'cache');
 }
