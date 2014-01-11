@@ -1,25 +1,33 @@
-*******************************************************
-       README.txt for weight.module for Drupal
-    by Jeff Robbins ::: jeff /@t\ jjeff /d0t\ com
-    maintained by harry slaughter <harry@devbee.com>
-*******************************************************
+Overview
+--------
+This module provides a weight field for enabled content types. The default
+frontpage is overridden to sort nodes first by sticky, then weight, then created
+date. Nodes with a lower weight will be positiioned before those with higher
+weights.
 
-This module adds a weight option to enabled node types. It uses the node
-table's 'sticky' column to store weights as well as sticky information (so
-that feature is not lost). Nodes with lower weight will float to the top of
-lists, while heavier items will sink.
+Installation
+------------
+This module can be installed by following the instructions at
+http://drupal.org/node/70151.
 
-This is useful for sorting non-cronological nodes like bios or ecommerce
-products.
+Configuration
+-------------
+To enable Weight for a content type, go to Administration > Structure > Content
+types and select the content type you want to enable Weight for. Select the Weight
+vertical tab, choose your desired settings, and click the Save button.
 
-Nodes will be sorted first by stickiness, then by weight, then by creation
-date.
+Set a node weight
+-----------------
+To set the weight for a node, go to that node's edit page, select the Weight
+vertical tab, and choose the desired weight. If the content type is set to use
+menu weight, the weight selector will be disabled.
 
-TO CREATE AN ORDERABLE VIEW (Admins can reweight nodes using drag-and-drop):
+Views
+-----
+Weight includes a default view that provides a drag-and-drop interface for
+reordering nodes. Go to Administration > Structure > Views, locate the disabled
+Weight view, and click enable. This view can now be edited as normal to fit your
+needs.
 
- * Create a view as normal with a "page" display
- * Change the view style to "weight changer"
- * Include Field Weight (though not as the first field you include).
- * Sort by ASC (Ascending).
- * Ensure only appropriate roles have access to the view.
- * Load up the view, reorder, and save!
+Node weights can also be used in new or existing views as Filters, Sorts, or
+Arguments.
