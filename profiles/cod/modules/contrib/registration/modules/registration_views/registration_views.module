@@ -191,8 +191,8 @@ function registration_views_views_data_alter(&$data) {
     $data[$info['base table']]['capacity_used'] = array(
       'real field' => $info['entity keys']['id'],
       'group' => t('Registration Settings'),
-      'title' => t('Slots Used'),
-      'help' => t('Current number of slots used for this entity.'),
+      'title' => t('Spaces used'),
+      'help' => t('Current number of spaces used for this entity.'),
       'field' => array(
         'handler' => 'registration_handler_field_entity_capacity_used',
       ),

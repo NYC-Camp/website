@@ -13,7 +13,7 @@ function cod_session_user_default_roles() {
   // Exported role: session organizer.
   $roles['session organizer'] = array(
     'name' => 'session organizer',
-    'weight' => '3',
+    'weight' => 3,
   );
 
   return $roles;

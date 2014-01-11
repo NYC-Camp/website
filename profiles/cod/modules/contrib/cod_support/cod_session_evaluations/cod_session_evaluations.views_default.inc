@@ -11,11 +11,11 @@ function cod_session_evaluations_views_default_views() {
   $export = array();
 
   $view = new view;
-  $view->name = 'sessions_eval_report';
+  $view->name = 'cod_session_evaluations_report';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'sessions_eval_report';
+  $view->human_name = 'cod_sessions_evaluations_report';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -430,10 +430,10 @@ function cod_session_evaluations_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['path'] = 'sessions-eval/%';
-  $export['sessions_eval_report'] = $view;
+  $export['cod_session_evaluations_report'] = $view;
 
   $view = new view;
-  $view->name = 'sessions_speaker_review';
+  $view->name = 'cod_session_evaluations_speaker_review';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'node';
@@ -733,7 +733,7 @@ function cod_session_evaluations_views_default_views() {
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Admin Sessions';
   $handler->display->display_options['tab_options']['weight'] = '0';
-  $export['sessions_speaker_review'] = $view;
+  $export['cod_session_evaluations_speaker_review'] = $view;
 
   return $export;
 }

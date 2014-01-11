@@ -473,6 +473,8 @@ class panels_renderer_standard {
    *  A Panels pane object, as loaded from the database.
    */
   function render_pane(&$pane) {
+    module_invoke_all('panels_pane_prerender', $pane);
+
     $content = $this->render_pane_content($pane);
     if ($this->display->hide_title == PANELS_TITLE_PANE && !empty($this->display->title_pane) && $this->display->title_pane == $pane->pid) {
 

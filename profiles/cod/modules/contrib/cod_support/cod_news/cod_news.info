@@ -2,8 +2,8 @@ name = COD News
 description = News for a COD site
 core = 7.x
 package = COD
-php = 5.2.4
 project = cod_news
+dependencies[] = cod_events
 dependencies[] = comment
 dependencies[] = features
 dependencies[] = menu
@@ -11,8 +11,8 @@ dependencies[] = strongarm
 dependencies[] = views
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
-features[features_api][] = api:1
-features[field][] = node-news-body
+features[features_api][] = api:2
+features[field_instance][] = node-news-body
 features[node][] = news
 features[variable][] = comment_anonymous_news
 features[variable][] = comment_default_mode_news
@@ -22,4 +22,12 @@ features[variable][] = comment_news
 features[variable][] = comment_preview_news
 features[variable][] = comment_subject_field_news
 features[variable][] = node_options_news
-features[views_view][] = news
+features[views_view][] = cod_news
+
+
+; Information added by drush on 2013-11-26
+version = "7.x-1.0-alpha4+0-dev"
+core = "7.x"
+project = "cod_support"
+datestamp = "1385485749"
+

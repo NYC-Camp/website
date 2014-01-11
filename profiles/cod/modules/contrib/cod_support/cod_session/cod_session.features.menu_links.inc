@@ -18,11 +18,11 @@ function cod_session_menu_default_menu_links() {
     'link_title' => 'Sessions',
     'options' => array(),
     'module' => 'system',
-    'hidden' => '1',
+    'hidden' => '0',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-44',
+    'weight' => '0',
   );
   // Translatables
   // Included for use with string extractors like potx.

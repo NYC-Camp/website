@@ -11,11 +11,11 @@ function cod_session_views_plugins() {
   return array(
     'module' => 'cod_session',
     'style' => array(
-      'cod_session_schedule' => array(
+      'cod_session_session_schedule' => array(
         'title' => t('Session schedule grid'),
         'help' => t('Display view as a table with room columns and time slot rows'),
         'handler' => 'cod_session_views_plugin_style_schedule',
-        'theme' => 'cod_session_schedule',
+        'theme' => 'cod_session_session_schedule',
         'uses row plugin' => TRUE,
         'uses fields' => TRUE,
         'uses grouping' => TRUE,

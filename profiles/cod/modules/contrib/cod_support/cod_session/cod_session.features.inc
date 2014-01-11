@@ -7,12 +7,10 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function cod_session_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function cod_session_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -21,8 +19,8 @@ function cod_session_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function cod_session_views_api() {
-  return array("version" => "3.0");
+function cod_session_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -34,7 +32,7 @@ function cod_session_flag_default_flags() {
   $flags['session_confirm'] = array(
     'content_type' => 'node',
     'title' => 'Speaker confirmation flag',
-    'global' => '0',
+    'global' => 0,
     'types' => array(
       0 => 'session',
     ),
@@ -48,7 +46,7 @@ function cod_session_flag_default_flags() {
     'link_type' => 'toggle',
     'roles' => array(
       'flag' => array(
-        0 => '2',
+        0 => 2,
       ),
       'unflag' => array(),
     ),
@@ -69,7 +67,7 @@ function cod_session_flag_default_flags() {
   $flags['session_schedule'] = array(
     'content_type' => 'node',
     'title' => 'Session Attending',
-    'global' => '0',
+    'global' => 0,
     'types' => array(
       0 => 'bof_session',
       1 => 'schedule_item',
@@ -85,10 +83,10 @@ function cod_session_flag_default_flags() {
     'link_type' => 'toggle',
     'roles' => array(
       'flag' => array(
-        0 => '2',
+        0 => 2,
       ),
       'unflag' => array(
-        0 => '2',
+        0 => 2,
       ),
     ),
     'weight' => 0,
@@ -108,7 +106,7 @@ function cod_session_flag_default_flags() {
   $flags['session_vote'] = array(
     'content_type' => 'node',
     'title' => 'Session Vote',
-    'global' => '0',
+    'global' => 0,
     'types' => array(
       0 => 'session',
     ),

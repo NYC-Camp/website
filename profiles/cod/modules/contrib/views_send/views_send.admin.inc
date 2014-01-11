@@ -21,7 +21,7 @@ function views_send_settings() {
     '#title' => t('Cron throttle'),
     '#options' => $throttle,
     '#default_value' => variable_get('views_send_throttle', 20),
-    '#description' => t('Sets the numbers of messages sent per cron run. Failure to send will also be counted. Cron execution must not exceed the PHP maximum execution time of %max seconds. You find the time spend to send emails in the !recent_logs.', array('%max' => ini_get('max_execution_time'), '!recent_logs' => l(t('Recent log entries'), 'admin/reports/dblog'))),
+    '#description' => t('Sets the numbers of messages sent per cron run. Failure to send will also be counted. Cron execution must not exceed the PHP maximum execution time of %max seconds. You find the time spend to send e-mails in the !recent_logs.', array('%max' => ini_get('max_execution_time'), '!recent_logs' => l(t('Recent log entries'), 'admin/reports/dblog'))),
   );
   $form['views_send_spool_expire'] = array(
     '#type' => 'select',
@@ -32,9 +32,9 @@ function views_send_settings() {
   );
   $form['views_send_debug'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Log emails'),
+    '#title' => t('Log e-mails'),
     '#default_value' => variable_get('views_send_debug', FALSE),
-    '#description' => t('When checked all outgoing mesages are logged in the system log. A logged E-mail does not guarantee that it is send or will be delivered. It only indicates that a message is send to the PHP mail() function. No status information is available of delivery by the PHP mail() function.'),
+    '#description' => t('When checked all outgoing mesages are logged in the system log. A logged e-mail does not guarantee that it is send or will be delivered. It only indicates that a message is send to the PHP mail() function. No status information is available of delivery by the PHP mail() function.'),
   );
 
   return system_settings_form($form);

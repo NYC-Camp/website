@@ -17,7 +17,7 @@ function registration_waitlist_registration_entity_settings($settings) {
       '#type' => 'checkbox',
       '#title' => t('Enable wait list'),
       '#description' => t('When wait list is enabled, registrations made after capacity has been reached will be set to the wait list state.'),
-      '#default_value' => isset($settings['settings']['registration_waitlist_enable']) ? $settings['settings']['registration_waitlist_enable'] : array()
+      '#default_value' => isset($settings['settings']['registration_waitlist_enable']) ? $settings['settings']['registration_waitlist_enable'] : 0,
     ),
     'registration_waitlist_capacity' => array(
       '#type' => 'textfield',

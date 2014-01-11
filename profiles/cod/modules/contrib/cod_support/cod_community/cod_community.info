@@ -1,16 +1,22 @@
-name = "COD Community"
-description = "Facilitates interaction between the website's users."
+name = COD Community
+description = Facilitates interaction between the website's users.
+core = 7.x
+package = COD
+dependencies[] = cod_base
+dependencies[] = contact
+dependencies[] = entityreference
+dependencies[] = features
+dependencies[] = menu
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[user_permission][] = administer contact forms
+features[views_view][] = cod_community_attendees
+
+
+; Information added by drush on 2013-11-26
+version = "7.x-1.0-alpha4+0-dev"
 core = "7.x"
-package = "COD"
-php = "5.2.4"
-version = "7.x-1.0-dev"
-project = "cod_community"
-dependencies[] = "cod_base"
-dependencies[] = "contact"
-dependencies[] = "features"
-dependencies[] = "menu"
-dependencies[] = "views"
-features[ctools][] = "views:views_default:3.0"
-features[features_api][] = api:1
-features[user_permission][] = "administer contact forms"
-features[views_view][] = "attendees"
+project = "cod_support"
+datestamp = "1385485749"
+

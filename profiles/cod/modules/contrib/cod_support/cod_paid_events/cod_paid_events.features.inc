@@ -14,7 +14,7 @@ function cod_paid_events_commerce_product_default_types() {
       'name' => 'Paid Event',
       'description' => 'A paid event product',
       'help' => '',
-      'revision' => '1',
+      'revision' => 1,
     ),
   );
   return $items;
