@@ -13,7 +13,7 @@
 
 screenshot  = screenshot.png
 name        = Zen Sub-theme Starter Kit
-description = Read the <a href="http://drupal.org/node/873778">online docs</a> or the included README.txt on how to create a theme with Zen.
+description = Read the <a href="https://drupal.org/node/873778">online docs</a> or the included README.txt on how to create a theme with Zen.
 
 
 
@@ -44,33 +44,22 @@ base theme  = zen
 ; CSS2.1 media types: http://www.w3.org/TR/CSS21/media.html#media-types
 ; CSS3 media queries: http://www.w3.org/TR/css3-mediaqueries/
 
-; First we remove the system's menu styling since Zen has its own.
+; First we remove the system's menu and message styling since Zen has its own.
 stylesheets[all][] = system.menus.css
+stylesheets[all][] = system.messages.css
+stylesheets[all][] = system.theme.css
 
-; Then we add our own stylesheets.
-stylesheets[all][] = css/html-reset.css
-stylesheets[all][] = css/wireframes.css
-stylesheets[all][] = css/layout-fixed.css
-stylesheets[all][] = css/page-backgrounds.css
-stylesheets[all][] = css/tabs.css
-stylesheets[all][] = css/pages.css
-stylesheets[all][] = css/blocks.css
-stylesheets[all][] = css/navigation.css
-stylesheets[all][] = css/views-styles.css
-stylesheets[all][] = css/nodes.css
-stylesheets[all][] = css/comments.css
-stylesheets[all][] = css/forms.css
-stylesheets[all][] = css/fields.css
-stylesheets[all][] = css/print.css
+; Then we add our own stylesheet.
+stylesheets[all][] = css/styles.css
 
 ; Built-in conditional stylesheet support has been removed from Zen 7.x-5.x.
 ; Instead, Zen now adds conditional-comment-included classes to the html
-; element, such as .ie6, .ie7, .ie8, .ie6-7, etc. More information on this
+; element, such as .lt-ie9, .lt-ie8, .lt-ie7. More information on this
 ; technique can be found at:
 ; http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 ;
 ; If you still wish to use conditional stylesheets, you must install the
-; conditional stylesheets module: http://drupal.org/project/conditional_styles
+; conditional stylesheets module: https://drupal.org/project/conditional_styles
 ;stylesheets-conditional[lte IE 8][all][] = css/ie8.css
 
 
@@ -120,7 +109,7 @@ regions[page_bottom]    = Page bottom
 ; admin/appearance config page. This is useful for suppressing check boxes
 ; for elements not used by your sub-theme. To suppress a check box, omit the
 ; entry for it below. See the Drupal 7 Theme Guide for more info:
-; http://drupal.org/node/171205#features
+; https://drupal.org/node/171205#features
 
 features[] = logo
 features[] = name
@@ -138,11 +127,13 @@ features[] = secondary_menu
 settings[zen_breadcrumb]           = yes
 settings[zen_breadcrumb_separator] = ' › '
 settings[zen_breadcrumb_home]      = 1
-settings[zen_breadcrumb_trailing]  = 1
+settings[zen_breadcrumb_trailing]  = 0
 settings[zen_breadcrumb_title]     = 0
-settings[zen_add_html5_respond_js] = 1
 settings[zen_skip_link_anchor]     = main-menu
 settings[zen_skip_link_text]       = Jump to navigation
+settings[zen_html5_respond_meta][] = respond
+settings[zen_html5_respond_meta][] = html5
+settings[zen_html5_respond_meta][] = meta
 settings[zen_rebuild_registry]     = 1
 settings[zen_wireframes]           = 0
 
@@ -150,3 +141,7 @@ settings[zen_wireframes]           = 0
 ; uncomment the line below.
 
 ;settings[shortcut_module_link]    = 1
+
+; To add a Panels layout (which can also be used by Display Suite), uncomment
+; the line below and see the documentation at: https://drupal.org/node/495654
+;plugins[panels][layouts] = panels-layouts

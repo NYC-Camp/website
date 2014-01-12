@@ -10,7 +10,7 @@ sub-theme's templates folder.
 
 As always, when adding a new template file to your sub-theme, you will need to
 rebuild the "theme registry" in order for Drupal to see it. For more info, see:
-  http://drupal.org/node/173880#theme-registry
+  https://drupal.org/node/173880#theme-registry
 
 Located in zen/templates:
   html.tpl.php
@@ -18,10 +18,14 @@ Located in zen/templates:
   maintenance-page.tpl.php
   node.tpl.php
   region.tpl.php
+  region--footer.tpl.php
   region--sidebar.tpl.php
+  region--no-wrapper.tpl.php
   block.tpl.php
+  block--no-wrapper.tpl.php
   comment-wrapper.tpl.php
   comment.tpl.php
+  user-picture.tpl.php
 
 Located in /modules/aggregator:
   aggregator-feed-source.tpl.php
@@ -78,7 +82,7 @@ Located in /modules/search:
   search-results.tpl.php
 
 Located in /modules/system:
-  html.tpl.php (overridden by Zen)
+  html.tpl.php  (overridden by Zen)
   maintenance-page.tpl.php  (overridden by Zen)
   page.tpl.php  (overridden by Zen)
   region.tpl.php  (overridden by Zen)
@@ -90,7 +94,7 @@ Located in /modules/toolbar:
   toolbar.tpl.php
 
 Located in /modules/user:
-  user-picture.tpl.php
+  user-picture.tpl.php  (overridden by Zen)
   user-profile-category.tpl.php
   user-profile-item.tpl.php
   user-profile.tpl.php

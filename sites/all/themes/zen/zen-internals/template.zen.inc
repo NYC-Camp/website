@@ -14,32 +14,15 @@
  * If the user is silly and enables Zen as the theme, manually add some stylesheets.
  */
 function _zen_preprocess_html(&$variables, $hook) {
-  $directory = drupal_get_path('theme', 'zen') . '/zen-internals/css/';
-
   // Add Zen's stylesheets manually instead of via its .info file. We do not
   // want the stylesheets to be inherited from Zen since it becomes impossible
   // to re-order the stylesheets in the sub-theme.
-  $stylesheets = array(
-    'html-reset.css',
-    'wireframes.css',
-    'layout-fixed.css',
-    'page-backgrounds.css',
-    'tabs.css',
-    'pages.css',
-    'blocks.css',
-    'navigation.css',
-    'views-styles.css',
-    'nodes.css',
-    'comments.css',
-    'forms.css',
-    'fields.css',
-    'print.css',
-  );
-  if (theme_get_setting('zen_layout') == 'zen-columns-liquid') {
-    // Replace the layout-fixed.css file.
-    $stylesheets[2] = 'layout-liquid.css';
-  }
-  foreach ($stylesheets as $stylesheet) {
-    drupal_add_css($directory . $stylesheet, array('group' => CSS_THEME, 'every_page' => TRUE));
-  }
+  $directory = drupal_get_path('theme', 'zen') . '/zen-internals/css/';
+  $stylesheet = (theme_get_setting('zen_layout') == 'zen-fixed-width') ? 'styles-fixed.css' : 'styles.css';
+  drupal_add_css($directory . $stylesheet, array('group' => CSS_THEME, 'every_page' => TRUE));
+
+  // Sub-themes after 7.x-5.1 remove these files, but we can't remove them using
+  // zen.info since it will break sub-themes built with 7.x-5.0/5.1.
+  drupal_add_css($directory . 'system.messages.css', array('group' => CSS_THEME, 'every_page' => TRUE));
+  drupal_add_css($directory . 'system.theme.css', array('group' => CSS_THEME, 'every_page' => TRUE));
 }
