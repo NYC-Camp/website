@@ -10,7 +10,7 @@ require_once drupal_get_path('module', 'location') . '/tests/location_testcase.t
 
 
 class LocationEarthTest extends LocationTestCase {
-public static function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => t('Location earth.inc tests'),
       'description' => t('Test earth.inc calculations.'),

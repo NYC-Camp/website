@@ -3,7 +3,8 @@
 // Chad
 
 function location_province_list_td() {
-  return array('BA' => "Batha",
+  return array(
+    'BA' => "Batha",
     'BI' => "Biltine",
     'BE' => "Borkou-Ennedi-Tibesti",
     'CB' => "Chari-Baguirmi",
@@ -16,7 +17,8 @@ function location_province_list_td() {
     'MC' => "Moyen-Chari",
     'OU' => "Ouaddai",
     'SA' => "Salamat",
-    'TA' => "Tandjile");
+    'TA' => "Tandjile"
+  );
 }
 
 /**

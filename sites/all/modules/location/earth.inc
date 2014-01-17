@@ -33,7 +33,7 @@ function earth_radius_semimajor() {
 }
 
 function earth_flattening() {
-  return (1/298.257223563);
+  return (1 / 298.257223563);
 }
 
 function earth_radius_semiminor() {
@@ -41,23 +41,23 @@ function earth_radius_semiminor() {
 }
 
 function earth_eccentricity_sq() {
-  return (2*earth_flattening() - pow(earth_flattening(), 2));
+  return (2 * earth_flattening() - pow(earth_flattening(), 2));
 }
 
 // Latitudes in all of U. S.: from -7.2 (American Samoa) to 70.5 (Alaska).
 // Latitudes in continental U. S.: from 24.6 (Florida) to 49.0 (Washington).
 // Average latitude of all U. S. zipcodes: 37.9.
 
-function earth_radius($latitude=37.9) {
+function earth_radius($latitude = 37.9) {
   //global $earth_radius_semimajor, $earth_radius_semiminor;
   // Estimate the Earth's radius at a given latitude.
   // Default to an approximate average radius for the United States.
 
   $lat = deg2rad($latitude);
 
-  $x = cos($lat)/earth_radius_semimajor();
-  $y = sin($lat)/earth_radius_semiminor();
-  return 1 / (sqrt($x*$x + $y*$y));
+  $x = cos($lat) / earth_radius_semimajor();
+  $y = sin($lat) / earth_radius_semiminor();
+  return 1 / (sqrt($x * $x + $y * $y));
 }
 
 function earth_xyz($longitude, $latitude, $height = 0) {
@@ -79,7 +79,7 @@ function earth_xyz($longitude, $latitude, $height = 0) {
   return array($x, $y, $z);
 }
 
-function earth_arclength($angle, $latitude=37.9) {
+function earth_arclength($angle, $latitude = 37.9) {
   // Convert a given angle to earth-surface distance.
   return deg2rad($angle) * earth_radius($latitude);
 }
@@ -92,9 +92,9 @@ function earth_distance($longitude1, $latitude1, $longitude2, $latitude2) {
   $lat2 = deg2rad($latitude2);
   $radius = earth_radius(($latitude1 + $latitude2) / 2);
 
-  $cosangle = cos($lat1)*cos($lat2) *
-    (cos($long1)*cos($long2) + sin($long1)*sin($long2)) +
-    sin($lat1)*sin($lat2);
+  $cosangle = cos($lat1) * cos($lat2) *
+    (cos($long1) * cos($long2) + sin($long1) * sin($long2)) +
+    sin($lat1) * sin($lat2);
   return acos($cosangle) * $radius;
 }
 
@@ -113,7 +113,7 @@ function earth_distance_sql($longitude, $latitude, $tbl_alias = '') {
   $radius = earth_radius($latitude);
 
   // If the table alias is specified, add on the separator.
-  $tbl_alias = empty($tbl_alias) ? $tbl_alias : ($tbl_alias .'.');
+  $tbl_alias = empty($tbl_alias) ? $tbl_alias : ($tbl_alias . '.');
 
   $coslong = cos($long);
   $coslat = cos($lat);
@@ -134,16 +134,21 @@ function earth_longitude_range($longitude, $latitude, $distance) {
   $lat = deg2rad($latitude);
   $radius = earth_radius($latitude) * cos($lat);
 
-  if($radius > 0) {
-    $angle = abs($distance / $radius );
+  if ($radius > 0) {
+    $angle = abs($distance / $radius);
     $angle = min($angle, pi());
-  } else {
+  }
+  else {
     $angle = pi();
   }
   $minlong = $long - $angle;
   $maxlong = $long + $angle;
-  if ($minlong < -pi()) { $minlong = $minlong + pi()*2; }
-  if ($maxlong > pi()) { $maxlong = $maxlong - pi()*2; }
+  if ($minlong < -pi()) {
+    $minlong = $minlong + pi() * 2;
+  }
+  if ($maxlong > pi()) {
+    $maxlong = $maxlong - pi() * 2;
+  }
   return array(rad2deg($minlong), rad2deg($maxlong));
 }
 
@@ -156,17 +161,21 @@ function earth_latitude_range($longitude, $latitude, $distance) {
   $angle = $distance / $radius;
   $minlat = $lat - $angle;
   $maxlat = $lat + $angle;
-  $rightangle = pi()/2;
+  $rightangle = pi() / 2;
   if ($minlat < -$rightangle) { // wrapped around the south pole
     $overshoot = -$minlat - $rightangle;
     $minlat = -$rightangle + $overshoot;
-    if ($minlat > $maxlat) { $maxlat = $minlat; }
+    if ($minlat > $maxlat) {
+      $maxlat = $minlat;
+    }
     $minlat = -$rightangle;
   }
   if ($maxlat > $rightangle) { // wrapped around the north pole
     $overshoot = $maxlat - $rightangle;
     $maxlat = $rightangle - $overshoot;
-    if ($maxlat < $minlat) { $minlat = $maxlat; }
+    if ($maxlat < $minlat) {
+      $minlat = $maxlat;
+    }
     $maxlat = $rightangle;
   }
   return array(rad2deg($minlat), rad2deg($maxlat));

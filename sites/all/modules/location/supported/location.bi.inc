@@ -3,7 +3,8 @@
 // Burundi
 
 function location_province_list_bi() {
-  return array('BB' => "Bubanza",
+  return array(
+    'BB' => "Bubanza",
     'BJ' => "Bujumbura",
     'BR' => "Bururi",
     'CA' => "Cankuzo",
@@ -18,7 +19,8 @@ function location_province_list_bi() {
     'MW' => "Mwaro",
     'NG' => "Ngozi",
     'RT' => "Rutana",
-    'RY' => "Ruyigi");
+    'RY' => "Ruyigi"
+  );
 }
 
 /**

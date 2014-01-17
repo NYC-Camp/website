@@ -15,18 +15,17 @@ mailchimp.module. See their respective README's for more details.
   * Editing of user list subscriptions on the user's edit page
   * Allow users to subscribe during registration
   * Map token and profile values to your MailChimp merge fields
-  * Required, optional, and free form list types.
   * Standalone subscribe and unsubscribe forms
   * Subscriptions can be maintained via cron or in real time
-  * Individual blocks for each newsletter
+  * Individual subscription blocks for each newsletter
   * Create campaigns containing any Drupal entity as content, send them, and
-    view statisitcs.
+    view statistics.
   * Campaign activity for any entity with an email address.
 
 ## Installation Notes
   * You need to have a MailChimp API Key.
   * You need to have at least one list created in MailChimp to use the
-    mailchimp_list module.
+    mailchimp_lists module.
   * For versions 7.x-2.8 and greater, the MCAPI library must be downloaded into
     your libraries folder. It's available at http://apidocs.mailchimp.com/api/downloads/mailchimp-api-class.zip
     or by using the included example drush make file. Proper libraries structure:
@@ -63,6 +62,18 @@ mailchimp.module. See their respective README's for more details.
     campaigns, and view statistics.
   * mailchimp_activity: View campaign activity for any entity with an email
     address.
+
+## Testing
+The subscription workflow for mailchimp_lists gets pretty hairy between list
+settings, role assignments, user permissions, automated opt-ins, queueing, etc.
+There are automated tests built-in to confirm that this workflow is behaving as
+expected. To run these tastes, enable the testing module and visit
+admin/config/development/testing. You can run the Mailchimp Lists test from
+there.
+
+The tests run against a virtual implementation of the Mailchimp API, so they
+won't have any effect on your Mailchimp account. If you have tests you would
+like to see run, contributions to the testing suite are welcome.
 
 ## Related Modules
 ### Mandrill

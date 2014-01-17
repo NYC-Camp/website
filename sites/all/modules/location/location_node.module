@@ -109,7 +109,11 @@ function location_node_node_view($node, $view_mode) {
   else {
     if (variable_get('location_display_location', 1) && !empty($node->locations)) {
       if (isset($settings['display']['teaser']) && isset($settings['display']['full'])) {
-        if (($view_mode == 'teaser' && $settings['display']['teaser']) || ($view_mode == 'full' && $settings['display']['full'])) {
+        if (($view_mode == 'teaser' && $settings['display']['teaser']) || (in_array($view_mode, array(
+          'full',
+          'search_index'
+        )) && $settings['display']['full'])
+        ) {
           $node->content['locations'] = location_display($settings, $node->locations);
         }
       }
@@ -147,7 +151,7 @@ function location_node_form_node_type_form_alter(&$form, &$form_state, $form_id)
   //array_unshift($form['#submit'], 'node_type_form_submit');
   array_unshift($form['#submit'], '_location_node_type_save_submit');
 
-  $settings = variable_get('location_settings_node_'. $type, array());
+  $settings = variable_get('location_settings_node_' . $type, array());
   $form['location_settings'] = location_settings($settings);
   $form['location_settings']['#group'] = 'additional_settings';
 

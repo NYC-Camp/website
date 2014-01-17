@@ -25,7 +25,7 @@ function location_province_list_cz() {
 function location_map_link_cz_providers() {
   return array(
     'google' => array(
-      'name' => 'Google Maps',
+      'name' => t('Google Maps'),
       'url' => 'http://maps.google.cz',
       'tos' => 'http://www.google.cz/help/terms_maps.html',
     ),

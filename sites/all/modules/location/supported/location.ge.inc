@@ -3,7 +3,8 @@
 // Georgia
 
 function location_province_list_ge() {
-  return array('AB' => "Abkhazia",
+  return array(
+    'AB' => "Abkhazia",
     'AJ' => "Ajaria",
     'TB' => "Tbilisi",
     'GU' => "Guria",
@@ -14,7 +15,8 @@ function location_province_list_ge() {
     'RL' => "Racha Lechkhumi and Kvemo Svaneti",
     'SZ' => "Samegrelo-Zemo Svaneti",
     'SJ' => "Samtskhe-Javakheti",
-    'SK' => "Shida Kartli");
+    'SK' => "Shida Kartli"
+  );
 }
 
 /**

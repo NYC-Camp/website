@@ -3,7 +3,8 @@
 // Tunisia
 
 function location_province_list_tn() {
-  return array('AR' => "Ariana",
+  return array(
+    'AR' => "Ariana",
     'BJ' => "Beja",
     'BA' => "Ben Arous",
     'BI' => "Bizerte",
@@ -26,7 +27,8 @@ function location_province_list_tn() {
     'TA' => "Tataouine",
     'TO' => "Tozeur",
     'TU' => "Tunis",
-    'ZA' => "Zaghouan");
+    'ZA' => "Zaghouan"
+  );
 }
 
 /**

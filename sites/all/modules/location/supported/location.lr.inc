@@ -3,7 +3,8 @@
 // Liberia
 
 function location_province_list_lr() {
-  return array('BI' => "Bomi",
+  return array(
+    'BI' => "Bomi",
     'BG' => "Bong",
     'GB' => "Grand Bassa",
     'CM' => "Grand Cape Mount",
@@ -15,7 +16,8 @@ function location_province_list_lr() {
     'MS' => "Montserrado",
     'NB' => "Nimba",
     'RC' => "River Cess",
-    'SN' => "Sinoe");
+    'SN' => "Sinoe"
+  );
 }
 
 /**

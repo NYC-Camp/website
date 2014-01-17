@@ -3,7 +3,8 @@
 // Iraq
 
 function location_province_list_iq() {
-  return array('BD' => "Baghdad",
+  return array(
+    'BD' => "Baghdad",
     'SD' => "Salah ad Din",
     'DY' => "Diyala",
     'WS' => "Wasit",
@@ -20,7 +21,8 @@ function location_province_list_iq() {
     'DH' => "Dahuk",
     'AL' => "Arbil",
     'TM' => "At Ta'mim",
-    'SL' => "As Sulaymaniyah");
+    'SL' => "As Sulaymaniyah"
+  );
 }
 
 /**

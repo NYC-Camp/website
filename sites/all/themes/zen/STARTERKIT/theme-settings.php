@@ -25,7 +25,9 @@ function STARTERKIT_form_system_theme_settings_alter(&$form, &$form_state, $form
   // */
 
   // Remove some of the base theme's settings.
-  unset($form['themedev']['zen_layout']); // We don't need to select the layout stylesheet.
+  /* -- Delete this line if you want to turn off this setting.
+  unset($form['themedev']['zen_wireframes']); // We don't need to toggle wireframes on this site.
+  // */
 
   // We are editing the $form in place, so we don't need to return anything.
 }

@@ -3,7 +3,8 @@
 // Japan
 
 function location_province_list_jp() {
-  return array('01' => "Hokkaido",
+  return array(
+    '01' => "Hokkaido",
     '02' => "Aomori",
     '03' => "Iwate",
     '04' => "Miyagi",
@@ -49,7 +50,8 @@ function location_province_list_jp() {
     '44' => "Oita",
     '45' => "Miyazaki",
     '46' => "Kagosima (Kagoshima)",
-    '47' => "Okinawa");
+    '47' => "Okinawa"
+  );
 }
 
 /**

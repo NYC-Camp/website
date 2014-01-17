@@ -33,6 +33,20 @@ function eck__entity__menu($entity_type, $bundle) {
     'type' => MENU_LOCAL_TASK
   );
   
+  $menu["{$path}/{$entity_type->name}/{$bundle->name}/edit"] = array(
+    'title' => 'Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('eck__bundle__edit_form', $entity_type->name, $bundle->name),
+    'access callback' => 'eck__multiple_access_check',
+    'access arguments' => array( array( 'eck administer bundles',
+                                        'eck edit bundles',
+                                        "eck administer {$entity_type->name} bundles",
+                                        "eck edit {$entity_type->name} bundles",
+                                      ) ),
+    'file' => 'eck.bundle.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
   //The entity autocomplete module does a great job at providing generalize
   //autocomplete function that will work for any entity that declares the label
   //property in the entity_info array, but there is not a general solution to
@@ -91,21 +105,16 @@ function eck__entity__menu($entity_type, $bundle) {
     }
     
     $args = array_merge(array($entity_type->name, $bundle->name), $args);
+    $access_args = array_merge(array($action), $args);
     
     $menu[$info['path']] = array(
       'title' => "{$action_label} {$bundle->label}",
       'description' => "{$action_label} an entity of type {$entity_type->label} with bundle {$bundle->label}",
       'page callback' => "eck__entity__{$action}",
       'page arguments' => $args,
-      'access callback' => 'eck__multiple_access_check',
-      'access arguments' => array( 
-        array(
-          'eck administer entities',
-          "eck {$action} entities",
-          "eck administer {$entity_type->name} {$bundle->name} entities",
-          "eck {$action} {$entity_type->name} {$bundle->name} entities"
-        ), FALSE /*TODO: should auto-load entity author here. */ ),
-       'file' => 'eck.entity.inc'
+      'access callback' => 'eck__entity_menu_access',
+      'access arguments' => $access_args,
+      'file' => 'eck.entity.inc',
     );
     
     //I think it would be useful to have the edit, delete, and list tabs at the view also
@@ -136,20 +145,15 @@ function eck__entity__menu($entity_type, $bundle) {
           $al = ucfirst($a);
           
           $view_path = $info['path']."/{$a}";
+          $access_args = array_merge(array($a), $args);
           
           $menu[$view_path] = array(
             'title' => "{$al}",
             'description' => "{$action_label} an entity of type {$entity_type->label} with bundle {$bundle->label}",
             'page callback' => "eck__entity__{$a}",
             'page arguments' => $args,
-            'access callback' => 'eck__multiple_access_check',
-            'access arguments' => array( 
-              array(
-                'eck administer entities',
-                "eck {$a} entities",
-                "eck administer {$entity_type->name} {$bundle->name} entities",
-                "eck {$a} {$entity_type->name} {$bundle->name} entities"
-              ), FALSE /*TODO: should auto-load entity author here. */ ),
+            'access callback' => 'eck__entity_menu_access',
+            'access arguments' => $access_args,
             'file' => 'eck.entity.inc',
             'type' => MENU_LOCAL_TASK,
             'context' => (MENU_CONTEXT_PAGE|MENU_CONTEXT_INLINE), 
@@ -221,12 +225,7 @@ function eck__entity__list($entity_type_name, $bundle_name) {
   //so lets add a link ourselves until we figure out whether there is a better solution
   $crud_info = get_bundle_crud_info($entity_type->name, $bundle->name);
   //Check that the user has permissions to add an entity:
-  if( eck__multiple_access_check(
-      array( 'eck administer entities', 
-             'eck add entities',
-             "eck administer {$entity_type->name} {$bundle->name} entities",
-             "eck add {$entity_type->name} {$bundle->name} entities"
-  ) ) ) 
+  if (eck__entity_menu_access('add', $entity_type->name, $bundle->name))
     $build['add'] = array('#markup' => "+ ".l(t("Add {$bundle->label}"), $crud_info['add']['path'], array('query' => $destination)));
 
   //Check that the user has permissions to view entity lists:
@@ -310,8 +309,6 @@ function eck__entity__edit($entity_type_name, $bundle_name, $id) {
     $entities = entity_load($entity_type_name, array($id));
     $entity = $entities[$id];
   }
-
-  global $user;
 
   return drupal_get_form("eck__entity__form_edit_{$entity_type_name}_{$bundle_name}", $entity);
 }
@@ -407,7 +404,7 @@ function eck__entity__delete_form_submit($form, &$form_state) {
  * @param $entity
  *  an object as returned by entity_load()
  */
-function eck__entity__form($form, $form_state, $entity) {
+function eck__entity__form($form, &$form_state, $entity) {
   $form['entity'] = array(
     '#type' => 'value',
     '#value' => $entity
@@ -485,14 +482,28 @@ function eck__entity__form_submit($form, &$state) {
   $entity_type = EntityType::loadByName($entity_type);
   $properties = $entity_type->properties;
   
+  $wrapper = NULL;
   //If we find a value set for a property lets just set it
   foreach($properties as $property => $info){
     $form_value = _eck_form_property_value($state, $property);
-    if(isset($form_value)){
+    if(isset($form_value) && !empty($form_value)){
       //@todo maybe we should do this in the form validation step. 
       //that way we can catch entity wrapper validation exceptions
       //and set a form error message appropiately
-      $wrapper = entity_metadata_wrapper($entity_type->name, $entity);
+      
+      //lets give the behavior a chance to manipulate the data before it is set
+      $vars = array('data' => $form_value);
+      $data = eck_property_behavior_invoke_plugin($entity_type, 'pre_set', 
+      $vars);
+      
+      if(array_key_exists($property, $data)){
+        $form_value = $data[$property];
+      }
+      
+      if(!$wrapper){
+        $wrapper = entity_metadata_wrapper($entity_type->name, $entity);
+      }
+      
       $wrapper->{$property}->set($form_value);
     }
   }

@@ -3,7 +3,8 @@
 // Mauritius
 
 function location_province_list_mu() {
-  return array('BR' => "Beau Bassin-Rose Hill",
+  return array(
+    'BR' => "Beau Bassin-Rose Hill",
     'CU' => "Curepipe",
     'PU' => "Port Louis",
     'QB' => "Quatre Bornes",
@@ -19,7 +20,8 @@ function location_province_list_mu() {
     'PW' => "Plaines Wilhems",
     'PL' => "Port Louis",
     'RR' => "Riviere du Rempart",
-    'SA' => "Savanne");
+    'SA' => "Savanne"
+  );
 }
 
 /**

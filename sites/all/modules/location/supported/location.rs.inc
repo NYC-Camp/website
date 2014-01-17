@@ -3,8 +3,7 @@
 // Serbia
 
 function location_province_list_rs() {
-  return array(
-  );
+  return array();
 }
 
 /**

@@ -27,6 +27,7 @@ function eck_property_types() {
     'integer' => t('Integer'), 
     'decimal' => t('Decimal'), 
     'positive_integer' => t('Unsigned Integer'),
+    'language' => t('Language'),
   );
 
   drupal_alter('eck_property_types', $default_types);
@@ -92,6 +93,16 @@ function eck_property_type_schema($type) {
       );
       break;
       
+    case 'language':
+      $schema = array(
+        'description' => 'Language',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      );
+      break;
+
     default:
       $schema = NULL;
       break;
@@ -155,6 +166,9 @@ function eck__properties__form($form, &$state, $entity_type_name){
   }
   
   $form['entity_type'] = array('#type' => 'value', '#value' => $entity_type);
+  
+  $form['info'] = array('#markup' => "<p><strong>HELP:</strong> The add property button will temporarily add a property to the
+    entity type, to finalize adding the property, click the checkbox on the left and click save </p>");
   
   //When the add button is clicked, the submit callback directs the form to be rebuilt. 
    //Here we check to see if a new property was added, and keep it in a a list of new properties
@@ -313,7 +327,7 @@ function eck__properties__form($form, &$state, $entity_type_name){
 
 function eck_deactivate_on_save($element, &$state){
   if(array_key_exists('input', $state) && array_key_exists('op', $state['input']) && 
-    $state['input']['op'] == 'Save'){
+    $state['input']['op'] == t('Save')) {
     isset($element['#element_validate']) ? $element['#element_validate'] = NULL : NULL;
     isset($element['#needs_validation']) ? $element['#needs_validation'] = NULL : NULL;
   }
@@ -321,11 +335,28 @@ function eck_deactivate_on_save($element, &$state){
   return $element;
 }
 
+function eck__properties__form_validate($form, &$state){
+  if($state['values']['op'] == t('Add Property')){
+    if (isset($state['values']['property_behavior'])) {
+      $property_behavior = $state['values']['property_behavior'];
+      $behavior_plugins = ctools_get_plugins('eck', 'property_behavior');
+      if (isset($behavior_plugins[$property_behavior]['unique']) && $behavior_plugins[$property_behavior]['unique']) {
+        foreach ($state['values']['new_properties'] as $property_name => $property_info) {
+          if ($property_info['behavior'] == $property_behavior) {
+            form_set_error('property_behavior', t('There can be only one property with \'@name\' behavior per entity.',
+              array('@name' => $behavior_plugins[$property_behavior]['label'])));
+          }
+        }
+      }
+    }
+  }
+}
+
 function eck__properties__form_submit($form, &$state){
-  if($state['values']['op'] == "Add Property"){
+  if($state['values']['op'] == t('Add Property')) {
     $state['rebuild'] = TRUE;
   }
-  else if($state['values']['op'] == "Save"){
+  else if($state['values']['op'] == t('Save')) {
     //Here we want to add the properties to the entity type and save it
     $entity_type = $state['values']['entity_type'];
     //dpm($entity_type, "Entity Type");

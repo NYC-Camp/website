@@ -3,7 +3,8 @@
 // Myanmar
 
 function location_province_list_mm() {
-  return array('AY' => "Ayeyarwady",
+  return array(
+    'AY' => "Ayeyarwady",
     'BG' => "Bago",
     'MG' => "Magway",
     'MD' => "Mandalay",
@@ -16,7 +17,8 @@ function location_province_list_mm() {
     'KN' => "Kayin State",
     'MN' => "Mon State",
     'RK' => "Rakhine State",
-    'SH' => "Shan State");
+    'SH' => "Shan State"
+  );
 }
 
 /**

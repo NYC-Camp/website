@@ -3,7 +3,8 @@
 // Trinidad and Tobago
 
 function location_province_list_tt() {
-  return array('CT' => "Couva/Tabaquite/Talparo",
+  return array(
+    'CT' => "Couva/Tabaquite/Talparo",
     'DM' => "Diego Martin",
     'MR' => "Mayaro/Rio Claro",
     'PD' => "Penal/Debe",
@@ -17,7 +18,8 @@ function location_province_list_tt() {
     'AR' => "Arima",
     'PF' => "Point Fortin",
     'CH' => "Chaguanas",
-    'TO' => "Tobago");
+    'TO' => "Tobago"
+  );
 }
 
 /**

@@ -11,18 +11,28 @@
 environment = :development
 #environment = :production
 
+# In development, we can turn on the FireSass-compatible debug_info.
+firesass = false
+#firesass = true
+
 
 # Location of the theme's resources.
-css_dir = "css"
-sass_dir = "sass"
-extensions_dir = "sass-extensions"
-images_dir = "images"
+css_dir         = "css"
+sass_dir        = "sass"
+extensions_dir  = "sass-extensions"
+images_dir      = "images"
 javascripts_dir = "js"
 
 
-# Require any additional compass plugins here.
+# Require any additional compass plugins installed on your system.
 #require 'ninesixty'
+#require 'zen-grids'
 
+# Assuming this theme is in sites/*/themes/THEMENAME, you can add the partials
+# included with a module by uncommenting and modifying one of the lines below:
+#add_import_path "../../../default/modules/FOO"
+#add_import_path "../../../all/modules/FOO"
+#add_import_path "../../../../modules/FOO"
 
 
 ##
@@ -35,12 +45,12 @@ output_style = (environment == :development) ? :expanded : :compressed
 
 # To enable relative paths to assets via compass helper functions. Since Drupal
 # themes can be installed in multiple locations, we don't need to worry about
-# the absolute path to the theme from server root.
+# the absolute path to the theme from the server root.
 relative_assets = true
 
-# Pass options to sass.
-# - For development, we turn on the FireSass-compatible debug_info.
-# - For production, we force the CSS to be regenerated even though the source
-#   scss may not have changed, since we want the CSS to be compressed and have
-#   the debug info removed.
-sass_options = (environment == :development) ? {:debug_info => true} : {:always_update => true}
+# To disable debugging comments that display the original location of your selectors. Uncomment:
+# line_comments = false
+
+# Pass options to sass. For development, we turn on the FireSass-compatible
+# debug_info if the firesass config variable above is true.
+sass_options = (environment == :development && firesass == true) ? {:debug_info => true} : {}

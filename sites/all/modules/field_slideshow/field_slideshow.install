@@ -15,6 +15,7 @@ function field_slideshow_requirements($phase) {
     $t = get_t();
 
     $path = libraries_get_path('jquery.cycle');
+    if ($path == '') $path = '/sites/all/libraries/jquery.cycle';
     if (file_exists($path . '/jquery.cycle.all.min.js') || file_exists($path . '/jquery.cycle.all.js')) {
       $requirements['field_slideshow_cycle_plugin'] = array(
         'title'     => $t('JQuery Cycle plugin'),
@@ -27,28 +28,70 @@ function field_slideshow_requirements($phase) {
         'title'       => $t('JQuery Cycle plugin'),
         'value'       => $t('Not found'),
         'severity'    => REQUIREMENT_ERROR,
-        'description' => $t('You need to download the !name and move the downloaded js file(s) into the %path folder of your server.', array('!name' => l(t('JQuery Cycle plugin'), 'http://jquery.malsup.com/cycle/download.html'), '%path' => $path)),
+        'description' => $t('You need to download the !name and move the downloaded js file(s) into the %path folder of your server.', array('!name' => l($t('JQuery Cycle plugin'), 'http://jquery.malsup.com/cycle/download.html'), '%path' => $path)),
       );
     }
 
-    $path = libraries_get_path('jquery.jcarousel');
-    if (file_exists($path . '/lib/jquery.jcarousel.min.js') || file_exists($path . '/lib/jquery.jcarousel.js')) {
-      $requirements['field_slideshow_jcarousel_plugin'] = array(
-        'title'     => $t('JCarousel plugin'),
+    $carousel_used = FALSE;
+    foreach (field_info_instances() as $bundles) {
+      foreach ($bundles as $instances) {
+        foreach ($instances as $field) {
+          foreach ($field['display'] as $display) {
+            if ($display['type'] == 'slideshow' && $display['settings']['slideshow_pager'] == 'carousel') {
+              $carousel_used = TRUE;
+              break 4;
+            }
+          }
+        }
+      }
+    }
+
+    if ($carousel_used) {
+      $path = libraries_get_path('jquery.jcarousel');
+      if ($path == '') $path = '/sites/all/libraries/jquery.jcarousel';
+      if (file_exists($path . '/lib/jquery.jcarousel.min.js') || file_exists($path . '/lib/jquery.jcarousel.js')) {
+        $requirements['field_slideshow_jcarousel_plugin'] = array(
+          'title'     => $t('JCarousel plugin'),
+          'severity'  => REQUIREMENT_OK,
+          'value'     => $t('Installed'),
+        );
+      }
+      else {
+        $requirements['field_slideshow_jcarousel_plugin'] = array(
+          'title'       => $t('JCarousel plugin'),
+          'value'       => $t('Not found'),
+          'severity'    => REQUIREMENT_ERROR,
+          'description' => $t('You need to download the !name and move the content of the downloaded folder into the %path folder of your server. When this is done there should be a file sites/all/libraries/jquery.jcarousel/lib/jquery.jcarousel.js, or jquery.jcarousel.min.js', array('!name' => l($t('JCarousel plugin'), 'http://sorgalla.com/jcarousel/'), '%path' => $path)),
+        );
+      }
+    }
+
+    $path = libraries_get_path('jquery.imagesloaded');
+    if ($path == '') $path = '/sites/all/libraries/jquery.imagesloaded';
+    if (file_exists($path . '/jquery.imagesloaded.min.js') || file_exists($path . '/jquery.imagesloaded.js')) {
+      $requirements['field_slideshow_imagesloaded_plugin'] = array(
+        'title'     => $t('JQuery ImagesLoaded plugin'),
         'severity'  => REQUIREMENT_OK,
         'value'     => $t('Installed'),
       );
     }
     else {
-      $requirements['field_slideshow_jcarousel_plugin'] = array(
-        'title'       => $t('JCarousel plugin'),
+      $requirements['field_slideshow_imagesloaded_plugin'] = array(
+        'title'       => $t('JQuery ImagesLoaded plugin'),
         'value'       => $t('Not found'),
-        'severity'    => REQUIREMENT_ERROR,
-        'description' => $t('You need to download the !name and move the content of the downloaded folder into the %path folder of your server.', array('!name' => l(t('JCarousel plugin'), 'http://sorgalla.com/jcarousel/'), '%path' => $path)),
+        'severity'    => REQUIREMENT_WARNING,
+        'description' => $t('For best results, you should download the !name and move the downloaded js file(s) into the %path folder of your server.', array('!name' => l($t('JQuery ImagesLoaded plugin'), 'https://github.com/desandro/imagesloaded/downloads'), '%path' => $path)),
       );
     }
-
   }
 
   return $requirements;
+}
+
+/**
+ * Force clear cache.
+ * This is needed to register some new template files.
+ */
+function field_slideshow_update_7001() {
+  cache_clear_all();
 }

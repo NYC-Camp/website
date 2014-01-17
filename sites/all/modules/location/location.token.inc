@@ -46,17 +46,17 @@ function _location_token_values($type, $object = NULL) {
  */
 function _location_token_list($type = 'all') {
   if ($type == 'node' || $type == 'user' || $type == 'all') {
-    $tokens['location']['location-name_N']            = t('Location Name (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-street_N']          = t('Street (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-additional_N']      = t('Additional (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-city_N']            = t('City (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-province_N']        = t('State/Province (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-province_name_N']   = t('State/Province Name (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-postal_code_N']     = t('Postal Code (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-latitude_N']        = t('Latitude (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-longitude_N']       = t('Longitude (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-country_N']         = t('Country (If there are multiple locations per node, N is the iteration, starting with 0)');
-    $tokens['location']['location-country_name_N']    = t('Country Name (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-name_N'] = t('Location Name (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-street_N'] = t('Street (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-additional_N'] = t('Additional (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-city_N'] = t('City (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-province_N'] = t('State/Province (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-province_name_N'] = t('State/Province Name (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-postal_code_N'] = t('Postal Code (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-latitude_N'] = t('Latitude (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-longitude_N'] = t('Longitude (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-country_N'] = t('Country (If there are multiple locations per node, N is the iteration, starting with 0)');
+    $tokens['location']['location-country_name_N'] = t('Country Name (If there are multiple locations per node, N is the iteration, starting with 0)');
     return $tokens;
   }
 }

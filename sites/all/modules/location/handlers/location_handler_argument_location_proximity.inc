@@ -58,7 +58,7 @@ class location_handler_argument_location_proximity extends views_handler_argumen
       ),
       '#default_value' => $this->options['search_method'],
       '#description' => t('Method of determining proximity. Please note that Circular Proximity does not work with Decimal degrees.'),
-     );
+    );
   }
 
   function calculate_coords() {
@@ -122,12 +122,14 @@ class location_handler_argument_location_proximity extends views_handler_argumen
         }
       }
     }
-    else if ($this->options['type'] == 'latlon') {
-      foreach ($this->view->argument as $argument) {
-        if ($argument->field == 'distance') {
-          list($coords, $this->value['search_distance']) = explode('_', $this->view->args[$argument->position]);
-          list($this->value['latitude'], $this->value['longitude']) = explode(',', $coords);
-          break;
+    else {
+      if ($this->options['type'] == 'latlon') {
+        foreach ($this->view->argument as $argument) {
+          if ($argument->field == 'distance') {
+            list($coords, $this->value['search_distance']) = explode('_', $this->view->args[$argument->position]);
+            list($this->value['latitude'], $this->value['longitude']) = explode(',', $coords);
+            break;
+          }
         }
       }
     }
@@ -177,7 +179,12 @@ class location_handler_argument_location_proximity extends views_handler_argumen
     else {
       $where = "$this->table_alias.latitude > :minlat AND $this->table_alias.latitude < :maxlat AND $this->table_alias.longitude > :minlon AND $this->table_alias.longitude < :maxlon";
     }
-    $this->query->add_where_expression(0, $where, array(':minlat' => $latrange[0], ':maxlat' => $latrange[1], ':minlon' => $lonrange[0], ':maxlon' => $lonrange[1]));
+    $this->query->add_where_expression(0, $where, array(
+      ':minlat' => $latrange[0],
+      ':maxlat' => $latrange[1],
+      ':minlon' => $lonrange[0],
+      ':maxlon' => $lonrange[1]
+    ));
 
     if ($this->options['search_method'] == 'dist') {
       // Add radius check.

@@ -3,7 +3,8 @@
 // Bahamas
 
 function location_province_list_bs() {
-  return array('ACK' => "Acklins",
+  return array(
+    'ACK' => "Acklins",
     'BER' => "Berry Islands",
     'BIM' => "Bimini",
     'BLK' => "Black Point",
@@ -35,7 +36,8 @@ function location_province_list_bs() {
     'SAN' => "South Andros",
     'SEL' => "South Eleuthera",
     'SWE' => "Spanish Wells",
-    'WGB' => "West Grand Bahama");
+    'WGB' => "West Grand Bahama"
+  );
 }
 
 /**
