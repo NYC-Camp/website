@@ -36,7 +36,8 @@ class supersized_context_condition extends context_condition {
         }
       }
       if ($node) {
-        $supersized = field_get_items('node', $node, 'field_billboard');
+        $field = supersized_get_supersized_field($node);
+        $supersized = $field['items'];
         if (empty($supersized)) {
           $this->condition_met($context);
         }

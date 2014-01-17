@@ -41,6 +41,15 @@ function supersized_libraries_info() {
  */
 function supersized_theme($existing, $type, $theme, $path) {
   return array(
+    'supersized_form_element' => array(
+      'render element' => 'element',
+    ),
+    'supersized_form_element_label' => array(
+      'render element' => 'element',
+    ),
+    'supersized_overlay' => array(
+      'variables' => array('overlay_key' => NULL),
+    ),
     'supersized_arrow_nav' => array(),
     'supersized_progress_bar' => array(),
     'supersized_thumbnail_navigation' => array(),
@@ -50,6 +59,162 @@ function supersized_theme($existing, $type, $theme, $path) {
       'template' => 'supersized_control_bar',
     ),
   );
+}
+
+/**
+ * Theme function of supersized_form_element.
+ *
+ * This is an exact clone of theme_form_element, but labels theme are overiden.
+ */
+function theme_supersized_form_element($variables) {
+  $element = &$variables['element'];
+
+  // This function is invoked as theme wrapper, but the rendered form element
+  // may not necessarily have been processed by form_builder().
+  $element += array(
+    '#title_display' => 'before',
+  );
+
+  // Add element #id for #type 'item'.
+  if (isset($element['#markup']) && !empty($element['#id'])) {
+    $attributes['id'] = $element['#id'];
+  }
+  // Add element's #type and #name as class to aid with JS/CSS selectors.
+  $attributes['class'] = array('form-item');
+  if (!empty($element['#type'])) {
+    $attributes['class'][] = 'form-type-' . strtr($element['#type'], '_', '-');
+  }
+  if (!empty($element['#name'])) {
+    $attributes['class'][] = 'form-item-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => ''));
+  }
+  // Add a class for disabled elements to facilitate cross-browser styling.
+  if (!empty($element['#attributes']['disabled'])) {
+    $attributes['class'][] = 'form-disabled';
+  }
+  $output = '<div' . drupal_attributes($attributes) . '>' . "\n";
+
+  // If #title is not set, we don't display any label or required marker.
+  if (!isset($element['#title'])) {
+    $element['#title_display'] = 'none';
+  }
+  $prefix = isset($element['#field_prefix']) ? '<span class="field-prefix">' . $element['#field_prefix'] . '</span> ' : '';
+  $suffix = isset($element['#field_suffix']) ? ' <span class="field-suffix">' . $element['#field_suffix'] . '</span>' : '';
+
+  switch ($element['#title_display']) {
+    case 'before':
+    case 'invisible':
+      $output .= ' ' . theme('supersized_form_element_label', $variables);
+      $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
+      break;
+
+    case 'after':
+      $output .= ' ' . $prefix . $element['#children'] . $suffix;
+      $output .= ' ' . theme('supersized_form_element_label', $variables) . "\n";
+      break;
+
+    case 'none':
+    case 'attribute':
+      // Output no label and no required marker, only the children.
+      $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
+      break;
+  }
+
+  if (!empty($element['#description'])) {
+    $output .= '<div class="description">' . $element['#description'] . "</div>\n";
+  }
+
+  $output .= "</div>\n";
+
+  return $output;
+}
+
+/**
+ * Theme function of supersized_form_element_label.
+ *
+ * This is for avoid filtering out attributes of label.
+ */
+function theme_supersized_form_element_label($variables) {
+  $element = $variables['element'];
+  // This is also used in the installer, pre-database setup.
+  $t = get_t();
+
+  // If title and required marker are both empty, output no label.
+  if ((!isset($element['#title']) || $element['#title'] === '') && empty($element['#required'])) {
+    return '';
+  }
+
+  // If the element is required, a required marker is appended to the label.
+  $required = !empty($element['#required']) ? theme('form_required_marker', array('element' => $element)) : '';
+
+  $title = $element['#title'];
+
+  $attributes = array();
+  // Style the label as class option to display inline with the element.
+  if ($element['#title_display'] == 'after') {
+    $attributes['class'] = 'option';
+  }
+  // Show label only to screen readers to avoid disruption in visual flows.
+  elseif ($element['#title_display'] == 'invisible') {
+    $attributes['class'] = 'element-invisible';
+  }
+
+  if (!empty($element['#id'])) {
+    $attributes['for'] = $element['#id'];
+  }
+
+  // The leading whitespace helps visually separate fields from inline labels.
+  return ' <label' . drupal_attributes($attributes) . '>' . $t('!title !required', array('!title' => $title, '!required' => $required)) . "</label>\n";
+}
+
+/**
+ * A radios process function.
+ *
+ * We need to customized the theme wrapper for the radio buttons so labels
+ * support full HTML.
+ */
+function supersized_form_process_radios($element) {
+  if (count($element['#options']) > 0) {
+    $weight = 0;
+    foreach ($element['#options'] as $key => $choice) {
+      // Maintain order of options as defined in #options, in case the element
+      // defines custom option sub-elements, but does not define all option
+      // sub-elements.
+      $weight += 0.001;
+
+      $element += array($key => array());
+      // Generate the parents as the autogenerator does, so we will have a
+      // unique id for each radio button.
+      $parents_for_id = array_merge($element['#parents'], array($key));
+      $element[$key] += array(
+        '#type' => 'radio',
+        '#title' => $choice,
+
+        // The key is sanitized in drupal_attributes() during output from the
+        // theme function.
+        '#return_value' => $key,
+
+        // Use default or FALSE. A value of FALSE means that the radio button is
+        // not 'checked'.
+        '#default_value' => isset($element['#default_value']) ? $element['#default_value'] : FALSE,
+        '#attributes' => $element['#attributes'],
+        '#parents' => $element['#parents'],
+        '#id' => drupal_html_id('edit-' . implode('-', $parents_for_id)),
+        '#ajax' => isset($element['#ajax']) ? $element['#ajax'] : NULL,
+        '#weight' => $weight,
+        '#theme_wrappers' => array('supersized_form_element'),
+      );
+    }
+  }
+  return $element;
+}
+
+/**
+ * Theme fuction for overlay.
+ */
+function theme_supersized_overlay($variables) {
+  $overlay = supersized_overlay($variables['overlay_key']);
+  $path = '/' . $overlay['file path'] . '/' . $overlay['file'];
+  return '<div id="supersized-overlay" style="background-image: url(' . $path . ');"></div>';
 }
 
 /**
@@ -87,8 +252,14 @@ function template_preprocess_supersized_control_bar(&$variables) {
 
   $library = libraries_load('supersized');
 
+  // Image path.
+  $image_path = $GLOBALS['base_path'] . $library['library path'] . '/slideshow/img';
+  if (is_dir(path_to_theme() . '/images/supersized')) {
+    $image_path = $GLOBALS['base_path'] . path_to_theme() . '/images/supersized';
+  }
+
   // Create play/puase button.
-  $pause_path = $library['library path'] . '/slideshow/img/pause.png';
+  $pause_path = $image_path . '/pause.png';
   $pause_attr = array('id' => 'pauseplay');
   $pause_image = theme('image', array('path' => $pause_path, 'attributes' => $pause_attr));
   $options = array(
@@ -100,7 +271,7 @@ function template_preprocess_supersized_control_bar(&$variables) {
   $variables['pause_link'] = l($pause_image, '', $options);
 
   // Create tray trigger button.
-  $tray_button_path = $library['library path'] . '/slideshow/img/button-tray-up.png';
+  $tray_button_path = $image_path . '/button-tray-up.png';
   $tray_button_attr = array('id' => 'tray-arrow');
   $tray_button_image = theme('image', array('path' => $tray_button_path, 'attributes' => $tray_button_attr));
   $options = array(
@@ -213,8 +384,13 @@ function supersized_page_alter(&$page) {
   $node = NULL;
   $plugin = NULL;
 
-  // Try to see if there's any supersized set by context.
   if (module_exists('context')) {
+    // Check disable context reaction.
+    $plugin = context_get_plugin('reaction', 'supersized_disable_context');
+    if (is_object($plugin) && $plugin->execute()) {
+      return;
+    }
+    // Try to see if there's any supersized set by context.
     $plugin = context_get_plugin('reaction', 'supersized_context');
     if (is_object($plugin)) {
       $node = node_load($plugin->execute());
@@ -283,6 +459,16 @@ function supersized_menu() {
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
+  $items['node/%node/supersized/delete'] = array(
+    'title' => 'Delete Supersized settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('supersized_node_settings_delete_confirm', 1),
+    'access callback' => 'supersized_node_settings_access',
+    'access arguments' => array(1),
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
   return $items;
 }
 
@@ -303,18 +489,45 @@ function supersized_admin_paths() {
  */
 function supersized_node_settings_form($form, &$form_state, $node) {
 
-  $settings = supersized_get_node_settings($node);
-
-  if (empty($settings)) {
-    $field = supersized_get_supersized_field($node);
-    $settings = $field['instance']['settings'];
-  }
+  // Get overlay options.
+  $overlay_options = supersized_overlay_options();
 
   $form = array();
   $form['nid'] = array(
     '#type' => 'hidden',
     '#value' => $node->nid,
   );
+
+  $settings = supersized_get_node_settings($node);
+
+  if (empty($settings)) {
+    $field = supersized_get_supersized_field($node);
+    $settings = $field['instance']['settings'];
+  }
+  else {
+    drupal_set_message(t('There are specific Supersized settings. Pleaes check the following form.'));
+    $form['delete'] = array(
+      '#type' => 'submit',
+      '#value' => t('Delete this setting'),
+      '#submit' => array('supersized_node_settings_delete_submit'),
+      '#weight' => 100,
+    );
+  }
+
+  $url = l(t('Browscap'), 'http://drupal.org/project/browscap');
+  $description = t('You may disable Supersized! if !url installed.', array('!url' => $url));
+  if (module_exists('browscap')) {
+    $form['mobile_disabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Disabled Supersized on mobile devices'),
+      '#default_value' => isset($settings['mobile_disabled']) ? $settings['mobile_disabled'] : supersized_default_settings('mobile_disabled'),
+    );
+  }
+  else {
+    $form['mobile_disabled_tips'] = array(
+      '#markup' => $description,
+    );
+  }
   $form['functionalities'] = array(
     '#type' => 'fieldset',
     '#title' => t("Supersized functionality settings"),
@@ -415,6 +628,15 @@ function supersized_node_settings_form($form, &$form_state, $node) {
   $form['functionalities']['on_new_slide'] = array(
     '#type' => 'hidden',
     '#value' => 'on_new_slide_callback',
+  );
+  $form['functionalities']['overlay'] = array(
+    '#type' => 'radios',
+    '#title' => t('Overylay'),
+    '#description' => t('To add an overlay texture to the slide images.'),
+    '#options' => $overlay_options,
+    '#default_value' => isset($settings['functionalities']['overlay']) ? $settings['functionalities']['overlay'] : supersized_default_settings('overlay'),
+    '#required' => TRUE,
+    '#process' => array('supersized_form_process_radios'),
   );
   $form['dimension'] = array(
     '#type' => 'fieldset',
@@ -537,7 +759,7 @@ function supersized_node_settings_form($form, &$form_state, $node) {
   );
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t('Save'),
   );
   return $form;
 }
@@ -547,6 +769,8 @@ function supersized_node_settings_form($form, &$form_state, $node) {
  */
 function supersized_node_settings_form_submit($form, &$form_state) {
   $values = $form_state['values'];
+
+  $settings['mobile_disabled'] = (isset($values['mobile_disabled'])) ? $values['mobile_disabled'] : FALSE;
   $settings['functionalities']['autoplay'] = $values['autoplay'];
   $settings['functionalities']['start_slide'] = $values['start_slide'];
   $settings['functionalities']['stop_loop'] = $values['stop_loop'];
@@ -560,6 +784,7 @@ function supersized_node_settings_form_submit($form, &$form_state) {
   $settings['functionalities']['performance'] = $values['performance'];
   $settings['functionalities']['image_protect'] = $values['image_protect'];
   $settings['functionalities']['on_new_slide'] = $values['on_new_slide'];
+  $settings['functionalities']['overlay'] = $values['overlay'];
   $settings['dimension']['min_width'] = $values['min_width'];
   $settings['dimension']['min_height'] = $values['min_height'];
   $settings['dimension']['vertical_center'] = $values['vertical_center'];
@@ -591,6 +816,44 @@ function supersized_node_settings_form_submit($form, &$form_state) {
 }
 
 /**
+ * Supersized setting delete button handler.
+ */
+function supersized_node_settings_delete_submit($form, &$form_state) {
+  $destination = array();
+  if (isset($_GET['destination'])) {
+    $destination = drupal_get_destination();
+    unset($_GET['destination']);
+  }
+  $nid = $form_state['values']['nid'];
+  $form_state['redirect'] = array('node/' . $nid . '/supersized/delete', array('query' => $destination));
+}
+
+/**
+ * Supersized setting delete confirm form.
+ */
+function supersized_node_settings_delete_confirm($form, &$form_state, $node) {
+  $form['#node'] = $node;
+  // Always provide entity id in the same form key as in the entity edit form.
+  $form['nid'] = array(
+    '#type' => 'value',
+    '#value' => $node->nid,
+  );
+  return confirm_form($form, t('Are you sure you want to delete Supersized settings of %title?', array('%title' => $node->title)), 'node/' . $node->nid, t('This action cannot be undone.'), t('Delete'), t('Cancel'));
+}
+
+/**
+ * Supersized setting delete confirm form handler.
+ */
+function supersized_node_settings_delete_confirm_submit($form, &$form_state) {
+  if ($form_state['values']['confirm']) {
+    $node = node_load($form_state['values']['nid']);
+    supersized_delete_node_settings($form_state['values']['nid']);
+    drupal_set_message(t('Supersized of %title has been deleted.', array('%title' => $node->title)));
+  }
+  $form_state['redirect'] = 'node/' . $form_state['values']['nid'];
+}
+
+/**
  * Get supersized settings by node.
  */
 function supersized_get_node_settings($node) {
@@ -607,8 +870,123 @@ function supersized_get_node_settings($node) {
 }
 
 /**
+ * Delete supersized settings by node.
+ */
+function supersized_delete_node_settings($node) {
+  $nid = (is_object($node)) ? $node->nid : $node;
+  $result = db_delete('supersized')
+    ->condition('nid', $nid)
+    ->execute();
+}
+
+/**
  * An access check helper function.
  */
 function supersized_node_settings_access($node) {
   return user_access('administer node supersized settings') && supersized_get_supersized_field($node);
+}
+
+/**
+ * Return available overlay patterns.
+ */
+function supersized_overlay($overlay_key = NULL) {
+  // Defaut overlay options.
+  $file_path = drupal_get_path('module', 'supersized') . '/images';
+  $overlay = array(
+    'style_01' => array(
+      'name' => t('Style 1'),
+      'file' => 'overlay_01.png',
+      'file path' => $file_path,
+    ),
+    'style_02' => array(
+      'name' => t('Style 2'),
+      'file' => 'overlay_02.png',
+      'file path' => $file_path,
+    ),
+    'style_03' => array(
+      'name' => t('Style 3'),
+      'file' => 'overlay_03.png',
+      'file path' => $file_path,
+    ),
+    'style_04' => array(
+      'name' => t('Style 4'),
+      'file' => 'overlay_04.png',
+      'file path' => $file_path,
+    ),
+    'style_05' => array(
+      'name' => t('Style 5'),
+      'file' => 'overlay_05.png',
+      'file path' => $file_path,
+    ),
+    'style_06' => array(
+      'name' => t('Style 6'),
+      'file' => 'overlay_06.png',
+      'file path' => $file_path,
+    ),
+    'style_07' => array(
+      'name' => t('Style 7'),
+      'file' => 'overlay_07.png',
+      'file path' => $file_path,
+    ),
+    'style_08' => array(
+      'name' => t('Style 8'),
+      'file' => 'overlay_08.png',
+      'file path' => $file_path,
+    ),
+    'style_09' => array(
+      'name' => t('Style 9'),
+      'file' => 'overlay_09.png',
+      'file path' => $file_path,
+    ),
+    'style_10' => array(
+      'name' => t('Style 10'),
+      'file' => 'overlay_10.png',
+      'file path' => $file_path,
+    ),
+    'style_11' => array(
+      'name' => t('Style 11'),
+      'file' => 'overlay_11.png',
+      'file path' => $file_path,
+    ),
+    'style_12' => array(
+      'name' => t('Style 12'),
+      'file' => 'overlay_12.png',
+      'file path' => $file_path,
+    ),
+    'style_13' => array(
+      'name' => t('Style 13'),
+      'file' => 'overlay_13.png',
+      'file path' => $file_path,
+    ),
+    'style_14' => array(
+      'name' => t('Style 14'),
+      'file' => 'overlay_14.png',
+      'file path' => $file_path,
+    ),
+  );
+
+  // Additional overlay options by other modules.
+  $overlay_additions = module_invoke_all('supersized_overlay');
+  foreach ($overlay_additions as $k => $addition) {
+    $overlay[$k] = $addition;
+  }
+
+  // Return specify overlay info.
+  if ($overlay_key !== NULL) {
+    return $overlay[$overlay_key];
+  }
+  return $overlay;
+}
+
+/**
+ * Return available overlay patterns.
+ */
+function supersized_overlay_options() {
+  $options['none'] = t('None');
+  $overlays = supersized_overlay();
+  foreach ($overlays as $k => $overlay) {
+    $path = url($overlay['file path'] . '/' . $overlay['file']);
+    $options[$k] = '<div class="supersized-overlay-option"><div class="supersized-overlay-preview" style="background: url(' . $path . ') transparent repeat;"></div>' . $overlay['name'] . '</div>';
+  }
+  return $options;
 }

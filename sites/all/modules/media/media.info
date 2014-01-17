@@ -7,6 +7,8 @@ dependencies[] = file_entity
 dependencies[] = image
 dependencies[] = views
 
+test_dependencies[] = token
+
 files[] = includes/MediaReadOnlyStreamWrapper.inc
 files[] = includes/MediaBrowserPluginInterface.inc
 files[] = includes/MediaBrowserPlugin.inc
@@ -21,9 +23,9 @@ files[] = tests/media.file.usage.test
 
 configure = admin/config/media/browser
 
-; Information added by drupal.org packaging script on 2013-05-16
-version = "7.x-2.0-unstable7+40-dev"
+; Information added by drupal.org packaging script on 2013-10-25
+version = "7.x-2.0-alpha3"
 core = "7.x"
 project = "media"
-datestamp = "1368742667"
+datestamp = "1382744872"
 

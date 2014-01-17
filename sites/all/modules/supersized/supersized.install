@@ -90,6 +90,43 @@ function supersized_field_schema($field) {
 }
 
 /**
+ * Implements hook_requirements().
+ */
+function supersized_requirements($phase) {
+
+  $requirements = array();
+
+  // Ensure translations don't break during installation.
+  $t = get_t();
+
+  if ($phase === 'runtime') {
+
+    // Test supersized JQuery plugin.
+    $library = libraries_detect('supersized');
+
+    if (!empty($library)) {
+      $requirements['supersized'] = array(
+        'title' => $t('Supersized'),
+        'value' => $t('Supersized 3.2.8 installed.'),
+        'severity' => REQUIREMENT_OK,
+      );
+    }
+    else {
+      $url = l(t('here'), $library['download url']);
+      $value = $t('Install version 3.2.8 of the Supersized (from !url) in a libraries directory such as "sites/all/libraries."', array('!url' => $url));
+      $requirements['supersized'] = array(
+        'title' => $t('Supersized'),
+        'value' => $value,
+        'severity' => REQUIREMENT_ERROR,
+      );
+    }
+  }
+
+  return $requirements;
+}
+
+
+/**
  * Create new database table {supersized}.
  */
 function supersized_update_7001() {

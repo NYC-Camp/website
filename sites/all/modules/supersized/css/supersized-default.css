@@ -10,3 +10,25 @@ ul#thumb-list li img {
 ul#thumb-tray {
   height: 130px;
 }
+
+/* Overlay background */
+#supersized-node-settings-form #edit-overlay .form-item.form-type-radio,
+.form-item-instance-settings-functionalities-overlay .form-item.form-type-radio {
+  display: inline-block;
+  margin-right: 15px;
+}
+.supersized-overlay-preview {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+#supersized-overlay {
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: -998;
+}
