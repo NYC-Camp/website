@@ -9,9 +9,9 @@ dependencies[] = imagecache_canvasactions
 dependencies[] = imagecache_coloractions
 dependencies[] = libraries (>=2)
 
-; Information added by drupal.org packaging script on 2013-02-18
-version = "7.x-1.1"
+; Information added by Drupal.org packaging script on 2013-12-20
+version = "7.x-1.5"
 core = "7.x"
 project = "supersized"
-datestamp = "1361152742"
+datestamp = "1387525708"
 

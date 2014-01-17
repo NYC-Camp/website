@@ -24,24 +24,20 @@ class DBObject implements Iterator{
     //is this a real table, check it
  
     
-    $schemas = drupal_get_schema();
-    $tables = array_keys($schemas);
-
-    
-    if(in_array($table, $tables)){
+    if($schema = drupal_get_schema($table)){
       $this->table = $table;
-      $this->primary_keys = $schemas[$table]["primary key"];
-      $this->vars = array_keys($schemas[$table]['fields']);
+      $this->primary_keys = $schema["primary key"];
+      $this->vars = array_keys($schema['fields']);
       
       //do we want to handle searialized variables by default? let's do it
       //and wait for some critizism
-      foreach($schemas[$table]['fields'] as $name => $field){
+      foreach($schema['fields'] as $name => $field){
         if(array_key_exists('serialize', $field) && $field['serialize']){
           $this->serialize[] = $name;
         }
       }
       foreach($this->vars as $var){
-        if($schemas[$table]['fields'][$var]['type'] != "serial"){
+        if($schema['fields'][$var]['type'] != "serial"){
           $this->data[$var] = NULL;
         }
       };
@@ -85,7 +81,7 @@ class DBObject implements Iterator{
    
     
     if($this->is_new){
-      return 
+      $this->id =
       db_insert($this->table)
       ->fields($this->data)
       ->execute();
@@ -257,10 +253,13 @@ class EntityType extends DBObject{
   
   public function save(){
     if($this->is_new){
-      module_load_include('inc', 'eck', 'eck.enttiy_type');
+      module_load_include('inc', 'eck', 'eck.entity_type');
       $schema = eck__entity_type__schema($this);
       db_create_table("eck_{$this->name}", $schema);
-      
+
+      // Allow other modules to respond to the creation of entity types.
+      module_invoke_all('eck_entity_type_insert', $this);
+
     }else{
       //modify the already existing table in accordance with the recorded changes
       if(array_key_exists('add', $this->changes)){
@@ -272,7 +271,6 @@ class EntityType extends DBObject{
           //it is not custom so lets get the schema and add the field
           $schema = eck_property_type_schema($property['type']);
           db_add_field("eck_{$this->name}", $name, $schema);
-          
         }
       }
       if(array_key_exists('remove', $this->changes)){
@@ -280,6 +278,9 @@ class EntityType extends DBObject{
           db_drop_field("eck_{$this->name}", $name);
         }
       }
+
+      // Allow other modules to respond to the change of entity types.
+      module_invoke_all('eck_entity_type_update', $this);
     }
     
     parent::save();
@@ -289,6 +290,10 @@ class EntityType extends DBObject{
   public function delete(){
     parent::delete();
     db_drop_table('eck_'.$this->name);
+
+    // Allow other modules to respond to the deletion of entity types.
+    module_invoke_all('eck_entity_type_delete', $this);
+
     drupal_flush_all_caches();
   }
   
@@ -317,6 +322,7 @@ class Bundle extends DBObject{
   
   public function __construct(){
     parent::__construct('eck_bundle');
+    $this->config = array();
   }
   
   private function createMachineName(){

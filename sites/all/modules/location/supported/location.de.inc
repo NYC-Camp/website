@@ -61,7 +61,7 @@ function _location_map_link_de_suchen($location = array()) {
 //    $query_parts[] = $location['number'];
 //  }
   $get_query .= urlencode(implode(', ', $query_parts));
-  return ('http://www.suchen.de/lokalmap'. $get_query);
+  return ('http://www.suchen.de/lokalmap' . $get_query);
 }
 
 function location_map_link_de_providers() {
@@ -72,7 +72,7 @@ function location_map_link_de_providers() {
       'tos' => 'http://www.suchen.de/agb',
     ),
     'google' => array(
-      'name' => 'Google Maps',
+      'name' => t('Google Maps'),
       'url' => 'http://maps.google.com',
       'tos' => 'http://www.google.com/help/terms_local.html',
     ),
@@ -139,7 +139,7 @@ function _location_driving_directions_link_de_suchen($location_a, $location_b) {
     if ($location_a['city'] != '') {
       $query_parts[] = $location_a['city'];
     }
-    $get_query .= 'route_from='. urlencode(implode(', ', $query_parts));
+    $get_query .= 'route_from=' . urlencode(implode(', ', $query_parts));
 
     // NACH
     $query_parts = array();
@@ -152,9 +152,9 @@ function _location_driving_directions_link_de_suchen($location_a, $location_b) {
     if ($location_b['city'] != '') {
       $query_parts[] = $location_b['city'];
     }
-    $get_query .= '&amp;route_to='. urlencode(implode(', ', $query_parts));
+    $get_query .= '&amp;route_to=' . urlencode(implode(', ', $query_parts));
 
-    return ('http://www.suchen.de/route'. $get_query);
+    return ('http://www.suchen.de/route' . $get_query);
   }
 }
 
@@ -168,7 +168,7 @@ function location_map_link_de_google($location = array()) {
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.com?q='. urlencode(implode(', ', $query_params)));
+    return ('http://maps.google.com?q=' . urlencode(implode(', ', $query_params)));
   }
   else {
     return NULL;
@@ -179,41 +179,42 @@ function theme_location_de($location = array(), $hide = array()) {
   $output = '';
   if (count($location)) {
     $output .= "\n";
-    $output .= '<div class="location vcard"><div class="adr">'."\n";
+    $output .= '<div class="location vcard"><div class="adr">' . "\n";
     if (!empty($location['name']) && !in_array('name', $hide)) {
-      $output .= '<div class="fn">'. $location['name'] .'</div>';
+      $output .= '<div class="fn">' . $location['name'] . '</div>';
     }
 
     if (!empty($location['street']) && !in_array('street', $hide)) {
-      $output .= '<div class="street-address">'. $location['street'];
+      $output .= '<div class="street-address">' . $location['street'];
       if (!empty($location['additional']) && !in_array('street', $hide)) {
-        $output .= ' '. $location['additional'];
+        $output .= ' ' . $location['additional'];
       }
-      $output .='</div>';
+      $output .= '</div>';
     }
 
     if ((!empty($location['city']) && !in_array('city', $hide)) ||
-        (!empty($location['postal_codet']) && !in_array('postal_code', $hide))) {
+      (!empty($location['postal_codet']) && !in_array('postal_code', $hide))
+    ) {
 
       $city_postal = array();
 
       if (!empty($location['postal_code']) && !in_array('postal_code', $hide)) {
-        $city_postal[] = '<span class="postal-code">'. $location['postal_code'] .'</span>';
+        $city_postal[] = '<span class="postal-code">' . $location['postal_code'] . '</span>';
       }
 
       if (!empty($location['city']) && !in_array('city', $hide)) {
-        $city_postal[] = '<span class="locality">'. $location['city'] .'</span>';
+        $city_postal[] = '<span class="locality">' . $location['city'] . '</span>';
       }
 
-      $output .= '<div>'. implode(' ', $city_postal) .'</div>';
+      $output .= '<div>' . implode(' ', $city_postal) . '</div>';
     }
 
     if (!in_array('country', $hide)) {
-      $output .= '<div class="country-name">'. t('Germany') .'</div>';
+      $output .= '<div class="country-name">' . t('Germany') . '</div>';
     }
 
     if (location_has_coordinates($location)) {
-      $output .=  '<div class="geo"><abbr class="latitude" title="'. $location['latitude'] .'" /><abbr class="longitude" title="'. $location['latitude'] .'" /></div>';
+      $output .= '<div class="geo"><abbr class="latitude" title="' . $location['latitude'] . '" /><abbr class="longitude" title="' . $location['latitude'] . '" /></div>';
     }
 
     $output .= '</div></div>';
@@ -247,9 +248,18 @@ function location_get_postalcode_data_de($location = array()) {
   }
 
   // Now we pad the thing and query.
-  $row = db_query("SELECT * FROM {zipcodes} where country = :country AND zip = :zip", array(':country' => $location['country'], ':zip' => str_pad($location['postal_code'], 5, "0", STR_PAD_LEFT)))->fetchObject();
+  $row = db_query("SELECT * FROM {zipcodes} where country = :country AND zip = :zip", array(
+    ':country' => $location['country'],
+    ':zip' => str_pad($location['postal_code'], 5, "0", STR_PAD_LEFT)
+  ))->fetchObject();
   if ($row) {
-    return array('lat' => $row->latitude, 'lon' => $row->longitude, 'city' => $row->city, 'province' => $row->state, 'country' => $row->country);
+    return array(
+      'lat' => $row->latitude,
+      'lon' => $row->longitude,
+      'city' => $row->city,
+      'province' => $row->state,
+      'country' => $row->country
+    );
   }
   else {
     return NULL;

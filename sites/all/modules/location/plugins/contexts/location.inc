@@ -53,7 +53,7 @@ function location_context_create_location($empty, $data = NULL, $conf = FALSE) {
     }
   }
 
-  if (!empty($data))  {
+  if (!empty($data)) {
     $context->data = $data;
     $context->title = $data['city'];
     $context->argument = $data['lid'];

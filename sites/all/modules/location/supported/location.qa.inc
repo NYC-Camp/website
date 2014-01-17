@@ -3,7 +3,8 @@
 // Qatar
 
 function location_province_list_qa() {
-  return array('DW' => "Ad Dawhah",
+  return array(
+    'DW' => "Ad Dawhah",
     'GW' => "Al Ghuwayriyah",
     'JM' => "Al Jumayliyah",
     'KR' => "Al Khawr",
@@ -12,7 +13,8 @@ function location_province_list_qa() {
     'JB' => "Jarayan al Batinah",
     'MS' => "Madinat ash Shamal",
     'UD' => "Umm Sa'id",
-    'UL' => "Umm Salal");
+    'UL' => "Umm Salal"
+  );
 }
 
 /**

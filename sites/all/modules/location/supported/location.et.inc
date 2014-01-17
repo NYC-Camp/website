@@ -3,7 +3,8 @@
 // Ethiopia
 
 function location_province_list_et() {
-  return array('AF' => "Afar",
+  return array(
+    'AF' => "Afar",
     'AH' => "Amhara",
     'BG' => "Benishangul-Gumaz",
     'GB' => "Gambela",
@@ -13,7 +14,8 @@ function location_province_list_et() {
     'SN' => "Southern Nations - Nationalities and Peoples Region",
     'TG' => "Tigray",
     'AA' => "Addis Ababa",
-    'DD' => "Dire Dawa");
+    'DD' => "Dire Dawa"
+  );
 }
 
 /**

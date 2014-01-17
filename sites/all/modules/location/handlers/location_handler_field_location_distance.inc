@@ -132,7 +132,7 @@ class location_handler_field_location_distance extends views_handler_field {
   function click_sort($order) {
     $location = location_views_proximity_get_reference_location($this->view, $this->options);
 
-    if ($location) {
+    if (!empty($location)) {
       $this->query->add_orderby(NULL, earth_distance_sql($location['longitude'], $location['latitude'], $this->table_alias), $order, $this->field_alias);
     }
   }
@@ -142,7 +142,7 @@ class location_handler_field_location_distance extends views_handler_field {
       // Unset location, empty display.
       return;
     }
-    $dist = (float)$values->{$this->field_alias};
+    $dist = (float) $values->{$this->field_alias};
     if ($this->options['units'] == 'km') {
       $dist = $dist / 1000.0;
       return theme('location_distance', array('distance' => $dist, 'units' => 'km'));
@@ -159,10 +159,10 @@ class location_handler_field_location_distance extends views_handler_field {
     $coordinates = location_views_proximity_get_reference_location($this->view, $this->options);
 
     if (!empty($coordinates)) {
-      $this->field_alias = $this->query->add_field(NULL, earth_distance_sql($coordinates['longitude'], $coordinates['latitude'], $this->table_alias), $this->table_alias .'_'. $this->field);
+      $this->field_alias = $this->query->add_field(NULL, earth_distance_sql($coordinates['longitude'], $coordinates['latitude'], $this->table_alias), $this->table_alias . '_' . $this->field);
     }
     else {
-      $this->field_alias = $this->query->add_field(NULL, "'Unknown'", $this->table_alias .'_'. $this->field);
+      $this->field_alias = $this->query->add_field(NULL, "'Unknown'", $this->table_alias . '_' . $this->field);
     }
   }
 }

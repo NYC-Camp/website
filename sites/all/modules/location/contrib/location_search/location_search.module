@@ -288,7 +288,7 @@ function location_search_form_alter(&$form, &$form_state, $form_id) {
     }
     ksort($countries);
 
-    drupal_add_js(drupal_get_path('module', 'location') .'/location_autocomplete.js');
+    drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
 
     // Keyword boxes:
     $form['advanced'] = array(
@@ -310,7 +310,7 @@ function location_search_form_alter(&$form, &$form_state, $form_id) {
     $form['advanced']['province'] = array(
       '#type' => 'textfield',
       '#title' => t('State/Province'),
-      '#autocomplete_path' => 'location/autocomplete/'. variable_get('location_default_country', 'us'),
+      '#autocomplete_path' => 'location/autocomplete/' . variable_get('location_default_country', 'us'),
       // Used by province autocompletion js.
       '#attributes' => array('class' => array('location_auto_province')),
     );
@@ -404,7 +404,7 @@ function location_search_validate($form, &$form_state) {
   }
 
   if (!empty($values['latitude']) && !empty($values['longitude']) && !empty($values['distance'])) {
-    $keys = search_expression_insert($keys, 'from', $values['latitude'] .','. $values['longitude'] .','. $values['distance'] .','. $values['units']);
+    $keys = search_expression_insert($keys, 'from', $values['latitude'] . ',' . $values['longitude'] . ',' . $values['distance'] . ',' . $values['units']);
   }
 
   if (!empty($keys)) {
@@ -416,7 +416,7 @@ function location_search_validate($form, &$form_state) {
  * Implements hook_update_index().
  */
 function location_update_index() {
-  $limit = (int)variable_get('search_cron_limit', 100);
+  $limit = (int) variable_get('search_cron_limit', 100);
 
   $result = db_query_range('SELECT lid FROM {location_search_work}', 0, $limit);
   foreach ($result as $row) {

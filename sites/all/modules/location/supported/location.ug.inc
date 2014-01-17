@@ -3,7 +3,8 @@
 // Uganda
 
 function location_province_list_ug() {
-  return array('KAL' => "Kalangala",
+  return array(
+    'KAL' => "Kalangala",
     'KMP' => "Kampala",
     'KAY' => "Kayunga",
     'KIB' => "Kiboga",
@@ -58,7 +59,8 @@ function location_province_list_ug() {
     'MSN' => "Masindi",
     'MBR' => "Mbarara",
     'NTU' => "Ntungamo",
-    'RUK' => "Rukungiri");
+    'RUK' => "Rukungiri"
+  );
 }
 
 /**

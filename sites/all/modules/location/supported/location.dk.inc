@@ -3,7 +3,8 @@
 // Denmark
 
 function location_province_list_dk() {
-  return array('CC' => "Copenhagen (municipality)",
+  return array(
+    'CC' => "Copenhagen (municipality)",
     'FC' => "Frederiksberg (municipality)",
     'CO' => "Copenhagen",
     'FR' => "Frederiksborg",
@@ -20,7 +21,8 @@ function location_province_list_dk() {
     'AR' => "Arhus",
     'BH' => "Bornholm",
     'GL' => "Greenland",
-    'FO' => "Faroe Islands");
+    'FO' => "Faroe Islands"
+  );
 }
 
 /**
@@ -33,18 +35,22 @@ function location_province_list_dk() {
  */
 function location_map_link_dk_findvej($location = array()) {
   if (isset($location['street']) && !empty($location['street']) &&
-      isset($location['postal_code']) && !empty($location['postal_code'])) {
+    isset($location['postal_code']) && !empty($location['postal_code'])
+  ) {
     return url('http://findvej.dk/' . $location['street'] . ',' . $location['postal_code']);
   }
   elseif (isset($location['street']) && !empty($location['street']) &&
-          isset($location['city']) && !empty($location['city'])) {
+    isset($location['city']) && !empty($location['city'])
+  ) {
     return url('http://findvej.dk/' . $location['street'] . ',' . $location['city']);
   }
   elseif (location_has_coordinates($location)) {
-    return url('http://findvej.dk/', array('query' => array(
-      'latitude' => $location['latitude'],
-      'longitude' => $location['longitude'],
-    )));
+    return url('http://findvej.dk/', array(
+      'query' => array(
+        'latitude' => $location['latitude'],
+        'longitude' => $location['longitude'],
+      )
+    ));
   }
   else {
     return NULL;

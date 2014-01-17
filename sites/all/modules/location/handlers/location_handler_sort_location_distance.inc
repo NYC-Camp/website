@@ -130,8 +130,9 @@ class location_handler_sort_location_distance extends views_handler_sort {
     foreach ($this->view->field as $filter) {
       if ($filter->table == 'location' && $filter->field == 'distance' && $filter->options['relationship'] == $this->options['relationship']) {
         if ($filter->options['origin'] == $this->options['origin']
-            && $filter->options['latitude'] == $this->options['latitude']
-            && $filter->options['longitude'] == $this->options['longitude']) {
+          && $filter->options['latitude'] == $this->options['latitude']
+          && $filter->options['longitude'] == $this->options['longitude']
+        ) {
           // We have a match! Sync aliases to make it easier on the database.
           $alias = $filter->field_alias;
         }

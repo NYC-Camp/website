@@ -25,13 +25,13 @@ function location_province_list_pt() {
     'Viana do Castelo' => "Viana do Castelo",
     'Vila Real' => "Vila Real",
     'Viseu' => "Viseu"
- );
+  );
 }
 
 function location_map_link_pt_providers() {
   return array(
     'google' => array(
-      'name' => 'Google Maps',
+      'name' => t('Google Maps'),
       'url' => 'http://maps.google.pt',
       'tos' => 'http://www.google.pt/help/terms_maps.html',
     ),
@@ -46,27 +46,30 @@ function location_map_link_pt_google($location = array()) {
   $query_params = array();
   $q = NULL;
 
-    foreach (array('street', 'city', 'province','postal_code', 'country') as $field) {
+  foreach (array('street', 'city', 'province', 'postal_code', 'country') as $field) {
     if (isset($location[$field])) {
       $query_params[] = $location[$field];
     }
   }
 
   if (location_has_coordinates($location)) {
-    $q = urlencode($location['latitude'] . ' ' . $location['longitude'] . ' (' . implode(', ', $query_params) . ')' );
-  } else if (count($query_params) > 0) {
-    $q = urlencode(implode(", ", $query_params));
+    $q = urlencode($location['latitude'] . ' ' . $location['longitude'] . ' (' . implode(', ', $query_params) . ')');
+  }
+  else {
+    if (count($query_params) > 0) {
+      $q = urlencode(implode(", ", $query_params));
+    }
   }
 
   if ($q != NULL) {
-    return ('http://maps.google.pt?q='.$q );
+    return ('http://maps.google.pt?q=' . $q);
   }
   else {
     return NULL;
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.pt?q='. urlencode(implode(', ', $query_params)));
+    return ('http://maps.google.pt?q=' . urlencode(implode(', ', $query_params)));
   }
   else {
     return NULL;

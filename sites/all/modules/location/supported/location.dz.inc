@@ -3,7 +3,8 @@
 // Algeria
 
 function location_province_list_dz() {
-  return array('ADR' => "Adrar",
+  return array(
+    'ADR' => "Adrar",
     'ADE' => "Ain Defla",
     'ATE' => "Ain Temouchent",
     'ALG' => "Alger",
@@ -50,7 +51,8 @@ function location_province_list_dz() {
     'TIP' => "Tipaza",
     'TIS' => "Tissemsilt",
     'TOU' => "Tizi Ouzou",
-    'TLE' => "Tlemcen");
+    'TLE' => "Tlemcen"
+  );
 }
 
 /**

@@ -3,7 +3,8 @@
 // Liechtenstein
 
 function location_province_list_li() {
-  return array('V' => "Vaduz",
+  return array(
+    'V' => "Vaduz",
     'A' => "Schaan",
     'B' => "Balzers",
     'N' => "Triesen",
@@ -13,7 +14,8 @@ function location_province_list_li() {
     'R' => "Ruggell",
     'G' => "Gamprin",
     'L' => "Schellenberg",
-    'P' => "Planken");
+    'P' => "Planken"
+  );
 }
 
 /**

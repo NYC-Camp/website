@@ -16,22 +16,22 @@
  */
 function location_province_list_nz() {
   return array(
-    'AUK' => 'Auckland',          // 1000-2xxx
-    'BOP' => 'Bay of Plenty',     // 3xxx
-    'CAN' => 'Canterbury',        // 8xxx
-    'GIS' => 'Gisborne',          // 4xxx
-    'HKB' => 'Hawke\'s Bay',      // 4xxx
-    'MBH' => 'Marlborough',       // 7xxx
+    'AUK' => 'Auckland', // 1000-2xxx
+    'BOP' => 'Bay of Plenty', // 3xxx
+    'CAN' => 'Canterbury', // 8xxx
+    'GIS' => 'Gisborne', // 4xxx
+    'HKB' => 'Hawke\'s Bay', // 4xxx
+    'MBH' => 'Marlborough', // 7xxx
     'MWT' => 'Manawatu-Wanganui', // 4xxx-4xxx
-    'NSN' => 'Nelson',            // 7xxx-7xxx
-    'NTL' => 'Northland',         // 0000-0999
-    'OTA' => 'Otago',             // 9xxx-9xxx
-    'STL' => 'Southland',         // 9xxx-9xxx
-    'TAS' => 'Tasman',            // 7xxx-7xxx
-    'TKI' => 'Taranaki',          // 4xxx-4xxx
-    'WGN' => 'Wellington',        // 5000-6999
-    'WKO' => 'Waikato',           // 2xxx-3xxx
-    'WTC' => 'West Coast',        // 7xxx-7xxx
+    'NSN' => 'Nelson', // 7xxx-7xxx
+    'NTL' => 'Northland', // 0000-0999
+    'OTA' => 'Otago', // 9xxx-9xxx
+    'STL' => 'Southland', // 9xxx-9xxx
+    'TAS' => 'Tasman', // 7xxx-7xxx
+    'TKI' => 'Taranaki', // 4xxx-4xxx
+    'WGN' => 'Wellington', // 5000-6999
+    'WKO' => 'Waikato', // 2xxx-3xxx
+    'WTC' => 'West Coast', // 7xxx-7xxx
   );
 }
 
@@ -127,7 +127,13 @@ function location_latlon_rough_nz($location = array()) {
 function _location_latlon_postalcode_nz($location = array()) {
   $res = db_query("SELECT * FROM {zipcodes} where country = '%s' AND zip = '%s'", $location['country'], str_pad($location['postal_code'], 4, "0", STR_PAD_LEFT));
   if ($row = db_fetch_object($res)) {
-    return array('lat' => $row->latitude, 'lon' => $row->longitude, 'city' => $row->city, 'province' => $row->state, 'country' => $row->country);
+    return array(
+      'lat' => $row->latitude,
+      'lon' => $row->longitude,
+      'city' => $row->city,
+      'province' => $row->state,
+      'country' => $row->country
+    );
   }
   else {
     return NULL;
@@ -173,10 +179,10 @@ function _location_latlon_exact_nz_geocoder($location = array()) {
   $location_string = '';
   if (isset($location['street']) && trim($location['street']) != '') {
     if (isset($location['postal_code'])) {
-      $location_string = $location['street'] .' '. $location['postal_code'];
+      $location_string = $location['street'] . ' ' . $location['postal_code'];
     }
     elseif (isset($location['city']) && isset($location['province']) && trim($location['city']) != '' && trim($location['province'])) {
-      $location_string = $location['street'] .', '. $location['city'] .', '. $location['province'];
+      $location_string = $location['street'] . ', ' . $location['city'] . ', ' . $location['province'];
     }
     else { // else geocoder.us won't do bidness with you!
       return NULL;
@@ -203,13 +209,13 @@ function _location_latlon_exact_nz_geocoder($location = array()) {
 function location_map_link_nz_yahoo($location = array()) {
   $get_query = '?';
   if (isset($location['street'])) {
-    $get_query .= 'addr='. urlencode($location['street']) .'&amp;';
+    $get_query .= 'addr=' . urlencode($location['street']) . '&amp;';
   }
   if ($location['province'] != '' || $location['city'] != '' || $location['postal_code'] != '') {
-    $get_query .= 'csz='. _location_nz_yahoo_csz_get_field($location) .'&amp;';
+    $get_query .= 'csz=' . _location_nz_yahoo_csz_get_field($location) . '&amp;';
   }
-  $get_query .= 'country='. urlencode($location['country']);
-  return ('http://maps.yahoo.com/maps_result'. $get_query);
+  $get_query .= 'country=' . urlencode($location['country']);
+  return ('http://maps.yahoo.com/maps_result' . $get_query);
 }
 
 /**
@@ -228,7 +234,7 @@ function location_map_link_nz_google($location = array()) {
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.com?q='. urlencode(implode(", ", $query_params)));
+    return ('http://maps.google.com?q=' . urlencode(implode(", ", $query_params)));
   }
   else {
     return NULL;
@@ -243,22 +249,22 @@ function location_map_link_nz_google($location = array()) {
  */
 function location_map_link_nz_mapquest($location = array()) {
   if (isset($location['street'])) {
-    $get_query .= 'address='. urlencode($location['street']) .'&amp;';
+    $get_query .= 'address=' . urlencode($location['street']) . '&amp;';
   }
 
   if (isset($location['city'])) {
-    $get_query .= 'city='. urlencode($location['city']) .'&amp;';
+    $get_query .= 'city=' . urlencode($location['city']) . '&amp;';
   }
 
   if (isset($location['province'])) {
-    $get_query .= 'state='. urlencode($location['province']) .'&amp;';
+    $get_query .= 'state=' . urlencode($location['province']) . '&amp;';
   }
 
   if (isset($location['postal_code'])) {
-    $get_query .= 'zipcode='. urlencode($location['postal_code']);
+    $get_query .= 'zipcode=' . urlencode($location['postal_code']);
   }
   if (strlen($get_query)) {
-    return 'http://www.mapquest.com/maps/map.adp?searchtype=address&amp;country=NZ&amp;'. $get_query;
+    return 'http://www.mapquest.com/maps/map.adp?searchtype=address&amp;country=NZ&amp;' . $get_query;
   }
   else {
     return NULL;
@@ -279,16 +285,16 @@ function location_map_link_nz_mapquest($location = array()) {
 function location_map_link_nz_providers() {
   return array(
     'google' => array(
-      'name' => 'Google Maps',
+      'name' => t('Google Maps'),
       'url' => 'http://maps.google.com',
       'tos' => 'http://www.google.com/help/terms_local.html'
     ),
-   'yahoo' => array(
+    'yahoo' => array(
       'name' => 'Yahoo! Maps',
       'url' => 'http://maps.yahoo.com',
       'tos' => 'http://help.yahoo.com/help/us/maps/maps-24.html'
     ),
-   'mapquest' => array(
+    'mapquest' => array(
       'name' => 'MapQuest',
       'url' => 'http://www.mapquest.com',
       'tos' => 'http://www.mapquest.com/features/main.adp?page=legal'
@@ -330,14 +336,17 @@ function location_geocode_nz_yahoo_settings() {
     '#size' => 64,
     '#maxlength' => 128,
     '#default_value' => variable_get('location_geocode_nz_yahoo_appid', 'YahooDemo'),
-    '#description' => t('Unless you are using this site to test and develop, you will need to obtain a Yahoo! Web Services Application ID from the %network_link.  If you are using for development and testing purposes, you can use \'YahooDemo\' as your AppID.  When getting an Application ID from Yahoo!, please also be sure to review the %usage_policy.', array('%network_link' => '<a href="http://api.search.yahoo.com/webservices/register_application">Yahoo! Developer Network</a>', '%usage_policy' => '<a href="http://developer.yahoo.com/usagePolicy/index.html">usage policy</a>'))
+    '#description' => t('Unless you are using this site to test and develop, you will need to obtain a Yahoo! Web Services Application ID from the %network_link.  If you are using for development and testing purposes, you can use \'YahooDemo\' as your AppID.  When getting an Application ID from Yahoo!, please also be sure to review the %usage_policy.', array(
+      '%network_link' => '<a href="http://api.search.yahoo.com/webservices/register_application">Yahoo! Developer Network</a>',
+      '%usage_policy' => '<a href="http://developer.yahoo.com/usagePolicy/index.html">usage policy</a>'
+    ))
   );
 
   return $form;
 }
 
 function location_geocode_nz_yahoo($location = array()) {
-  $service_url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=". variable_get('location_geocode_nz_yahoo_appid', "YahooDemo") ."&location=";
+  $service_url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=" . variable_get('location_geocode_nz_yahoo_appid', "YahooDemo") . "&location=";
 
   $address = location_address2singleline($location);
 
@@ -436,19 +445,19 @@ function _location_driving_directions_link_nz_yahoo($location_a, $location_b) {
     $yahoo_maps_path = 'dd';
   }
 
-  $get_query  = '?';
+  $get_query = '?';
 
-  $get_query .= 'addr='. urlencode($location_a['street']) .'&amp;';
-  $get_query .= 'csz='. _location_nz_yahoo_csz_get_field($location_a) .'&amp;';
-  $get_query .= 'country='. urlencode($location_a['country']) .'&amp;';
+  $get_query .= 'addr=' . urlencode($location_a['street']) . '&amp;';
+  $get_query .= 'csz=' . _location_nz_yahoo_csz_get_field($location_a) . '&amp;';
+  $get_query .= 'country=' . urlencode($location_a['country']) . '&amp;';
 
-  $get_query .= 'taddr='. urlencode($location_b['street']) .'&amp;';
-  $get_query .= 'tcsz='. _location_nz_yahoo_csz_get_field($location_b) .'&amp;';
-  $get_query .= 'tcountry='. urlencode($location_b['country']);
+  $get_query .= 'taddr=' . urlencode($location_b['street']) . '&amp;';
+  $get_query .= 'tcsz=' . _location_nz_yahoo_csz_get_field($location_b) . '&amp;';
+  $get_query .= 'tcountry=' . urlencode($location_b['country']);
 
-  $get_query .= '&amp;getrte='. urlencode('Get Directions');
+  $get_query .= '&amp;getrte=' . urlencode('Get Directions');
 
-  return ('http://maps.yahoo.com/'. $yahoo_maps_path . $get_query);
+  return ('http://maps.yahoo.com/' . $yahoo_maps_path . $get_query);
 }
 
 function _location_nz_enough_fields_for_yahoo($location) {
@@ -481,7 +490,7 @@ function _location_nz_yahoo_csz_get_field($location) {
   // than on a Canadian postal code.
   if ($location['country'] = 'ca') {
     if (strlen($location['city']) && strlen($location['province'])) {
-      return urlencode($location['city'] .', '. $location['province']);
+      return urlencode($location['city'] . ', ' . $location['province']);
     }
 
     if (strlen($location['postal_code'])) {
@@ -494,7 +503,7 @@ function _location_nz_yahoo_csz_get_field($location) {
     }
 
     if (strlen($location['city']) && strlen($location['province'])) {
-      return urlencode($location['city'] .', '. $location['province']);
+      return urlencode($location['city'] . ', ' . $location['province']);
     }
   }
 
@@ -512,21 +521,21 @@ function _location_nz_yahoo_csz_get_field($location) {
 function _location_nz_geocoder_oneline($location = array()) {
   $line = '';
 
-  $line .= $location['street'] .', ';
+  $line .= $location['street'] . ', ';
 
   if (strlen($location['city']) && strlen($location['province']) && strlen($location['postal_code'])) {
-    $line .= $location['city'] .', '. $location['province'] .' '. $location['postal_code'];
+    $line .= $location['city'] . ', ' . $location['province'] . ' ' . $location['postal_code'];
   }
   elseif (strlen($location['city']) && strlen($location['province'])) {
-    $line .= $location['city'] .', '. $location['state'];
+    $line .= $location['city'] . ', ' . $location['state'];
   }
   elseif (strlen($location['postal_code'])) {
     if (strlen($location['city']) || strlen($location['state'])) {
       if (strlen($location['city'])) {
-        $line .= $location['city'] .', '. $location['postal_code'];
+        $line .= $location['city'] . ', ' . $location['postal_code'];
       }
       else {
-        $line .= $location['state'] .', '. $location['postal_code'];
+        $line .= $location['state'] . ', ' . $location['postal_code'];
       }
     }
     else {

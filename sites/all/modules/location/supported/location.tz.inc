@@ -3,7 +3,8 @@
 // Tanzania, United Republic of
 
 function location_province_list_tz() {
-  return array('AR' => "Arusha",
+  return array(
+    'AR' => "Arusha",
     'DS' => "Dar es Salaam",
     'DO' => "Dodoma",
     'IR' => "Iringa",
@@ -28,7 +29,8 @@ function location_province_list_tz() {
     'TN' => "Tanga",
     'ZC' => "Zanzibar Central/South",
     'ZN' => "Zanzibar North",
-    'ZU' => "Zanzibar Urban/West");
+    'ZU' => "Zanzibar Urban/West"
+  );
 }
 
 /**

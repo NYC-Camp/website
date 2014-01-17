@@ -3,7 +3,8 @@
 // Azerbaijan
 
 function location_province_list_az() {
-  return array('AB' => "Ali Bayramli",
+  return array(
+    'AB' => "Ali Bayramli",
     'ABS' => "Abseron",
     'AGC' => "AgcabAdi",
     'AGM' => "Agdam",
@@ -78,7 +79,8 @@ function location_province_list_az() {
     'ZAN' => "Zangilan",
     'ZAQ' => "Zaqatala",
     'ZAR' => "Zardab",
-    'NX' => "Naxcivan");
+    'NX' => "Naxcivan"
+  );
 }
 
 /**

@@ -1,14 +1,15 @@
 name = Field Slideshow
 description = Provides a Slideshow format for displaying Image or Media fields.
 core = 7.x
+package = Fields
 
 dependencies[] = image
 dependencies[] = libraries
 
 files[] = field_slideshow.module
-; Information added by drupal.org packaging script on 2011-12-23
-version = "7.x-1.5"
+; Information added by drupal.org packaging script on 2013-03-14
+version = "7.x-1.82"
 core = "7.x"
 project = "field_slideshow"
-datestamp = "1324645840"
+datestamp = "1363270823"
 

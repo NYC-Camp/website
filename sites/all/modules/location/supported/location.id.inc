@@ -3,7 +3,8 @@
 // Indonesia
 
 function location_province_list_id() {
-  return array('BA' => "Bali",
+  return array(
+    'BA' => "Bali",
     'BB' => "Bangka-Belitung",
     'BT' => "Banten",
     'BE' => "Bengkulu",
@@ -32,7 +33,8 @@ function location_province_list_id() {
     'SU' => "Sumatera Utara",
     'JK' => "Jakarta Raya",
     'AC' => "Aceh",
-    'YO' => "Yogyakarta");
+    'YO' => "Yogyakarta"
+  );
 }
 
 /**

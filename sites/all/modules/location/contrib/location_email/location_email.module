@@ -24,7 +24,7 @@ function location_email_locationapi(&$location, $op, $a3 = NULL, $a4 = NULL) {
           '#type' => 'textfield',
           '#title' => t('Email address'),
           '#size' => 31,
-          '#maxlength' => 31,
+          '#maxlength' => 254,
           '#description' => NULL,
           '#required' => ($a4 == 2),
           '#default_value' => $location,

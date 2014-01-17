@@ -17,10 +17,10 @@ function location_location_from_node_ctools_relationships() {
     'context' => 'location_location_from_node_context',
     'edit form' => 'location_location_from_node_settings_form',
     'defaults' => array(
-       'location_cck_field_name' => '',
-       'location_cck_field_offset' => 0,
-       'location_type' => NULL,
-     ),
+      'location_cck_field_name' => '',
+      'location_cck_field_offset' => 0,
+      'location_type' => NULL,
+    ),
   );
 }
 

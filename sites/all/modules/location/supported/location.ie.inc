@@ -3,7 +3,8 @@
 // Ireland
 
 function location_province_list_ie() {
-  return array('DB' => "Dublin",
+  return array(
+    'DB' => "Dublin",
     'WK' => "Wicklow",
     'WX' => "Wexford",
     'CW' => "Carlow",
@@ -28,7 +29,8 @@ function location_province_list_ie() {
     'RC' => "Roscommon",
     'SL' => "Sligo",
     'LR' => "Leitrim",
-    'DG' => "Donegal");
+    'DG' => "Donegal"
+  );
 }
 
 /**

@@ -13,7 +13,7 @@ CONFIGURATION
 
 # jQuery selectors
 
-You can usually use the defaults. It assumes that you'll want to apply it to all videos in a div with class="region". 
+You can usually use the defaults. It assumes that you'll want to apply it to all videos on the page. 
 
 If your theme uses a different class or id, or you only want to target certain videos, you can specify that class/id in the video containers field. You can use any valid jQuery selector, e.g.,
 

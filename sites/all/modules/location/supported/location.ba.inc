@@ -3,7 +3,8 @@
 // Bosnia and Herzegovina
 
 function location_province_list_ba() {
-  return array('BRO' => "Brcko district",
+  return array(
+    'BRO' => "Brcko district",
     'FUS' => "Unsko-Sanski Kanton",
     'FPO' => "Posavski Kanton",
     'FTU' => "Tuzlanski Kanton",
@@ -20,7 +21,8 @@ function location_province_list_ba() {
     'SVL' => "Vlasenica",
     'SSR' => "Sarajevo-Romanija or Sokolac",
     'SFO' => "Foca",
-    'STR' => "Trebinje");
+    'STR' => "Trebinje"
+  );
 }
 
 /**

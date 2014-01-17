@@ -3,7 +3,8 @@
 // Argentina
 
 function location_province_list_ar() {
-  return array('A' => "Salta",
+  return array(
+    'A' => "Salta",
     'B' => "Buenos Aires Province",
     'C' => "Distrito Federal",
     'D' => "San Luis",
@@ -26,7 +27,8 @@ function location_province_list_ar() {
     'W' => "Corrientes",
     'X' => "Cordoba",
     'Y' => "Jujuy",
-    'Z' => "Santa Cruz");
+    'Z' => "Santa Cruz"
+  );
 }
 
 /**

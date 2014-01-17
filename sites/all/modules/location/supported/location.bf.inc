@@ -3,7 +3,8 @@
 // Burkina Faso
 
 function location_province_list_bf() {
-  return array('BAL' => "Bale",
+  return array(
+    'BAL' => "Bale",
     'BAM' => "Bam",
     'BAN' => "Banwa",
     'BAZ' => "Bazega",
@@ -47,7 +48,8 @@ function location_province_list_bf() {
     'YAT' => "Yatenga",
     'ZIR' => "Ziro",
     'ZOD' => "Zondoma",
-    'ZOW' => "Zoundweogo");
+    'ZOW' => "Zoundweogo"
+  );
 }
 
 /**

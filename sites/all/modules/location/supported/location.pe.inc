@@ -3,7 +3,8 @@
 // Peru
 
 function location_province_list_pe() {
-  return array('AM' => "Amazonas",
+  return array(
+    'AM' => "Amazonas",
     'AN' => "Ancash",
     'AP' => "Apurimac",
     'AR' => "Arequipa",
@@ -27,7 +28,8 @@ function location_province_list_pe() {
     'SM' => "San Martin",
     'TA' => "Tacna",
     'TU' => "Tumbes",
-    'UC' => "Ucayali");
+    'UC' => "Ucayali"
+  );
 }
 
 /**

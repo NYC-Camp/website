@@ -11,6 +11,7 @@ class location_handler_filter_location_province extends views_handler_filter {
   function option_definition() {
     $options = parent::option_definition();
     $options['operator'] = array('default' => 'is');
+    $options['type'] = array('default' => 'textfield');
     return $options;
   }
 
@@ -20,33 +21,60 @@ class location_handler_filter_location_province extends views_handler_filter {
 //    return (!empty($this->options['exposed']) ? t('exposed') : $options[$this->operator]);
   }
 
+  function has_extra_options() {
+    return TRUE;
+  }
+
+  function extra_options_form(&$form, &$form_state) {
+    $form['type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Selection type'),
+      '#options' => array('select' => t('Dropdown'), 'textfield' => t('Autocomplete')),
+      '#default_value' => $this->options['type'],
+    );
+  }
+
   /**
    * Provide a simple textfield for equality
    */
   function value_form(&$form, &$form_state) {
     $country = $this->grovel_country();
-
-    drupal_add_js(drupal_get_path('module', 'location') .'/location_autocomplete.js');
-
     $ac = $country;
     if (is_array($ac)) {
       $ac = implode(',', $ac);
     }
-    $form['value'] = array(
-      '#type' => 'textfield',
-      '#title' => t('State/Province'),
-      '#autocomplete_path' => 'location/autocomplete/'. $ac,
-      '#default_value' => $this->value,
-      '#size' => 64,
-      '#maxlength' => 64,
-      // Used by province autocompletion js.
-      '#attributes' => array('class' => array('location_auto_province')),
-      '#multiple' => TRUE, //$this->options['multiple'],
-    );
+    if ($this->options['type'] == 'textfield') {
+      drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
 
-    // Let location_autocomplete.js find the correct fields to attach.
-    if ($this->location_country_identifier) {
-      $form['value']['#attributes']['class'][] = 'location_auto_join_' . $this->location_country_identifier;
+      $form['value'] = array(
+        '#type' => 'textfield',
+        '#title' => t('State/Province'),
+        '#autocomplete_path' => 'location/autocomplete/' . $ac,
+        '#default_value' => $this->value,
+        '#size' => 64,
+        '#maxlength' => 64,
+        // Used by province autocompletion js.
+        '#attributes' => array('class' => 'location_auto_province'),
+        '#multiple' => TRUE, //$this->options['multiple'],
+      );
+
+      // Let location_autocomplete.js find the correct fields to attach.
+      if ($this->location_country_identifier) {
+        $form['value']['#attributes']['class'] .= ' location_auto_join_' . $this->location_country_identifier;
+      }
+    }
+    else {
+      if ($this->options['type'] == 'select') {
+        $provinces = location_get_provinces($ac);
+        $form['value'] = array(
+          '#type' => 'select',
+          '#title' => t('State/Province'),
+          '#options' => $provinces,
+          '#default_value' => -1,
+          '#multiple' => isset($this->options['expose']['multiple']) ? $this->options['expose']['multiple'] : FALSE
+        );
+
+      }
     }
   }
 

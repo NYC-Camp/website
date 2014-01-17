@@ -3,7 +3,8 @@
 // Venezuela
 
 function location_province_list_ve() {
-  return array('Z' => "Amazonas",
+  return array(
+    'Z' => "Amazonas",
     'B' => "Anzoategui",
     'C' => "Apure",
     'D' => "Aragua",
@@ -27,7 +28,8 @@ function location_province_list_ve() {
     'U' => "Yaracuy",
     'V' => "Zulia",
     'A' => "Federal District",
-    'W' => "Federal Dependency");
+    'W' => "Federal Dependency"
+  );
 }
 
 /**

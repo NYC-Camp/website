@@ -3,7 +3,8 @@
 // Philippines
 
 function location_province_list_ph() {
-  return array('ABR' => "Abra",
+  return array(
+    'ABR' => "Abra",
     'ANO' => "Agusan del Norte",
     'ASU' => "Agusan del Sur",
     'AKL' => "Aklan",
@@ -81,7 +82,8 @@ function location_province_list_ph() {
     'ZBL' => "Zambales",
     'ZNO' => "Zamboanga del Norte",
     'ZSU' => "Zamboanga del Sur",
-    'ZSI' => "Zamboanga Sibugay");
+    'ZSI' => "Zamboanga Sibugay"
+  );
 }
 
 /**
