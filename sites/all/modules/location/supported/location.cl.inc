@@ -3,7 +3,8 @@
 // Chile
 
 function location_province_list_cl() {
-  return array('AI' => "Aisen del General Carlos Ibanez del Campo (XI)",
+  return array(
+    'AI' => "Aisen del General Carlos Ibanez del Campo (XI)",
     'AN' => "Antofagasta (II)",
     'AR' => "Araucania (IX)",
     'AT' => "Atacama (III)",
@@ -15,7 +16,8 @@ function location_province_list_cl() {
     'ML' => "Maule (VII)",
     'RM' => "Region Metropolitana (RM)",
     'TA' => "Tarapaca (I)",
-    'VS' => "Valparaiso (V)");
+    'VS' => "Valparaiso (V)"
+  );
 }
 
 /**

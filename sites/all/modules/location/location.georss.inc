@@ -35,9 +35,9 @@ function _location_rss_item($location, $mode = 'simple') {
       // W3C Basic Geo Vocabulary
       case 'w3c':
         $ret = array(
-          'key'       => 'geo:Point',
+          'key' => 'geo:Point',
           'namespace' => array('xmlns:geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#'),
-          'value'     => array(
+          'value' => array(
             array('key' => 'geo:lat', 'value' => $location['latitude']),
             array('key' => 'geo:long', 'value' => $location['longitude']),
           ),
@@ -47,9 +47,9 @@ function _location_rss_item($location, $mode = 'simple') {
       // W3C Basic Geo Vocabulary with a misspelled longitude tag.
       case 'w3c_bugcompat':
         $ret = array(
-          'key'       => 'geo:Point',
+          'key' => 'geo:Point',
           'namespace' => array('xmlns:geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#'),
-          'value'     => array(
+          'value' => array(
             array('key' => 'geo:lat', 'value' => $location['latitude']),
             array('key' => 'geo:lon', 'value' => $location['longitude']),
           ),
@@ -58,9 +58,9 @@ function _location_rss_item($location, $mode = 'simple') {
       // GeoRSS-Simple
       case 'simple':
         $ret = array(
-          'key'       => 'georss:point',
+          'key' => 'georss:point',
           'namespace' => array('xmlns:georss' => 'http://www.georss.org/georss'),
-          'value'     => "$location[latitude] $location[longitude]",
+          'value' => "$location[latitude] $location[longitude]",
         );
         break;
       //

@@ -3,7 +3,8 @@
 // Botswana
 
 function location_province_list_bw() {
-  return array('CE' => "Central",
+  return array(
+    'CE' => "Central",
     'GH' => "Ghanzi",
     'KD' => "Kgalagadi",
     'KT' => "Kgatleng",
@@ -12,7 +13,8 @@ function location_province_list_bw() {
     'NE' => "North East",
     'NW' => "North West",
     'SE' => "South East",
-    'SO' => "Southern");
+    'SO' => "Southern"
+  );
 }
 
 /**

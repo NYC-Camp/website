@@ -1,53 +1,52 @@
-
 <p><em>Note:</em> This file describes the original country API. While the API itself hasn't
-changed, some things have moved in directions not forseen by this documentation.
-For example, there is less emphasis today on postal data and more emphasis on
-geocoding webservices. Please take this documentation with a grain of salt until
-it is fully cleaned up and brought up to date.</p>
+    changed, some things have moved in directions not forseen by this documentation.
+    For example, there is less emphasis today on postal data and more emphasis on
+    geocoding webservices. Please take this documentation with a grain of salt until
+    it is fully cleaned up and brought up to date.</p>
 
 <h3>location.xx.inc: Adding support for an unsupported country</h3>
-<hr />
+<hr/>
 
 <p>This file is a PHP programmer's description of what needs to be done in order to extend the
-location system to support locationes from a new country.</p>
+    location system to support locationes from a new country.</p>
 
-<p>Let's suppose we want to extend the location system to support locationes from Belgium.  To this end,
-there are 2 tasks:</p>
+<p>Let's suppose we want to extend the location system to support locationes from Belgium. To this end,
+    there are 2 tasks:</p>
 
 TASK #1
 <p>We use the lower-case of the country's two-letter ISO 3166 code to create a file, "location.be.inc", that
-defines the necessary functions that will "hook" into the location system.  This way, when a high-level
-function in the public location API receives a call that uses some Belgium specific function, the call
-will be delegated to the appropriately named function in "location.be.inc".</p>
+    defines the necessary functions that will "hook" into the location system. This way, when a high-level
+    function in the public location API receives a call that uses some Belgium specific function, the call
+    will be delegated to the appropriately named function in "location.be.inc".</p>
 
 TASK #2
-<p>You need postal code data for your country.  This postal code data needs to be able to connect the
-base-length postal code (e.g., U.S. postal codes can be 9 digits, but we're only interested to the
-level of 5 digits and most people only know the 5-digit version) to a city, province/state, country (duh),
-and a latitude/longitude pair in degrees that represents the approximate center of the postal code's area.
-Ultimately, you will want to create a database dump that inserts these fields into specific columns:
-'zip' (for postal codes), 'city' (for city names), 'province' for (the standard state/province/country
-abbreviation), 'country' (for the lower-case of the country's two letter ISO code), 'latitude' (for the
-latitude in degree value, as opposed to radian value) and 'longitude' (for the degree value of the
-longitude).</p>
+<p>You need postal code data for your country. This postal code data needs to be able to connect the
+    base-length postal code (e.g., U.S. postal codes can be 9 digits, but we're only interested to the
+    level of 5 digits and most people only know the 5-digit version) to a city, province/state, country (duh),
+    and a latitude/longitude pair in degrees that represents the approximate center of the postal code's area.
+    Ultimately, you will want to create a database dump that inserts these fields into specific columns:
+    'zip' (for postal codes), 'city' (for city names), 'province' for (the standard state/province/country
+    abbreviation), 'country' (for the lower-case of the country's two letter ISO code), 'latitude' (for the
+    latitude in degree value, as opposed to radian value) and 'longitude' (for the degree value of the
+    longitude).</p>
 
-<p>In a lot of countries, this data costs money!  You cannot simply create a dump and then publish it on
-drupal.org unless the data is free to redistribute.  However, if you are interested in buying this data
-from some vendor and using it on your own site, you can do so but may have to acquire a new license for
-each separate business or web site for which you wish to use postal code data if, in fact, you had to
-pay a fee or license for this data.</p>
+<p>In a lot of countries, this data costs money! You cannot simply create a dump and then publish it on
+    drupal.org unless the data is free to redistribute. However, if you are interested in buying this data
+    from some vendor and using it on your own site, you can do so but may have to acquire a new license for
+    each separate business or web site for which you wish to use postal code data if, in fact, you had to
+    pay a fee or license for this data.</p>
 
 <p>This postalcode-to-lat/lon mapping is important if you want to enable location-based proximity searches of
-anykind for addresses in a particular country.  The module will still work fine without it, but will not
-be able to support searches based on postal codes.</p>
+    anykind for addresses in a particular country. The module will still work fine without it, but will not
+    be able to support searches based on postal codes.</p>
 
 <h3>Contents of location.be.inc</h3>
-<hr />
+<hr/>
 <p>This file will need to implement a handful of functions with the parameters and return values described below.</p>
 
 <p>It is possible to not implement all of these functions since the caller usually checks to see if the function
-exists before calling it, but it may limit the number of features the location system will be able to support
-for your country.</p>
+    exists before calling it, but it may limit the number of features the location system will be able to support
+    for your country.</p>
 
 <p>For an example implementation of the functions described below, see "supported/location.us.inc".</p>
 

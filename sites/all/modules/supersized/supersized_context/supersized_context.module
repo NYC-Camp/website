@@ -26,6 +26,14 @@ function supersized_context_context_plugins() {
       'parent' => 'context_reaction',
     ),
   );
+  $plugins['supersized_context_disable_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'supersized_context'),
+      'file' => 'supersized_context_disable_reaction.inc',
+      'class' => 'supersized_context_disable_reaction',
+      'parent' => 'context_reaction',
+    ),
+  );
   return $plugins;
 }
 
@@ -43,6 +51,10 @@ function supersized_context_context_registry() {
     'supersized_context' => array(
       'title' => t('Supersized'),
       'plugin' => 'supersized_context_reaction',
+    ),
+    'supersized_disable_context' => array(
+      'title' => t('Supersized (Disable)'),
+      'plugin' => 'supersized_context_disable_reaction',
     ),
   );
   return $registry;

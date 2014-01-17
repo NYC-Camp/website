@@ -3,7 +3,8 @@
 // South Africa
 
 function location_province_list_za() {
-  return array('WC' => "Western Cape",
+  return array(
+    'WC' => "Western Cape",
     'NC' => "Northern Cape",
     'EC' => "Eastern Cape",
     'KN' => "KwaZulu-Natal",
@@ -11,7 +12,8 @@ function location_province_list_za() {
     'NW' => "North West",
     'GT' => "Gauteng",
     'MP' => "Mpumalanga",
-    'LP' => "Limpopo");
+    'LP' => "Limpopo"
+  );
 }
 
 /**

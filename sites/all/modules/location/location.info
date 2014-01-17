@@ -36,9 +36,9 @@ files[] = handlers/location_views_handler_filter_proximity.inc
 files[] = plugins/contexts/location.inc
 files[] = plugins/relationships/location_from_node.inc
 
-; Information added by drupal.org packaging script on 2013-05-11
-version = "7.x-3.0-rc1"
+; Information added by drupal.org packaging script on 2013-10-30
+version = "7.x-3.1"
 core = "7.x"
 project = "location"
-datestamp = "1368266412"
+datestamp = "1383154846"
 

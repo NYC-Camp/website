@@ -28,6 +28,7 @@ function supersized_field_info() {
         'max_resolution' => '',
         'min_resolution' => '',
         'default_image' => 0,
+        'mobile_disabled' => 1,
         'functionalities' => array(
           'autoplay' => supersized_default_settings('autoplay'),
           'start_slide' => supersized_default_settings('start_slide'),
@@ -42,6 +43,7 @@ function supersized_field_info() {
           'performance' => supersized_default_settings('performance'),
           'image_protect' => supersized_default_settings('image_protect'),
           'on_new_slide' => supersized_default_settings('on_new_slide'),
+          'overlay' => supersized_default_settings('overlay'),
         ),
         'dimension' => array(
           'min_width' => supersized_default_settings('min_width'),
@@ -100,6 +102,8 @@ function supersized_default_settings($setting) {
     'progress_bar' => 1,
     'mouse_scrub' => 0,
     'control_bar' => 1,
+    'mobile_disabled' => 1,
+    'overlay' => 'none',
   );
   return (isset($settings[$setting])) ? $settings[$setting] : NULL;
 }
@@ -118,12 +122,32 @@ function supersized_field_settings_form($field, $instance) {
  */
 function supersized_field_instance_settings_form($field, $instance) {
 
+  drupal_add_css(drupal_get_path('module', 'supersized') . '/css/supersized-default.css');
+
   // Take image form as basic.
   $form = image_field_instance_settings_form($field, $instance);
 
   $settings = $instance['settings'];
 
   // Add other configuration options.
+  $url = l(t('Browscap'), 'http://drupal.org/project/browscap');
+  $description = t('You may disable Supersized! if !url installed.', array('!url' => $url));
+  if (module_exists('browscap')) {
+    $form['mobile_disabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Disabled Supersized on mobile devices'),
+      '#default_value' => isset($settings['mobile_disabled']) ? $settings['mobile_disabled'] : supersized_default_settings('mobile_disabled'),
+    );
+  }
+  else {
+    $form['mobile_disabled_tips'] = array(
+      '#markup' => $description,
+    );
+  }
+
+  // Get overlay options.
+  $overlay_options = supersized_overlay_options();
+
   $form['description_field'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable <em>Description</em> field'),
@@ -238,6 +262,15 @@ function supersized_field_instance_settings_form($field, $instance) {
   $form['functionalities']['on_new_slide'] = array(
     '#type' => 'hidden',
     '#value' => 'on_new_slide_callback',
+  );
+  $form['functionalities']['overlay'] = array(
+    '#type' => 'radios',
+    '#title' => t('Overylay'),
+    '#description' => t('To add an overlay texture to the slide images.'),
+    '#options' => $overlay_options,
+    '#default_value' => isset($settings['functionalities']['overlay']) ? $settings['functionalities']['overlay'] : supersized_default_settings('overlay'),
+    '#required' => TRUE,
+    '#process' => array('supersized_form_process_radios'),
   );
   $form['dimension'] = array(
     '#type' => 'fieldset',

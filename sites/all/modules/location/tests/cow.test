@@ -24,7 +24,7 @@ class CowInstanceTest extends LocationTestCase {
   var $content_type;
 
 
-public static function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => t('Location Copy on Write checks'),
       'description' => t('Test corner cases of the copy on write mechanism.'),
@@ -232,25 +232,28 @@ public static function getInfo() {
     $this->assertEqual(count($node2->locations), 2, t('Ensuring second revision does not have stealth locations'));
 
     // Delete first revision.
-    db_query("DELETE FROM {node_revision} WHERE nid = :nid AND vid = :vid", array(':nid' => $node1->nid, ':vid' => $node1->vid));
+    db_query("DELETE FROM {node_revision} WHERE nid = :nid AND vid = :vid", array(
+      ':nid' => $node1->nid,
+      ':vid' => $node1->vid
+    ));
     $this->assertFalse(node_revision_delete($node1->vid));
 
 // @todo fixme
-/*    $result = db_query('SELECT * FROM {location} WHERE lid = :lid', array(':lid' => $node1->locations[0]['lid']));
-    if ($row != $result->fetch()) {
-      $this->fail(t('Ensuring location on deleted revision is garbage collected'));
-    }
-    else {
-      $this->pass(t('Ensuring location on deleted revision is garbage collected'));
-    }
+    /*    $result = db_query('SELECT * FROM {location} WHERE lid = :lid', array(':lid' => $node1->locations[0]['lid']));
+        if ($row != $result->fetch()) {
+          $this->fail(t('Ensuring location on deleted revision is garbage collected'));
+        }
+        else {
+          $this->pass(t('Ensuring location on deleted revision is garbage collected'));
+        }
 
-    $result = db_query('SELECT * FROM {location} WHERE lid = :lid', array(':lid' => $node1->locations[1]['lid']));
-    if ($row2 != $result->fetch()) {
-      $this->pass(t('Ensuring shared location on deleted revision is NOT garbage collected'));
-    }
-    else {
-      $this->fail(t('Ensuring shared location on deleted revision is NOT garbage collected'));
-    }*/
+        $result = db_query('SELECT * FROM {location} WHERE lid = :lid', array(':lid' => $node1->locations[1]['lid']));
+        if ($row2 != $result->fetch()) {
+          $this->pass(t('Ensuring shared location on deleted revision is NOT garbage collected'));
+        }
+        else {
+          $this->fail(t('Ensuring shared location on deleted revision is NOT garbage collected'));
+        }*/
   }
 
   function testCOWConservation() {

@@ -3,7 +3,8 @@
 // Zimbabwe
 
 function location_province_list_zw() {
-  return array('BU' => "Bulawayo (city)",
+  return array(
+    'BU' => "Bulawayo (city)",
     'HA' => "Harare (city)",
     'ML' => "Manicaland",
     'MC' => "Mashonaland Central",
@@ -12,7 +13,8 @@ function location_province_list_zw() {
     'MV' => "Masvingo",
     'MN' => "Matabeleland North",
     'MS' => "Matabeleland South",
-    'MD' => "Midlands");
+    'MD' => "Midlands"
+  );
 }
 
 /**

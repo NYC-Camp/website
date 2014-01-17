@@ -3,7 +3,8 @@
 // Somalia
 
 function location_province_list_so() {
-  return array('AW' => "Awdal",
+  return array(
+    'AW' => "Awdal",
     'BK' => "Bakool",
     'BN' => "Banaadir",
     'BR' => "Bari",
@@ -20,7 +21,8 @@ function location_province_list_so() {
     'SH' => "Shabeellaha Hoose",
     'SL' => "Sool",
     'TO' => "Togdheer",
-    'WG' => "Woqooyi Galbeed");
+    'WG' => "Woqooyi Galbeed"
+  );
 }
 
 /**

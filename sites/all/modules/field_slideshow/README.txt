@@ -13,7 +13,7 @@ Compared to Views slideshows, building the slideshow from multiple nodes, this m
 
 1 - Extract the module into sites/{sitename}/modules directory
 2 - Download the JQuery Cycle plugin here : http://jquery.malsup.com/cycle/download.html (don't choose the Lite version), and move the downloaded jquery.cycle.all.js file into /sites/all/libraries/jquery.cycle/
-3 - If you're planning to use a carousel for pager, Download the JCarousel plugin here : http://sorgalla.com/jcarousel, and move lib/jquery.jcarousel.js (or lib/jquery.jcarousel.min.js) file into /sites/all/libraries/jquery.jcarousel/
+3 - If you're planning to use a carousel for pager, Download the JCarousel plugin here : http://sorgalla.com/jcarousel, and move the content of the downloaded folder into the /sites/all/libraries/jquery.jcarousel folder of your server. When this is done there should be a file sites/all/libraries/jquery.jcarousel/lib/jquery.jcarousel.js, or jquery.jcarousel.min.js
 
 
 --- USAGE ---------------------------------------------------------------

@@ -22,7 +22,7 @@ function location_province_list_nl() {
 function location_map_link_nl_providers() {
   return array(
     'google' => array(
-      'name' => 'Google Maps',
+      'name' => t('Google Maps'),
       'url' => 'http://maps.google.nl',
       'tos' => 'http://www.google.nl/help/terms_maps.html',
     ),
@@ -43,7 +43,7 @@ function location_map_link_nl_google($location = array()) {
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.nl?q='. urlencode(implode(', ', $query_params)));
+    return ('http://maps.google.nl?q=' . urlencode(implode(', ', $query_params)));
   }
   else {
     return NULL;

@@ -3,7 +3,8 @@
 // Haiti
 
 function location_province_list_ht() {
-  return array('AR' => "Artibonite",
+  return array(
+    'AR' => "Artibonite",
     'CE' => "Centre",
     'GA' => "Grand'Anse",
     'ND' => "Nord",
@@ -11,7 +12,8 @@ function location_province_list_ht() {
     'NO' => "Nord-Ouest",
     'OU' => "Ouest",
     'SD' => "Sud",
-    'SE' => "Sud-Est");
+    'SE' => "Sud-Est"
+  );
 }
 
 /**

@@ -27,7 +27,7 @@ function file_entity_pathauto($op) {
       $settings['token_type'] = 'file';
       $settings['groupheader'] = t('File paths');
       $settings['patterndescr'] = t('Default path pattern (applies to all file types with blank patterns below)');
-      $settings['patterndefault'] = 'file/[file:name]';
+      $settings['patterndefault'] = 'files/[file:name]';
       $settings['batch_update_callback'] = 'file_entity_pathauto_bulk_update_batch_process';
       $settings['batch_file'] = drupal_get_path('module', 'file_entity') . '/file_entity.pathauto.inc';
 
@@ -35,6 +35,7 @@ function file_entity_pathauto($op) {
         $settings['patternitems'][$file_type] = t('Pattern for all @file_type paths.', array('@file_type' => $type->label));
       }
       return (object) $settings;
+
     default:
       break;
   }

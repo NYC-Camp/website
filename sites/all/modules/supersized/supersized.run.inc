@@ -18,12 +18,27 @@ function supersized_run($node, &$page) {
     return;
   }
 
+  // Get Supersized info.
   $items = $field['items'];
   $instance = $field['instance'];
 
   // Exit if no items found.
   if (empty($items)) {
     return;
+  }
+
+  // Try to find if there's a specific settings for this particular node.
+  $settings = supersized_get_node_settings($node);
+  if (empty($settings)) {
+    $settings = $field['instance']['settings'];
+  }
+
+  // Check mobile device.
+  if (isset($settings['mobile_disabled']) && $settings['mobile_disabled'] === 1 && module_exists('browscap')) {
+    $browser = browscap_get_browser();
+    if ($browser['ismobiledevice'] == 'true') {
+      return;
+    }
   }
 
   // Detect library.
@@ -35,12 +50,6 @@ function supersized_run($node, &$page) {
     $message = t('Install version 3.2.8 of the Supersized (from @url) in a libraries directory such as "sites/all/libraries."', array('@url' => $url));
     drupal_set_message($message, 'error');
     return FALSE;
-  }
-
-  // Try to find if there's a specific settings for this particular node.
-  $settings = supersized_get_node_settings($node);
-  if (empty($settings)) {
-    $settings = $field['instance']['settings'];
   }
 
   // Construct image objects.
@@ -77,9 +86,9 @@ function supersized_run($node, &$page) {
   }
 
   // Image path.
-  $image_path = '/' . $library['library path'] . '/slideshow/img/';
+  $image_path = $GLOBALS['base_path'] . $library['library path'] . '/slideshow/img/';
   if (is_dir(path_to_theme() . '/images/supersized')) {
-    $image_path = '/' . path_to_theme() . '/images/supersized/';
+    $image_path = $GLOBALS['base_path'] . path_to_theme() . '/images/supersized/';
   }
 
   // Add neccessary JS and CSS files.
@@ -116,6 +125,14 @@ function supersized_run($node, &$page) {
       'image_path' => $image_path,
     )), 'setting'
   );
+
+  // Add overlay.
+  if (isset($settings['functionalities']['overlay']) && $settings['functionalities']['overlay'] != 'none') {
+    $page['page_bottom']['supersized']['overlay'] = array(
+      '#type' => 'markup',
+      '#markup' => theme('supersized_overlay', array('overlay_key' => $settings['functionalities']['overlay'])),
+    );
+  }
 
   // Add arrow navigation markup.
   if ($settings['components']['arrow_nav']) {

@@ -14,7 +14,7 @@ function location_province_list_ca() {
     'SK' => 'Saskatchewan',
     'NT' => 'Northwest Territories',
     'NU' => 'Nunavut',
-    'YT' => 'Yukon Territory',
+    'YT' => 'Yukon',
   );
 }
 
@@ -32,10 +32,9 @@ function location_province_list_numeric_ca() {
     '010' => 'Saskatchewan',
     '011' => 'Northwest Territories',
     '012' => 'Nunavut',
-    '013' => 'Yukon Territory',
+    '013' => 'Yukon',
   );
 }
-
 
 
 /**
@@ -60,7 +59,10 @@ function location_latlon_rough_ca($location = array()) {
     return NULL;
   }
 
-  $row = db_query("SELECT latitude, longitude FROM {zipcodes} WHERE country = :country AND zip = :zip", array(':country' => $location['country'], ':zip' => $location['postal_code']))->fetchObject();
+  $row = db_query("SELECT latitude, longitude FROM {zipcodes} WHERE country = :country AND zip = :zip", array(
+    ':country' => $location['country'],
+    ':zip' => $location['postal_code']
+  ))->fetchObject();
 
   if ($row) {
     return array('lat' => $row->latitude, 'lon' => $row->longitude);
@@ -92,9 +94,18 @@ function location_latlon_rough_ca($location = array()) {
  */
 function location_get_postalcode_data_ca($location = array()) {
   // Now we pad the thing and query.
-  $row = db_query("SELECT * FROM {zipcodes} where country = :country AND zip = :zip", array(':country' => $location['country'], ':zip' => $location['postal_code']))->fetchObject();
+  $row = db_query("SELECT * FROM {zipcodes} where country = :country AND zip = :zip", array(
+    ':country' => $location['country'],
+    ':zip' => $location['postal_code']
+  ))->fetchObject();
   if ($row) {
-    return array('lat' => $row->latitude, 'lon' => $row->longitude, 'city' => $row->city, 'province' => $row->state, 'country' => $row->country);
+    return array(
+      'lat' => $row->latitude,
+      'lon' => $row->longitude,
+      'city' => $row->city,
+      'province' => $row->state,
+      'country' => $row->country
+    );
   }
   else {
     return NULL;
@@ -119,13 +130,13 @@ function location_latlon_exact_ca($location = array()) {
 function location_map_link_ca_yahoo($location = array()) {
   $get_query = '?';
   if (isset($location['street'])) {
-    $get_query .= 'addr='. urlencode($location['street']) .'&amp;';
+    $get_query .= 'addr=' . urlencode($location['street']) . '&amp;';
   }
   if ($location['province'] != '' || $location['city'] != '' || $location['postal_code'] != '') {
-    $get_query .= 'csz='. _location_ca_yahoo_csz_get_field($location) .'&amp;';
+    $get_query .= 'csz=' . _location_ca_yahoo_csz_get_field($location) . '&amp;';
   }
-  $get_query .= 'country='. urlencode($location['country']);
-  return ('http://ca.maps.yahoo.com/maps_result'. $get_query);
+  $get_query .= 'country=' . urlencode($location['country']);
+  return ('http://ca.maps.yahoo.com/maps_result' . $get_query);
 }
 
 function location_map_link_ca_google($location = array()) {
@@ -138,7 +149,7 @@ function location_map_link_ca_google($location = array()) {
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.ca?q='. urlencode(implode(", ", $query_params)));
+    return ('http://maps.google.ca?q=' . urlencode(implode(", ", $query_params)));
   }
   else {
     return NULL;
@@ -147,23 +158,23 @@ function location_map_link_ca_google($location = array()) {
 
 function location_map_link_ca_mapquest($location = array()) {
   if (isset($location['street'])) {
-    $get_query .= 'address='. urlencode($location['street']) .'&amp;';
+    $get_query .= 'address=' . urlencode($location['street']) . '&amp;';
   }
 
   if (isset($location['city'])) {
-    $get_query .= 'city='. urlencode($location['city']) .'&amp;';
+    $get_query .= 'city=' . urlencode($location['city']) . '&amp;';
   }
 
   if (isset($location['province'])) {
-    $get_query .= 'state='. urlencode($location['province']) .'&amp;';
+    $get_query .= 'state=' . urlencode($location['province']) . '&amp;';
   }
 
   if (isset($location['postal_code'])) {
-    $get_query .= 'zipcode='. urlencode($location['postal_code']);
+    $get_query .= 'zipcode=' . urlencode($location['postal_code']);
   }
 
   if (strlen($get_query)) {
-    return 'http://www.mapquest.com/maps/map.adp?searchtype=address&amp;country=CA&amp;'. $get_query;
+    return 'http://www.mapquest.com/maps/map.adp?searchtype=address&amp;country=CA&amp;' . $get_query;
   }
   else {
     return NULL;
@@ -171,10 +182,23 @@ function location_map_link_ca_mapquest($location = array()) {
 }
 
 function location_map_link_ca_providers() {
-  return array('google' => array('name' => 'Google Maps', 'url' => 'http://maps.google.ca', 'tos' => 'http://www.google.ca/help/terms_local.html'),
-               'yahoo' => array('name' => 'Yahoo! Maps', 'url' => 'http://ca.maps.yahoo.com' , 'tos' => 'http://help.yahoo.com/help/ca/maps/maps-25.html'),
-               'mapquest' => array('name' => 'MapQuest', 'url' => 'http://www.mapquest.com', 'tos' => 'http://www.mapquest.com/features/main.adp?page=legal')
-              );
+  return array(
+    'google' => array(
+      'name' => t('Google Maps'),
+      'url' => 'http://maps.google.ca',
+      'tos' => 'http://www.google.ca/help/terms_local.html'
+    ),
+    'yahoo' => array(
+      'name' => 'Yahoo! Maps',
+      'url' => 'http://ca.maps.yahoo.com',
+      'tos' => 'http://help.yahoo.com/help/ca/maps/maps-25.html'
+    ),
+    'mapquest' => array(
+      'name' => 'MapQuest',
+      'url' => 'http://www.mapquest.com',
+      'tos' => 'http://www.mapquest.com/features/main.adp?page=legal'
+    )
+  );
 }
 
 
@@ -241,19 +265,19 @@ function _location_driving_directions_link_ca_yahoo($location_a, $location_b) {
     $yahoo_maps_path = 'dd';
   }
 
-  $get_query  = '?';
+  $get_query = '?';
 
-  $get_query .= 'addr='. urlencode($location_a['street']) .'&amp;';
-  $get_query .= 'csz='. _location_ca_yahoo_csz_get_field($location_a) .'&amp;';
-  $get_query .= 'country='. urlencode($location_a['country']) .'&amp;';
+  $get_query .= 'addr=' . urlencode($location_a['street']) . '&amp;';
+  $get_query .= 'csz=' . _location_ca_yahoo_csz_get_field($location_a) . '&amp;';
+  $get_query .= 'country=' . urlencode($location_a['country']) . '&amp;';
 
-  $get_query .= 'taddr='. urlencode($location_b['street']) .'&amp;';
-  $get_query .= 'tcsz='. _location_ca_yahoo_csz_get_field($location_b) .'&amp;';
-  $get_query .= 'tcountry='. urlencode($location_b['country']);
+  $get_query .= 'taddr=' . urlencode($location_b['street']) . '&amp;';
+  $get_query .= 'tcsz=' . _location_ca_yahoo_csz_get_field($location_b) . '&amp;';
+  $get_query .= 'tcountry=' . urlencode($location_b['country']);
 
-  $get_query .= '&amp;getrte='. urlencode('Get Directions');
+  $get_query .= '&amp;getrte=' . urlencode('Get Directions');
 
-  return ('http://ca.maps.yahoo.com/'. $yahoo_maps_path . $get_query);
+  return ('http://ca.maps.yahoo.com/' . $yahoo_maps_path . $get_query);
 }
 
 function _location_ca_enough_fields_for_yahoo($location) {
@@ -285,7 +309,7 @@ function _location_ca_yahoo_csz_get_field($location) {
   // than on a Canadian postal code.
   if ($location['country'] = 'ca') {
     if (strlen($location['city']) && strlen($location['province'])) {
-      return urlencode($location['city'] .', '. $location['province']);
+      return urlencode($location['city'] . ', ' . $location['province']);
     }
 
     if (strlen($location['postal_code'])) {
@@ -298,7 +322,7 @@ function _location_ca_yahoo_csz_get_field($location) {
     }
 
     if (strlen($location['city']) && strlen($location['province'])) {
-      return urlencode($location['city'] .', '. $location['province']);
+      return urlencode($location['city'] . ', ' . $location['province']);
     }
   }
 
@@ -315,7 +339,11 @@ function _location_ca_yahoo_csz_get_field($location) {
 
 function location_geocode_ca_providers() {
   return array(
-    'geocoder' => array('name' => 'GeoCode.ca geocoding service', 'url' => 'http://geocoder.ca/?api=1', 'tos' => 'http://geocoder.ca/?terms=1http://geocoder.ca/?terms=1'),
+    'geocoder' => array(
+      'name' => 'GeoCode.ca geocoding service',
+      'url' => 'http://geocoder.ca/?api=1',
+      'tos' => 'http://geocoder.ca/?terms=1http://geocoder.ca/?terms=1'
+    ),
   );
 }
 
@@ -329,7 +357,10 @@ function location_geocode_ca_geocoder_settings() {
     '#size' => 64,
     '#maxlength' => 128,
     '#default_value' => variable_get('location_geocode_ca_geocoder_apikey', ''),
-    '#description' => t('In order to use the Geocoder.ca API geocoding web-service, if you are a commercial entity or wish to use the service without attribution, you will need a Geocoder API Key.  You can obtain one at the !sign_up_link for the !geocoder_api.', array('!sign_up_link' => '<a href="http://geocoder.ca/?register=1">sign-up page</a>', '!geocoder_api' => '<a href="http://geocoder.ca/?premium_api=1">Geocoder API</a>'))
+    '#description' => t('In order to use the Geocoder.ca API geocoding web-service, if you are a commercial entity or wish to use the service without attribution, you will need a Geocoder API Key.  You can obtain one at the !sign_up_link for the !geocoder_api.', array(
+      '!sign_up_link' => '<a href="http://geocoder.ca/?register=1">sign-up page</a>',
+      '!geocoder_api' => '<a href="http://geocoder.ca/?premium_api=1">Geocoder API</a>'
+    ))
   );
 
   return $form;
@@ -345,7 +376,7 @@ function location_geocode_ca_geocoder($location = array()) {
   $service_url = "http://geocoder.ca/?geoit=XML";
 
   if (variable_get('location_geocode_ca_geocoder_apikey', '')) {
-    $service_url .= '&auth='. variable_get('location_geocode_ca_geocoder_apikey', NULL) .'&locate=';
+    $service_url .= '&auth=' . variable_get('location_geocode_ca_geocoder_apikey', NULL) . '&locate=';
   }
   else {
     $service_url .= '&locate=';

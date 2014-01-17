@@ -1,5 +1,22 @@
 jQuery(function($){
   function supersized_callback() {
+    // Bind click event to the overlay if link is set of the active slide.
+    var url = api.getField('url');
+    if (url) {
+      var overlay = $('#supersized-overlay');
+      overlay.css('cursor', 'pointer');
+      overlay.unbind('click').bind('click', function(){
+        var new_window = parseInt(Drupal.settings.supersized.new_window);
+        if (new_window) {
+          window.open(url);
+        }
+        else {
+          window.location = url;
+        }
+        return false;
+      });
+    }
+    // Check if user determine callback is defined.
     if(typeof window.supersized_slide_callback == 'function'){
       supersized_slide_callback();
     }

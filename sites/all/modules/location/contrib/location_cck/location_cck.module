@@ -152,6 +152,7 @@ function location_cck_field_schema($field) {
  * Implement hook_field_insert().
  */
 function location_cck_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  $criteria = array();
   if ($entity_type == 'node') {
     if (!empty($items)) {
       // Store instances of locations by field name and vid.
@@ -179,6 +180,7 @@ function location_cck_field_insert($entity_type, $entity, $field, $instance, $la
  * Implement hook_field_update().
  */
 function location_cck_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  $criteria = array();
   if ($entity_type == 'node') {
     if (!empty($items)) {
       // Store instances of locations by field name and vid.
@@ -211,8 +213,8 @@ function location_cck_field_delete($entity_type, $entity, $field, $instance, $la
 
     // Use the CCK storage to figure out the vids that need to be deleted,
     // and clean up all the applicable references.
-   // $db_info = content_database_info($field);
-  //  $result = db_query('SELECT vid FROM {' . $db_info['table'] . '} WHERE nid = :nid', array(':nid' => $node->nid));
+    // $db_info = content_database_info($field);
+    //  $result = db_query('SELECT vid FROM {' . $db_info['table'] . '} WHERE nid = :nid', array(':nid' => $node->nid));
     $result = db_query('SELECT vid FROM {node_revision} WHERE nid = :nid', array(':nid' => $entity->nid));
     foreach ($result as $row) {
       $genid = 'cck:' . $field['field_name'] . ':' . $row->vid;
@@ -401,33 +403,35 @@ function location_cck_field_widget_form(&$form, &$form_state, $field, $instance,
       $location = location_load_location($items[$delta]['lid']);
     }
     // Load location data passed by cck.
-    else if (isset($items[$delta]) && is_array($items[$delta]) && !empty($items[$delta])) {
+    else {
+      if (isset($items[$delta]) && is_array($items[$delta]) && !empty($items[$delta])) {
 
-      // Initialize empty location.
-      $location = location_empty_location($settings);
-      foreach ($items[$delta] as $k => $v) {
-        $location[$k] = $v;
-      }
-      // We can't trust that CCK is giving us the right information.
-      // It can't tell us whether $items is defaults or multistep values.
-      // Location *needs* the defaults to match the initial field values,
-      // so we re-calculate the defaults here and stash them into the settings.
-      // @@@ There is still a bug here!
-      // If you go back and edit something, and you hadn't set a location the
-      // first time, CCK fails to set up the defaults properly!
-      // I'm just going to leave it like that for now, because I don't know how
-      // to work around it.
-      $temp = NULL; //content_default_value($form, $form_state, $field, 0);
-      if (is_array($temp) && isset($temp[$delta]) && is_array($temp[$delta])) {
-        foreach ($temp[$delta] as $k => $v) {
-          $settings['form']['fields'][$k]['default'] = $v;
+        // Initialize empty location.
+        $location = location_empty_location($settings);
+        foreach ($items[$delta] as $k => $v) {
+          $location[$k] = $v;
         }
-      }
+        // We can't trust that CCK is giving us the right information.
+        // It can't tell us whether $items is defaults or multistep values.
+        // Location *needs* the defaults to match the initial field values,
+        // so we re-calculate the defaults here and stash them into the settings.
+        // @@@ There is still a bug here!
+        // If you go back and edit something, and you hadn't set a location the
+        // first time, CCK fails to set up the defaults properly!
+        // I'm just going to leave it like that for now, because I don't know how
+        // to work around it.
+        $temp = NULL; //content_default_value($form, $form_state, $field, 0);
+        if (is_array($temp) && isset($temp[$delta]) && is_array($temp[$delta])) {
+          foreach ($temp[$delta] as $k => $v) {
+            $settings['form']['fields'][$k]['default'] = $v;
+          }
+        }
 //      unset($location['location_settings']);
 //      unset($location['locpick']);
-    }
-    else {
-      $location = location_empty_location($settings);
+      }
+      else {
+        $location = location_empty_location($settings);
+      }
     }
 
     $element = array(
@@ -461,7 +465,11 @@ function location_cck_field_is_empty($item, $field) {
  */
 function theme_location_cck_field_all($variables) {
   $content = theme('location', array('location' => $variables['location'], 'hide' => $variables['hide']));
-  $content .= theme_location_cck_field_map(array('locations' => array($variables['location']), 'field' => $variables['field'], 'instance' => $variables['instance']));
+  $content .= theme_location_cck_field_map(array(
+    'locations' => array($variables['location']),
+    'field' => $variables['field'],
+    'instance' => $variables['instance']
+  ));
   return $content;
 }
 
@@ -498,7 +506,7 @@ function theme_location_cck_field_map($variables) {
         'latitude' => $location['latitude'],
         'longitude' => $location['longitude'],
         'markername' => $markername,
-        'offset' => $count-1,
+        'offset' => $count - 1,
         'text' => theme('location_cck_field_popup', array('location' => $location, 'instance' => $instance)),
       );
     }
@@ -538,63 +546,93 @@ function theme_location_cck_field_popup($variables) {
   if (!empty($location['name'])) {
     $markertitle = $location['name'];
   }
-  return '<h4>'. $markertitle .'</h4>'. theme('location', array('location' => $location, 'hide' => $hide));
+  return '<h4>' . $markertitle . '</h4>' . theme('location', array('location' => $location, 'hide' => $hide));
 }
 
-/**
- * Implements hook_token_list().
- */
-function location_cck_token_list($type = 'all') {
-  if ($type == 'field') {
-    $tokens = array();
-
-    $fields = location_field_names(TRUE);
-    // @@@ We really need to rethink fields in location..
-    unset($fields['locpick']);
-    foreach ($fields as $k => $v) {
-      $tokens['location'][$k] = $v;
-    }
-
-    return $tokens;
-  }
-}
 
 /**
- * Implements hook_token_values().
+ * Implements hook_token_info().
  */
-function location_cck_token_values($type, $object = NULL) {
-  if ($type == 'field') {
-    $tokens = array();
-    $item = $object[0];
-    if ($item['lid']) {
-      // If the location exists, we need to set up the tokens.
+ function location_cck_token_info() {
+   $info = array();
+   
+   // Load all available fields.
+   $entities = field_info_field_map();
+   
+   // Loop through our fields and remove all but location types.
+   foreach ($entities as $key => $value) {
+     if ($value['type'] != 'location') {
+       unset($entities[$key]);
+     }
+   }
 
-      $location = array(
-        // There is no way to find out which elements to hide because $item does not contain
-        // the 'location_settings' element, so for now, just set it to be an empty array.
-        // See http://drupal.org/node/463618 for more infomation.
-        'hide' => array(),
-        'location' => location_load_location($item['lid']),
+   // If we have location fields available, setup our tokens.
+   if(sizeof($entities)) {
+     // Get the available location field names.
+     $fields = location_field_names(TRUE);
+
+     // Loop through the location fields and setup tokens.
+     foreach ($entities as $key => $value) {
+      
+      $info['tokens']['node'][$key] = array(
+        'name' => t('Location field: !field', array('!field' => $key)),
+        'description' => t('Tokens for the field: !field. Replace the "?" with the delta you want. Defaults to delta 0.', array('!field' => $key)),
+        'type' => $key,
       );
+     
+       $info['types'][$key] = array(
+        'name' => t('Location field: !field', array('!field' => $key)),
+        'description' => t('Tokens for the field: !field. Replace the "?" with the delta you want. Defaults to delta 0.', array('!field' => $key)),
+        'needs-data' => 'node',
+       );
+       
+       foreach ($fields as $field_key => $field_value) {
+         $info['tokens'][$key][$field_key . ":?"] = array(
+          'name' => t($field_value),
+          'description' => t($field_value)
+         );
+       }
+       
+     }
+   }
 
-      // @@@ This is rather silly, but I can't think of anything better at the moment.
-      $variables = array('location' => $location);
-      template_preprocess_location($variables);
+   return $info;
+ }
+ 
+/**
+ * Implements hook_tokens().
+ */
+function location_cck_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  // Setup our replacements array.
+  $replacements = array();
 
-      $fields = location_field_names(TRUE);
-      // @@@ We really need to rethink fields in location..
-      unset($fields['locpick']);
-      foreach ($fields as $k => $v) {
-        if (isset($location[$k])) {
-          $tokens[$k] = $location[$k];
-        }
-        else {
-          $tokens[$k] = '';
-        }
+  // Make sure we have a node.
+  if(isset($data['entity_type']) && $data['entity_type'] == 'node') {
+
+    $node = $data['entity'];
+
+    // Get the available fields from the location module.
+    $available = location_field_names(TRUE);
+
+    // Loop through the tokens.
+    foreach ($tokens as $name => $original) {
+      // Break our token into an array to use later.
+      $fields = explode(':', $name);
+      $entity = $fields[0];
+      $field = $fields[1];
+      // Allow for a position at the end of the token. If no position is given
+      // default it to the first element.
+      $position = (isset($fields[2]) && is_numeric($fields[2]) ? $fields[2] : 0);
+
+      // If the token is in the $available, replace it.
+      if($available[$field]) {
+        $replacements[$original] = (isset($node->{$entity}[LANGUAGE_NONE][$position][$field]) ? $node->{$entity}[LANGUAGE_NONE][$position][$field] : '');
       }
-    }
-    return $tokens;
+    }  
   }
+
+  return $replacements;
+
 }
 
 /**
@@ -612,4 +650,26 @@ function location_cck_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL
         }
       }
   }
+}
+
+/**
+ * Implements hook_field_views_data().
+ */
+function location_cck_field_views_data($field) {
+  $data = field_views_field_default_views_data($field);
+
+  foreach ($data as $table_name => $table_data) {
+    foreach ($table_data as $field_name => $field_data) {
+      // Check for fieldapi value fields.
+      if (isset($field_data['filter']['field_name'])) {
+        $data[$table_name][$field_name]['relationship'] = array(
+          'handler' => 'views_handler_relationship',
+          'base' => 'location',
+          'base field' => 'lid',
+          'label' => t('Location from !field_name', array('!field_name' => $field['field_name'])),
+        );
+      }
+    }
+  }
+  return $data;
 }

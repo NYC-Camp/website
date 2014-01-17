@@ -1,5 +1,12 @@
 .field-slideshow {
   overflow: hidden;
+  max-width: 100%;
+}
+
+.field-slideshow-slide, .field-slideshow-slide a, .field-slideshow-slide img {
+  max-width: 100%;
+  height: auto !important;
+  width: auto !important;
 }
 
 .region-content ul.field-slideshow-pager {
@@ -20,6 +27,15 @@
 .field-slideshow-carousel li {
   opacity: 0.6;
 }
-  .field-slideshow-carousel li.activeSlide {
-    opacity: 1;
-  }
+.field-slideshow-carousel li.activeSlide {
+  opacity: 1;
+}
+
+.field-slideshow-carousel-wrapper .hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.field-slideshow-controls .play {
+  display: none;
+}

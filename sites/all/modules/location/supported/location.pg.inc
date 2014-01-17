@@ -3,7 +3,8 @@
 // Papua New Guinea
 
 function location_province_list_pg() {
-  return array('BV' => "Bougainville",
+  return array(
+    'BV' => "Bougainville",
     'CE' => "Central",
     'CH' => "Chimbu",
     'EH' => "Eastern Highlands",
@@ -22,7 +23,8 @@ function location_province_list_pg() {
     'SH' => "Southern Highlands",
     'WE' => "Western",
     'WH' => "Western Highlands",
-    'WB' => "West New Britain");
+    'WB' => "West New Britain"
+  );
 }
 
 /**
