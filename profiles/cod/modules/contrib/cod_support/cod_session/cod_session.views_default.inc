@@ -94,7 +94,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['view']['view'] = 'cod_session_sessions';
   $handler->display->display_options['fields']['view']['display'] = 'block_3';
   $handler->display->display_options['fields']['view']['arguments'] = '[!nid]/session+schedule_item';
-  /* Sort criterion: Content: Date and time -  start date (field_slot_datetime) */
+  /* Sort criterion: Content: Date and time (field_slot_datetime) */
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
@@ -1310,7 +1310,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_experience']['hide_alter_empty'] = FALSE;
-  /* Field: Broken/missing handler */
+  /* Field: Content: Tracks */
   $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
   $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
   $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
@@ -1343,7 +1343,7 @@ function cod_session_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Content: Tracks (field_track) */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1431,7 +1431,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 1;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Content: Tracks (field_track) */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1511,7 +1511,7 @@ function cod_session_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Content: Tracks (field_track) */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1588,7 +1588,7 @@ function cod_session_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Content: Tracks (field_track) */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1679,7 +1679,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'not empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 0;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Content: Tracks (field_track) */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -2546,11 +2546,11 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Content: Date and time -  start date (field_slot_datetime) */
+  /* Sort criterion: Content: Date and time (field_slot_datetime) */
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
-  /* Contextual filter: Content: Date and time -  start date (field_slot_datetime) */
+  /* Contextual filter: Content: Date and time (field_slot_datetime) */
   $handler->display->display_options['arguments']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['arguments']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['arguments']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
