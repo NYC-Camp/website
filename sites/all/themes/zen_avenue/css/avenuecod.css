@@ -123,7 +123,8 @@ h2.welcome-title {
 }
 
 #aside .block-block p {
-	padding: 1em;
+	padding-right: 1em;
+	padding-left: 1em;
 }
 
 
