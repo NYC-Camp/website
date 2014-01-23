@@ -77,7 +77,7 @@ h2.welcome-title, h3.welcome-title {
 }
 
 h2.welcome-title {
-	font-size: 75px;
+	font-size: 41px;
 }
 
 .register-now a {
@@ -120,6 +120,10 @@ h2.welcome-title {
 #block-block-8 .register-now a, #block-block-9 .register-now a {
 	width: 300px;
 	font-size: 15px;
+}
+
+#aside .block-block p {
+	padding: 1em;
 }
 
 
