@@ -61,10 +61,9 @@ features[variable][] = admin_toolbar
 features[variable][] = date_format_date_no_time_
 files[] = cod_base.module
 
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
+; Information added by  packaging script on 2013-11-21
+version = "7.x-1.0-alpha4"
 core = "7.x"
 project = "cod_support"
-datestamp = "1385485749"
+datestamp = "1385019088"
 
