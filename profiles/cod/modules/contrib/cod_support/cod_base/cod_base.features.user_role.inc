@@ -13,7 +13,7 @@ function cod_base_user_default_roles() {
   // Exported role: content editor.
   $roles['content editor'] = array(
     'name' => 'content editor',
-    'weight' => 3,
+    'weight' => 10,
   );
 
   return $roles;

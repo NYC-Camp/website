@@ -28,11 +28,6 @@ function accommodations_ds_field_settings_info() {
       ),
     ),
     'links' => array(
-      'weight' => '4',
-      'label' => 'hidden',
-      'format' => 'default',
-    ),
-    'comments' => array(
       'weight' => '5',
       'label' => 'hidden',
       'format' => 'default',
@@ -68,7 +63,7 @@ function accommodations_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'teaser';
   $ds_fieldsetting->settings = array(
     'title' => array(
-      'weight' => '0',
+      'weight' => '1',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -78,7 +73,7 @@ function accommodations_ds_field_settings_info() {
       ),
     ),
     'node_link' => array(
-      'weight' => '2',
+      'weight' => '3',
       'label' => 'hidden',
       'format' => 'default',
     ),
@@ -138,20 +133,20 @@ function accommodations_ds_layout_settings_info() {
     'regions' => array(
       'ds_content' => array(
         0 => 'title',
-        1 => 'field_accomodation_description',
-        2 => 'field_accomodation_image',
-        3 => 'field_accomodation_website',
-        4 => 'links',
-        5 => 'comments',
+        1 => 'field_accomodation_image',
+        2 => 'field_accomodation_description',
+        3 => 'field_accommodation_location',
+        4 => 'field_accomodation_website',
+        5 => 'links',
       ),
     ),
     'fields' => array(
       'title' => 'ds_content',
-      'field_accomodation_description' => 'ds_content',
       'field_accomodation_image' => 'ds_content',
+      'field_accomodation_description' => 'ds_content',
+      'field_accommodation_location' => 'ds_content',
       'field_accomodation_website' => 'ds_content',
       'links' => 'ds_content',
-      'comments' => 'ds_content',
     ),
     'classes' => array(),
     'wrappers' => array(
@@ -201,14 +196,16 @@ function accommodations_ds_layout_settings_info() {
   $ds_layout->settings = array(
     'regions' => array(
       'ds_content' => array(
-        0 => 'title',
-        1 => 'field_acommodation_teaser',
-        2 => 'node_link',
+        0 => 'field_accomodation_image',
+        1 => 'title',
+        2 => 'field_accomodation_website',
+        3 => 'node_link',
       ),
     ),
     'fields' => array(
+      'field_accomodation_image' => 'ds_content',
       'title' => 'ds_content',
-      'field_acommodation_teaser' => 'ds_content',
+      'field_accomodation_website' => 'ds_content',
       'node_link' => 'ds_content',
     ),
     'classes' => array(),

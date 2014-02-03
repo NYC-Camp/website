@@ -14,8 +14,9 @@ function cod_base_user_default_permissions() {
   $permissions['access administration menu'] = array(
     'name' => 'access administration menu',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'admin_menu',
   );
@@ -24,8 +25,9 @@ function cod_base_user_default_permissions() {
   $permissions['access administration pages'] = array(
     'name' => 'access administration pages',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'system',
   );
@@ -34,9 +36,9 @@ function cod_base_user_default_permissions() {
   $permissions['access content'] = array(
     'name' => 'access content',
     'roles' => array(
-      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'node',
   );
@@ -45,8 +47,9 @@ function cod_base_user_default_permissions() {
   $permissions['access content overview'] = array(
     'name' => 'access content overview',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -55,7 +58,9 @@ function cod_base_user_default_permissions() {
   $permissions['access dashboard'] = array(
     'name' => 'access dashboard',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
+      'sponsor organizer' => 'sponsor organizer',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'dashboard',
   );
@@ -64,8 +69,9 @@ function cod_base_user_default_permissions() {
   $permissions['access private fields'] = array(
     'name' => 'access private fields',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'field_permissions',
   );
@@ -74,8 +80,8 @@ function cod_base_user_default_permissions() {
   $permissions['access site in maintenance mode'] = array(
     'name' => 'access site in maintenance mode',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'system',
   );
@@ -84,7 +90,7 @@ function cod_base_user_default_permissions() {
   $permissions['access site reports'] = array(
     'name' => 'access site reports',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'system',
   );
@@ -93,9 +99,9 @@ function cod_base_user_default_permissions() {
   $permissions['access user profiles'] = array(
     'name' => 'access user profiles',
     'roles' => array(
-      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'user',
   );
@@ -104,8 +110,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer comments'] = array(
     'name' => 'administer comments',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'comment',
   );
@@ -114,7 +120,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer content types'] = array(
     'name' => 'administer content types',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -123,8 +130,9 @@ function cod_base_user_default_permissions() {
   $permissions['administer field permissions'] = array(
     'name' => 'administer field permissions',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'field_permissions',
   );
@@ -133,8 +141,7 @@ function cod_base_user_default_permissions() {
   $permissions['administer menu'] = array(
     'name' => 'administer menu',
     'roles' => array(
-      'administrator' => 'administrator',
-      'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'menu',
   );
@@ -143,8 +150,9 @@ function cod_base_user_default_permissions() {
   $permissions['administer nodes'] = array(
     'name' => 'administer nodes',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -153,8 +161,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer pathauto'] = array(
     'name' => 'administer pathauto',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'pathauto',
   );
@@ -163,7 +171,7 @@ function cod_base_user_default_permissions() {
   $permissions['administer permissions'] = array(
     'name' => 'administer permissions',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'user',
   );
@@ -172,7 +180,7 @@ function cod_base_user_default_permissions() {
   $permissions['administer site configuration'] = array(
     'name' => 'administer site configuration',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'system',
   );
@@ -181,8 +189,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer taxonomy'] = array(
     'name' => 'administer taxonomy',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'taxonomy',
   );
@@ -191,8 +199,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer url aliases'] = array(
     'name' => 'administer url aliases',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'path',
   );
@@ -201,7 +209,8 @@ function cod_base_user_default_permissions() {
   $permissions['administer users'] = array(
     'name' => 'administer users',
     'roles' => array(
-      'administrator' => 'administrator',
+      'event coordinator' => 'event coordinator',
+      'site admin' => 'site admin',
     ),
     'module' => 'user',
   );
@@ -210,7 +219,7 @@ function cod_base_user_default_permissions() {
   $permissions['administer views'] = array(
     'name' => 'administer views',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'views',
   );
@@ -219,8 +228,8 @@ function cod_base_user_default_permissions() {
   $permissions['bypass node access'] = array(
     'name' => 'bypass node access',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'node',
   );
@@ -229,8 +238,8 @@ function cod_base_user_default_permissions() {
   $permissions['create url aliases'] = array(
     'name' => 'create url aliases',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'path',
   );
@@ -239,8 +248,9 @@ function cod_base_user_default_permissions() {
   $permissions['flush caches'] = array(
     'name' => 'flush caches',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'admin_menu',
   );
@@ -249,8 +259,8 @@ function cod_base_user_default_permissions() {
   $permissions['notify of path changes'] = array(
     'name' => 'notify of path changes',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'pathauto',
   );
@@ -259,8 +269,9 @@ function cod_base_user_default_permissions() {
   $permissions['view advanced help index'] = array(
     'name' => 'view advanced help index',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'advanced_help',
   );
@@ -269,8 +280,9 @@ function cod_base_user_default_permissions() {
   $permissions['view advanced help popup'] = array(
     'name' => 'view advanced help popup',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'advanced_help',
   );
@@ -279,8 +291,9 @@ function cod_base_user_default_permissions() {
   $permissions['view advanced help topic'] = array(
     'name' => 'view advanced help topic',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'advanced_help',
   );
@@ -289,8 +302,8 @@ function cod_base_user_default_permissions() {
   $permissions['view the administration theme'] = array(
     'name' => 'view the administration theme',
     'roles' => array(
-      'administrator' => 'administrator',
       'content editor' => 'content editor',
+      'site admin' => 'site admin',
     ),
     'module' => 'system',
   );

@@ -14,7 +14,7 @@ function cod_community_user_default_permissions() {
   $permissions['administer contact forms'] = array(
     'name' => 'administer contact forms',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'contact',
   );
