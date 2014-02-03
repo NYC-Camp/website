@@ -64,14 +64,51 @@ function cod_sponsors_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__sponsor';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'listing' => array(
+        'custom_settings' => TRUE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'grid' => array(
+        'custom_settings' => FALSE,
+      ),
+      'intro' => array(
+        'custom_settings' => FALSE,
+      ),
+      'map' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '3',
         ),
       ),
       'display' => array(),
@@ -91,23 +128,9 @@ function cod_sponsors_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_options_sponsorship_level';
-  $strongarm->value = array();
-  $export['menu_options_sponsorship_level'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_sponsor';
   $strongarm->value = 'main-menu:0';
   $export['menu_parent_sponsor'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_sponsorship_level';
-  $strongarm->value = 'main-menu:0';
-  $export['menu_parent_sponsorship_level'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -117,13 +140,6 @@ function cod_sponsors_strongarm() {
     0 => 'status',
   );
   $export['node_options_sponsor'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_sponsorship_level';
-  $strongarm->value = array();
-  $export['node_options_sponsorship_level'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -138,13 +154,6 @@ function cod_sponsors_strongarm() {
   $strongarm->name = 'node_submitted_sponsor';
   $strongarm->value = 0;
   $export['node_submitted_sponsor'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'node_submitted_sponsorship_level';
-  $strongarm->value = 0;
-  $export['node_submitted_sponsorship_level'] = $strongarm;
 
   return $export;
 }
