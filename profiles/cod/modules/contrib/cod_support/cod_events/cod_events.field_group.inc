@@ -32,9 +32,7 @@ function cod_events_field_group_info() {
       6 => 'field_speakers',
       7 => 'field_event_subtitle',
       8 => 'field_topic',
-      9 => 'field_experience',
-      10 => 'field_which_summit',
-      11 => 'title',
+      9 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -85,7 +83,7 @@ function cod_events_field_group_info() {
   $field_group->parent_name = 'group_info_tabs';
   $field_group->data = array(
     'label' => 'Schedule Info',
-    'weight' => '5',
+    'weight' => '2',
     'children' => array(
       0 => 'field_dates',
       1 => 'field_registration',
