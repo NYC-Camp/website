@@ -7,8 +7,6 @@
  * @see https://drupal.org/node/1728164
  */
 ?>
-<?php dpm($node); ?>
-
 <article class="node-<?php print $node->nid; ?> <?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <?php if ($title_prefix || $title_suffix || $display_submitted || $unpublished || !$page && $title): ?>
