@@ -563,14 +563,15 @@ ul.tabs.primary li {
 ul.tabs.primary li a {
 	color: gray;
 }
-
 ul.tabs.primary li:hover {
 	background-color: #efefef;
 	border-color: #959494;
 }
-
 ul.tabs.primary li a:hover {
 	color: green;
+}
+.tabs-primary__tab-link.is-active.active {
+color: green;
 }
 
 

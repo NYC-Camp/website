@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * user_schedule.views_default.inc
+ * personal_schedule.views_default.inc
  */
 
 /**
  * Implements hook_views_default_views().
  */
-function user_schedule_views_default_views() {
+function personal_schedule_views_default_views() {
   $export = array();
 
   $view = new view();
