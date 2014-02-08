@@ -116,7 +116,7 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['arguments']['uid']['validate_options']['code'] = 'if($GLOBALS[\'user\']->uid == $argument) {
 return TRUE;
 } else {
-drupal_set_message(t(\'You may view your schedule only. Schedules are not publicly shared.\'), \'error\');
+drupal_set_message(t(\'You may view your schedule only. Schedules are not publicly shared.\'), \'warning\');
 }
 ';
   /* Filter criterion: Content: Published */
