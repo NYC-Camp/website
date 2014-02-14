@@ -72,11 +72,7 @@ function nyccamp_migrate_install() {
   // field_profile_org -> from string to ????.
 
   field_purge_batch(100);
-
-  if ($can_drush_log) {
-    drush_log('Purged deleted fields.');
-  }
-
+  
   watchdog('nyccamp_migrate', 'users updated');
 }
 
@@ -103,8 +99,6 @@ function _delete_fields($field_names) {
  * @param string $field_label The field label
  */
 function _migrate_to_terms($vocabulary, $field_name, $field_label) {
-  $can_drush_log = function_exists('drush_log');
-
   // Rename {$field_name} to {$field_name}_old:
   // UPDATE field_config SET field_name = '{$field_name}_old' 
   // WHERE field_name = '{$field_name}';
@@ -180,10 +174,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
 
   cache_clear_all('*', 'cache_field', TRUE);
 
-  if ($can_drush_log) {
-    drush_log(sprintf('Renamed the field to %s_old', $field_name));
-  }
-
   // Create the new field
   $field = array(
     'field_name' => $field_name,
@@ -202,10 +192,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
 
   field_create_field($field);
 
-  if ($can_drush_log) {
-    drush_log('Called field_create_field');
-  }
-
   // Attach the field to the User
   $instance = array(
     'field_name' => $field_name,
@@ -219,20 +205,8 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
   );
 
   field_create_instance($instance);
-  
-  if ($can_drush_log) {
-    drush_log('Called field_create_instance');
-  }
 
   drupal_flush_all_caches();
-  
-  if ($can_drush_log) {
-    drush_log('Called drupal_flush_all_caches');
-  }
-
-  if ($can_drush_log) {
-    drush_log(sprintf('Created new field %s and attached it to user', $field_name));
-  }
 
   // Go thru all of the users that have a value in the "old" field
   $query = new EntityFieldQuery();
@@ -243,11 +217,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
 
   if (isset($result['user'])) {
     $uids = array_keys($result['user']);
-    
-    if ($can_drush_log) {
-      drush_log(sprintf('Count of users to update: %d', count($uids)));
-    }
-    
     $users = user_load_multiple($uids);
 
     $new_terms = array();
@@ -283,12 +252,7 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
 
             $new_term = (object) $edit;
             $result = taxonomy_term_save($new_term);
-            if ($result == SAVED_NEW) {
-              if ($can_drush_log) {
-                drush_log(sprintf('Added new term [%s] to the %s vocabulary', $field, $vocabulary->machine_name));
-              }
-            }
-            elseif ($result == SAVED_UPDATED) {
+            if ($result == SAVED_UPDATED) {
               watchdog('nyccamp_migrate', 'For some reason this term [%term] was updated in the %vocab vocabulary', array('%term' => $field, '%vocab' => $vocabulary->machine_name), WATCHDOG_WARNING);
             }
             else {
@@ -310,10 +274,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
       field_attach_update('user', $user);
       entity_get_controller('user')->resetCache(array($user->uid));
       $num_changed++;
-
-      if ($can_drush_log) {
-        drush_log(sprintf('Updated uid [%d]. Num changed: %d', $user->uid, $num_changed), 'success');
-      }
     }
   }
 
