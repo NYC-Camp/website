@@ -210,7 +210,15 @@
  *   );
  * @endcode
  */
-$databases = array();
+
+$databases['default']['default'] = array(
+  'driver' => 'mysql',
+  'database' => 'nyccamp',
+  'username' => 'nyccamp',
+  'password' => 'nyccamp',
+  'host' => 'localhost',
+  'prefix' => '',
+);
 
 /**
  * Access control for update.php script.
