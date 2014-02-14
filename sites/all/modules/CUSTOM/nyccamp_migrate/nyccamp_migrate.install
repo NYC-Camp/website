@@ -4,7 +4,6 @@
  * Implements hook_install().
  */
 function nyccamp_migrate_install() {
-  $can_drush_log = function_exists('drush_log');
   // Mark the following fields for deletion:
   // field_profile_org_bio: Organizer Bio
   // field_profile_org_resp: Organizer Responsibilities
@@ -28,10 +27,6 @@ function nyccamp_migrate_install() {
     ctools_include('export');
     field_group_group_export_delete($group, FALSE);
   }
-
-  if ($can_drush_log) {
-    drush_log('Removed field group: group_profile_organizer', 'success');
-  }
   
   watchdog('nyccamp_migrate', 'Removed field group: group_profile_organizer');
 
@@ -48,9 +43,6 @@ function nyccamp_migrate_install() {
     $interests->description = t('User Profile Interests');
     taxonomy_vocabulary_save($interests);
 
-    if ($can_drush_log) {
-      drush_log('Created User Profile Interests vocabulary', 'success');
-    }
     watchdog('nyccamp_migrate', 'Created User Profile Interests vocabulary');
   }
   else {
@@ -68,10 +60,6 @@ function nyccamp_migrate_install() {
     $jobs->machine_name = 'jobs';
     taxonomy_vocabulary_save($jobs);
 
-    if ($can_drush_log) {
-      drush_log('Created Job Titles vocabulary', 'success');
-    }
-    
     watchdog('nyccamp_migrate', 'Created Job Titles vocabulary');
   }
   else {
@@ -86,7 +74,7 @@ function nyccamp_migrate_install() {
   field_purge_batch(100);
 
   if ($can_drush_log) {
-    drush_log('Purged deleted fields.', 'success');
+    drush_log('Purged deleted fields.');
   }
 
   watchdog('nyccamp_migrate', 'users updated');
@@ -98,14 +86,8 @@ function nyccamp_migrate_install() {
  * @param array $field_names Array of field names to be marked for deletion.
  */
 function _delete_fields($field_names) {
-  $can_drush_log = function_exists('drush_log');
-
   foreach ($field_names as $field_name) {
     field_delete_field($field_name);
-    
-    if ($can_drush_log) {
-      drush_log(sprintf('Marked %s for deletion', $field_name), 'success');
-    }
 
     watchdog('nyccamp_migrate', 'Marked %name for deletion', array('%name' => $field_name));
   }
@@ -132,10 +114,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
     ->execute();
 
   if ($num_updated != 1) {
-    if ($can_drush_log) {
-      drush_log(sprintf('Unable to update field_config table to set %s as %s_old. $num_updated = %d', $field_name, $field_name, $num_updated), 'error', 'DB Error');
-    }
-
     watchdog('nyccamp_migrate', 'Unable to update field_config table to set %name as %name_old. $num_updated = %num', array('%name' => $field_name, '%num' => $num_updated), WATCHDOG_ERROR);
   }
 
@@ -147,9 +125,6 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
     ->execute();
 
   if ($num_updated != 1) {
-    if ($can_drush_log) {
-      drush_log(sprintf('Unable to update field_config_instance table to set %s as %s_old. $num_updated = %d', $field_name, $field_name, $num_updated), 'error', 'DB Error');
-    }
     watchdog('nyccamp_migrate', 'Unable to update field_config_instance table to set %name as %name_old. $num_updated = %num', array('%name' => $field_name, '%num' => $num_updated), WATCHDOG_ERROR);
   }
 
@@ -206,7 +181,7 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
   cache_clear_all('*', 'cache_field', TRUE);
 
   if ($can_drush_log) {
-    drush_log(sprintf('Renamed the field to %s_old', $field_name), 'success');
+    drush_log(sprintf('Renamed the field to %s_old', $field_name));
   }
 
   // Create the new field
@@ -228,7 +203,7 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
   field_create_field($field);
 
   if ($can_drush_log) {
-    drush_log('Called field_create_field', 'success');
+    drush_log('Called field_create_field');
   }
 
   // Attach the field to the User
@@ -246,17 +221,17 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
   field_create_instance($instance);
   
   if ($can_drush_log) {
-    drush_log('Called field_create_instance', 'success');
+    drush_log('Called field_create_instance');
   }
 
   drupal_flush_all_caches();
   
   if ($can_drush_log) {
-    drush_log('Called drupal_flush_all_caches', 'success');
+    drush_log('Called drupal_flush_all_caches');
   }
 
   if ($can_drush_log) {
-    drush_log(sprintf('Created new field %s and attached it to user', $field_name), 'success');
+    drush_log(sprintf('Created new field %s and attached it to user', $field_name));
   }
 
   // Go thru all of the users that have a value in the "old" field
@@ -270,7 +245,7 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
     $uids = array_keys($result['user']);
     
     if ($can_drush_log) {
-      drush_log(sprintf('Count of users to update: %d', count($uids)), 'success');
+      drush_log(sprintf('Count of users to update: %d', count($uids)));
     }
     
     $users = user_load_multiple($uids);
@@ -310,20 +285,13 @@ function _migrate_to_terms($vocabulary, $field_name, $field_label) {
             $result = taxonomy_term_save($new_term);
             if ($result == SAVED_NEW) {
               if ($can_drush_log) {
-                drush_log(sprintf('Added new term [%s] to the %s vocabulary', $field, $vocabulary->machine_name), 'success');
+                drush_log(sprintf('Added new term [%s] to the %s vocabulary', $field, $vocabulary->machine_name));
               }
             }
             elseif ($result == SAVED_UPDATED) {
-              if ($can_drush_log) {
-                drush_log(sprintf('For some reason this term [%s] was updated in the %s vocabulary', $field, $vocabulary->machine_name), 'warning');
-              }
               watchdog('nyccamp_migrate', 'For some reason this term [%term] was updated in the %vocab vocabulary', array('%term' => $field, '%vocab' => $vocabulary->machine_name), WATCHDOG_WARNING);
             }
             else {
-              if ($can_drush_log) {
-                drush_log(sprintf('Could not save term [%s] to the %s vocabulary', $field, $vocabulary->machine_name), 'error');
-              }
-
               watchdog('nyccamp_migrate', 'Could not save term [%term] to the %vocab vocabulary', array('%term' => $field, '%vocab' => $vocabulary->machine_name), WATCHDOG_ERROR);
             }
           }
