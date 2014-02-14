@@ -14,7 +14,7 @@ function accommodations_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_accomodation';
-  $strongarm->value = '2';
+  $strongarm->value = '1';
   $export['comment_accomodation'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -102,7 +102,7 @@ function accommodations_strongarm() {
           'weight' => '1',
         ),
         'path' => array(
-          'weight' => '2',
+          'weight' => '6',
         ),
       ),
       'display' => array(),

@@ -14,7 +14,8 @@ function cod_events_user_default_permissions() {
   $permissions['administer free_event registration'] = array(
     'name' => 'administer free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'registration',
   );
@@ -23,9 +24,9 @@ function cod_events_user_default_permissions() {
   $permissions['create free_event registration'] = array(
     'name' => 'create free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -34,9 +35,9 @@ function cod_events_user_default_permissions() {
   $permissions['create free_event registration other anonymous'] = array(
     'name' => 'create free_event registration other anonymous',
     'roles' => array(
-      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -45,7 +46,7 @@ function cod_events_user_default_permissions() {
   $permissions['create free_event registration other users'] = array(
     'name' => 'create free_event registration other users',
     'roles' => array(
-      'administrator' => 'administrator',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -54,8 +55,8 @@ function cod_events_user_default_permissions() {
   $permissions['delete any free_event registration'] = array(
     'name' => 'delete any free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'attendee manager' => 'attendee manager',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -64,8 +65,8 @@ function cod_events_user_default_permissions() {
   $permissions['delete own free_event registration'] = array(
     'name' => 'delete own free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'attendee manager' => 'attendee manager',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -74,8 +75,8 @@ function cod_events_user_default_permissions() {
   $permissions['update any free_event registration'] = array(
     'name' => 'update any free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'attendee manager' => 'attendee manager',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -84,8 +85,8 @@ function cod_events_user_default_permissions() {
   $permissions['update own free_event registration'] = array(
     'name' => 'update own free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );
@@ -94,8 +95,9 @@ function cod_events_user_default_permissions() {
   $permissions['view free_event registration'] = array(
     'name' => 'view free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'attendee manager' => 'attendee manager',
+      'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'registration',
   );
@@ -104,8 +106,8 @@ function cod_events_user_default_permissions() {
   $permissions['view own free_event registration'] = array(
     'name' => 'view own free_event registration',
     'roles' => array(
-      'administrator' => 'administrator',
       'authenticated user' => 'authenticated user',
+      'site admin' => 'site admin',
     ),
     'module' => 'registration',
   );

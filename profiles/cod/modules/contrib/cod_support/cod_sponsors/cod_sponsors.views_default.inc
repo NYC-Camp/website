@@ -297,16 +297,13 @@ function cod_sponsors_views_default_views() {
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
-  /* Field: Field: Groups audience */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['og_group_ref']['id'] = 'og_group_ref';
   $handler->display->display_options['fields']['og_group_ref']['table'] = 'field_data_og_group_ref';
   $handler->display->display_options['fields']['og_group_ref']['field'] = 'og_group_ref';
   $handler->display->display_options['fields']['og_group_ref']['relationship'] = 'field_sponsor_sponsorship_level_tid';
   $handler->display->display_options['fields']['og_group_ref']['label'] = 'Event(s)';
   $handler->display->display_options['fields']['og_group_ref']['alter']['nl2br'] = TRUE;
-  $handler->display->display_options['fields']['og_group_ref']['settings'] = array(
-    'link' => 0,
-  );
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';

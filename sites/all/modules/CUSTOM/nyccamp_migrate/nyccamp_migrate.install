@@ -1,0 +1,298 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function nyccamp_migrate_install() {
+  // Mark the following fields for deletion:
+  // field_profile_org_bio: Organizer Bio
+  // field_profile_org_resp: Organizer Responsibilities
+  // field_profile_drupal: My Drupal Site
+  // field_my_drupal_module_s_: My Drupal Module(s)
+  // field_profile_ctr: Certified to Rock
+  // field_profile_website: Profile Links
+
+  _delete_fields( array(
+    'field_profile_org_bio', 
+    'field_profile_org_resp', 
+    'field_profile_drupal',
+    'field_my_drupal_module_s_',
+    'field_profile_ctr',
+    'field_profile_website',
+    )
+  );
+  
+  // Delete the field groups:
+  if ($group = field_group_load_field_group('group_profile_organizer', 'user', 'user', 'form')) {
+    ctools_include('export');
+    field_group_group_export_delete($group, FALSE);
+  }
+  
+  watchdog('nyccamp_migrate', 'Removed field group: group_profile_organizer');
+
+  // Get all of the vocabulary names:
+  $vocabularies = taxonomy_vocabulary_get_names(); // This uses &drupal_static
+
+  // Changes needed:
+  // field_profile_interests -> from string to taxonomy terms split by comma
+  if (empty($vocabularies['interests'])) {
+    // Create a new vocabulary for profile interests:
+    $interests = new stdClass();
+    $interests->name = t('Interests');
+    $interests->machine_name = 'interests';
+    $interests->description = t('User Profile Interests');
+    taxonomy_vocabulary_save($interests);
+
+    watchdog('nyccamp_migrate', 'Created User Profile Interests vocabulary');
+  }
+  else {
+    $interests = $vocabularies['interests'];
+  }
+
+  _migrate_to_terms($interests, 'field_profile_interests', t('Interests'));
+
+  // Changes needed:
+  // field_profile_job_title -> from string to taxonomy term, split by comma or /
+  if (empty($vocabularies['jobs'])) {
+    // Create a new vocabulary for profile interests:
+    $jobs = new stdClass();
+    $jobs->name = t('Job Titles');
+    $jobs->machine_name = 'jobs';
+    taxonomy_vocabulary_save($jobs);
+
+    watchdog('nyccamp_migrate', 'Created Job Titles vocabulary');
+  }
+  else {
+    $jobs = $vocabularies['jobs'];
+  }
+
+  _migrate_to_terms($jobs, 'field_profile_job_title', t('Job Title'));
+
+  // Changes needed:
+  // field_profile_org -> from string to ????.
+
+  field_purge_batch(100);
+  
+  watchdog('nyccamp_migrate', 'users updated');
+}
+
+/**
+ * Helper function for marking an array of fields for deletion.
+ *
+ * @param array $field_names Array of field names to be marked for deletion.
+ */
+function _delete_fields($field_names) {
+  foreach ($field_names as $field_name) {
+    field_delete_field($field_name);
+
+    watchdog('nyccamp_migrate', 'Marked %name for deletion', array('%name' => $field_name));
+  }
+}
+
+/**
+ * Helper function for changing a text field into a taxonomy term reference for Users.
+ *
+ * Also changes the existing data (comma delimted) into terms of the given vocabulary
+ * 
+ * @param obj $vocabulary The vocabulary object for the new terms
+ * @param string $field_name The machine name of the field
+ * @param string $field_label The field label
+ */
+function _migrate_to_terms($vocabulary, $field_name, $field_label) {
+  // Rename {$field_name} to {$field_name}_old:
+  // UPDATE field_config SET field_name = '{$field_name}_old' 
+  // WHERE field_name = '{$field_name}';
+  $num_updated = db_update('field_config')
+    ->fields(array('field_name' => $field_name . '_old'))
+    ->condition('field_name', $field_name)
+    ->execute();
+
+  if ($num_updated != 1) {
+    watchdog('nyccamp_migrate', 'Unable to update field_config table to set %name as %name_old. $num_updated = %num', array('%name' => $field_name, '%num' => $num_updated), WATCHDOG_ERROR);
+  }
+
+  // UPDATE field_config_instance SET field_name = '{$field_name}_old' 
+  // WHERE field_name = '{$field_name}';
+  $num_updated = db_update('field_config_instance')
+    ->fields(array('field_name' => $field_name . '_old'))
+    ->condition('field_name', $field_name)
+    ->execute();
+
+  if ($num_updated != 1) {
+    watchdog('nyccamp_migrate', 'Unable to update field_config_instance table to set %name as %name_old. $num_updated = %num', array('%name' => $field_name, '%num' => $num_updated), WATCHDOG_ERROR);
+  }
+
+  // ALTER TABLE field_data_{field_name}
+  db_drop_index('field_data_' . $field_name, $field_name . '_format');
+  db_change_field('field_data_' . $field_name, $field_name . '_format', $field_name . '_old_format',
+    array(
+      'type' => 'varchar', 
+      'length' => 255,
+      'not null' => FALSE,
+      'default' => NULL,
+    )
+  );
+
+  db_drop_index('field_data_' . $field_name, $field_name . '_old_format');
+  db_add_index('field_data_' . $field_name, $field_name . '_old_format', array($field_name . '_old_format'));
+
+  db_change_field('field_data_' . $field_name, $field_name . '_value', $field_name . '_old_value',
+    array(
+      'type' => 'varchar', 
+      'length' => 255,
+      'not null' => FALSE,
+      'default' => NULL,
+    )
+  );
+
+  // RENAME TABLE field_data_{$field_name} TO field_data_{$field_name}_old;
+  db_rename_table('field_data_' . $field_name, 'field_data_' . $field_name . '_old');
+
+  // ALTER TABLE field_revision_{$field_name}
+  db_drop_index('field_revision_' . $field_name, $field_name . '_format');
+  db_change_field('field_revision_' . $field_name, $field_name . '_format', $field_name . '_old_format',
+    array(
+      'type' => 'varchar', 
+      'length' => 255,
+      'not null' => FALSE,
+      'default' => NULL,
+    )
+  );
+  db_drop_index('field_revision_' . $field_name, $field_name . '_old_format');
+  db_add_index('field_revision_' . $field_name, $field_name . '_old_format', array($field_name . '_old_format'));
+
+  db_change_field('field_revision_' . $field_name, $field_name .'_value', $field_name .'_old_value',
+    array(
+      'type' => 'varchar', 
+      'length' => 255,
+      'not null' => FALSE,
+      'default' => NULL,
+    )
+  );
+  // RENAME TABLE field_revision_{$field_name} TO field_revision_{$field_name}_old;
+  db_rename_table('field_revision_' . $field_name, 'field_revision_' . $field_name . '_old');
+
+  cache_clear_all('*', 'cache_field', TRUE);
+
+  // Create the new field
+  $field = array(
+    'field_name' => $field_name,
+    'type' => 'taxonomy_term_reference',
+    'label' => $field_label,
+    'cardinality' => -1,
+    'settings' => array(
+      'allowed_values' => array(
+        array(
+          'vocabulary' => $vocabulary->machine_name,
+          'parent' => 0,
+        ),
+      ),
+    ),
+  );
+
+  field_create_field($field);
+
+  // Attach the field to the User
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => 'user',
+    'bundle' => 'user',
+    'label' => $field_label,
+    'description' => '',
+    'widget' => array(
+      'type' => 'taxonomy_autocomplete',
+    ),
+  );
+
+  field_create_instance($instance);
+
+  drupal_flush_all_caches();
+
+  // Go thru all of the users that have a value in the "old" field
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'user')
+    ->entityCondition('bundle', 'user')
+    ->fieldCondition($field_name . '_old', 'value', 'NULL', '!=')
+    ->execute();
+
+  if (isset($result['user'])) {
+    $uids = array_keys($result['user']);
+    $users = user_load_multiple($uids);
+
+    $new_terms = array();
+    $num_changed = 0;
+
+    foreach ($users as $user) {
+      $user->{$field_name} = array(LANGUAGE_NONE => array());
+      // Get the comma-delim value in {$field_name}_old
+      $field_name_old = $field_name . '_old';
+      $field_name_old_value = $user->{$field_name_old}['und'][0]['value'];
+      $fields = explode(',', $field_name_old_value);
+
+      foreach ($fields as $idx => $field) {
+        $field = trim($field);
+
+        if (empty($field))
+          continue;
+
+        if (isset($new_terms[$field])) {
+          $new_term = $new_terms[$field];
+        }
+        else {
+          $result = taxonomy_get_term_by_name($field, $vocabulary->machine_name);
+
+          // No, Add this term to academic_field vocabulary
+          if (empty($result)) {
+            $edit = array(
+              'name' => t(_title_case($field)),
+              'description' => '',
+              'parent' => array(0),
+              'vid' => $vocabulary->vid,
+            );
+
+            $new_term = (object) $edit;
+            $result = taxonomy_term_save($new_term);
+            if ($result == SAVED_UPDATED) {
+              watchdog('nyccamp_migrate', 'For some reason this term [%term] was updated in the %vocab vocabulary', array('%term' => $field, '%vocab' => $vocabulary->machine_name), WATCHDOG_WARNING);
+            }
+            else {
+              watchdog('nyccamp_migrate', 'Could not save term [%term] to the %vocab vocabulary', array('%term' => $field, '%vocab' => $vocabulary->machine_name), WATCHDOG_ERROR);
+            }
+          }
+          else {
+            $new_term = current($result);
+          }
+
+          $new_terms[$new_term->name] = $new_term;
+        }
+
+        print $field_name . "\n";
+        // add the reference to the new term id
+        $user->{$field_name}[LANGUAGE_NONE][] = array('tid' => $new_term->tid);
+      }
+
+      field_attach_update('user', $user);
+      entity_get_controller('user')->resetCache(array($user->uid));
+      $num_changed++;
+    }
+  }
+
+  _delete_fields(array($field_name . '_old'));
+}
+
+/**
+ * Helper function to adjust ucwords() so that words like the, is, etc are not capitalized.
+ *
+ * @param string $text The text to be capitalized.
+ * @param array $excluded_words A set of words that should not be capitalized.
+ */
+function _title_case($text, $excluded_words = array('of','a','the','and','an','or','nor','but','is','if','then', 'else','when', 
+    'at','from','by','on','off','for','in','out', 'over','to','into','with')) { 
+  $words = explode(' ', $text); 
+  foreach ($words as $idx => $word) { 
+    if ($idx == 0 or !in_array($word, $excluded_words)) 
+    $words[$idx] = ucwords($word);
+  } 
+
+  return implode(' ', $words);
+} 

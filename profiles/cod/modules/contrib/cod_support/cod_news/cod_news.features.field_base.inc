@@ -1,22 +1,52 @@
 <?php
 /**
  * @file
- * podcasts.features.field_base.inc
+ * cod_news.features.field_base.inc
  */
 
 /**
  * Implements hook_field_default_field_bases().
  */
-function podcasts_field_default_field_bases() {
+function cod_news_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_podcast_date'
-  $field_bases['field_podcast_date'] = array(
+  // Exported field_base: 'field_news_body'
+  $field_bases['field_news_body'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_podcast_date',
+    'field_name' => 'field_news_body',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_news_date'
+  $field_bases['field_news_date'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_news_date',
     'field_permissions' => array(
       'type' => 0,
     ),
@@ -43,77 +73,13 @@ function podcasts_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'field_podcast_description'
-  $field_bases['field_podcast_description'] = array(
+  // Exported field_base: 'field_news_image'
+  $field_bases['field_news_image'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_podcast_description',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_podcast_file'
-  $field_bases['field_podcast_file'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_podcast_file',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'file',
-    'settings' => array(
-      'display_default' => 0,
-      'display_field' => 0,
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'file',
-  );
-
-  // Exported field_base: 'field_podcast_image'
-  $field_bases['field_podcast_image'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_podcast_image',
+    'field_name' => 'field_news_image',
     'field_permissions' => array(
       'type' => 0,
     ),
@@ -140,13 +106,45 @@ function podcasts_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_podcast_intro'
-  $field_bases['field_podcast_intro'] = array(
+  // Exported field_base: 'field_news_subtitle'
+  $field_bases['field_news_subtitle'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_podcast_intro',
+    'field_name' => 'field_news_subtitle',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
+  // Exported field_base: 'field_news_teaser'
+  $field_bases['field_news_teaser'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_news_teaser',
     'field_permissions' => array(
       'type' => 0,
     ),
@@ -170,34 +168,41 @@ function podcasts_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_podcast_video'
-  $field_bases['field_podcast_video'] = array(
+  // Exported field_base: 'field_session_topics'
+  $field_bases['field_session_topics'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_podcast_video',
+    'field_name' => 'field_session_topics',
     'field_permissions' => array(
       'type' => 0,
     ),
     'foreign keys' => array(
-      'file_managed' => array(
+      'tid' => array(
         'columns' => array(
-          'fid' => 'fid',
+          'tid' => 'tid',
         ),
-        'table' => 'file_managed',
+        'table' => 'taxonomy_term_data',
       ),
     ),
     'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
+      'tid' => array(
+        0 => 'tid',
       ),
     ),
     'locked' => 0,
-    'module' => 'mediafield',
-    'settings' => array(),
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'topics',
+          'parent' => 0,
+        ),
+      ),
+    ),
     'translatable' => 0,
-    'type' => 'media',
+    'type' => 'taxonomy_term_reference',
   );
 
   return $field_bases;
