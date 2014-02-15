@@ -1,17 +1,11 @@
 <?php
 
 /**
- * Implements hook_permission();
- * 
- */
-
-/**
  * Implements hook_form_alter();
- * 
- * This might be better implemented with a mailchimp role sync since volunteers have to be given that role anyway. 
  */
 function event_registration_form_alter(&$form, &$form_state, $form_id) {
-  if (isset($form_id) && $form_id == 'user_register_form') {
+
+    if (isset($form_id) && $form_id == 'user_register_form') {
     $form['#submit'][] = 'event_registration_user_register_submit';
 
     $query = new EntityFieldQuery();
@@ -28,27 +22,31 @@ function event_registration_form_alter(&$form, &$form_state, $form_id) {
         'event_name' => $event->title,
       );
     }
+
     $form['events'] = array(
       '#type' => 'fieldset',
       '#title' => t('Events interested in'),
-      '#weight' => 5,
+      '#weight' => 6,
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     );
     $form['events']['field_events'] = array (
       '#type' => 'tableselect',
+      '#js_select' => FALSE,
       '#header' => array('event_name' => t('Event name')),
       '#options' => $options,
     );
+
   }
 }
 /**
  * Submit callback for user_register form.
  */
 function event_registration_user_register_submit($form, &$form_state) {
-  global $user;
 
-  // Automatically assign users to the NYC Camp 2013 event
+    global $user;
+
+  // Automatically assign users to the NYC Camp 2014 event
   $uid = $form_state['user']->uid;
   $group_type = 'node';
   $account = user_load($uid);
@@ -56,9 +54,9 @@ function event_registration_user_register_submit($form, &$form_state) {
   foreach($events as $group_id) {
     if($group_id > 0) {
       og_group($group_type ,$group_id, array(
-        "entity type"       => "user",
-        "entity"        => $account,
-        "membership type"   => OG_MEMBERSHIP_TYPE_DEFAULT,
+        "entity type" => "user",
+        "entity" => $account,
+        "membership type" => OG_MEMBERSHIP_TYPE_DEFAULT,
       ));
     }
   }
