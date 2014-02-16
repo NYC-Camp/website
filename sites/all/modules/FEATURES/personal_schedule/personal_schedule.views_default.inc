@@ -40,7 +40,7 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'This user has no scheduled sessions.';
+  $handler->display->display_options['empty']['area']['content'] = 'You currently have no scheduled sessions.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_session_timeslot_target_id']['id'] = 'field_session_timeslot_target_id';
@@ -115,7 +115,7 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'php';
   $handler->display->display_options['arguments']['uid']['validate_options']['code'] = 'if($GLOBALS[\'user\']->uid == $argument) {
 return TRUE;
-} else {
+} elseif((arg(0) == \'user\' && is_numeric(arg(1)) && arg(2) == \'schedule\')) {
 drupal_set_message(t(\'You may view your schedule only. Schedules are not publicly shared.\'), \'warning\');
 }
 ';
