@@ -1,0 +1,4 @@
+name = "Event registration"
+description = ""
+core = "7.x"
+package = "Cod Extras"

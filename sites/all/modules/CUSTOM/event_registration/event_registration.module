@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * Implements hook_form_alter();
+ */
+function event_registration_form_alter(&$form, &$form_state, $form_id) {
+
+    if (isset($form_id) && $form_id == 'user_register_form') {
+    $form['#submit'][] = 'event_registration_user_register_submit';
+
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', 1)
+      ->propertyCondition('type', array('event'))
+      ->propertyOrderBy('title', 'ASC');
+    $result = $query->execute();
+    $nids = array_keys($result['node']);
+    $events = node_load_multiple($nids);
+    $options = array();
+    foreach ($events as $event) {
+      $options[$event->nid] = array(
+        'event_name' => $event->title,
+      );
+    }
+
+    $form['events'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Events interested in'),
+      '#weight' => 6,
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    );
+    $form['events']['field_events'] = array (
+      '#type' => 'tableselect',
+      '#js_select' => FALSE,
+      '#header' => array('event_name' => t('Event name')),
+      '#options' => $options,
+    );
+
+  }
+}
+/**
+ * Submit callback for user_register form.
+ */
+function event_registration_user_register_submit($form, &$form_state) {
+
+    global $user;
+
+  // Automatically assign users to the NYC Camp 2014 event
+  $uid = $form_state['user']->uid;
+  $group_type = 'node';
+  $account = user_load($uid);
+  $events = $form_state['values']['field_events'];
+  foreach($events as $group_id) {
+    if($group_id > 0) {
+      og_group($group_type ,$group_id, array(
+        "entity type" => "user",
+        "entity" => $account,
+        "membership type" => OG_MEMBERSHIP_TYPE_DEFAULT,
+      ));
+    }
+  }
+}
