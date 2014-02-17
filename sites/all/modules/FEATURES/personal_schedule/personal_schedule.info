@@ -1,8 +1,8 @@
 name = Personal Schedule
 description = Personalized user schedules using the session_schedule flag and Views
 core = 7.x
-package = NYC Camp Features
-version = 7.x-1.0
+package = COD Extras
+version = 7.x-1.1
 project = personal_schedule
 dependencies[] = views
 features[ctools][] = views:views_default:3.0
