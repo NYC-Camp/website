@@ -1,0 +1,6 @@
+name = NYC Camp Migrate
+description = Migration scripts migrating fields for NYC Camp content types and user profiles
+version = 7.x-1.0
+core = 7.x
+
+files[] = nyccamp_migrate.module
