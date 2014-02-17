@@ -210,7 +210,15 @@
  *   );
  * @endcode
  */
-$databases = array();
+
+$databases['default']['default'] = array(
+  'driver' => 'mysql',
+  'database' => 'nyccamp',
+  'username' => 'nyccamp',
+  'password' => 'nyccamp',
+  'host' => 'localhost',
+  'prefix' => '',
+);
 
 /**
  * Access control for update.php script.
@@ -561,3 +569,7 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  */
 # $conf['pressflow_smart_start'] = TRUE;
 
+/**
+ * Hide only notices from the UI from undefined variables in modules
+ */
+ini_set('error_reporting', 'E_ALL ^ E_NOTICE');
