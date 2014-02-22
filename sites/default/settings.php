@@ -278,6 +278,12 @@ $drupal_hash_salt = '';
  */
 
 /**
+  * Hide only notices from the UI from undefined variables in modules
+  * See https://github.com/NYC-Camp/website/issues/14 for info
+  */
+ini_set('error_reporting', 'E_ALL ^ E_NOTICE');
+
+/**
  * Some distributions of Linux (most notably Debian) ship their PHP
  * installations with garbage collection (gc) disabled. Since Drupal depends on
  * PHP's garbage collection for clearing sessions, ensure that garbage
