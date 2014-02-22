@@ -5,7 +5,7 @@
 /cache
 
 # Ignore local settings.
-/settings.local.php
+/sites/default/settings.local.php
 
 # ** Only works in OSs that support newer versions of fnmatch (Bash 4+)
 /sites/default/**/files

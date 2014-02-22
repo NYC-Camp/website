@@ -1,0 +1,16 @@
+================================== HOW TO USE ==================================
+Please add any patches you apply to core or contrib modules here.
+
+
+================================== CORE ========================================
+NODE
+ * Node type cannot be used (sometimes) if its "type" is the same as another
+   node type's "original type"
+   https://drupal.org/comment/5734696#comment-5734696
+
+
+================================== CONTRIB =====================================
+
+COD_SESSION
+  * Timeslots not visible on session create form
+    https://drupal.org/comment/7782453#comment-7782453
