@@ -52,6 +52,11 @@
  * @see conf_path()
  */
 
+if (file_exists('settings.local.php')) {
+  require 'settings.local.php';
+}
+
+
 /**
  * Database settings:
  *
@@ -210,7 +215,6 @@
  *   );
  * @endcode
  */
-$databases = array();
 
 /**
  * Access control for update.php script.
