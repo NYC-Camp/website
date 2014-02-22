@@ -52,6 +52,7 @@
  * @see conf_path()
  */
 
+// @see exmaple.settings.local.php in root directory.
 if (file_exists('settings.local.php')) {
   require 'settings.local.php';
 }
