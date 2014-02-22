@@ -8,18 +8,12 @@ function event_registration_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form_id) && $form_id == 'user_register_form') {
     $form['#submit'][] = 'event_registration_user_register_submit';
 
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'node')
-      ->propertyCondition('status', 1)
-      ->propertyCondition('type', array('event'))
-      ->propertyOrderBy('title', 'ASC');
-    $result = $query->execute();
-    $nids = array_keys($result['node']);
-    $events = node_load_multiple($nids);
-    $options = array();
-    foreach ($events as $event) {
-      $options[$event->nid] = array(
-        'event_name' => $event->title,
+
+    $results = db_query("SELECT n.nid, n.title FROM {node} n INNER JOIN {field_data_field_event_type} f ON n.nid=f.entity_id WHERE n.status=1 AND f.field_event_type_value IN ('Job Fair', 'Sprint', 'Summit', 'Training') ORDER BY f.field_event_type_value DESC, n.title ASC")->fetchAll();
+
+    foreach ($results as $result) {
+      $options[$result->nid] = array(
+        'event_name' => $result->title,
       );
     }
 
@@ -32,19 +26,19 @@ function event_registration_form_alter(&$form, &$form_state, $form_id) {
     );
     $form['events']['field_events'] = array (
       '#type' => 'tableselect',
-      '#js_select' => FALSE,
       '#header' => array('event_name' => t('Event name')),
       '#options' => $options,
     );
 
   }
 }
+
 /**
  * Submit callback for user_register form.
  */
 function event_registration_user_register_submit($form, &$form_state) {
 
-    global $user;
+  global $user;
 
   // Automatically assign users to the NYC Camp 2014 event
   $uid = $form_state['user']->uid;
