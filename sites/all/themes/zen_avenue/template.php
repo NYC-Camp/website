@@ -138,6 +138,18 @@ function STARTERKIT_preprocess_html(&$variables, $hook) {
 }
 // */
 
+function zen_avenue_preprocess_html(&$variables, $hook) {
+  $meta = array(
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property' => 'og:description',
+      'content' => "NYC Camp ('nice' camp) is an annual conference featuring talks, industry summits and code sprinting all aimed at accelerated learning and contributing to Drupal and related open source projects."
+    ),
+  );
+
+  drupal_add_html_head($meta, 'meta_og_description');
+}
+
 /**
  * Override or insert variables into the page templates.
  *

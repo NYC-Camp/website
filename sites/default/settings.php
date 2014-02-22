@@ -52,6 +52,11 @@
  * @see conf_path()
  */
 
+// @see example.settings.local.php in sites/default for example.
+if (file_exists('sites/default/settings.local.php')) {
+  require 'sites/default/settings.local.php';
+}
+
 /**
  * Database settings:
  *
@@ -210,7 +215,6 @@
  *   );
  * @endcode
  */
-$databases = array();
 
 /**
  * Access control for update.php script.
@@ -276,6 +280,12 @@ $drupal_hash_salt = '';
  * runtime settings and the .htaccess file for non-runtime settings. Settings
  * defined there should not be duplicated here so as to avoid conflict issues.
  */
+
+/**
+  * Hide only notices from the UI from undefined variables in modules
+  * See https://github.com/NYC-Camp/website/issues/14 for info
+  */
+ini_set('error_reporting', 'E_ALL ^ E_NOTICE');
 
 /**
  * Some distributions of Linux (most notably Debian) ship their PHP
