@@ -76,72 +76,6 @@ function cod_sponsors_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-sponsor-field_my_drupal_module_s_'
-  $field_instances['node-sponsor-field_my_drupal_module_s_'] = array(
-    'bundle' => 'sponsor',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Optionally enter links to any Drupal modules your company has created or maintains. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'link',
-        'settings' => array(),
-        'type' => 'link_default',
-        'weight' => 11,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'listing' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_my_drupal_module_s_',
-    'label' => 'Drupal module(s)',
-    'required' => 0,
-    'settings' => array(
-      'attributes' => array(
-        'class' => '',
-        'configurable_title' => 0,
-        'rel' => '',
-        'target' => 'default',
-        'title' => '',
-      ),
-      'display' => array(
-        'url_cutoff' => 80,
-      ),
-      'enable_tokens' => 1,
-      'rel_remove' => 'default',
-      'title' => 'optional',
-      'title_maxlength' => 128,
-      'title_value' => '',
-      'url' => 0,
-      'user_register_form' => FALSE,
-      'validate_url' => 1,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'link',
-      'settings' => array(),
-      'type' => 'link_field',
-      'weight' => 4,
-    ),
-  );
-
   // Exported field_instance: 'node-sponsor-field_sponsor_body'
   $field_instances['node-sponsor-field_sponsor_body'] = array(
     'bundle' => 'sponsor',
@@ -492,7 +426,9 @@ function cod_sponsors_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 7,
     ),
@@ -602,7 +538,9 @@ function cod_sponsors_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 7,
     ),
@@ -768,7 +706,9 @@ function cod_sponsors_field_default_field_instances() {
     ),
     'widget' => array(
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 7,
     ),
@@ -826,12 +766,10 @@ function cod_sponsors_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Association Membership');
   t('Description');
-  t('Drupal module(s)');
   t('Enter the URL to your Drupal Association membership page. ');
   t('Event');
   t('Facebook Page');
   t('Logo');
-  t('Optionally enter links to any Drupal modules your company has created or maintains. ');
   t('Please enter the Sponsor Facebook page');
   t('Please enter the Sponsor Twitter handle');
   t('Please indicate the Sponsorship Option purchased by this Sponsor');

@@ -138,7 +138,7 @@ function cod_events_form_alter(&$form, &$form_state, $form_id) {
 }
 
 // Until we know if we need this function, let's leave it disabled.
-// It pulls numerous Features modules into Overriden.
+
 //function cod_events_views_default_views_alter(&$views) {
 //  $views['cod_events_admin']->display['default']->display_options['header']['area']['content'] .= '<ul class="action-links"><li>' . l('Add Event', 'node/add/event') . '</li></ul>';
 //}

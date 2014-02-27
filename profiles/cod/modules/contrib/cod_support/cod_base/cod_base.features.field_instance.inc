@@ -77,10 +77,10 @@ function cod_base_field_default_field_instances() {
       ),
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 4,
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 26,
       ),
       'listing' => array(
         'label' => 'above',
@@ -100,17 +100,18 @@ function cod_base_field_default_field_instances() {
     'label' => 'Interests',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
       'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'text',
+      'module' => 'taxonomy',
       'settings' => array(
-        'rows' => 5,
+        'apply_chosen' => 1,
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
       ),
-      'type' => 'text_textarea',
-      'weight' => 11,
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 49,
     ),
   );
 
@@ -129,10 +130,10 @@ function cod_base_field_default_field_instances() {
       ),
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 3,
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 27,
       ),
       'listing' => array(
         'label' => 'above',
@@ -149,20 +150,21 @@ function cod_base_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_profile_job_title',
-    'label' => 'Job title',
+    'label' => 'Job Title',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
       'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'text',
+      'module' => 'taxonomy',
       'settings' => array(
+        'apply_chosen' => 1,
+        'autocomplete_path' => 'taxonomy/autocomplete',
         'size' => 60,
       ),
-      'type' => 'text_textfield',
-      'weight' => 10,
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 50,
     ),
   );
 
@@ -274,7 +276,7 @@ function cod_base_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('First name');
   t('Interests');
-  t('Job title');
+  t('Job Title');
   t('Last name');
   t('Organization');
 

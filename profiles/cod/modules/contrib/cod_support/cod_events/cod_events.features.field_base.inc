@@ -20,7 +20,7 @@ function cod_events_field_default_field_bases() {
     ),
     'field_name' => 'body',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(
       'format' => array(

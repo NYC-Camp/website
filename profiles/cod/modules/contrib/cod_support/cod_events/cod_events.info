@@ -18,6 +18,7 @@ dependencies[] = flag
 dependencies[] = image
 dependencies[] = inline_entity_form
 dependencies[] = list
+dependencies[] = media
 dependencies[] = og_ui
 dependencies[] = options
 dependencies[] = page_manager
