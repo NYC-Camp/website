@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the COD Session sana_og feature.
- */
-
-include_once 'cod_session_sana_og.features.inc';

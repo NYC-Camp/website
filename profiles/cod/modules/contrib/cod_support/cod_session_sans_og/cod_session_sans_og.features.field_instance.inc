@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * cod_session_sana_og.features.field_instance.inc
+ * cod_session_sans_og.features.field_instance.inc
  */
 
 /**
  * Implements hook_field_default_field_instances().
  */
-function cod_session_sana_og_field_default_field_instances() {
+function cod_session_sans_og_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance: 'field_collection_item-field_room_slots_types_allowed-field_slot_types_allowed'

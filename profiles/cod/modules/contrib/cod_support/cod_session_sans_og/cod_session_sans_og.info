@@ -1,11 +1,11 @@
-name = COD Session sana_og
+name = COD Session sans og
 description = COD Session Scheduling & Voting
 core = 7.x
 package = COD
 version = 7.x-1.0
-project = cod_session_sana_og
+project = cod_session_sans_og
 dependencies[] = auto_nodetitle
-dependencies[] = cod_session_sana_og
+dependencies[] = cod_session_sans_og
 dependencies[] = date
 dependencies[] = date_popup
 dependencies[] = entityreference

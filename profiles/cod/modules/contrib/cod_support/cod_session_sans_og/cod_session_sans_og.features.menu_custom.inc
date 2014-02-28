@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * cod_session_sana_og.features.menu_custom.inc
+ * cod_session_sans_og.features.menu_custom.inc
  */
 
 /**
  * Implements hook_menu_default_menu_custom().
  */
-function cod_session_sana_og_menu_default_menu_custom() {
+function cod_session_sans_og_menu_default_menu_custom() {
   $menus = array();
 
   // Exported menu: main-menu.

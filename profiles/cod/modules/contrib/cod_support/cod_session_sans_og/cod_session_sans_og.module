@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the COD Session sans_og feature.
+ */
+
+include_once 'cod_session_sans_og.features.inc';

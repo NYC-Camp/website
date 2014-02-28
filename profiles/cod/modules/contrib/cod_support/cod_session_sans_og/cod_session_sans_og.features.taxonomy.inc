@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * cod_session_sana_og.features.taxonomy.inc
+ * cod_session_sans_og.features.taxonomy.inc
  */
 
 /**
  * Implements hook_taxonomy_default_vocabularies().
  */
-function cod_session_sana_og_taxonomy_default_vocabularies() {
+function cod_session_sans_og_taxonomy_default_vocabularies() {
   return array(
     'organizing' => array(
       'name' => 'Organizing',

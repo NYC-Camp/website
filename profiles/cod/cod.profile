@@ -38,7 +38,7 @@ function cod_install_tasks() {
 function _cod_profile_modules() {
   return array(
     'cod_base_sans_og',
-    'cod_session_sana_og',
+    'cod_session_sans_og',
     'cod_events_sans_og',
     'cod_community',
     'cod_front_page',

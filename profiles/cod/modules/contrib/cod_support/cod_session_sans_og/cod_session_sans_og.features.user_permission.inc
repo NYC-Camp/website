@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * cod_session_sana_og.features.user_permission.inc
+ * cod_session_sans_og.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function cod_session_sana_og_user_default_permissions() {
+function cod_session_sans_og_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: 'create field_accepted'.
