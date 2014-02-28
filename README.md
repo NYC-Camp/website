@@ -86,7 +86,7 @@ Assuming your work on the alpha branch is both code perfect and user experience 
 
 #### Read more in the [NYC Camp GitHub Wiki] (This is still a @TODO item)
 
-[NYC Camp GitHub Wiki]:https://github.com/NYC-Camp/website/wiki
+[NYC Camp GitHub Wiki]: https://github.com/NYC-Camp/website/wiki
 
 
 Set of tools to make COD7 more useful for conference planning.
