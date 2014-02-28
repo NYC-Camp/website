@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the COD Events sans og feature.
+ */
+
+include_once 'cod_events_sans_og.features.inc';

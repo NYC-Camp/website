@@ -359,7 +359,11 @@ div.view-sponsorship-options-title td.views-field-title a {
   color: green;
   text-align: right;
 }
-
+.personal-schedule-outer {
+	margin-bottom: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #285E88;
+}
 
 /* PROMOS */
 
@@ -563,14 +567,15 @@ ul.tabs.primary li {
 ul.tabs.primary li a {
 	color: gray;
 }
-
 ul.tabs.primary li:hover {
 	background-color: #efefef;
 	border-color: #959494;
 }
-
 ul.tabs.primary li a:hover {
 	color: green;
+}
+.tabs-primary__tab-link.is-active.active {
+color: green;
 }
 
 

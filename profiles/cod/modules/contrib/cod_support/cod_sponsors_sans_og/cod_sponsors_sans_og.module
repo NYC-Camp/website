@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Cod Sponsors sans og feature.
+ */
+
+include_once 'cod_sponsors_sans_og.features.inc';
