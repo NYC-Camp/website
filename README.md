@@ -10,15 +10,15 @@ Pantheon + Github Workflow
 
 Below we have a summary of the git workflow that the team is using for purposes of developing the NYC Camp site. This workflow should allow for a larger, more distributed team where people can contribute by biting off smaller portions of the work from the PM tool -- for 2014, this will be the Trello board/cards https://trello.com/nyccamp2014. We’re hoping to improve on the workflow from prior years, where people had to be rockstars and tackle almost the entire site (e.g., Mark/Father Shawn in 2011, and Tim in 2013).
 
-Below we’ve added a ‘Brief Overview’ that outlines the 6 steps in our Git workflow. 
+Below we’ve added a ‘Brief Overview’ that outlines the 6 steps in our Git workflow.
 
-Our workflow varies slightly from the typical Pantheon workflow, in that we are using GitHub in order to make the workflow more transparent and allow for more detailed commenting/code review on GitHub (see steps 4 & 5). If you are new to Pantheon or want more details about the ‘under the hood process or Git commands, then you can see Section 3 of this document (which is a work in progress). 
- 
+Our workflow varies slightly from the typical Pantheon workflow, in that we are using GitHub in order to make the workflow more transparent and allow for more detailed commenting/code review on GitHub (see steps 4 & 5). If you are new to Pantheon or want more details about the ‘under the hood process or Git commands, then you can see Section 3 of this document (which is a work in progress).
+
 Brief Overview (6 steps)
 -------------------------------
 
 ### Step 1 - Local Dev Setup:
-Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 Below, or if preferable using the standard approach you’re comfortable with if you’re a more experienced developer.
+Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 below.
 
 ### Step 2 - Pantheon Access:
 Get Pantheon access  (i.e., added to project, and getting the connection settings)
@@ -38,7 +38,7 @@ Once you’ve completed work on your new branch and are ready to contribute it b
 
 ### Step 5 - Github Merge Pull Request:
 * Have someone other than yourself review your PR/code, and once approved they should merge your PR into the integration branch on GitHub.
-Step 5 - Push ‘integration’ from GitHub to Pantheon: 
+Step 5 - Push ‘integration’ from GitHub to Pantheon:
 * Once your PR has been reviewed and merged into integration on GitHub, it needs to be pushed from GitHub to ‘integration on Pantheon for final testing/review on the integration branch/MultiDev on Pantheon. One of the maintainers/gatekeepers of the Pantheon integration branch will complete this -- likely Tony, Eric, Robbie, Mai,  Forest or Willy (other can get more involved in helping with that if needed).
 
 ### Step 6 - Push ‘integration on Pantheon to Dev/Test/Live (Delete Branch)
@@ -57,7 +57,7 @@ Make a new branch on your local that tracks the upstream branch. For example, if
 
 which checks you into the alpha branch, or
 
-	$ git branch --track alpha upstream/alpha 
+	$ git branch --track alpha upstream/alpha
 
 which makes the alpha branch but leaves you in your existing branch
 
@@ -86,7 +86,7 @@ Assuming your work on the alpha branch is both code perfect and user experience 
 
 #### Read more in the [NYC Camp GitHub Wiki] (This is still a @TODO item)
 
-[NYC Camp GitHub Wiki]:https://github.com/jmarkel/nyccamp2014/wiki
+[NYC Camp GitHub Wiki]:https://github.com/NYC-Camp/website/wiki
 
 
 Set of tools to make COD7 more useful for conference planning.
@@ -95,7 +95,7 @@ In particular, the additions are aimed at making versions alpha2 and higher easi
 
 Originally developed for NYC Camp website (http://nyccamp.org) with the intent of releasing back to COD community.
 
-NB: Since NYC Camp is a 100% free event, initial Codify tools do not address paid registration issues. 
+NB: Since NYC Camp is a 100% free event, initial Codify tools do not address paid registration issues.
 
-@TODO- Featurize session grid views. 
+@TODO- Featurize session grid views.
 
