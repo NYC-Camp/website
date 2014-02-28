@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Redirect both anonymous & authenticated users to /user/login
+ * Users in the 'site admin' roles will bypass this rule.
+ * This is a temporaly workaround for issue #36
+ */
+global $user;
+$path = current_path();
+
+if ($path == 'node/add' && ! in_array('site admin',$user->roles)) {
+  drupal_goto('<front>');
+}

@@ -1,0 +1,6 @@
+name = NYC Camp Hacks & Misc Code
+description = This is the module to add misc code and hacks to the site.
+version = 7.x-1.0
+core = 7.x
+
+files[] = nyccamp.module
