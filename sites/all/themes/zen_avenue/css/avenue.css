@@ -473,6 +473,10 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	color: #bfbfbf;
 }
 
+.front .sidebar-first #main {
+	width: 100%;
+}
+
 .sidebar-first #main {
 	width: 92%;
 }
@@ -882,7 +886,6 @@ width: 48%;
 	overflow: hidden;
 	margin: 0;
 }
-
 
 /* TWITTER BLOCK and minor front page block cleanup */
 
