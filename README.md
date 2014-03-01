@@ -1,6 +1,10 @@
 Introduction
 ============
 
+Team Communications
+-------------------
+Join us in #nyccamp on irc.freenode.net to chat about NYC Camp.
+
 Pantheon + Github Workflow
 -------------------------------------
 
