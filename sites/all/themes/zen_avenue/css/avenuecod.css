@@ -117,7 +117,12 @@ h2.welcome-title {
 	margin-top: 90px;
 }
 
-#block-block-8 .register-now a, #block-block-9 .register-now a {
+#block-block-8 .register-now a {
+    width: 100%;
+    font-size: 15px;
+}
+
+#block-block-9 .register-now a {
 	width: 300px;
 	font-size: 15px;
 }
@@ -330,7 +335,7 @@ div.pane-sponsorship-options-title h2.pane-title {
 div.view-sponsorship-options-tiers th.views-field-field-sponsorship-ben-job-fair,
 div.view-sponsorship-options-title th.views-field-field-sponsorship-ben-job-fair {
 	width: 8%;
-} 
+}
 
 div.view-sponsorship-options-tiers td,
 div.view-sponsorship-options-title td {
@@ -343,10 +348,10 @@ div.view-sponsorship-options-title td {
 div.view-sponsorship-options-tiers td.views-field-field-sponsorship-ben-job-fair,
 div.view-sponsorship-options-title td.views-field-field-sponsorship-ben-job-fair {
 	width: 8%;
-} 
+}
 div.view-sponsorship-options-tiers th.views-field-title,
 div.view-sponsorship-options-title th.views-field-title {
-   width: 16%; 
+   width: 16%;
 }
 
 div.view-sponsorship-options-tiers td.views-field-title,
@@ -779,7 +784,7 @@ h2.feature-title {
 }
 
 .node-type-podcast .field-name-field-podcast-description {
-  margin-top: 1em;  
+  margin-top: 1em;
 }
 
 

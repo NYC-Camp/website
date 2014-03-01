@@ -2,9 +2,11 @@
 @import url(http://fonts.googleapis.com/css?family=Exo:500,900);
 
 /* HIDDEN */
+/*
 .mobileTitle {
 	display: none;
 }
+*/
 
 body {
 	direction: ltr;
@@ -286,7 +288,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 }
 
 .front #main-wrapper {
-	padding-top: 5px;
+	padding: 30px 20px 10px;
 }
 
 .front #main .block {
@@ -413,9 +415,11 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	-webkit-box-shadow: inset -2px 0 2px #06253e;
 	box-shadow:         inset -2px 0 2px #06253e;
 	background-color: #06253e;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
+	bottom: 0;
+	overflow-y: scroll;
 }
 
 .sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
@@ -473,6 +477,10 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 }
 .region-sidebar-first .block a {
 	color: #bfbfbf;
+}
+
+.front .sidebar-first #main {
+	width: 100%;
 }
 
 .sidebar-first #main {
@@ -639,7 +647,7 @@ div.views-field-edit-node {
 
 .view-header {
 	margin: 0;
-	padding: 0 0 5px;
+	padding: 0 0 20px;
 	width: 100%;
 	clear: both;
 	overflow: hidden;
@@ -721,8 +729,8 @@ a {
 
 .mobileTitle {
 	line-height: 60px;
-	font-size: 30px;
-	font-weight: 300;
+	font-size: 20px;
+	font-weight: 700;
 }
 
 #wrap .mobileTitle a {
@@ -810,13 +818,25 @@ a {
 }
 
 .region-live .block.last div.content {
-padding: 15px;
+	padding: 15px;
 }
 
 .float-left {
-float: left;
+	float: left;
 }
 
 .float-right {
-float: right;
+	float: right;
+}
+
+
+/* TWITTER BLOCK and minor front page block cleanup */
+
+#twitter-widget-0 {
+	width: 100% !important;
+}
+
+.front #aside .block-block p {
+	padding: 0;
+	font-size: 0.9em;
 }
