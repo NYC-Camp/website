@@ -27,7 +27,9 @@ Brief Overview (6 steps)
 ------------------------
 
 ### Step 1 - Local Dev Setup:
-Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 below.
+Setup your local dev environment. Ideally using the Vagrant-based approach set forth in our [wiki].
+[wiki]: https://github.com/NYC-Camp/website/wiki/Vagrant-setup
+
 ### Step 2 - Pantheon Access:
 Get Pantheon access  (i.e., added to project, and getting the connection settings)
 
