@@ -16,7 +16,7 @@ Environments
 ------------
 
 - *Live:* [http://nyccamp.org](http://nyccamp.org)
-- *Test:* [http://dev-nyccamp2014.gotpantheon.com](http://dev-nyccamp2014.gotpantheon.com)
+- *Test:* [http://test-nyccamp2014.gotpantheon.com](http://test-nyccamp2014.gotpantheon.com)
 - *Dev:* [http://dev-nyccamp2014.gotpantheon.com](http://dev-nyccamp2014.gotpantheon.com) The dev site tracks the `master` branch.  Pushes to `master` should be reflected on the dev site within 4 minutes.
 
 Environments are managed through the [Pantheon Dashboard](https://dashboard.getpantheon.com/sites/a1afbb9f-3cbb-4fe0-22f8-7da39984db4c).
