@@ -101,6 +101,8 @@
  *   http://drupal.org/node/223440 and http://drupal.org/node/1089656
  */
 
+define('MAILCHIMP_LISTS_GROUPING_LABEL', 'My Interests');
+define('MAILCHIMP_USERS_LISTS_GROUPING_LABEL', 'Interests');
 
 /**
  * Override or insert variables into the maintenance page template.
@@ -236,3 +238,31 @@ function STARTERKIT_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+/**
+ * Implements hook_menu_local_task_alter()
+ *
+ * @param $data
+ * @param $router_item
+ * @param $root_path
+ */
+function zen_avenue_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  foreach($data['tabs'][0]['output'] as $key=>$tab) {
+    if ($data['tabs'][0]['output'][$key]['#link']['title'] == 'Newsletter Subscriptions') {
+      $data['tabs'][0]['output'][$key]['#link']['title'] = MAILCHIMP_USERS_LISTS_GROUPING_LABEL;
+    }
+  }
+ }
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function zen_avenue_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($form['mailchimp_lists']['#title'])) {
+    $form['mailchimp_lists']['#title'] = MAILCHIMP_LISTS_GROUPING_LABEL;
+  }
+}
