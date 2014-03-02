@@ -83,7 +83,7 @@ If on the next screen, you see: `This pull request can be automatically merged.`
 
 Assuming your work on the alpha branch is both code perfect and user experience perfect, you are done with the alpha branch and can, your time permitting, go on to a new feature and a new feature branch.
 
-#### Read more in the [NYC Camp GitHub Wiki] (This is still a @TODO item)
+#### Read more in the [NYC Camp GitHub Wiki]
 
 [NYC Camp GitHub Wiki]: https://github.com/NYC-Camp/website/wiki
 
