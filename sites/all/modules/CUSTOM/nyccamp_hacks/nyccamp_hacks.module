@@ -1,0 +1,15 @@
+<?php
+/**
+ * Implements hook_menu_alter()
+.*/
+function nyccamp_hacks_menu_alter(&$items){
+   $items['node/add']['access callback'] = 'nyccamp_hacks_node_add_access';
+}
+
+/**
+ * Custom access callback for node/add
+ * Only allow users with "administer nodes" permission to view node/add page.
+.*/
+function nyccamp_hacks_node_add_access(){
+  return user_access('administer nodes');
+}
