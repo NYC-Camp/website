@@ -69,8 +69,7 @@ function cod_session_flag_default_flags() {
     'title' => 'Session Attending',
     'global' => 0,
     'types' => array(
-      0 => 'schedule_item',
-      1 => 'session',
+      0 => 'session',
     ),
     'flag_short' => 'Add to your schedule',
     'flag_long' => 'Add this session to your personal session attendance.',
@@ -79,7 +78,7 @@ function cod_session_flag_default_flags() {
     'unflag_long' => 'Remove this session from your schedule',
     'unflag_message' => 'Session removed',
     'unflag_denied_text' => '',
-    'link_type' => 'toggle',
+    'link_type' => 'normal',
     'roles' => array(
       'flag' => array(
         0 => 2,

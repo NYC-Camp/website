@@ -899,7 +899,7 @@ function cod_session_views_default_views() {
     'link' => 0,
   );
   $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
-  /* Field: Content: Track */
+  /* Field: Content: Track(s) */
   $handler->display->display_options['fields']['field_session_track']['id'] = 'field_session_track';
   $handler->display->display_options['fields']['field_session_track']['table'] = 'field_data_field_session_track';
   $handler->display->display_options['fields']['field_session_track']['field'] = 'field_session_track';
@@ -1310,7 +1310,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_experience']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Tracks */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
   $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
   $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
@@ -1343,7 +1343,7 @@ function cod_session_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1431,7 +1431,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1511,7 +1511,7 @@ function cod_session_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1588,7 +1588,7 @@ function cod_session_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1679,7 +1679,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'not empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 0;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';

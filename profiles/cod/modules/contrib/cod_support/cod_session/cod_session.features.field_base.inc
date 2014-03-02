@@ -34,6 +34,7 @@ function cod_session_field_default_field_bases() {
         0 => 'Unprocessed',
         1 => 'Accepted',
         2 => 'Declined',
+        3 => 'Pending',
       ),
       'allowed_values_function' => '',
       'allowed_values_php' => '',
@@ -121,99 +122,6 @@ function cod_session_field_default_field_bases() {
     ),
     'translatable' => 1,
     'type' => 'list_text',
-  );
-
-  // Exported field_base: 'field_lightning_rounds'
-  $field_bases['field_lightning_rounds'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_lightning_rounds',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'views',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 1,
-          ),
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'entityreference_1',
-          'view_name' => 'erv_lightning',
-        ),
-      ),
-      'target_type' => 'node',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-  );
-
-  // Exported field_base: 'field_lightning_talk'
-  $field_bases['field_lightning_talk'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_lightning_talk',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'base',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
-          ),
-        ),
-        'sort' => array(
-          'direction' => 'ASC',
-          'field' => 'field_accepted:value',
-          'type' => 'field',
-        ),
-        'target_bundles' => array(
-          'session' => 'session',
-        ),
-      ),
-      'target_type' => 'node',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
   );
 
   // Exported field_base: 'field_organizer_info_'
@@ -445,6 +353,50 @@ function cod_session_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_presenters'
+  $field_bases['field_presenters'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_presenters',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(
+      'node' => array(
+        'columns' => array(
+          'target_id' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'type' => 'none',
+        ),
+        'target_bundles' => array(),
+      ),
+      'target_type' => 'user',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   // Exported field_base: 'field_room_assignment'
   $field_bases['field_room_assignment'] = array(
     'active' => 1,
@@ -596,36 +548,36 @@ function cod_session_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_session_recording'
-  $field_bases['field_session_recording'] = array(
+  // Exported field_base: 'field_session_other_info'
+  $field_bases['field_session_other_info'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_session_recording',
+    'field_name' => 'field_session_other_info',
     'field_permissions' => array(
       'type' => 0,
     ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
+    'foreign keys' => array(),
     'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'value' => array(
+        0 => 'value',
       ),
     ),
     'locked' => 0,
-    'module' => 'text',
+    'module' => 'list',
     'settings' => array(
-      'max_length' => 255,
+      'allowed_values' => array(
+        'training' => 'This is a training',
+        'lightning' => 'This is a lightning talk',
+        'casestudy' => 'This is a case-study',
+        'summit' => 'This session is for a summit',
+        'lab' => 'This session is or includes a hands-on lab',
+      ),
+      'allowed_values_function' => '',
     ),
     'translatable' => 0,
-    'type' => 'text',
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_session_timeslot'
@@ -706,7 +658,7 @@ function cod_session_field_default_field_bases() {
   // Exported field_base: 'field_session_track'
   $field_bases['field_session_track'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => 3,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_session_track',
@@ -1005,50 +957,6 @@ function cod_session_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_track'
-  $field_bases['field_track'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_track',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(),
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        'Agile' => 'Agile',
-        'Business' => 'Business',
-        'Development' => 'Development',
-        'Front End' => 'Front End',
-        'Site-building' => 'Site-building',
-        'DevOps' => 'DevOps',
-        'Mobile' => 'Mobile',
-        'Project mangagment' => 'Project management',
-        'Case studies' => 'Case studies',
-        'Get off the Island' => 'Get off the Island',
-      ),
-      'allowed_values_function' => '',
-      'field_permissions' => array(
-        'create' => 'create',
-        'edit' => 'edit',
-        'edit own' => 'edit own',
-        'view' => 'view',
-        'view own' => 0,
-      ),
-    ),
-    'translatable' => 1,
-    'type' => 'list_text',
-  );
-
   // Exported field_base: 'field_which_day'
   $field_bases['field_which_day'] = array(
     'active' => 1,
@@ -1057,7 +965,7 @@ function cod_session_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_which_day',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
@@ -1092,7 +1000,7 @@ function cod_session_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'og_group_ref',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
