@@ -40,7 +40,7 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'There are currently no sessions in your schedule. Look for and click "Add to your schedule" on any accepted session to add the session here.';
+  $handler->display->display_options['empty']['area']['content'] = 'There are currently no sessions in your schedule. Look for and click "Add this session to your schedule" on any accepted session to add the session here.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Flags: session_schedule */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
@@ -130,6 +130,13 @@ drupal_set_message(t(\'You may view your schedule only. Schedules are not public
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'session' => 'session',
+  );
+  /* Filter criterion: Content: Status (field_accepted) */
+  $handler->display->display_options['filters']['field_accepted_value']['id'] = 'field_accepted_value';
+  $handler->display->display_options['filters']['field_accepted_value']['table'] = 'field_data_field_accepted';
+  $handler->display->display_options['filters']['field_accepted_value']['field'] = 'field_accepted_value';
+  $handler->display->display_options['filters']['field_accepted_value']['value'] = array(
+    1 => '1',
   );
 
   /* Display: Page */
