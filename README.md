@@ -24,8 +24,7 @@ Brief Overview (6 steps)
 ------------------------
 
 ### Step 1 - Local Dev Setup:
-Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 Below, or if preferable using the standard approach you’re comfortable with if you’re a more experienced developer.
-
+Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 below.
 ### Step 2 - Pantheon Access:
 Get Pantheon access  (i.e., added to project, and getting the connection settings)
 
@@ -77,4 +76,3 @@ Click the Send pull request button
 If on the next screen, you see: `This pull request can be automatically merged.` and a “Merge pull request” button, **DO NOT** click that button. That would defeat the whole purpose of peer review. A gatekeeper will merge your pull request after it has been reviewed.
 
 Assuming your work on your fork is both code perfect and user experience perfect, you are done with the fork and can, your time permitting, go on to a new feature and a new feature branch.
-
