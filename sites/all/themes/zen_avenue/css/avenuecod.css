@@ -579,9 +579,6 @@ ul.tabs.primary li:hover {
 ul.tabs.primary li a:hover {
 	color: green;
 }
-.tabs-primary__tab-link.is-active.active {
-color: green;
-}
 
 
 

@@ -35,6 +35,13 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are currently no sessions in your schedule. Look for and click "Add to your schedule" on any accepted session to add the session here.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Flags: session_schedule */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
