@@ -18,8 +18,7 @@ Brief Overview (6 steps)
 -------------------------------
 
 ### Step 1 - Local Dev Setup:
-Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 Below, or if preferable using the standard approach you’re comfortable with if you’re a more experienced developer.
-
+Setup your local dev environment. Ideally using the Vagrant-based approach set forth in Section 2 below.
 ### Step 2 - Pantheon Access:
 Get Pantheon access  (i.e., added to project, and getting the connection settings)
 
