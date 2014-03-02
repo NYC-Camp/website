@@ -1,10 +1,13 @@
 Introduction
 ============
-Read more in the [NYC Camp GitHub Wiki](http://github.com/NYC-Camp/website/wiki)
 
 Team Communications
 -------------------
-Join us in #nyccamp on irc.freenode.net to chat about NYC Camp.
+Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
+
+Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http://github.com/NYC-Camp/website/issues).
+
+More info can be found on GitHub at [http://github.com/NYC-Camp/website/wiki](http://github.com/NYC-Camp/website/wiki).
 
 Pantheon + Github Workflow
 --------------------------
