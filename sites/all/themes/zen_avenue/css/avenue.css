@@ -293,11 +293,14 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 
 .front #main .block {
 	float: left;
-	height: auto;
 	margin: 0 1% 2%;
 	width: 31.33333333%;
-	padding: 0;
+	padding: 15px;
 	height: 430px;
+}
+
+.front #main .block h2.block-title {
+	margin: -15px -15px 15px;
 }
 
 #main .block div.content, .page-program .panel-pane .view-content {
@@ -411,15 +414,17 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	overflow: hidden;
 	padding-top: 60px;
 	padding-bottom: 100%;
-	-moz-box-shadow:    inset -2px 0 2px #06253e;
+	-moz-box-shadow: inset -2px 0 2px #06253e;
 	-webkit-box-shadow: inset -2px 0 2px #06253e;
-	box-shadow:         inset -2px 0 2px #06253e;
+	box-shadow: inset -2px 0 2px #06253e;
 	background-color: #06253e;
 	position: fixed;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	overflow-y: scroll;
+	color: #eee;
+	font-size: 13px;
 }
 
 .sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
@@ -427,18 +432,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	width: 80.1%;
 }
 
-.region-sidebar-first h2,
-.region-sidebar-first h2.block-title {
-	color: white;
-	padding: 0 0 5px;
-	margin: 0;
-	font-size: 16px;
-	background: none;
-	font-weight: 400;
-	letter-spacing: 1px;
-}
-
-.region-sidebar-first h2.block-title {
+.region-sidebar-first h2.block-title, .region-sidebar-second h2.block-title {
 	color: #fff;
 	padding: 0 0 5px;
 	margin: 0;
@@ -449,20 +443,20 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	letter-spacing: 1px;
 }
 
-.region-sidebar-first div.view-header h2 a {
+.region-sidebar-first div.view-header h2 a, .region-sidebar-second div.view-header h2 a {
 	color: #f9f9f9;
 }
 
-.region-sidebar-first div.view-header h2 a:hover {
+.region-sidebar-first div.view-header h2 a:hover, .region-sidebar-second div.view-header h2 a:hover {
 	color: white;
 }
 
-.region-sidebar-first h3, .region-sidebar-first h4 {
+.region-sidebar-first h3, .region-sidebar-first h4, .region-sidebar-second h3, .region-sidebar-second h4 {
 	font-size: 13px;
 	margin: 0 0 5px;
 }
 
-.region-sidebar-first .block {
+.region-sidebar-first .block, .region-sidebar-second .block {
 	background: transparent;
 	clear: both;
 	margin: 0;
@@ -472,19 +466,19 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	box-shadow: 0 1px 0px #0c2a42;
 	color: #bfbfbf;
 }
-.region-sidebar-first .block:hover {
+.region-sidebar-first .block:hover, .region-sidebar-second .block:hover {
 	background-color: #0a1e2c;
 }
-.region-sidebar-first .block a {
+.region-sidebar-first .block a, .region-sidebar-second .block a {
 	color: #bfbfbf;
-}
-
-.front .sidebar-first #main {
-	width: 100%;
 }
 
 .sidebar-first #main {
 	width: 92%;
+}
+
+.front.sidebar-first #main {
+	width: 100%;
 }
 
 .item-list ul,
@@ -493,7 +487,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	padding: 0;
 }
 
-.sidebar-first .region-sidebar-first ul.menu li {
+.sidebar-first .region-sidebar-first ul.menu li, .sidebar-second .region-sidebar-second ul.menu li, .two-sidebars .region-sidebar-first ul.menu li, .two-sidebars .region-sidebar-second ul.menu li {
 	font-size: 130%;
 	line-height: 1.5em;
 	font-weight: bold;
@@ -528,13 +522,13 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	padding: 0 1%;
 }
 
-.sidebar-first #header .section {
+.sidebar-first #header .section, .two-sidebars #header .section {
 	width: 100%;
 	padding: 0 60px 0 10px;
 	max-width: inherit;
 }
 
-.sidebar-first #footer-wrapper-inner {
+.sidebar-first #footer-wrapper-inner, .two-sidebars #footer-wrapper-inner {
 	margin: 0 auto;
 	padding: 0 1%;
 	width: 92%;
@@ -827,6 +821,66 @@ a {
 
 .float-right {
 	float: right;
+}
+
+/* TWO SIDEBARS */
+
+.two-sidebars #main, .two-sidebars #header .section, .two-sidebars #footer-wrapper-inner {
+margin: 0 auto;
+width: 100%;
+max-width: 100%;
+}
+
+.two-sidebars .region-featured, .two-sidebars #main-wrapper {
+width: 60%;
+float: left;
+margin: 0 20%;
+}
+
+.two-sidebars #main-wrapper {
+	padding: 20px 10px 10px;
+}
+
+.two-sidebars #block-block-3 {
+	margin: 60px 0 0;
+}
+
+.two-sidebars #main .block {
+width: 48%;
+}
+
+.region-sidebar-second {
+	float: right;
+	width: 20%;
+	overflow: hidden;
+	padding-top: 60px;
+	padding-bottom: 100%;
+	-moz-box-shadow: inset -2px 0 2px #06253e;
+	-webkit-box-shadow: inset -2px 0 2px #06253e;
+	box-shadow: inset -2px 0 2px #06253e;
+	background-color: #06253e;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	overflow-y: scroll;
+	color: #eee;
+	font-size: 13px;
+}
+
+.two-sidebars #footer-wrapper {
+	padding: 20px;
+	overflow: hidden;
+	clear: both;
+	width: 60%;
+	float: left;
+	margin: 0 20%;
+}
+
+.two-sidebars #footer-nav, .two-sidebars #block-menu-menu-footer-menu {
+	float: left;
+	overflow: hidden;
+	margin: 0;
 }
 
 
