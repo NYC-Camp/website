@@ -1,0 +1,11 @@
+name = Redirect non-admin users
+description = Redirect non-admin users away from certain pages like node/add
+core = 7.x
+package = COD Extras
+version = 7.x-1.0
+project = redirect_non_admin_users
+dependencies[] = entity
+dependencies[] = pathrules
+dependencies[] = rules
+features[features_api][] = api:2
+features[rules_config][] = rules_redirect_non_admin_users
