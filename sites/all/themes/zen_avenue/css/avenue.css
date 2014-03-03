@@ -410,7 +410,6 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	width: 20%;
 	overflow: hidden;
 	padding-top: 60px;
-	padding-bottom: 100%;
 	-moz-box-shadow:    inset -2px 0 2px #06253e;
 	-webkit-box-shadow: inset -2px 0 2px #06253e;
 	box-shadow:         inset -2px 0 2px #06253e;
@@ -419,7 +418,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	top: 0;
 	left: 0;
 	bottom: 0;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
