@@ -475,6 +475,10 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	color: #bfbfbf;
 }
 
+.front .sidebar-first #main {
+	width: 100%;
+}
+
 .sidebar-first #main {
 	width: 92%;
 }
@@ -817,6 +821,28 @@ padding: 15px;
 float: left;
 }
 
-.float-right {
-float: right;
+.two-sidebars #footer-wrapper {
+	padding: 20px;
+	overflow: hidden;
+	clear: both;
+	width: 60%;
+	float: left;
+	margin: 0 20%;
+}
+
+.two-sidebars #footer-nav, .two-sidebars #block-menu-menu-footer-menu {
+	float: left;
+	overflow: hidden;
+	margin: 0;
+}
+
+/* TWITTER BLOCK and minor front page block cleanup */
+
+#twitter-widget-0 {
+	width: 100% !important;
+}
+
+.front #aside .block-block p {
+	padding: 0;
+	font-size: 0.9em;
 }
