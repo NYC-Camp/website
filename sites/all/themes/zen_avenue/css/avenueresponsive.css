@@ -62,9 +62,9 @@
 		display: block;
 	}
 
-	#main, #header .section, #footer-wrapper-inner, .sidebar-first #main {
-	margin: 0 auto;
-	width: 94% !important;
+	#main, #header .section, #footer-wrapper-inner {
+		margin: 0 auto;
+		width: 94%;
 	}
 
 	/* MAIN */
@@ -271,24 +271,8 @@
 		margin-top: 0;
 		width: 94%;
 	}
-	
-	#aside .block-block p {
-		padding: 0 10px;
-	}
-	
-	.field-name-field-page-image, .field-name-field-intro-image {
-		width: 100%;
-		height: auto;
-	}
-	
-	.field-name-field-page-image, .field-name-field-intro-image {
-		float: none;
-		width: 100%;
-		margin: 10px auto 20px;
-	}
 
 }
-
 
 
 /* Mobile (Landscape)
