@@ -84,13 +84,13 @@ h2.welcome-title {
 	display: block;
 	text-align: center;
 	width: 200px;
-	line-height: 40px;
+	line-height: 1.1em;
 	margin: 0 auto;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: 300;
 	font-size: 20px;
-	padding: 2px 0 0;
+	padding: 10px;
 	box-shadow: 1px 2px 2px rgba(0,0,0,.3);
 }
 
@@ -98,7 +98,7 @@ h2.welcome-title {
 	-webkit-opacity: 1;
 	-moz-opacity: 1;
 	filter:alpha(opacity=100);
-  opacity: 1;
+	opacity: 1;
 }
 
 .register-now a:active {
@@ -117,14 +117,11 @@ h2.welcome-title {
 	margin-top: 90px;
 }
 
-#block-block-8 .register-now a {
-    width: 100%;
-    font-size: 15px;
-}
-
-#block-block-9 .register-now a {
-	width: 300px;
-	font-size: 15px;
+#block-block-8 .register-now a, #block-block-9 .register-now a {
+	font-weight: 600;
+	background: #285e88;
+	border: none;
+	border-bottom: 3px solid #1a3c56;
 }
 
 #aside .block-block p {
