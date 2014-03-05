@@ -134,6 +134,10 @@ h2.welcome-title {
 	background: #f2f2f2;
 }
 
+.profile-fieldgroup {
+	padding: 15px;
+}
+
 .not-front #aside h2.block-title {
 	background: #e2e2e2;
 	color: #373B41;
