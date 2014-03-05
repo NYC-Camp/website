@@ -883,6 +883,11 @@ width: 48%;
 	margin: 0;
 }
 
+.sidebar-wrapper {
+	position: absolute;
+	top: 0;
+}
+
 
 /* TWITTER BLOCK and minor front page block cleanup */
 
