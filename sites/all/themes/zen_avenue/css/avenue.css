@@ -872,16 +872,16 @@ width: 48%;
 
 /* USER PROFILE */
 
-#user-profile-form {
+#user-profile-form, #user-register-form {
 	max-width: 100%;
 }
 
-.vertical-tabs ul.vertical-tabs-list {
+#user-profile-form .vertical-tabs ul.vertical-tabs-list, #user-register-form .vertical-tabs ul.vertical-tabs-list {
 	width: 30% !important;
 	float: left !important;
 }
 
-.vertical-tabs fieldset {
+#user-profile-form .vertical-tabs fieldset, #user-register-form .vertical-tabs fieldset {
 	padding: 0 !important;
 	border: 0 !important;
 	max-width: 66% !important;
