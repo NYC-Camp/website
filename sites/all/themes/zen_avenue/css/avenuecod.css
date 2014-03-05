@@ -546,17 +546,14 @@ div.field-name-field-news-image img {
 	border: 1px solid silver;
 }
 
-body.page-news div.field-name-node-link {
-	margin-left: 5%;
-}
-
 body.page-news div.field-name-node-link a {
 	font-style: italic;
 }
 
-
-
-
+.view-cod-news .views-row {
+	margin: 0 0 20px;
+	padding: 20px 0;
+}
 
 
 /* TABS */
