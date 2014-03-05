@@ -129,6 +129,21 @@ h2.welcome-title {
 	padding-left: 1em;
 }
 
+#main #aside .block {
+	box-shadow: 0 1px 1px #ddd;
+	background: #f2f2f2;
+}
+
+#aside .block {
+	box-shadow: 0 1px 1px #ddd;
+	background: #f2f2f2;
+}
+
+#aside h2.block-title {
+	background: #e2e2e2;
+	color: #373B41;
+}
+
 
 /* NODES */
 

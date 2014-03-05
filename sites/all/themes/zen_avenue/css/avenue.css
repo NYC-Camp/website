@@ -295,15 +295,18 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	float: left;
 	margin: 0 1% 2%;
 	width: 31.33333333%;
-	padding: 15px;
 	height: 430px;
 }
 
-.front #main .block h2.block-title {
+#main .block {
+	padding: 15px;
+}
+
+#main .block h2.block-title {
 	margin: -15px -15px 15px;
 }
 
-#main .block div.content, .page-program .panel-pane .view-content {
+.page-program .panel-pane .view-content {
 	padding: 15px;
 	overflow: hidden;
 }
@@ -863,6 +866,25 @@ width: 48%;
 	float: left;
 	overflow: hidden;
 	margin: 0;
+}
+
+/* USER PROFILE */
+
+#user-profile-form {
+	max-width: 100%;
+}
+
+.vertical-tabs ul.vertical-tabs-list {
+	width: 30% !important;
+	float: left !important;
+}
+
+.vertical-tabs fieldset {
+	padding: 0 !important;
+	border: 0 !important;
+	max-width: 66% !important;
+	float: right !important;
+	margin: 0 2% !important;
 }
 
 
