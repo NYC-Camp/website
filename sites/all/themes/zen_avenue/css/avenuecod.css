@@ -129,7 +129,7 @@ h2.welcome-title {
 	padding-left: 1em;
 }
 
-.not-front #aside .block {
+.not-front #aside .block, .profile-fieldgroup, #edit-picture {
 	box-shadow: 0 1px 1px #ddd;
 	background: #f2f2f2;
 }
