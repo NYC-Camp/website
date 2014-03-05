@@ -125,10 +125,12 @@
     <?php print render($page['live']); ?>
   <?php endif; ?>
 
-  <?php if($page['sidebar_first']) { 
-      print '<div class="sidebar-wrapper sidebar-first-wrapper">' . render($page['sidebar_first']) . '</div>';
-    } 
-  ?>
+  <?php if ($is_front): ?>
+    <?php if($page['sidebar_first']) { 
+        print '<div class="sidebar-wrapper sidebar-first-wrapper">' . render($page['sidebar_first']) . '</div>';
+      } 
+    ?>
+  <?php endif; ?>
 
   <div id="main-wrapper">
     <div id="main" class="clearfix<?php if ($main_menu || $page['navigation']) { print ' with-navigation'; } ?>">
@@ -155,10 +157,12 @@
       </div><!-- /.column, /#aside -->
     </div>
 
+  <?php if ($is_front): ?>
     <?php if($page['sidebar_second']) { 
         print '<div class="sidebar-wrapper sidebar-second-wrapper">' . render($page['sidebar_second']) . '</div>';
       } 
     ?>
+  <?php endif; ?>
 
   </div><!-- /#main, /#main-wrapper -->
 
