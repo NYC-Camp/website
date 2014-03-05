@@ -432,7 +432,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	float: right;
 }
 
-.sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
+.front.sidebar-first .region-featured, .front.sidebar-first #main-wrapper, .front.sidebar-first #footer-wrapper {
 	float: right;
 	width: 80%;
 }
