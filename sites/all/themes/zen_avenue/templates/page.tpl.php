@@ -127,7 +127,7 @@
 
   <?php if ($is_front): ?>
     <?php if($page['sidebar_first']) { 
-        print '<div class="sidebar-wrapper sidebar-first-wrapper">' . render($page['sidebar_first']) . '</div>';
+        print render($page['sidebar_first']);
       } 
     ?>
   <?php endif; ?>
@@ -159,7 +159,7 @@
 
   <?php if ($is_front): ?>
     <?php if($page['sidebar_second']) { 
-        print '<div class="sidebar-wrapper sidebar-second-wrapper">' . render($page['sidebar_second']) . '</div>';
+        print render($page['sidebar_second']);
       } 
     ?>
   <?php endif; ?>
