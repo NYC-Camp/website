@@ -125,7 +125,10 @@
 	  <?php print render($page['live']); ?>
 	<?php endif; ?>
 
-  <?php print render($page['sidebar_first']); ?>
+  <?php if($page['sidebar_first']) { 
+      print '<div class="sidebar-wrapper sidebar-first-wrapper">' . render($page['sidebar_first']) . '</div>';
+    } 
+  ?>
 
   <div id="main-wrapper">
   	<div id="main" class="clearfix<?php if ($main_menu || $page['navigation']) { print ' with-navigation'; } ?>">
@@ -151,17 +154,19 @@
 	      <?php print render($page['aside']); ?>
 	    </div><!-- /.column, /#aside -->
 	  </div>
-  <?php print render($page['sidebar_second']); ?>
+
+    <?php if($page['sidebar_second']) { 
+        print '<div class="sidebar-wrapper sidebar-second-wrapper">' . render($page['sidebar_second']) . '</div>';
+      } 
+    ?>
+
   </div><!-- /#main, /#main-wrapper -->
 
   <div id="footer-wrapper">
 	  <div id="footer-wrapper-inner">
 		  <?php print render($page['footer']); ?>
 			<div class="footer-left">
-				<div class="footer-copy"><!--
-          Site by <a href="http://timhobert.com" target="_blank">Tim Hobert</a> for <a href="http://rgenerator.com" target="_blank">rGenerator.com</a>. <br/>
-          Design by <a href="http://cargocollective.com/bradcohen" target="_blank">Brad Cohen</a> for Victoria's Secret. </br>-->
-          Made with <span class="heart">&hearts;</span> in NYC, using Drupal.</div>
+				<div class="footer-copy">Made with <span class="heart">&hearts;</span> in NYC, using Drupal.</div>
 			</div>
 		</div>
 	</div>

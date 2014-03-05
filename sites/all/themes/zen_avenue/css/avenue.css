@@ -849,6 +849,11 @@ margin: 0 20%;
 width: 48%;
 }
 
+.sidebar-wrapper {
+	position: absolute;
+	top: 0;
+}
+
 .region-sidebar-second {
 	float: right;
 	width: 20%;
