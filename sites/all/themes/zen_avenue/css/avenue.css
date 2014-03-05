@@ -719,11 +719,12 @@ a {
 	overflow: hidden;
 	padding-top: 0;
 	z-index: 1000;
+	height: 1000px;
 }
 
 .sideslide #wrap {
 	left: 0;
-	height: 3000px;
+	height: 4000px;
 }
 
 .mobileTitle {
