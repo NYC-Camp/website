@@ -156,6 +156,7 @@
         <?php print render($page['aside']); ?>
       </div><!-- /.column, /#aside -->
     </div>
+  </div>
 
   <?php if ($is_front): ?>
     <?php if($page['sidebar_second']) { 
