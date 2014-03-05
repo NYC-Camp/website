@@ -716,7 +716,6 @@ a {
 	left: -16em;
 	width: 16em;
 	background: #1f1f1f;
-	height: 3000px;
 	overflow: hidden;
 	padding-top: 0;
 	z-index: 1000;
@@ -724,6 +723,7 @@ a {
 
 .sideslide #wrap {
 	left: 0;
+	height: 3000px;
 }
 
 .mobileTitle {
