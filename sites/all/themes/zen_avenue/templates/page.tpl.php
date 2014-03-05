@@ -71,7 +71,7 @@
 ?>
 
 <div id="page-wrapper">
-	<div id="wrap" class="inactive">
+  <div id="wrap" class="inactive">
     <div class="mobileTitle"><a href="/">NYCcamp</a></div>
     <?php print render($page['navigation']); ?>
   </div>
@@ -121,50 +121,55 @@
 
   <?php print render($page['featured']); ?>
 
-	<?php if ($is_front): ?>
-	  <?php print render($page['live']); ?>
-	<?php endif; ?>
+  <?php if ($is_front): ?>
+    <?php print render($page['live']); ?>
+  <?php endif; ?>
 
-  <?php print render($page['sidebar_first']); ?>
+  <?php if($page['sidebar_first']) { 
+      print '<div class="sidebar-wrapper sidebar-first-wrapper">' . render($page['sidebar_first']) . '</div>';
+    } 
+  ?>
 
   <div id="main-wrapper">
-  	<div id="main" class="clearfix<?php if ($main_menu || $page['navigation']) { print ' with-navigation'; } ?>">
+    <div id="main" class="clearfix<?php if ($main_menu || $page['navigation']) { print ' with-navigation'; } ?>">
       <?php print $messages; ?>
       <?php print render($page['help']); ?>
-	    <div id="content" class="column">
-		    <div class="section">
-		      <a id="main-content"></a>
-		      <?php if ($action_links): ?>
-		        <ul class="action-links"><?php print render($action_links); ?></ul>
-		      <?php endif; ?>
-		      <?php print render($title_prefix); ?>
-		      <?php if ($title): ?>
-		        <h1 class="title" id="page-title"><?php print $title; ?></h1>
-		      <?php endif; ?>
-		      <?php print render($title_suffix); ?>
-		      <?php print render($tabs); ?>
-		      <?php print render($page['content']); ?>
-		      <?php // print $feed_icons; ?>
-		    </div>
-	    </div><!-- /.section, /#content -->
-	    <div id="aside" class="column">
-	      <?php print render($page['aside']); ?>
-	    </div><!-- /.column, /#aside -->
-	  </div>
-  <?php print render($page['sidebar_second']); ?>
+      <div id="content" class="column">
+        <div class="section">
+          <a id="main-content"></a>
+          <?php if ($action_links): ?>
+            <ul class="action-links"><?php print render($action_links); ?></ul>
+          <?php endif; ?>
+          <?php print render($title_prefix); ?>
+          <?php if ($title): ?>
+            <h1 class="title" id="page-title"><?php print $title; ?></h1>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
+          <?php print render($tabs); ?>
+          <?php print render($page['content']); ?>
+          <?php // print $feed_icons; ?>
+        </div>
+      </div><!-- /.section, /#content -->
+      <div id="aside" class="column">
+        <?php print render($page['aside']); ?>
+      </div><!-- /.column, /#aside -->
+    </div>
+
+    <?php if($page['sidebar_second']) { 
+        print '<div class="sidebar-wrapper sidebar-second-wrapper">' . render($page['sidebar_second']) . '</div>';
+      } 
+    ?>
+
   </div><!-- /#main, /#main-wrapper -->
 
   <div id="footer-wrapper">
-	  <div id="footer-wrapper-inner">
-		  <?php print render($page['footer']); ?>
-			<div class="footer-left">
-				<div class="footer-copy"><!--
-          Site by <a href="http://timhobert.com" target="_blank">Tim Hobert</a> for <a href="http://rgenerator.com" target="_blank">rGenerator.com</a>. <br/>
-          Design by <a href="http://cargocollective.com/bradcohen" target="_blank">Brad Cohen</a> for Victoria's Secret. </br>-->
-          Made with <span class="heart">&hearts;</span> in NYC, using Drupal.</div>
-			</div>
-		</div>
-	</div>
+    <div id="footer-wrapper-inner">
+      <?php print render($page['footer']); ?>
+      <div class="footer-left">
+        <div class="footer-copy">Made with <span class="heart">&hearts;</span> in NYC, using Drupal.</div>
+      </div>
+    </div>
+  </div>
 </div></div><!-- /#page, /#page-wrapper -->
 <script type="text/javascript">
 (function($){
