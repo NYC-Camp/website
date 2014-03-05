@@ -62,9 +62,9 @@
 		display: block;
 	}
 
-	#main, #header .section, #footer-wrapper-inner {
-		margin: 0 auto;
-		width: 94%;
+	#main, #header .section, #footer-wrapper-inner, .sidebar-first #main {
+	margin: 0 auto;
+	width: 94% !important;
 	}
 
 	/* MAIN */
@@ -129,7 +129,12 @@
 	
 	.region-sidebar-first .block, .region-sidebar-first .block a {
 		background: none;
-		color: inherit;
+		color: #333;
+	}
+
+	#main .block {
+	padding: 15px !important;
+	margin-bottom: 30px !important;
 	}
 
 	.region-featured {
@@ -271,8 +276,37 @@
 		margin-top: 0;
 		width: 94%;
 	}
+	
+	#aside .block-block p {
+		padding: 0 10px;
+	}
+	
+	.field-name-field-page-image, .field-name-field-intro-image {
+		width: 100%;
+		height: auto;
+	}
+	
+	.field-name-field-page-image, .field-name-field-intro-image {
+		float: none;
+		width: 100%;
+		margin: 10px auto 20px;
+	}
+
+	#user-profile-form .vertical-tabs ul.vertical-tabs-list, #user-register-form .vertical-tabs ul.vertical-tabs-list {
+		width: 100% !important;
+		float: none !important;
+	}
+
+	#user-profile-form .vertical-tabs fieldset, #user-register-form .vertical-tabs fieldset {
+		padding: 0 !important;
+		border: 0 !important;
+		max-width: 100% !important;
+		float: right !important;
+		margin: 0.5em 0 !important;
+	}
 
 }
+
 
 
 /* Mobile (Landscape)
