@@ -129,7 +129,12 @@
 	
 	.region-sidebar-first .block, .region-sidebar-first .block a {
 		background: none;
-		color: inherit;
+		color: #333;
+	}
+
+	#main .block {
+	padding: 15px !important;
+	margin-bottom: 30px !important;
 	}
 
 	.region-featured {
