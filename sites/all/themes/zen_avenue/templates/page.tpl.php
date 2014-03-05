@@ -155,8 +155,8 @@
       <div id="aside" class="column">
         <?php print render($page['aside']); ?>
       </div><!-- /.column, /#aside -->
-    </div>
-  </div>
+    </div><!-- /#main -->
+  </div><!-- /#main-wrapper -->
 
   <?php if ($is_front): ?>
     <?php if($page['sidebar_second']) { 
@@ -164,8 +164,6 @@
       } 
     ?>
   <?php endif; ?>
-
-  </div><!-- /#main, /#main-wrapper -->
 
   <div id="footer-wrapper">
     <div id="footer-wrapper-inner">
