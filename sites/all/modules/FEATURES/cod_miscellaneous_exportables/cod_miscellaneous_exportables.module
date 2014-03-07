@@ -11,10 +11,13 @@ include_once 'cod_miscellaneous_exportables.features.inc';
  */
 function cod_miscellaneous_exportables_form_alter(&$form, &$form_state, $form_id) {
   $node = menu_get_object();
+  // Get the path
+  $path = drupal_get_path_alias($_GET['q']);
 
   // For the time being hide the Session Time Slot(s) field on the session
   // node form since we're using the Session Time(s) field instead.
-  if (arg(0) == 'node' && arg(1) == 'add') {
+  // TODO: look at this field in Basic page, Event, and Schedule Item
+  if ($path === 'propose/session') {
     $form['field_session_timeslot']['#access'] = 0;
   } elseif (arg(0) == 'node' && arg(2) == 'edit' && $node->type == 'session') {
     $form['field_session_timeslot']['#access'] = 0;
