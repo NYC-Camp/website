@@ -21,7 +21,7 @@ function cod_session_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Audience',
-    'weight' => '16',
+    'weight' => '15',
     'children' => array(),
     'format_type' => 'hidden',
     'format_settings' => array(
@@ -79,10 +79,9 @@ function cod_session_field_group_info() {
     'label' => 'General info',
     'weight' => '48',
     'children' => array(
-      0 => 'body',
-      1 => 'field_slides',
-      2 => 'field_speakers',
-      3 => 'field_session_topics',
+      0 => 'field_running_time',
+      1 => 'field_presenters',
+      2 => 'field_session_other_info',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -95,6 +94,36 @@ function cod_session_field_group_info() {
     ),
   );
   $export['group_gen_info|node|session|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_intended_audience|node|session|form';
+  $field_group->group_name = 'group_intended_audience';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'session';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_session_tabs';
+  $field_group->data = array(
+    'label' => 'Audience',
+    'weight' => '49',
+    'children' => array(
+      0 => 'field_experience',
+      1 => 'field_session_topics',
+      2 => 'field_session_track',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'label' => 'Audience',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-intended-audience field-group-tab',
+        'description' => '',
+      ),
+      'formatter' => 'closed',
+    ),
+  );
+  $export['group_intended_audience|node|session|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -166,9 +195,10 @@ function cod_session_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Schedule info',
-    'weight' => '15',
+    'weight' => '14',
     'children' => array(
       0 => 'field_accepted',
+      1 => 'field_session_time',
     ),
     'format_type' => 'hidden',
     'format_settings' => array(
@@ -250,13 +280,13 @@ function cod_session_field_group_info() {
   $field_group->parent_name = 'group_session_tabs';
   $field_group->data = array(
     'label' => 'Schedule Info',
-    'weight' => '47',
+    'weight' => '51',
     'children' => array(
       0 => 'field_accepted',
       1 => 'field_session_timeslot',
-      2 => 'field_running_time',
-      3 => 'field_room_assignment',
-      4 => 'field_summit_session',
+      2 => 'field_room_assignment',
+      3 => 'field_summit_session',
+      4 => 'field_session_time',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -274,6 +304,35 @@ function cod_session_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_session_admin_fields|node|session|form';
+  $field_group->group_name = 'group_session_admin_fields';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'session';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_session_tabs';
+  $field_group->data = array(
+    'label' => 'Admin',
+    'weight' => '52',
+    'children' => array(
+      0 => 'field_which_day',
+      1 => 'path',
+      2 => 'redirect',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-session-admin-fields field-group-tab',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_session_admin_fields|node|session|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_session_tabs|node|session|form';
   $field_group->group_name = 'group_session_tabs';
   $field_group->entity_type = 'node';
@@ -284,9 +343,10 @@ function cod_session_field_group_info() {
     'label' => 'Session tab group',
     'weight' => '2',
     'children' => array(
-      0 => 'group_audience',
-      1 => 'group_schedule',
-      2 => 'group_gen_info',
+      0 => 'group_gen_info',
+      1 => 'group_intended_audience',
+      2 => 'group_schedule',
+      3 => 'group_session_admin_fields',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(

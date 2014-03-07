@@ -1,0 +1,11 @@
+name = COD Miscellaneous Exportables
+description = Miscellaneous exportables relevant to the conference
+core = 7.x
+package = COD Extras
+version = 7.x-1.0
+project = cod_miscellaneous_exportables
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = nyccamp_schedule
+features_exclude[dependencies][ctools] = ctools

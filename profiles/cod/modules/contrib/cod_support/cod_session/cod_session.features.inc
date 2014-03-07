@@ -72,21 +72,17 @@ function cod_session_flag_default_flags() {
       0 => 'schedule_item',
       1 => 'session',
     ),
-    'flag_short' => 'Add to your schedule',
-    'flag_long' => 'Add this session to your personal session attendance.',
+    'flag_short' => 'Add this session to your schedule',
+    'flag_long' => 'Add this session to your schedule',
     'flag_message' => 'Session added',
-    'unflag_short' => 'Remove from your schedule',
+    'unflag_short' => 'Remove this session from your schedule',
     'unflag_long' => 'Remove this session from your schedule',
     'unflag_message' => 'Session removed',
     'unflag_denied_text' => '',
-    'link_type' => 'toggle',
+    'link_type' => 'normal',
     'roles' => array(
-      'flag' => array(
-        0 => 2,
-      ),
-      'unflag' => array(
-        0 => 2,
-      ),
+      'flag' => array(),
+      'unflag' => array(),
     ),
     'weight' => 0,
     'show_on_form' => 0,
@@ -120,9 +116,11 @@ function cod_session_flag_default_flags() {
     'roles' => array(
       'flag' => array(
         0 => 4,
+        1 => 16,
       ),
       'unflag' => array(
         0 => 4,
+        1 => 16,
       ),
     ),
     'weight' => 0,
@@ -130,7 +128,7 @@ function cod_session_flag_default_flags() {
     'access_author' => '',
     'show_on_page' => 1,
     'show_on_teaser' => 0,
-    'show_contextual_link' => FALSE,
+    'show_contextual_link' => 0,
     'i18n' => 0,
     'module' => 'cod_session',
     'locked' => array(

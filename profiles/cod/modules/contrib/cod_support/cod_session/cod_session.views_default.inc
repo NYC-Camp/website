@@ -443,7 +443,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_accepted']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_accepted']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_accepted']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Experience level */
+  /* Field: Content: Level */
   $handler->display->display_options['fields']['field_experience']['id'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['table'] = 'field_data_field_experience';
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
@@ -481,7 +481,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'session' => 'session',
   );
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -518,7 +518,7 @@ function cod_session_views_default_views() {
     'session' => 'session',
   );
   $handler->display->display_options['filters']['type']['group'] = 0;
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -670,7 +670,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'session' => 'session',
   );
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -864,7 +864,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['relationships']['field_room_slots_types_allowed_node']['label'] = 'Room Entity';
   $handler->display->display_options['relationships']['field_room_slots_types_allowed_node']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Experience level */
+  /* Field: Content: Level */
   $handler->display->display_options['fields']['field_experience']['id'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['table'] = 'field_data_field_experience';
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
@@ -899,7 +899,7 @@ function cod_session_views_default_views() {
     'link' => 0,
   );
   $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
-  /* Field: Content: Track */
+  /* Field: Content: Track(s) */
   $handler->display->display_options['fields']['field_session_track']['id'] = 'field_session_track';
   $handler->display->display_options['fields']['field_session_track']['table'] = 'field_data_field_session_track';
   $handler->display->display_options['fields']['field_session_track']['field'] = 'field_session_track';
@@ -1144,7 +1144,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Experience level */
+  /* Field: Content: Level */
   $handler->display->display_options['fields']['field_experience']['id'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['table'] = 'field_data_field_experience';
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
@@ -1304,13 +1304,13 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_speakers']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Experience level */
+  /* Field: Content: Level */
   $handler->display->display_options['fields']['field_experience']['id'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['table'] = 'field_data_field_experience';
   $handler->display->display_options['fields']['field_experience']['field'] = 'field_experience';
   $handler->display->display_options['fields']['field_experience']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_experience']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Tracks */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
   $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
   $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
@@ -1343,7 +1343,7 @@ function cod_session_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1364,7 +1364,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Filter by keywords:';
   $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -1431,7 +1431,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1452,7 +1452,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Filter by keywords:';
   $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -1511,7 +1511,7 @@ function cod_session_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1532,7 +1532,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Filter by keywords:';
   $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -1588,7 +1588,7 @@ function cod_session_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_accepted_value']['group'] = 1;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1609,7 +1609,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Filter by keywords:';
   $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';
@@ -1679,7 +1679,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['field_session_slot_nid']['field'] = 'field_session_slot_nid';
   $handler->display->display_options['filters']['field_session_slot_nid']['operator'] = 'not empty';
   $handler->display->display_options['filters']['field_session_slot_nid']['group'] = 0;
-  /* Filter criterion: Content: Tracks (field_track) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_track_value']['id'] = 'field_track_value';
   $handler->display->display_options['filters']['field_track_value']['table'] = 'field_data_field_track';
   $handler->display->display_options['filters']['field_track_value']['field'] = 'field_track_value';
@@ -1700,7 +1700,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['filters']['keys']['expose']['label'] = 'Filter by keywords:';
   $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
   $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  /* Filter criterion: Content: Experience level (field_experience) */
+  /* Filter criterion: Content: Level (field_experience) */
   $handler->display->display_options['filters']['field_experience_value']['id'] = 'field_experience_value';
   $handler->display->display_options['filters']['field_experience_value']['table'] = 'field_data_field_experience';
   $handler->display->display_options['filters']['field_experience_value']['field'] = 'field_experience_value';

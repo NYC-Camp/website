@@ -438,7 +438,10 @@ return $start_formatted . \' to \' . $end_formatted;
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '3',
+          'weight' => '54',
+        ),
+        'redirect' => array(
+          'weight' => '57',
         ),
       ),
       'display' => array(),
@@ -603,7 +606,6 @@ return $start_formatted . \' to \' . $end_formatted;
   $strongarm->name = 'node_options_session';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
   $export['node_options_session'] = $strongarm;
 
