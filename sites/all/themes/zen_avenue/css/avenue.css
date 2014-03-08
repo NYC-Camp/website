@@ -344,18 +344,18 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	margin: 0 0 30px;
 }
 
-.section-sponsor #content,
+.section-partner #content,
 .section-sponsors #content,
 .section-sponsors2 #content {
 	float: none;
 	width: 100%;
 	padding: 0;
 }
-.section-sponsor #aside {
+.section-partner #aside {
 	display: none;
 }
 
-.node-type-sponsor.section-sponsor #aside {
+.node-type-partner.section-partner #aside {
 	display: block;
 }
 
