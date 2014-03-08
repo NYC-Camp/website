@@ -1,0 +1,30 @@
+Mobile Codes 7.x-2.1, 2013-08-10
+--------------------------------------------------------------------------------
+
+- #2038089: Fixed issue when processed variables are parsed to theme function.
+- #2035599: Removed makefile.
+- #1910924: Added configurable destination path.
+- #1890988: Added Image styles integration.
+- #1855186: Fixed 6.x-1.x to 7.x-2.x upgrade path.
+- #1743420: Fixed undefined property.
+- #1737288: Fixed undefined index.
+- #1666192: Fixed issue with invalid token type.
+- #1542244: Fixed flush cache issue.
+- #1493032: Fixed issue with phpqrcode library.
+- #1450754: Added larger maxlength of provider URL field.
+- #1436592 by Chi: Fixed pass by reference issue.
+- #1223430: Fixed clone() issues.
+- #1182538: Fixed pass by reference issue.
+- Added pseudo field for Nodes.
+- Added Custom Formatters examples.
+- Added Mobile Codes tokens for Text fields, User vCards and URLs.
+- Added Mobile Codes generator block.
+- Added Mobile Codes Blocks system.
+- Fixed issue mobile_codes_presets_load_all() and disabled presets.
+- Improved CTools integration.
+
+
+Mobile Codes 7.x-2.0, 2011-05-02
+--------------------------------------------------------------------------------
+
+- Initial 7.x release.

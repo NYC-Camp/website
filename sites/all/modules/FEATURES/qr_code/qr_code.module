@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the QR code feature.
+ */
+
+include_once 'qr_code.features.inc';
