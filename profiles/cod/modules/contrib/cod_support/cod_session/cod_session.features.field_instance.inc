@@ -34,9 +34,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 1,
     ),
@@ -116,9 +114,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 2,
     ),
@@ -233,9 +229,7 @@ function cod_session_field_default_field_instances() {
     ),
     'widget' => array(
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 6,
     ),
@@ -953,9 +947,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 34,
     ),
@@ -1112,7 +1104,7 @@ function cod_session_field_default_field_instances() {
       'active' => 0,
       'module' => 'field_collection',
       'settings' => array(),
-      'type' => 'field_collection_hidden',
+      'type' => 'field_collection_embed',
       'weight' => 31,
     ),
   );
@@ -1322,9 +1314,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 4,
     ),
@@ -1369,9 +1359,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 4,
     ),
@@ -1408,9 +1396,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 6,
     ),
@@ -1492,7 +1478,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1599,7 +1585,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1647,7 +1633,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1702,7 +1688,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1754,7 +1740,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1804,7 +1790,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 12,
+        'weight' => 20,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1843,7 +1829,7 @@ function cod_session_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Select the relevant time slots for this session.',
+    'description' => 'Select the relevant time(s) for this session.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1852,7 +1838,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 9,
+        'weight' => 21,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1897,19 +1883,23 @@ function cod_session_field_default_field_instances() {
     'description' => 'Select the relevant time slots this session should appear at.',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'links' => TRUE,
+          'view_mode' => '',
+        ),
+        'type' => 'entityreference_entity_view',
+        'weight' => 10,
       ),
       'listing' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
@@ -1952,7 +1942,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1998,7 +1988,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2042,7 +2032,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2094,7 +2084,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 7,
+        'weight' => 9,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2148,7 +2138,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2196,7 +2186,7 @@ function cod_session_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 19,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2242,7 +2232,7 @@ function cod_session_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 16,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2497,8 +2487,8 @@ function cod_session_field_default_field_instances() {
   t('Presenters');
   t('Room assignment');
   t('Select a suggested track or tracks for this session; you may submit your session to multiple tracks. <small>(Linear ontologies are <em>so</em> restrictive.)</small>');
-  t('Select the relevant time slots for this session.');
   t('Select the relevant time slots this session should appear at.');
+  t('Select the relevant time(s) for this session.');
   t('Session Length');
   t('Session Time Slot(s)');
   t('Session Time(s)');

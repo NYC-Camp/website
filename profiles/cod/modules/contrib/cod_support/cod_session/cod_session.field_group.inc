@@ -21,7 +21,7 @@ function cod_session_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Audience',
-    'weight' => '15',
+    'weight' => '18',
     'children' => array(),
     'format_type' => 'hidden',
     'format_settings' => array(
@@ -195,10 +195,10 @@ function cod_session_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Schedule info',
-    'weight' => '14',
+    'weight' => '17',
     'children' => array(
       0 => 'field_accepted',
-      1 => 'field_session_time',
+      1 => 'field_lightning_rounds',
     ),
     'format_type' => 'hidden',
     'format_settings' => array(
@@ -343,10 +343,10 @@ function cod_session_field_group_info() {
     'label' => 'Session tab group',
     'weight' => '2',
     'children' => array(
-      0 => 'group_gen_info',
-      1 => 'group_intended_audience',
-      2 => 'group_schedule',
-      3 => 'group_session_admin_fields',
+      0 => 'group_schedule',
+      1 => 'group_gen_info',
+      2 => 'group_session_admin_fields',
+      3 => 'group_intended_audience',
     ),
     'format_type' => 'tabs',
     'format_settings' => array(
