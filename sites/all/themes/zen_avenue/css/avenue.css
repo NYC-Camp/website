@@ -901,12 +901,18 @@ width: 48%;
 	font-size: 0.9em;
 }
 
-/* Frontpage Feature Attendees Carousel */
+/* 
+ * Frontpage Feature Attendees Carousel Block
+ */
 
+.front #main #block-views-attendees-block-1.block {
+  width: 99%;
+  height: auto
+}
 .field-content.featured { text-align: center }
 .field-content.featured .attendee-fullname a { color: #fff }
 .field-content.featured .attendee-fullname { 
   background-color: #285e88;
-  font-size: 0.9em
+  font-size: 90%
 }
 .field-content.featured .attendee-nickname { font-size: 0.8em }
