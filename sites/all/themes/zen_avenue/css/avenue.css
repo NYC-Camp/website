@@ -900,3 +900,13 @@ width: 48%;
 	padding: 0;
 	font-size: 0.9em;
 }
+
+/* Frontpage Feature Attendees Carousel */
+
+.field-content.featured { text-align: center }
+.field-content.featured .attendee-fullname a { color: #fff }
+.field-content.featured .attendee-fullname { 
+  background-color: #285e88;
+  font-size: 0.9em
+}
+.field-content.featured .attendee-nickname { font-size: 0.8em }
