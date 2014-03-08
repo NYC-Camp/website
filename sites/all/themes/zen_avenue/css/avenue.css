@@ -295,15 +295,18 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	float: left;
 	margin: 0 1% 2%;
 	width: 31.33333333%;
-	padding: 15px;
 	height: 430px;
 }
 
-.front #main .block h2.block-title {
+#main .block {
+	padding: 15px;
+}
+
+#main .block h2.block-title {
 	margin: -15px -15px 15px;
 }
 
-#main .block div.content, .page-program .panel-pane .view-content {
+.page-program .panel-pane .view-content {
 	padding: 15px;
 	overflow: hidden;
 }
@@ -341,18 +344,18 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	margin: 0 0 30px;
 }
 
-.section-sponsor #content,
+.section-partner #content,
 .section-sponsors #content,
 .section-sponsors2 #content {
 	float: none;
 	width: 100%;
 	padding: 0;
 }
-.section-sponsor #aside {
+.section-partner #aside {
 	display: none;
 }
 
-.node-type-sponsor.section-sponsor #aside {
+.node-type-partner.section-partner #aside {
 	display: block;
 }
 
@@ -407,29 +410,31 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 }
 
 
-/* SIDEBAR FIRST */
-.region-sidebar-first {
+/* SIDEBARS FIRST */
+
+.region-sidebar-first, .region-sidebar-second {
 	float: left;
 	width: 20%;
 	overflow: hidden;
 	padding-top: 60px;
-	padding-bottom: 100%;
 	-moz-box-shadow: inset -2px 0 2px #06253e;
 	-webkit-box-shadow: inset -2px 0 2px #06253e;
 	box-shadow: inset -2px 0 2px #06253e;
 	background-color: #06253e;
-	position: fixed;
-	top: 0;
-	left: 0;
 	bottom: 0;
-	overflow-y: scroll;
 	color: #eee;
 	font-size: 13px;
+	margin-bottom: -99999px;
+	padding-bottom: 99999px;
 }
 
-.sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
+.region-sidebar-second {
 	float: right;
-	width: 80.1%;
+}
+
+.front.sidebar-first .region-featured, .front.sidebar-first #main-wrapper, .front.sidebar-first #footer-wrapper {
+	float: right;
+	width: 80%;
 }
 
 .region-sidebar-first h2.block-title, .region-sidebar-second h2.block-title {
@@ -711,14 +716,15 @@ a {
 	left: -16em;
 	width: 16em;
 	background: #1f1f1f;
-	height: 3000px;
 	overflow: hidden;
 	padding-top: 0;
 	z-index: 1000;
+	height: 1000px;
 }
 
 .sideslide #wrap {
 	left: 0;
+	height: 4000px;
 }
 
 .mobileTitle {
@@ -849,25 +855,6 @@ margin: 0 20%;
 width: 48%;
 }
 
-.region-sidebar-second {
-	float: right;
-	width: 20%;
-	overflow: hidden;
-	padding-top: 60px;
-	padding-bottom: 100%;
-	-moz-box-shadow: inset -2px 0 2px #06253e;
-	-webkit-box-shadow: inset -2px 0 2px #06253e;
-	box-shadow: inset -2px 0 2px #06253e;
-	background-color: #06253e;
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	overflow-y: scroll;
-	color: #eee;
-	font-size: 13px;
-}
-
 .two-sidebars #footer-wrapper {
 	padding: 20px;
 	overflow: hidden;
@@ -883,6 +870,25 @@ width: 48%;
 	margin: 0;
 }
 
+/* USER PROFILE */
+
+#user-profile-form, #user-register-form {
+	max-width: 100%;
+}
+
+#user-profile-form .vertical-tabs ul.vertical-tabs-list, #user-register-form .vertical-tabs ul.vertical-tabs-list {
+	width: 30% !important;
+	float: left !important;
+}
+
+#user-profile-form .vertical-tabs fieldset, #user-register-form .vertical-tabs fieldset {
+	padding: 0 !important;
+	border: 0 !important;
+	max-width: 66% !important;
+	float: right !important;
+	margin: 0 2% !important;
+}
+
 
 /* TWITTER BLOCK and minor front page block cleanup */
 
@@ -894,3 +900,19 @@ width: 48%;
 	padding: 0;
 	font-size: 0.9em;
 }
+
+/* 
+ * Frontpage Feature Attendees Carousel Block
+ */
+
+.front #main #block-views-attendees-block-1.block {
+  width: 99%;
+  height: auto
+}
+.field-content.featured { text-align: center }
+.field-content.featured .attendee-fullname a { color: #fff }
+.field-content.featured .attendee-fullname { 
+  background-color: #285e88;
+  font-size: 90%
+}
+.field-content.featured .attendee-nickname { font-size: 0.8em }

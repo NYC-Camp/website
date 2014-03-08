@@ -34,9 +34,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 1,
     ),
@@ -116,9 +114,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 2,
     ),
@@ -233,9 +229,7 @@ function cod_session_field_default_field_instances() {
     ),
     'widget' => array(
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 6,
     ),
@@ -953,9 +947,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 34,
     ),
@@ -1322,9 +1314,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 4,
     ),
@@ -1369,9 +1359,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 4,
     ),
@@ -1408,9 +1396,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 6,
     ),
@@ -1535,7 +1521,11 @@ function cod_session_field_default_field_instances() {
   // Exported field_instance: 'node-session-field_accepted'
   $field_instances['node-session-field_accepted'] = array(
     'bundle' => 'session',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 3,
+      ),
+    ),
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
@@ -1582,7 +1572,11 @@ function cod_session_field_default_field_instances() {
   // Exported field_instance: 'node-session-field_experience'
   $field_instances['node-session-field_experience'] = array(
     'bundle' => 'session',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 'all',
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1609,15 +1603,17 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_experience',
     'label' => 'Experience level',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
+      'type' => 'options_select',
       'weight' => 59,
     ),
   );
@@ -1726,7 +1722,7 @@ function cod_session_field_default_field_instances() {
         'apply_chosen' => 0,
       ),
       'type' => 'options_select',
-      'weight' => 53,
+      'weight' => 54,
     ),
   );
 
@@ -1781,7 +1777,11 @@ function cod_session_field_default_field_instances() {
   // Exported field_instance: 'node-session-field_session_other_info'
   $field_instances['node-session-field_session_other_info'] = array(
     'bundle' => 'session',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 'presentation',
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1807,17 +1807,70 @@ function cod_session_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_session_other_info',
-    'label' => 'Other info',
-    'required' => 0,
+    'label' => 'Session Type',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
+      'type' => 'options_select',
       'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance: 'node-session-field_session_time'
+  $field_instances['node-session-field_session_time'] = array(
+    'bundle' => 'session',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Select the relevant time(s) for this session.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 21,
+      ),
+      'listing' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_session_time',
+    'label' => 'Session Time(s)',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 53,
     ),
   );
 
@@ -2065,7 +2118,7 @@ function cod_session_field_default_field_instances() {
         'apply_chosen' => 0,
       ),
       'type' => 'options_select',
-      'weight' => 54,
+      'weight' => 55,
     ),
   );
 
@@ -2425,7 +2478,6 @@ function cod_session_field_default_field_instances() {
   t('Links');
   t('NYC Camp 2014');
   t('Organizer Info?');
-  t('Other info');
   t('Photo');
   t('Please add any File(s) for this Page');
   t('Please enter the Body for this Page');
@@ -2436,8 +2488,11 @@ function cod_session_field_default_field_instances() {
   t('Room assignment');
   t('Select a suggested track or tracks for this session; you may submit your session to multiple tracks. <small>(Linear ontologies are <em>so</em> restrictive.)</small>');
   t('Select the relevant time slots this session should appear at.');
+  t('Select the relevant time(s) for this session.');
   t('Session Length');
   t('Session Time Slot(s)');
+  t('Session Time(s)');
+  t('Session Type');
   t('Session topics');
   t('Slides');
   t('Status');

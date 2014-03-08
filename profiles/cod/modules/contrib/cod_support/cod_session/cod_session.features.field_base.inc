@@ -70,15 +70,15 @@ function cod_session_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'Barn Raising' => 'Barn Raising',
         'Camp' => 'Camp',
+        'Sprint' => 'Sprint',
+        'Training' => 'Training',
+        'Barn Raising' => 'Barn Raising',
         'Job Fair' => 'Job Fair',
         'Keynote' => 'Keynote',
-        'Sprint' => 'Sprint',
         'Summit' => 'Summit',
         'Session' => 'Session',
         'Sessions' => 'Sessions',
-        'Training' => 'Training',
         'Other' => 'Other',
       ),
       'allowed_values_function' => '',
@@ -107,6 +107,7 @@ function cod_session_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
+        'all' => 'All Levels',
         'advanced' => 'Advanced',
         'beginner' => 'Beginner',
         'intermediate' => 'Intermediate',
@@ -568,16 +569,63 @@ function cod_session_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'training' => 'This is a training',
-        'lightning' => 'This is a lightning talk',
-        'casestudy' => 'This is a case-study',
-        'summit' => 'This session is for a summit',
-        'lab' => 'This session is or includes a hands-on lab',
+        'presentation' => 'Presentation',
+        'training' => 'Training',
+        'lightning' => 'Lightning Talk',
+        'casestudy' => 'Case Study',
+        'summit' => 'Summit Session',
+        'lab' => 'Hands-on Lab',
       ),
       'allowed_values_function' => '',
     ),
     'translatable' => 0,
     'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_session_time'
+  $field_bases['field_session_time'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_session_time',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(
+      'node' => array(
+        'columns' => array(
+          'target_id' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'type' => 'none',
+        ),
+        'target_bundles' => array(
+          'time_slot' => 'time_slot',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
   );
 
   // Exported field_base: 'field_session_timeslot'

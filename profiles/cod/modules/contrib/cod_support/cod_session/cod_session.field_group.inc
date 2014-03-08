@@ -286,6 +286,7 @@ function cod_session_field_group_info() {
       1 => 'field_session_timeslot',
       2 => 'field_room_assignment',
       3 => 'field_summit_session',
+      4 => 'field_session_time',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
