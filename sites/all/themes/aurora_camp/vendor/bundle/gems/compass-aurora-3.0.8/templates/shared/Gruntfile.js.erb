@@ -1,0 +1,159 @@
+<% project_name = File.basename(Compass.configuration.project_path) %><% project_js = Compass.configuration.javascripts_dir %><% project_css = Compass.configuration.css_dir %><% project_sass = Compass.configuration.sass_dir %><% project_img = Compass.configuration.images_dir %>'use strict';
+
+module.exports = function (grunt) {
+
+  grunt.initConfig({
+    watch: {
+      options: {
+        livereload: 9001
+      },
+      sass: {
+        files: ['<%= project_sass %>/{,**/}*.scss'],
+        tasks: ['compass:dev'],
+        options: {
+          livereload: false
+        }
+      },
+      css: {
+        files: ['<%= project_css %>/{,**/}*.css']
+      },
+      images: {
+        files: ['<%= project_img %>/**']
+      },
+      js: {
+        files: [
+          '<%= project_js %>/{,**/}*.js',
+          '!<%= project_js %>/{,**/}*.js'
+        ],
+        tasks: ['jshint', 'uglify:dev']
+      }
+    },
+
+    compass: {
+      options: {
+        config: 'config.rb',
+        bundleExec: true
+      },
+      dev: {
+        options: {
+          environment: 'development'
+        }
+      },
+      dist: {
+        options: {
+          environment: 'production',
+          imagesDir: '<%= project_img %>-min',
+          force: true
+        }
+      }
+    },
+
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      all: [
+        '<%= project_js %>/{,**/}*.js',
+        '!<%= project_js %>/{,**/}*.min.js'
+      ]
+    },
+
+    imagemin: {
+      dist: {
+        options: {
+          optimizationLevel: 3
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= project_img %>',
+          src: ['**/*.png', '**/*.jpg'],
+          dest: '<%= project_img %>-min/'
+        }]
+      }
+    },
+
+    svgmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= project_img %>',
+          src: '**/*.svg',
+          dest: '<%= project_img %>-min'
+        }]
+      }
+    },
+
+    uglify: {
+      dev: {
+        options: {
+          mangle: false,
+          compress: false,
+          beautify: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= project_js %>',
+          src: ['**/*.js', '!**/*.min.js'],
+          dest: '<%= project_js %>',
+          ext: '.min.js'
+        }]
+      },
+      dist: {
+        options: {
+          mangle: true,
+          compress: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= project_js %>',
+          src: ['**/*.js', '!**/*.min.js'],
+          dest: '<%= project_js %>',
+          ext: '.min.js'
+        }]
+      }
+    },
+
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= project_img %>',
+            src: ['**', '!**/*.svg', '!**/*.png', '!**/*.jpg'],
+            dest: '<%= project_img %>-min'
+          }
+        ]
+      }
+    },
+
+    parallel: {
+      assets: {
+        grunt: true,
+        tasks: ['imagemin', 'svgmin', 'uglify:dist', 'copy:dist']
+      }
+    }
+  });
+
+
+  grunt.event.on('watch', function(action, filepath) {
+    grunt.config([
+      'compass:dev',
+      'jshint'
+    ], filepath);
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-parallel');
+  grunt.loadNpmTasks('grunt-svgmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+
+  grunt.registerTask('build', [
+    'parallel:assets',
+    'compass:dist',
+    'jshint'
+  ]);
+};

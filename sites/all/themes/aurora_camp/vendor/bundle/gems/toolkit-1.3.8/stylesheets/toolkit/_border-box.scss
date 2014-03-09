@@ -1,0 +1,6 @@
+//////////////////////////////
+// Box Sizing anda wesome Border Box!
+//////////////////////////////
+@import "box-sizing";
+
+*, *:after, *:before { @include box-sizing('border-box'); }
