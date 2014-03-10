@@ -56,6 +56,10 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['relationships']['uid']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['uid']['label'] = 'Schedule user';
   /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_session_time_target_id']['id'] = 'field_session_time_target_id';
+  $handler->display->display_options['relationships']['field_session_time_target_id']['table'] = 'field_data_field_session_time';
+  $handler->display->display_options['relationships']['field_session_time_target_id']['field'] = 'field_session_time_target_id';
+  /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_session_timeslot_target_id']['id'] = 'field_session_timeslot_target_id';
   $handler->display->display_options['relationships']['field_session_timeslot_target_id']['table'] = 'field_data_field_session_timeslot';
   $handler->display->display_options['relationships']['field_session_timeslot_target_id']['field'] = 'field_session_timeslot_target_id';
@@ -63,6 +67,16 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  /* Field: Content: Session Time(s) */
+  $handler->display->display_options['fields']['field_session_time']['id'] = 'field_session_time';
+  $handler->display->display_options['fields']['field_session_time']['table'] = 'field_data_field_session_time';
+  $handler->display->display_options['fields']['field_session_time']['field'] = 'field_session_time';
+  $handler->display->display_options['fields']['field_session_time']['label'] = '';
+  $handler->display->display_options['fields']['field_session_time']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_session_time']['settings'] = array(
+    'link' => 0,
+  );
+  $handler->display->display_options['fields']['field_session_time']['delta_offset'] = '0';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -70,16 +84,6 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Field collection item: Time Slot */
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['id'] = 'field_slot_types_time_slot';
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['table'] = 'field_data_field_slot_types_time_slot';
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['field'] = 'field_slot_types_time_slot';
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['relationship'] = 'field_session_timeslot_target_id';
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['label'] = '';
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_slot_types_time_slot']['settings'] = array(
-    'link' => 0,
-  );
   /* Field: Content: Room assignment */
   $handler->display->display_options['fields']['field_room_assignment']['id'] = 'field_room_assignment';
   $handler->display->display_options['fields']['field_room_assignment']['table'] = 'field_data_field_room_assignment';

@@ -1523,7 +1523,7 @@ function cod_session_field_default_field_instances() {
     'bundle' => 'session',
     'default_value' => array(
       0 => array(
-        'value' => 3,
+        'value' => 0,
       ),
     ),
     'default_value_function' => '',
@@ -1561,9 +1561,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 51,
     ),
