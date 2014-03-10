@@ -39,5 +39,28 @@
   $(window).load(function() {
     $('.flexslider').flexslider();
   });
-  
+
+
+  // Mobile menus
+  $(document).ready(function () {
+    $("#min-menu a").click(function(event){
+      $("body").toggleClass("sideslide");
+      $("body").removeClass("scheduleslide");
+      event.stopPropagation();
+    });
+    $("#min-schedule a").click(function(event){
+      $("body").toggleClass("scheduleslide");
+      $("body").removeClass("sideslide");
+      event.stopPropagation();
+    });
+    $('html').click(function() {
+      $("body").removeClass("sideslide");
+      $("body").removeClass("scheduleslide");
+    });
+
+    $('#mobile-nav, .region-sidebar-first').click(function(event){
+      event.stopPropagation();
+    });
+  });
+
 })(jQuery, Drupal, this, this.document);

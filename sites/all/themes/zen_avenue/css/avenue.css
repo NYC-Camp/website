@@ -677,7 +677,7 @@ a {
 
 
 /* Mobile menu START */
-#wrap {
+#mobile-nav {
 	-webkit-transition: left .3s ease-out;
   -moz-transition: left .3s ease-out;
   -ms-transition: left .3s ease-out;
@@ -686,10 +686,10 @@ a {
   background-color: #fff;
 }
 
-#min-menu {
+#min-menu, #min-schedule {
 	display: none;
 	float: right;
-	margin: 21px 0 0 0;
+	margin: 21px 0 0 1.5em;
 }
 
 #min-menu a {
@@ -702,11 +702,21 @@ a {
 	text-indent: -99999px;
 }
 
-#wrap {
+#min-schedule a {
+    background: url(../images/calendar-icon.png) scroll no-repeat 0 0 transparent;
+    background-size: 20px 20px;
+    line-height: 60px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    text-indent: -99999px;
+}
+
+#mobile-nav {
 	display: block;
 	position: absolute;
 	top: 0;
-	left: -16em;
+	left: -100%;
 	width: 16em;
 	background: #1f1f1f;
 	height: 3000px;
@@ -715,7 +725,7 @@ a {
 	z-index: 1000;
 }
 
-.sideslide #wrap {
+.sideslide #mobile-nav {
 	left: 0;
 }
 
@@ -725,22 +735,22 @@ a {
 	font-weight: 300;
 }
 
-#wrap .mobileTitle a {
+#mobile-nav .mobileTitle a {
 	padding: 15px;
 	color: #fff;
 }
 
-#wrap ul.menu {
+#mobile-nav ul.menu {
 	margin: 0;
 	padding: 0;
 }
 
-#wrap ul.menu li {
+#mobile-nav ul.menu li {
 	list-style: none;
 	display: block;
 }
 
-#wrap ul.menu li a {
+#mobile-nav ul.menu li a {
 	display: block;
 	color: #fff;
 	padding: 0 0 0 15px;
@@ -752,11 +762,11 @@ a {
 	height: 40px;
 }
 
-#wrap ul.menu li a:hover, #wrap ul.menu li a.active {
+#mobile-nav ul.menu li a:hover, #mobile-nav ul.menu li a.active {
 	background: #181818;
 }
 
-#wrap ul.menu ul {
+#mobile-nav ul.menu ul {
 	display: block !important;
 	visibility: visible !important;
 	position: relative;
@@ -764,7 +774,7 @@ a {
 	left: auto;
 }
 
-#wrap ul.menu ul a {
+#mobile-nav ul.menu ul a {
 	padding-left: 30px;
 	color: #bbb;
 }
