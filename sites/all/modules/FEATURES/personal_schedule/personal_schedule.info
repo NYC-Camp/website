@@ -1,0 +1,11 @@
+name = Personal Schedule
+description = Personal user schedules based on the session_schedule flag
+core = 7.x
+package = COD Extras
+version = 7.x-1.1
+project = personal_schedule
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = personal_schedule
+features_exclude[dependencies][ctools] = ctools

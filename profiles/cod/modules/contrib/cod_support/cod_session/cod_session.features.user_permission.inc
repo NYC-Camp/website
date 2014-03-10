@@ -44,6 +44,7 @@ function cod_session_user_default_permissions() {
   $permissions['create session content'] = array(
     'name' => 'create session content',
     'roles' => array(
+      'authenticated user' => 'authenticated user',
       'scholarship' => 'scholarship',
       'site admin' => 'site admin',
     ),
@@ -83,6 +84,7 @@ function cod_session_user_default_permissions() {
     'roles' => array(
       'content editor' => 'content editor',
       'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -106,6 +108,7 @@ function cod_session_user_default_permissions() {
       'site admin' => 'site admin',
       'speaker' => 'speaker',
       'sponsor organizer' => 'sponsor organizer',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -134,6 +137,7 @@ function cod_session_user_default_permissions() {
     'roles' => array(
       'content editor' => 'content editor',
       'site admin' => 'site admin',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
@@ -182,6 +186,7 @@ function cod_session_user_default_permissions() {
       'site admin' => 'site admin',
       'speaker' => 'speaker',
       'sponsor organizer' => 'sponsor organizer',
+      'summit organizer' => 'summit organizer',
     ),
     'module' => 'node',
   );
