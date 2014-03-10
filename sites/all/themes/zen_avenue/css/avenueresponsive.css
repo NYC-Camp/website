@@ -22,7 +22,7 @@
 	width: 25%;
 	}
 	
-	.sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper {
+	.front.sidebar-first .region-featured, .front.sidebar-first #main-wrapper, .front.sidebar-first #footer-wrapper {
 	width: 75%;
 	}
 
@@ -62,9 +62,9 @@
 		display: block;
 	}
 
-	#main, #header .section, #footer-wrapper-inner {
-		margin: 0 auto;
-		width: 94%;
+	#main, #header .section, #footer-wrapper-inner, .front.sidebar-first #main {
+	margin: 0 auto;
+	width: 94% !important;
 	}
 
 	/* MAIN */
@@ -72,7 +72,7 @@
 		padding: 0 0 20px; /* Reduce padding now that header is not fixed */
 	}
 
-	#footer-nav, .region-footer, .col-01, .col-02, .col-03, #block-menu-menu-footer-menu, .front #main .block, .front #aside , .not-front #aside, .front #content , .not-front #content, #sidebar-first, #sidebar-second, .region-sidebar-first, .sidebar-first .region-featured, .sidebar-first #main-wrapper, .sidebar-first #footer-wrapper, .region-live .block.first, .region-live .block.last {
+	#footer-nav, .region-footer, .col-01, .col-02, .col-03, #block-menu-menu-footer-menu, .front #main .block, .front #aside , .not-front #aside, .front #content , .not-front #content, #sidebar-first, #sidebar-second, .region-sidebar-first, .front.sidebar-first .region-featured, .front.sidebar-first #main-wrapper, .front.sidebar-first #footer-wrapper, .region-live .block.first, .region-live .block.last {
 		float: none;
 		margin: 0 auto 1em;
 		width: 100%;
@@ -97,11 +97,11 @@
 		width: 100% !important;
 	}
 
-	.sidebar-first #header .section {
+	.front.sidebar-first #header .section {
 		padding: 0 15px 0 10px;
 	}
 
-	.sidebar-first #footer-wrapper {
+	.front.sidebar-first #footer-wrapper {
 		margin-bottom: 0;
 	}
 
@@ -129,7 +129,12 @@
 	
 	.region-sidebar-first .block, .region-sidebar-first .block a {
 		background: none;
-		color: inherit;
+		color: #333;
+	}
+
+	#main .block {
+	padding: 15px !important;
+	margin-bottom: 30px !important;
 	}
 
 	.region-featured {
@@ -271,8 +276,37 @@
 		margin-top: 0;
 		width: 94%;
 	}
+	
+	#aside .block-block p {
+		padding: 0 10px;
+	}
+	
+	.field-name-field-page-image, .field-name-field-intro-image {
+		width: 100%;
+		height: auto;
+	}
+	
+	.field-name-field-page-image, .field-name-field-intro-image {
+		float: none;
+		width: 100%;
+		margin: 10px auto 20px;
+	}
+
+	#user-profile-form .vertical-tabs ul.vertical-tabs-list, #user-register-form .vertical-tabs ul.vertical-tabs-list {
+		width: 100% !important;
+		float: none !important;
+	}
+
+	#user-profile-form .vertical-tabs fieldset, #user-register-form .vertical-tabs fieldset {
+		padding: 0 !important;
+		border: 0 !important;
+		max-width: 100% !important;
+		float: right !important;
+		margin: 0.5em 0 !important;
+	}
 
 }
+
 
 
 /* Mobile (Landscape)

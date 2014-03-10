@@ -1,4 +1,4 @@
-#main .block, .view-nyccamp-schedule .view-grouping, .region-live .block.last, .page-program .panel-pane .view {
+#main .block, .view-nyccamp-schedule .view-grouping, .region-live .block.last, .page-program .panel-pane .view, .profile-fieldgroup, #edit-picture {
 	box-shadow: 0 1px 2px #eee;
 	background: #fff;
 	border-radius: 0 0 3px 3px;
@@ -84,13 +84,13 @@ h2.welcome-title {
 	display: block;
 	text-align: center;
 	width: 200px;
-	line-height: 40px;
+	line-height: 1.1em;
 	margin: 0 auto;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: 300;
 	font-size: 20px;
-	padding: 2px 0 0;
+	padding: 10px;
 	box-shadow: 1px 2px 2px rgba(0,0,0,.3);
 }
 
@@ -98,7 +98,7 @@ h2.welcome-title {
 	-webkit-opacity: 1;
 	-moz-opacity: 1;
 	filter:alpha(opacity=100);
-  opacity: 1;
+	opacity: 1;
 }
 
 .register-now a:active {
@@ -118,13 +118,29 @@ h2.welcome-title {
 }
 
 #block-block-8 .register-now a, #block-block-9 .register-now a {
-	width: 300px;
-	font-size: 15px;
+	font-weight: 600;
+	background: #285e88;
+	border: none;
+	border-bottom: 3px solid #1a3c56;
 }
 
 #aside .block-block p {
 	padding-right: 1em;
 	padding-left: 1em;
+}
+
+.not-front #aside .block, .profile-fieldgroup, #edit-picture {
+	box-shadow: 0 1px 1px #ddd;
+	background: #f2f2f2;
+}
+
+.profile-fieldgroup {
+	padding: 15px;
+}
+
+.not-front #aside h2.block-title {
+	background: #e2e2e2;
+	color: #373B41;
 }
 
 
@@ -330,7 +346,7 @@ div.pane-sponsorship-options-title h2.pane-title {
 div.view-sponsorship-options-tiers th.views-field-field-sponsorship-ben-job-fair,
 div.view-sponsorship-options-title th.views-field-field-sponsorship-ben-job-fair {
 	width: 8%;
-} 
+}
 
 div.view-sponsorship-options-tiers td,
 div.view-sponsorship-options-title td {
@@ -343,10 +359,10 @@ div.view-sponsorship-options-title td {
 div.view-sponsorship-options-tiers td.views-field-field-sponsorship-ben-job-fair,
 div.view-sponsorship-options-title td.views-field-field-sponsorship-ben-job-fair {
 	width: 8%;
-} 
+}
 div.view-sponsorship-options-tiers th.views-field-title,
 div.view-sponsorship-options-title th.views-field-title {
-   width: 16%; 
+   width: 16%;
 }
 
 div.view-sponsorship-options-tiers td.views-field-title,
@@ -359,7 +375,11 @@ div.view-sponsorship-options-title td.views-field-title a {
   color: green;
   text-align: right;
 }
-
+.personal-schedule-outer {
+	margin-bottom: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #285E88;
+}
 
 /* PROMOS */
 
@@ -534,17 +554,14 @@ div.field-name-field-news-image img {
 	border: 1px solid silver;
 }
 
-body.page-news div.field-name-node-link {
-	margin-left: 5%;
-}
-
 body.page-news div.field-name-node-link a {
 	font-style: italic;
 }
 
-
-
-
+.view-cod-news .views-row {
+	margin: 0 0 20px;
+	padding: 20px 0;
+}
 
 
 /* TABS */
@@ -563,12 +580,10 @@ ul.tabs.primary li {
 ul.tabs.primary li a {
 	color: gray;
 }
-
 ul.tabs.primary li:hover {
 	background-color: #efefef;
 	border-color: #959494;
 }
-
 ul.tabs.primary li a:hover {
 	color: green;
 }
@@ -774,7 +789,7 @@ h2.feature-title {
 }
 
 .node-type-podcast .field-name-field-podcast-description {
-  margin-top: 1em;  
+  margin-top: 1em;
 }
 
 

@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Implements hook_menu();
+ */
+function nycreg_menu() {
+  $items['nycreg'] = array(
+    'page callback' => 'nycreg_callback',
+    'page arguments' => array(1),
+    'access callback' => true,
+  );
+  $items['admin/config/services/nycreg'] = array(
+    'title' => t('NYC-Reg'),
+    'description' => t('Administer NYC-Reg settings.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('nycreg_admin_form'),
+    'access arguments' => array('administer nycreg settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission()
+ */
+function nycreg_permission() {
+  return array(
+    'administer nycreg settings' => array(
+      'title' => t('Administer NYC-Reg Settings'),
+      'description' => t('Change synchronization settings for NYC-Reg.'),
+    ),
+  );
+}
+
+function nycreg_callback($arg) {
+  if (!nycreg_access()) {
+    drupal_add_http_header('HTTP/1.1 403 Valid token not configured.');
+    drupal_exit();
+  }
+
+  $limit = 100;
+  $start = 0;
+  if (isset($_REQUEST['limit']) && is_numeric($_REQUEST['limit'])) {
+    $limit = $_REQUEST['limit'];
+  }
+  if (isset($_REQUEST['start']) && is_numeric($_REQUEST['start'])) {
+    $start = $_REQUEST['start'];
+  }
+
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'user')
+    ->propertyCondition('status', 1)
+    ->range($start, $limit);
+  $result = $query->execute();
+
+  if (isset($result['user'])) {
+    $users = user_load_multiple(array_keys($result['user']));
+    drupal_json_output($users);
+  }
+}
+
+function nycreg_access() {
+  $acceptable_token = variable_get('nycreg_token', '');
+  if (!$acceptable_token || !isset($_REQUEST['token']) || !$_REQUEST['token']) {
+    return false;
+  }
+  elseif ($_REQUEST['token'] == $acceptable_token) {
+    return true;
+  }
+  return false;
+}
+
+function nycreg_admin_form($form, &$form_state) {
+  $form = array();
+
+  $nycreg_token = variable_get('nycreg_token', '');
+  if (!($nycreg_token)) {
+    $nycreg_token = nycreg_generate_token();
+  }
+
+  global $base_url;
+
+  $form['intro'] = array(
+    '#markup' => '<p>'.t('Generate a unique token for the NYC-Reg app to use to connect to this site.').'</p>',
+  );
+  $form['token'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Token:'),
+    '#value' => $nycreg_token,
+    '#disabled' => true,
+  );
+  $form['url'] = array(
+    '#markup' => '<p><label>'.t('The API can be accessed at: ').'</label> '.
+      $base_url.'/nycreg/pull/?token=<strong>'.$nycreg_token.'</strong>&limit=100&start=0</p>',
+  );
+  $form['regenerate'] = array(
+    '#type' => 'submit',
+    '#value' => 'Generate new token',
+    '#submit' => array('nycreg_admin_form_submit'),
+  );
+
+  return $form;
+}
+
+function nycreg_admin_form_submit($form, &$form_state) {
+  nycreg_generate_token();
+  return false;
+}
+
+function nycreg_generate_token() {
+  $token = md5(uniqid(mt_rand(), true));
+  variable_set('nycreg_token', $token);
+  return $token;
+}
