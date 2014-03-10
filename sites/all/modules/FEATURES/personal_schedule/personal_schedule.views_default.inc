@@ -84,6 +84,14 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['fields']['field_room_assignment']['id'] = 'field_room_assignment';
   $handler->display->display_options['fields']['field_room_assignment']['table'] = 'field_data_field_room_assignment';
   $handler->display->display_options['fields']['field_room_assignment']['field'] = 'field_room_assignment';
+  $handler->display->display_options['fields']['field_room_assignment']['label'] = '';
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['text'] = 'Location: <a href="/node/[field_room_assignment-target_id]">[field_room_assignment]</a>';
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['path'] = '[field_room_assignment]';
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['replace_spaces'] = TRUE;
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['path_case'] = 'lower';
+  $handler->display->display_options['fields']['field_room_assignment']['alter']['alt'] = '[field_room_assignment]';
+  $handler->display->display_options['fields']['field_room_assignment']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_room_assignment']['settings'] = array(
     'link' => 0,
   );
