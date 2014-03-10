@@ -686,10 +686,10 @@ a {
   background-color: #fff;
 }
 
-#min-menu {
+#min-menu, #min-schedule {
 	display: none;
 	float: right;
-	margin: 21px 0 0 0;
+	margin: 21px 0 0 1.5em;
 }
 
 #min-menu a {
@@ -702,11 +702,21 @@ a {
 	text-indent: -99999px;
 }
 
+#min-schedule a {
+    background: url(../images/calendar-icon.png) scroll no-repeat 0 0 transparent;
+    background-size: 20px 20px;
+    line-height: 60px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    text-indent: -99999px;
+}
+
 #wrap {
 	display: block;
 	position: absolute;
 	top: 0;
-	left: -16em;
+	left: -100%;
 	width: 16em;
 	background: #1f1f1f;
 	height: 3000px;

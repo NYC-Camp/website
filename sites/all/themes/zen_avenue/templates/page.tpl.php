@@ -104,6 +104,7 @@
     <?php endif; ?>
 
     <div id="min-menu"><a href="#">Menu</a></div>
+    <div id="min-schedule"><a href="#">Schedule</a></div>
     <?php print theme('links__system_main_menu', array(
       'links' => $main_menu,
       'attributes' => array(
@@ -170,6 +171,11 @@
 (function($){
   $("#min-menu a").click(function(){
     $("body").toggleClass("sideslide");
+    $("body").removeClass("scheduleslide");
+  });
+  $("#min-schedule a").click(function(){
+    $("body").toggleClass("scheduleslide");
+    $("body").removeClass("sideslide");
   });
 })(jQuery);
 </script>
