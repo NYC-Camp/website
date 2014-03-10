@@ -677,7 +677,7 @@ a {
 
 
 /* Mobile menu START */
-#wrap {
+#mobile-nav {
 	-webkit-transition: left .3s ease-out;
   -moz-transition: left .3s ease-out;
   -ms-transition: left .3s ease-out;
@@ -712,7 +712,7 @@ a {
     text-indent: -99999px;
 }
 
-#wrap {
+#mobile-nav {
 	display: block;
 	position: absolute;
 	top: 0;
@@ -725,7 +725,7 @@ a {
 	z-index: 1000;
 }
 
-.sideslide #wrap {
+.sideslide #mobile-nav {
 	left: 0;
 }
 
@@ -735,22 +735,22 @@ a {
 	font-weight: 300;
 }
 
-#wrap .mobileTitle a {
+#mobile-nav .mobileTitle a {
 	padding: 15px;
 	color: #fff;
 }
 
-#wrap ul.menu {
+#mobile-nav ul.menu {
 	margin: 0;
 	padding: 0;
 }
 
-#wrap ul.menu li {
+#mobile-nav ul.menu li {
 	list-style: none;
 	display: block;
 }
 
-#wrap ul.menu li a {
+#mobile-nav ul.menu li a {
 	display: block;
 	color: #fff;
 	padding: 0 0 0 15px;
@@ -762,11 +762,11 @@ a {
 	height: 40px;
 }
 
-#wrap ul.menu li a:hover, #wrap ul.menu li a.active {
+#mobile-nav ul.menu li a:hover, #mobile-nav ul.menu li a.active {
 	background: #181818;
 }
 
-#wrap ul.menu ul {
+#mobile-nav ul.menu ul {
 	display: block !important;
 	visibility: visible !important;
 	position: relative;
@@ -774,7 +774,7 @@ a {
 	left: auto;
 }
 
-#wrap ul.menu ul a {
+#mobile-nav ul.menu ul a {
 	padding-left: 30px;
 	color: #bbb;
 }

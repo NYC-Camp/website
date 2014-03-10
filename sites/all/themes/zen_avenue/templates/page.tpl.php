@@ -71,10 +71,10 @@
 ?>
 
 <div id="page-wrapper">
-	<div id="wrap" class="inactive">
-    <div class="mobileTitle"><a href="/">NYCcamp</a></div>
-    <?php print render($page['navigation']); ?>
-  </div>
+	<div id="mobile-nav" class="inactive">
+      <div class="mobileTitle"><a href="/">NYCcamp</a></div>
+      <?php print render($page['navigation']); ?>
+    </div>
   <div id="page">
   <div id="header"><div class="section clearfix">
 
@@ -167,16 +167,4 @@
 		</div>
 	</div>
 </div></div><!-- /#page, /#page-wrapper -->
-<script type="text/javascript">
-(function($){
-  $("#min-menu a").click(function(){
-    $("body").toggleClass("sideslide");
-    $("body").removeClass("scheduleslide");
-  });
-  $("#min-schedule a").click(function(){
-    $("body").toggleClass("scheduleslide");
-    $("body").removeClass("sideslide");
-  });
-})(jQuery);
-</script>
 <?php print render($page['bottom']); ?>

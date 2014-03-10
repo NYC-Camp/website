@@ -116,17 +116,18 @@
         -o-transition: left .3s ease-out;
         transition: left .3s ease-out;
     }
-	.scheduleslide .region-sidebar-first {
+
+    .scheduleslide .region-sidebar-first {
         left: 0;
 	}
 
     .region-sidebar-first h2.block-title {
-        padding: 0 0 1em;
-        font-size: .8em;
+        padding: 0 0 16px;
+        font-size: 13px;
     }
 
     .region-sidebar-first h3 {
-        margin: 0 0 1.5em;
+        margin: 0 0 24px;
     }
 
 	.region-sidebar-first .block:hover {
