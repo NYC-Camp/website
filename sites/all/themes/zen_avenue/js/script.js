@@ -47,20 +47,27 @@
       $("body").toggleClass("sideslide");
       $("body").removeClass("scheduleslide");
       event.stopPropagation();
+      event.preventDefault();
+      $('html').bind('click', closeMobileNav);
     });
     $("#min-schedule a").click(function(event){
       $("body").toggleClass("scheduleslide");
       $("body").removeClass("sideslide");
       event.stopPropagation();
-    });
-    $('html').click(function() {
-      $("body").removeClass("sideslide");
-      $("body").removeClass("scheduleslide");
+      event.preventDefault();
+      $('html').bind('click', closeMobileNav);
     });
 
     $('#mobile-nav, .region-sidebar-first').click(function(event){
       event.stopPropagation();
     });
+
+    //close mobile navs on the click outside of nav area
+    function closeMobileNav() {
+      $("body").removeClass("sideslide");
+      $("body").removeClass("scheduleslide");
+      $('html').unbind('click');
+    }
   });
 
 })(jQuery, Drupal, this, this.document);

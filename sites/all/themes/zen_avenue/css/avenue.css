@@ -689,7 +689,7 @@ a {
 #min-menu, #min-schedule {
 	display: none;
 	float: right;
-	margin: 21px 0 0 1.5em;
+	margin: 21px 0 0 24px;
 }
 
 #min-menu a {
