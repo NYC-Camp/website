@@ -58,7 +58,7 @@
 		display: none;
 	}
 
-	#min-menu {
+	#min-menu, #min-schedule  {
 		display: block;
 	}
 
@@ -105,19 +105,30 @@
 		margin-bottom: 0;
 	}
 
-	.region-sidebar-first {
-		background: none;
-		padding: 0;
-		position: relative;
-		-moz-box-shadow: none;
-		-webkit-box-shadow: none;
-		box-shadow: none;
+    .region-sidebar-first {
+        left: -100%;
+        width: auto;
+        height: 3000px;
+        z-index: 100;
+        -webkit-transition: left .3s ease-out;
+        -moz-transition: left .3s ease-out;
+        -ms-transition: left .3s ease-out;
+        -o-transition: left .3s ease-out;
+        transition: left .3s ease-out;
+    }
+
+    .scheduleslide .region-sidebar-first {
+        left: 0;
 	}
 
-	.region-sidebar-first .block {
-		border-bottom: 1px dotted #777;
-		box-shadow: none;
-	}
+    .region-sidebar-first h2.block-title {
+        padding: 0 0 16px;
+        font-size: 13px;
+    }
+
+    .region-sidebar-first h3 {
+        margin: 0 0 24px;
+    }
 
 	.region-sidebar-first .block:hover {
 		background: none;
@@ -125,11 +136,6 @@
 	
 	.region-sidebar-first h2.block-title {
 		color: inherit;
-	}
-	
-	.region-sidebar-first .block, .region-sidebar-first .block a {
-		background: none;
-		color: #333;
 	}
 
 	#main .block {

@@ -71,10 +71,10 @@
 ?>
 
 <div id="page-wrapper">
-  <div id="wrap" class="inactive">
-    <div class="mobileTitle"><a href="/">NYCcamp</a></div>
-    <?php print render($page['navigation']); ?>
-  </div>
+	<div id="mobile-nav" class="inactive">
+      <div class="mobileTitle"><a href="/">NYCcamp</a></div>
+      <?php print render($page['navigation']); ?>
+    </div>
   <div id="page">
   <div id="header"><div class="section clearfix">
 
@@ -104,6 +104,7 @@
     <?php endif; ?>
 
     <div id="min-menu"><a href="#">Menu</a></div>
+    <div id="min-schedule"><a href="#">Schedule</a></div>
     <?php print theme('links__system_main_menu', array(
       'links' => $main_menu,
       'attributes' => array(
@@ -174,11 +175,4 @@
     </div>
   </div>
 </div></div><!-- /#page, /#page-wrapper -->
-<script type="text/javascript">
-(function($){
-  $("#min-menu a").click(function(){
-    $("body").toggleClass("sideslide");
-  });
-})(jQuery);
-</script>
 <?php print render($page['bottom']); ?>
