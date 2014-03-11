@@ -51,8 +51,8 @@ h1, h2, .register-now, #site-name {
 }
 
 
-/* 
-COLORS 
+/*
+COLORS
   blue = #3298d7
   green = #55a40e
   red = #d63105
@@ -911,7 +911,7 @@ width: 48%;
 	font-size: 0.9em;
 }
 
-/* 
+/*
  * Frontpage Feature Attendees Carousel Block
  */
 
@@ -922,8 +922,80 @@ width: 48%;
 .view-queues .views-field-field-profile-last .field-content,
 .view-queues .views-field-field-profile-irc .field-content { text-align: center }
 .view-queues .views-field-field-profile-last .field-content a { color: #fff }
-.view-queues .views-field-field-profile-last .field-content { 
+.view-queues .views-field-field-profile-last .field-content {
   background-color: #285e88;
   font-size: 90%
 }
 .view-queues .views-field-field-profile-irc .field-content { font-size: 0.8em }
+
+/*
+ * Team page
+ */
+
+.team-page .section {
+	margin-top: 1em;
+}
+
+@media (min-width: 700px) {
+	.team-page .section {
+		margin-top: 2em;
+	}
+}
+
+#main > div.section > div > div.panel-flexible.panels-flexible-14.clearfix > div > div > div > div.panel-pane.pane-views.pane-team {
+	width: 100%;
+}
+
+@media (min-width: 700px) {
+	#content > div > div > div.panel-flexible.panels-flexible-14.clearfix {
+		max-width: 100%;
+		margin: 0 auto;
+	}
+}
+
+.view-team .views-row {
+	height: 340px;
+  margin-bottom: 1em;
+}
+
+@media (min-width: 470px) {
+  .view-team .views-row:nth-of-type(odd) {
+    width: 47.619047619%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(even) {
+    width: 47.619047619%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
+@media (min-width: 620px) {
+  .view-team .views-row:nth-of-type(1n) {
+    width: 30%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(2n) {
+    width: 30%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 35%;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(3n) {
+    width: 30%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
