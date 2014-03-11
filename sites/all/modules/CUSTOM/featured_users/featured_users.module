@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the featured_users feature.
+ */
+
+include_once 'featured_users.features.inc';

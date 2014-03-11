@@ -1,0 +1,14 @@
+name = featured_users
+core = 7.x
+package = Features
+dependencies[] = entityreference
+dependencies[] = features
+dependencies[] = options
+dependencies[] = queues
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[field_base][] = field_qt_featured_users
+features[field_instance][] = queues-featured_users-field_qt_featured_users
+features[queues_type][] = featured_users
+features[views_view][] = featured_users
