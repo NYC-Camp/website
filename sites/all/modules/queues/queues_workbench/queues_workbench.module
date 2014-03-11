@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * @file
+ * Queues Workbench Moderation/State Machine Integration.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function queues_workbench_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'queues_workbench') . '/views',
+  );
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function queues_workbench_entity_info_alter(&$entity_info) {
+
+  // Add state_flow_information to the node entity type.
+  if (!empty($entity_info['queues'])) {
+    $entity_info['queues']['state_flow_entity'] = array(
+      'revision_workflow_path' => 'admin/content/queues/manage/%entity_id/revisions/%revision_id/workflow',
+      'revision_delete_path' => 'admin/content/queues/manage/%entity_id/revisions/%revision_id/delete',
+      'revision_edit_path' => 'admin/content/queues/manage/%entity_id/revisions/%revision_id/edit',
+    );
+  }
+}
+
+/**
+ * Implements hook_state_flow_entity_machine_type_alter().
+ *
+ * @param $machine_type
+ * @param $entity
+ * @param $entity_type
+ */
+function queues_state_flow_entity_machine_type_alter(&$machine_type, $entity, $entity_type) {
+  if ($entity_type == 'queues') {
+    $machine_type = 'state_flow_queues_workbench';
+  }
+}
+
+/**
+ * Implements hook_state_flow_entity_plugins().
+ */
+function queues_workbench_state_flow_entity_plugins() {
+  $info = array();
+  $path = drupal_get_path('module', 'queues_workbench') . '/plugins';
+
+  $workflow_options = array(
+    'states' => array(
+      'draft' => array('label' => t('Draft')),
+      'published' => array(
+        'label' => t('Published'),
+        'on_enter' => 'on_enter_published',
+        'on_exit' => 'on_exit_published',
+      ),
+      'unpublished' => array(
+        'label' => t('Unpublished'),
+        'on_enter' => 'on_enter_unpublished',
+      ),
+    ),
+    'events' => array(
+      'draft' => array(
+        'label' => t('Draft'),
+        'origin' => array('draft', 'published'),
+        'target' => 'draft',
+      ),
+      'publish' => array(
+        'label' => t('Publish'),
+        'origin' => array('draft', 'unpublished', 'published'),
+        'target' => 'published',
+      ),
+      'unpublish' => array(
+        'label' => t('Unpublish'),
+        'origin' => 'published',
+        'target' => 'unpublished',
+        'permission' => 'publish and unpublish content',
+      ),
+      'to draft' => array(
+        'label' => t('To Draft'),
+        'origin' => 'unpublished',
+        'target' => 'draft',
+      ),
+    ),
+  );
+
+  $info['state_flow_queues_workbench'] = array(
+    'handler' => array(
+      'class' => 'QueuesStatesEntity',
+      'file' => 'queues_state_machine.inc',
+      'path' => $path,
+      'parent' => 'state_flow_entity',
+      'workflow_options' => $workflow_options,
+      'entity_type' => 'queues',
+    ),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function queues_workbench_form_alter(&$form, &$form_state, $form_id) {
+  if (stripos($form_id, 'queues_edit') === 0 || $form_id == 'queues_form') {
+    // Add the event form.
+    $queue_entity = $form_state['queues'];
+    $form_options = array(
+      'event_element_type' => 'select',
+    );
+
+    state_flow_entity_load_state_machine($queue_entity, 'queues');
+    module_load_include('inc', 'state_flow_entity', 'state_flow_entity.forms');
+
+    $form['options']['publishing']['state_flow']['#type'] = 'fieldset';
+    $form['options']['publishing']['state_flow'] += _state_flow_entity_events_revision(array(), $form_state, $queue_entity, 'queues', NULL, $form_options);
+    $form['options']['publishing']['state_flow']['event']['#title'] = t('Moderation State');
+    $form['options']['publishing']['status']['#default_value'] = 0;
+    $form['options']['publishing']['status']['#access'] = FALSE;
+    $form['options']['publishing']['revision']['default_revision']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_entity_revision_operation_info().
+ */
+function queues_workbench_entity_revision_operation_info() {
+  $info = array();
+  $plugins = queues_workbench_state_flow_entity_plugins();
+  $events = $plugins['state_flow_queues_workbench']['handler']['workflow_options']['events'];
+  foreach ($events as $event_name => $event) {
+    $info['queues']['queues_workbench_' . $event_name] = array(
+      'label' => t('Moderate to @label', array('@label' => $event['label'])),
+      'access callback' => TRUE,
+      'callback' => 'queues_workbench_revision_operation_process',
+    );
+  }
+  return $info;
+}
+
+/**
+ * Revision operation process callback for scheduled moderation state changes.
+ */
+function queues_workbench_revision_operation_process($entity, $operation) {
+  // Extract the transition "to state" from the operation key
+  // 'queues_workbench_state'.
+  $event = substr($operation->operation, 17);
+  $machine = state_flow_entity_load_state_machine($entity, 'queues');
+  $machine->fire_event($event);
+}
