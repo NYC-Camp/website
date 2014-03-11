@@ -1,0 +1,278 @@
+<?php
+
+/**
+ * @file
+ * Module file for Queues.
+ */
+
+// Load our classes and helper functions.
+// Yes we just blatantly load them because entity api
+// is being silly.
+include_once 'queues.helpers.inc';
+include_once 'queues.entity.inc';
+include_once 'queues.type.entity.inc';
+include_once 'queues.admin.inc';
+
+
+/**
+ * Implements hook_views_api().
+ */
+function queues_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'queues') . '/views',
+  );
+}
+
+
+/**
+ * Implements hook_entity_info().
+ */
+function queues_entity_info() {
+
+  $info = array(
+    'queues' => array(
+      'label' => t('Queue'),
+      'plural label' => t('Queues'),
+      'entity class' => 'QueueEntity',
+      'controller class' => 'EntityAPIController',
+      'base table' => 'queues',
+      'revision table' => 'queues_revision',
+      'fieldable' => TRUE,
+      'entity keys' => array(
+        'id' => 'qid',
+        'bundle' => 'type',
+        'revision' => 'vid',
+        'label' => 'title',
+      ),
+      'bundles' => array(),
+      'bundle keys' => array(
+        'bundle' => 'type',
+      ),
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+      'access callback' => 'queue_entity_access',
+      'module' => 'queues',
+      'view modes' => array(),
+      'admin ui' => array(
+        'path' => 'admin/content/queues',
+        'controller class' => 'QueueEntityUIController',
+      ),
+    ),
+
+    // Set up another entity to use for storage as the bundle for queues.
+    'queues_type' => array(
+      'label' => t('Queue type'),
+      'plural label' => t('Queues'),
+      'entity class' => 'QueueEntityType',
+      'controller class' => 'EntityAPIControllerExportable',
+      'base table' => 'queues_type',
+      'fieldable' => FALSE,
+      'bundle of' => 'queues',
+      'exportable' => TRUE,
+      'entity keys' => array(
+        'id' => 'id',
+        'name' => 'type',
+      ),
+      'module' => 'queues',
+      'label callback' => 'entity_class_label',
+      'access callback' => 'queues_type_access',
+      'admin ui' => array(
+        'path' => 'admin/structure/queues',
+      ),
+    ),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * We are adding the info about the queues_type types.
+ */
+function queues_entity_info_alter(&$entity_info) {
+  foreach (queues_type_get_types() as $type => $info) {
+    $entity_info['queues']['bundles'][$type] = array(
+      'label' => $info->label,
+      'admin' => array(
+        'path' => 'admin/structure/queues/manage/%queues_type',
+        'real path' => 'admin/structure/queues/manage/' . $type,
+        'bundle argument' => 4,
+        'access arguments' => array('administer queue types'),
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function queues_menu() {
+  $items = array();
+
+  if (module_exists('revision_scheduler')) {
+    $items['admin/content/queues/manage/%queue/schedule'] = array(
+      'title' => 'Schedule',
+      'page callback' => 'revision_scheduler_list_page',
+      'page arguments' => array('queues', 4),
+      'access arguments' => array('schedule revisions'),
+      'file' => 'revision_scheduler.pages.inc',
+      'file path' => drupal_get_path('module', 'revision_scheduler'),
+      'type' => MENU_LOCAL_TASK,
+    );
+    $items['admin/content/queues/manage/%queue/schedule/add'] = array(
+      'title' => 'Add scheduled revision',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('revision_scheduler_add_form', 'queues', 4),
+      'access arguments' => array('schedule revisions'),
+      'file' => '/revision_scheduler.pages.inc',
+      'file path' => drupal_get_path('module', 'revision_scheduler'),
+      'type' => MENU_LOCAL_ACTION,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function queues_permission() {
+  // We set up permissions to manage entity types, manage all entities and the
+  // permissions for each individual entity.
+  $permissions = array(
+    'administer queue types' => array(
+      'title' => t('Administer queue types'),
+      'description' => t('Create and delete fields for queue types, and set their permissions.'),
+    ),
+    'administer queue' => array(
+      'title' => t('Administer queues'),
+      'description' => t('Edit and delete all queues'),
+    ),
+  );
+
+  // Generate permissions per queue.
+  foreach (queues_type_get_types() as $type) {
+    $type_name = check_plain($type->type);
+    $permissions += array(
+      "edit any $type_name queue" => array(
+        'title' => t('%type_name: Edit any queue', array('%type_name' => $type->label)),
+      ),
+      "create $type_name queue" => array(
+        'title' => t('%type_name: Create queues', array('%type_name' => $type->label)),
+      ),
+    );
+  }
+
+  return $permissions;
+}
+
+/**
+ * Pre-process the add scheduled revision local action to add a destination.
+ */
+function queues_preprocess_menu_local_action(&$variables) {
+  $link = &$variables['element']['#link'];
+  if ($link['path'] == 'admin/content/queues/manage/%/schedule/add') {
+    $link['localized_options'] += array('query' => array());
+    $link['localized_options']['query'] += drupal_get_destination();
+  }
+}
+
+/**
+ * Implements hook_entity_revision_operation_info().
+ */
+function queues_entity_revision_operation_info() {
+  $operations['queues']['revert'] = array(
+    'label' => t('Revert'),
+    'access arguments' => array('revert revisions'),
+    'callback' => 'queues_queue_revision_operation_revert',
+  );
+  $operations['queues']['delete'] = array(
+    'label' => t('Delete'),
+    'access arguments' => array('delete revisions'),
+    'callback' => 'queues_queue_revision_operation_delete',
+  );
+
+  return $operations;
+}
+
+/**
+ * Queue revision operation callback: revert to revision.
+ */
+function queues_queue_revision_operation_revert($queue) {
+  entity_revision_set_default('queues', $queue);
+  $queue->save();
+}
+
+/**
+ * Queue revision operation callback: delete revision.
+ */
+function queues_queue_revision_operation_delete($queue) {
+  entity_delete('queues', $queue->qid);
+}
+
+/**
+ * Determines whether the given user has access to a queue.
+ *
+ * @param string $op
+ *   The operation being performed. One of 'edit', 'create', 'delete'.
+ * @param QueueEntity $queue
+ *   Optionally a queue or a queue type to check access for. If nothing is
+ *   given, access for all queue is determined.
+ * @param stdClass $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ *
+ * @return bool
+ *   Whether access is allowed or not.
+ */
+function queue_entity_access($op = 'edit', $queue = NULL, $account = NULL) {
+  if (user_access('administer queue', $account)) {
+    return TRUE;
+  }
+  if (isset($queue) && $type_name = $queue->type) {
+    $type_name = check_plain($type->type);
+
+    switch ($op) {
+      case 'edit':
+        if (user_access("edit any $type_name queue", $account)) {
+          return TRUE;
+        }
+        break;
+
+      case 'create':
+        if (user_access("create $type_name queue", $account)) {
+          return TRUE;
+        }
+        break;
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Access callback for the entity API.
+ */
+function queues_type_access($op, $type = NULL, $account = NULL) {
+  return user_access('administer queue types', $account);
+}
+
+/**
+ * Loads a queue entity.
+ *
+ * @param numeric $qid
+ *   The id of the queue.
+ *
+ * @param bool $reset
+ *   Defaults to FALSE. If FALSE the object will be loaded from a static cache
+ *   when possible.
+ *
+ * @return object|null
+ *   The loaded queues
+ */
+function queue_load($qid, $reset = FALSE) {
+  $entities = entity_load('queues', array($qid), $reset);
+
+  return !empty($entities) ? $entities[$qid] : NULL;
+}

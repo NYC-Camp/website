@@ -1,0 +1,172 @@
+<?php
+
+/**
+ *  Install file for queues.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function queues_schema() {
+  $schema['queues'] = array(
+    'fields' => array(
+      'qid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique queue ID.',
+      ),
+      'vid' => array(
+        'description' => 'The primary identifier for this version.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'description' => 'The bundle this queue belongs to.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'The human-readable name of this queue.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'status' => array(
+        'description' => 'Boolean indicating whether the queue is published (visible to non-administrators).',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('qid'),
+  );
+
+  $schema['queues_revision'] = array(
+    'fields' => array(
+      'qid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Primary Key: Unique queue ID.',
+      ),
+      'vid' => array(
+        'description' => 'The primary identifier for this version.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The bundle this queue belongs to.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'The human-readable name of this queue.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'status' => array(
+        'description' => 'Boolean indicating whether the queue is published (visible to non-administrators).',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('vid'),
+    'unique keys' => array(
+      'vid' => array('vid'),
+    ),
+  );
+
+  $schema['queues_type'] = array(
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique entity_test type ID.',
+      ),
+      'type' => array(
+        'description' => 'The machine-readable name of this queue_type type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'description' => 'The human-readable name of this queue_type type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'target' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The target entity type of this queue.',
+      ),
+      'settings' => array(
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => 'Serialized settings containing the queue properties that do not warrant a dedicated column.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0x01,
+        'size' => 'tiny',
+        'description' => 'The exportable status of the entity.',
+      ),
+      'module' => array(
+        'description' => 'The name of the providing module if the entity has been defined in code.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'type' => array('type'),
+    ),
+  );
+
+  return $schema;
+}
+
+
+/**
+ * Add Status and VID column and Revision to queues table.
+ */
+function queues_update_7001() {
+  // Add Status column to queues table.
+  db_add_field('queues', 'status', array(
+    'description' => 'Boolean indicating whether the queue is published (visible to non-administrators).',
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 1,
+  ));
+
+  // Add VID column to queues table.
+  db_add_field('queues', 'vid', array(
+    'description' => 'The primary identifier for this version.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  ));
+
+  db_create_table('queues_revision', drupal_get_schema_unprocessed('queues', 'queues_revision'));
+
+}
