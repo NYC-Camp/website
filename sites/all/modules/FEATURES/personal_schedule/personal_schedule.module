@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Personal Schedule feature.
+ */
+
+include_once 'personal_schedule.features.inc';
