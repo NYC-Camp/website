@@ -915,14 +915,15 @@ width: 48%;
  * Frontpage Feature Attendees Carousel Block
  */
 
-.front #main #block-views-attendees-block-1.block {
+.front #main #block-views-queues-block.block {
   width: 99%;
   height: auto
 }
-.field-content.featured { text-align: center }
-.field-content.featured .attendee-fullname a { color: #fff }
-.field-content.featured .attendee-fullname { 
+.view-queues .views-field-field-profile-last .field-content,
+.view-queues .views-field-field-profile-irc .field-content { text-align: center }
+.view-queues .views-field-field-profile-last .field-content a { color: #fff }
+.view-queues .views-field-field-profile-last .field-content { 
   background-color: #285e88;
   font-size: 90%
 }
-.field-content.featured .attendee-nickname { font-size: 0.8em }
+.view-queues .views-field-field-profile-irc .field-content { font-size: 0.8em }
