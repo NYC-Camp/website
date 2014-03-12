@@ -942,7 +942,7 @@ width: 48%;
   }
 }
 
-#main > div.section > div > div.panel-flexible.panels-flexible-14.clearfix > div > div > div > div.panel-pane.pane-views.pane-team {
+div.panel-pane.pane-views.pane-team {
   width: 100%;
 }
 
@@ -965,10 +965,20 @@ width: 48%;
 
 .view-team .views-row {
   height: 340px;
-  margin-bottom: 1em;
+}
+
+@media (max-width: 469px) {
+  .view-team .views-row {
+    width: 68%;
+    margin: 0 auto 1em auto;
+  }
 }
 
 @media (min-width: 470px) {
+  .view-team .views-row {
+    margin-bottom: 1em;
+  }
+
   .view-team .views-row:nth-of-type(odd) {
     width: 47.619047619%;
     float: left;
@@ -1031,4 +1041,9 @@ width: 48%;
     margin-right: 0;
     clear: right;
   }
+}
+
+.team-page .views-field-field-profile-first,
+.team-page .views-field-field-profile-last {
+  display: inline-block;
 }
