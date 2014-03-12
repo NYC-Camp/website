@@ -933,28 +933,38 @@ width: 48%;
  */
 
 .team-page .section {
-	margin-top: 1em;
+  margin-top: 1em;
 }
 
 @media (min-width: 700px) {
-	.team-page .section {
-		margin-top: 2em;
-	}
+  .team-page .section {
+    margin-top: 2em;
+  }
 }
 
 #main > div.section > div > div.panel-flexible.panels-flexible-14.clearfix > div > div > div > div.panel-pane.pane-views.pane-team {
-	width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 700px) {
-	#content > div > div > div.panel-flexible.panels-flexible-14.clearfix {
-		max-width: 100%;
-		margin: 0 auto;
-	}
+  #content > div > div > div.panel-flexible.panels-flexible-14.clearfix {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 620px) {
+  .team-page #main ul {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+  }
 }
 
 .view-team .views-row {
-	height: 340px;
+  height: 340px;
   margin-bottom: 1em;
 }
 
@@ -977,21 +987,21 @@ width: 48%;
 
 @media (min-width: 620px) {
   .view-team .views-row:nth-of-type(1n) {
-    width: 30%;
+    width: 32.0261437908%;
     float: left;
     margin-right: -100%;
     margin-left: 0;
     clear: right;
   }
   .view-team .views-row:nth-of-type(2n) {
-    width: 30%;
+    width: 32.0261437908%;
     float: left;
     margin-right: -100%;
-    margin-left: 35%;
+    margin-left: 33.9869281046%;
     clear: right;
   }
   .view-team .views-row:nth-of-type(3n) {
-    width: 30%;
+    width: 32.0261437908%;
     float: right;
     margin-left: 0;
     margin-right: 0;
@@ -999,3 +1009,26 @@ width: 48%;
   }
 }
 
+@media (min-width: 1060px) {
+  .view-team .views-row:nth-of-type(1n) {
+    width: 23.63636%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(2n) {
+    width: 23.63636%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 38.18182%;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(3n) {
+    width: 23.63636%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
