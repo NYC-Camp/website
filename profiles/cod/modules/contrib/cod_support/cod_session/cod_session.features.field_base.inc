@@ -840,9 +840,8 @@ function cod_session_field_default_field_bases() {
     'module' => 'field_select_ct',
     'settings' => array(
       'allowed_values' => array(
-        'bof_session' => 'bof_session',
-        'schedule_item' => 'schedule_item',
-        'session' => 'session',
+        'schedule_item' => 'Schedule Item',
+        'session' => 'Session',
       ),
       'allowed_values_function' => '',
     ),
@@ -896,9 +895,6 @@ function cod_session_field_default_field_bases() {
           ),
         ),
         'sort' => array(
-          'direction' => 'ASC',
-          'field' => 'body:value',
-          'property' => 'nid',
           'type' => 'none',
         ),
         'target_bundles' => array(
