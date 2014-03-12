@@ -27,7 +27,7 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_allowed',
     'label' => 'Allowed Schedule Types',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -61,7 +61,7 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_capacity',
     'label' => 'Types Capacity',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'max' => '',
       'min' => 1,
@@ -99,13 +99,10 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_time_slot',
     'label' => 'Time Slot',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
-          'action' => 'hide',
-          'fallback' => 'none',
-          'skip_perm' => 'use admin toolbar',
           'status' => 0,
         ),
       ),
@@ -1104,7 +1101,7 @@ function cod_session_field_default_field_instances() {
       'active' => 0,
       'module' => 'field_collection',
       'settings' => array(),
-      'type' => 'field_collection_embed',
+      'type' => 'field_collection_hidden',
       'weight' => 31,
     ),
   );
