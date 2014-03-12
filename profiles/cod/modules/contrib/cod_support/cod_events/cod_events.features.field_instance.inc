@@ -122,7 +122,9 @@ function cod_events_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 22,
     ),
@@ -386,7 +388,9 @@ function cod_events_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 5,
     ),
@@ -441,7 +445,9 @@ function cod_events_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 9,
     ),
@@ -572,7 +578,7 @@ function cod_events_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_room_assignment',
-    'label' => 'Room assignment',
+    'label' => '2013 Room assignment',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -585,7 +591,9 @@ function cod_events_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 21,
     ),
@@ -881,14 +889,16 @@ function cod_events_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_which_day',
     'label' => 'Day',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 17,
     ),
@@ -951,7 +961,9 @@ function cod_events_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'apply_chosen' => 0,
+      ),
       'type' => 'options_select',
       'weight' => 8,
     ),
@@ -1106,6 +1118,7 @@ function cod_events_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('2013 Room assignment');
   t('Body');
   t('Dates');
   t('Day');
@@ -1120,7 +1133,6 @@ function cod_events_field_default_field_instances() {
   t('Please enter the Sub-Title for this Event');
   t('Please indicate the Type of Event');
   t('Registration');
-  t('Room assignment');
   t('Session Time Slot(s)');
   t('Session topics');
   t('Status');

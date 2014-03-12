@@ -418,7 +418,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
@@ -889,7 +889,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['element_wrapper_class'] = 'views-field-room';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
@@ -991,7 +991,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['title']['element_class'] = 'field-session-title';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
@@ -1139,7 +1139,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
@@ -1298,7 +1298,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['field_accepted']['field'] = 'field_accepted';
   $handler->display->display_options['fields']['field_accepted']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_accepted']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
@@ -1989,7 +1989,7 @@ function cod_session_views_default_views() {
   $handler->display->display_options['fields']['mail']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['mail']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['mail']['link_to_user'] = 0;
-  /* Field: Content: Speaker(s) */
+  /* Field: Content: Facilitator(s) */
   $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
   $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
   $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
