@@ -266,3 +266,29 @@ function zen_avenue_form_user_register_form_alter(&$form, &$form_state, $form_id
     $form['mailchimp_lists']['#title'] = MAILCHIMP_LISTS_GROUPING_LABEL;
   }
 }
+
+/**
+ * Implements theme_field__field_type().
+ */
+
+function zen_avenue_field__field_slides__session($variables) {
+  $output = '';
+
+  // Render the label, if it's not hidden.
+  if (!$variables['label_hidden']) {
+    $output .= '<div class="field-label"' . $variables['title_attributes'] . '>' . $variables['label'] . ':&nbsp;</div>';
+  }
+
+  // Render the items.
+  $output .= '<div class="field-items"' . $variables['content_attributes'] . '>';
+  foreach ($variables['items'] as $delta => $item) {
+    $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+    $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '><a id="slide">' . drupal_render($item) . '</a></div>';
+  }
+  $output .= '</div>';
+
+  // Render the top-level DIV.
+  $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
+  return $output;
+}
