@@ -969,9 +969,8 @@ div.panel-pane.pane-views.pane-team {
 
 @media (max-width: 469px) {
   .view-team .views-row {
-      width: 68%;
-      margin: 0 auto 1em auto;
-    }
+    width: 68%;
+    margin: 0 auto 1em auto;
   }
 }
 
