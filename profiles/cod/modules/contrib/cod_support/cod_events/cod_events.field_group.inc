@@ -27,11 +27,11 @@ function cod_events_field_group_info() {
       1 => 'field_event_image',
       2 => 'group_group',
       3 => 'field_event_type',
-      4 => 'group_register',
-      5 => 'field_session_topics',
-      6 => 'field_speakers',
-      7 => 'field_event_subtitle',
-      8 => 'field_topic',
+      4 => 'field_session_topics',
+      5 => 'field_speakers',
+      6 => 'field_event_subtitle',
+      7 => 'field_topic',
+      8 => 'group_register',
       9 => 'title',
     ),
     'format_type' => 'tab',
@@ -83,7 +83,7 @@ function cod_events_field_group_info() {
   $field_group->parent_name = 'group_info_tabs';
   $field_group->data = array(
     'label' => 'Schedule Info',
-    'weight' => '2',
+    'weight' => '5',
     'children' => array(
       0 => 'field_dates',
       1 => 'field_registration',

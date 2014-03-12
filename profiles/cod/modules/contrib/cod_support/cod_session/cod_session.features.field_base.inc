@@ -575,6 +575,7 @@ function cod_session_field_default_field_bases() {
         'casestudy' => 'Case Study',
         'summit' => 'Summit Session',
         'lab' => 'Hands-on Lab',
+        'bof' => 'Birds of a Feather',
       ),
       'allowed_values_function' => '',
     ),
