@@ -20,7 +20,7 @@ function nyccamp_block_view($delta) {
   switch($delta) {
     case 'submit_session':
       $blocks['subject'] = t('Submit a Session');
-      $blocks['content'] = _nyccamp_sc_block_content();
+      $blocks['content'] = _nyccamp_ss_block_content();
     break;
     }
   return $blocks;
@@ -29,7 +29,7 @@ function nyccamp_block_view($delta) {
 /**
  * Content for the NYC Camp 'Submit a Session' block
  */
-function _nyccamp_sc_block_content() {
+function _nyccamp_ss_block_content() {
   $block = t('<p><strong>Registration and session submissions are now open!</strong></p>
     <p><strong>Mon. Feb 22:</strong> Registration Opens/Call for Submissions</p>
     <p><strong>Fri. Mar. 15:</strong> Session Submissions extended!</p>
