@@ -38,7 +38,7 @@ function _nyccamp_sc_block_content() {
 
   if (user_is_anonymous()) {
     $block .= '<div class="register-now">' . l(t('Register now to submit a session'), 'user/register') . '</div>';
-  } elseif (!user_is_anonymous()) {
+  } else {
     $block .= '<div class="register-now">' . l(t('Submit a Session'), 'node/add/session') . '</div>';
   }
   
