@@ -33,8 +33,7 @@ function _nyccamp_ss_block_content() {
   $block = t('<p><strong>Registration and session submissions are now open!</strong></p>
     <p><strong>Mon. Feb 22:</strong> Registration Opens/Call for Submissions</p>
     <p><strong>Fri. Mar. 15:</strong> Session Submissions extended!</p>
-    <p><strong>Mon. Mar. 17:</strong> Session Schedule Announced</p>
-    <p>');
+    <p><strong>Mon. Mar. 17:</strong> Session Schedule Announced</p>');
 
   if (user_is_anonymous()) {
     $block .= '<div class="register-now">' . l(t('Register now to submit a session'), 'user/register') . '</div>';
@@ -42,7 +41,7 @@ function _nyccamp_ss_block_content() {
     $block .= '<div class="register-now">' . l(t('Submit a Session'), 'node/add/session') . '</div>';
   }
   
-  $block .= '</p><p>' . l(t('View Proposed Sessions'), 'program/sessions/proposed') . '</p>';
+  $block .= '<br /><p>' . l(t('View Proposed Sessions'), 'program/sessions/proposed') . '</p>';
 
   return $block;
 }
