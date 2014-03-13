@@ -143,6 +143,12 @@ h2.welcome-title {
 	color: #373B41;
 }
 
+/* Latest Slides Block */
+
+.view.latest-slides .session {
+	margin-bottom: .85em;
+}
+
 
 /* NODES */
 
