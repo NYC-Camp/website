@@ -272,7 +272,7 @@ function cod_community_views_default_views() {
   $handler->display->display_options['fields']['field_profile_org_1']['table'] = 'field_data_field_profile_org';
   $handler->display->display_options['fields']['field_profile_org_1']['field'] = 'field_profile_org';
   $handler->display->display_options['fields']['field_profile_org_1']['element_label_colon'] = FALSE;
-  /* Field: User: Job title */
+  /* Field: User: Job Title */
   $handler->display->display_options['fields']['field_profile_job_title']['id'] = 'field_profile_job_title';
   $handler->display->display_options['fields']['field_profile_job_title']['table'] = 'field_data_field_profile_job_title';
   $handler->display->display_options['fields']['field_profile_job_title']['field'] = 'field_profile_job_title';
@@ -314,7 +314,7 @@ function cod_community_views_default_views() {
   $handler->display->display_options['filters']['field_profile_org_value']['expose']['label'] = 'Organization';
   $handler->display->display_options['filters']['field_profile_org_value']['expose']['operator'] = 'field_profile_org_value_op';
   $handler->display->display_options['filters']['field_profile_org_value']['expose']['identifier'] = 'field_profile_org_value';
-  /* Filter criterion: User: Job title (field_profile_job_title) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_profile_job_title_value']['id'] = 'field_profile_job_title_value';
   $handler->display->display_options['filters']['field_profile_job_title_value']['table'] = 'field_data_field_profile_job_title';
   $handler->display->display_options['filters']['field_profile_job_title_value']['field'] = 'field_profile_job_title_value';
@@ -323,7 +323,7 @@ function cod_community_views_default_views() {
   $handler->display->display_options['filters']['field_profile_job_title_value']['expose']['label'] = 'Job title';
   $handler->display->display_options['filters']['field_profile_job_title_value']['expose']['operator'] = 'field_profile_job_title_value_op';
   $handler->display->display_options['filters']['field_profile_job_title_value']['expose']['identifier'] = 'field_profile_job_title_value';
-  /* Filter criterion: User: Interests (field_profile_interests) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_profile_interests_value']['id'] = 'field_profile_interests_value';
   $handler->display->display_options['filters']['field_profile_interests_value']['table'] = 'field_data_field_profile_interests';
   $handler->display->display_options['filters']['field_profile_interests_value']['field'] = 'field_profile_interests_value';
@@ -440,6 +440,7 @@ function cod_community_views_default_views() {
   $handler->display->display_options['fields']['picture']['table'] = 'users';
   $handler->display->display_options['fields']['picture']['field'] = 'picture';
   $handler->display->display_options['fields']['picture']['label'] = '';
+  $handler->display->display_options['fields']['picture']['exclude'] = TRUE;
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
   /* Field: User: First name */
   $handler->display->display_options['fields']['field_profile_first']['id'] = 'field_profile_first';

@@ -27,7 +27,7 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_allowed',
     'label' => 'Allowed Schedule Types',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -61,7 +61,7 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_capacity',
     'label' => 'Types Capacity',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'max' => '',
       'min' => 1,
@@ -99,13 +99,10 @@ function cod_session_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_slot_types_time_slot',
     'label' => 'Time Slot',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
-          'action' => 'hide',
-          'fallback' => 'none',
-          'skip_perm' => 'use admin toolbar',
           'status' => 0,
         ),
       ),
@@ -1068,7 +1065,7 @@ function cod_session_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'field_collection',
         'settings' => array(
           'add' => 'Add',
@@ -1104,7 +1101,7 @@ function cod_session_field_default_field_instances() {
       'active' => 0,
       'module' => 'field_collection',
       'settings' => array(),
-      'type' => 'field_collection_embed',
+      'type' => 'field_collection_hidden',
       'weight' => 31,
     ),
   );
@@ -1478,7 +1475,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1523,7 +1520,7 @@ function cod_session_field_default_field_instances() {
     'bundle' => 'session',
     'default_value' => array(
       0 => array(
-        'value' => 3,
+        'value' => 0,
       ),
     ),
     'default_value_function' => '',
@@ -1561,9 +1558,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 51,
     ),
@@ -1585,7 +1580,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 5,
+        'weight' => 2,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1633,7 +1628,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 13,
+        'weight' => 9,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1688,7 +1683,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 6,
+        'weight' => 3,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1740,7 +1735,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 7,
+        'weight' => 4,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1790,7 +1785,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 20,
+        'weight' => 10,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1815,9 +1810,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 8,
     ),
@@ -1838,7 +1831,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 21,
+        'weight' => 11,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1890,7 +1883,7 @@ function cod_session_field_default_field_instances() {
           'view_mode' => '',
         ),
         'type' => 'entityreference_entity_view',
-        'weight' => 10,
+        'weight' => 7,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1942,7 +1935,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 8,
+        'weight' => 5,
       ),
       'listing' => array(
         'label' => 'above',
@@ -1988,7 +1981,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 12,
+        'weight' => 8,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2032,7 +2025,7 @@ function cod_session_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 3,
+        'weight' => 1,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2084,7 +2077,7 @@ function cod_session_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 9,
+        'weight' => 6,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2125,20 +2118,15 @@ function cod_session_field_default_field_instances() {
   // Exported field_instance: 'node-session-field_which_day'
   $field_instances['node-session-field_which_day'] = array(
     'bundle' => 'session',
-    'default_value' => array(
-      0 => array(
-        'value' => 'Sat Apr 12',
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 4,
+        'type' => 'hidden',
+        'weight' => 13,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2163,9 +2151,7 @@ function cod_session_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
+      'settings' => array(),
       'type' => 'options_select',
       'weight' => 55,
     ),
@@ -2186,7 +2172,7 @@ function cod_session_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 16,
       ),
       'listing' => array(
         'label' => 'above',
@@ -2232,7 +2218,7 @@ function cod_session_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 12,
       ),
       'listing' => array(
         'label' => 'above',

@@ -51,8 +51,8 @@ h1, h2, .register-now, #site-name {
 }
 
 
-/* 
-COLORS 
+/*
+COLORS
   blue = #3298d7
   green = #55a40e
   red = #d63105
@@ -684,7 +684,7 @@ a {
 
 
 /* Mobile menu START */
-#wrap {
+#mobile-nav {
 	-webkit-transition: left .3s ease-out;
   -moz-transition: left .3s ease-out;
   -ms-transition: left .3s ease-out;
@@ -693,10 +693,10 @@ a {
   background-color: #fff;
 }
 
-#min-menu {
+#min-menu, #min-schedule {
 	display: none;
 	float: right;
-	margin: 21px 0 0 0;
+	margin: 21px 0 0 24px;
 }
 
 #min-menu a {
@@ -709,11 +709,21 @@ a {
 	text-indent: -99999px;
 }
 
-#wrap {
+#min-schedule a {
+    background: url(../images/calendar-icon.png) scroll no-repeat 0 0 transparent;
+    background-size: 20px 20px;
+    line-height: 60px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    text-indent: -99999px;
+}
+
+#mobile-nav {
 	display: block;
 	position: absolute;
 	top: 0;
-	left: -16em;
+	left: -100%;
 	width: 16em;
 	background: #1f1f1f;
 	overflow: hidden;
@@ -722,7 +732,7 @@ a {
 	height: 1000px;
 }
 
-.sideslide #wrap {
+.sideslide #mobile-nav {
 	left: 0;
 	height: 4000px;
 }
@@ -733,22 +743,22 @@ a {
 	font-weight: 700;
 }
 
-#wrap .mobileTitle a {
+#mobile-nav .mobileTitle a {
 	padding: 15px;
 	color: #fff;
 }
 
-#wrap ul.menu {
+#mobile-nav ul.menu {
 	margin: 0;
 	padding: 0;
 }
 
-#wrap ul.menu li {
+#mobile-nav ul.menu li {
 	list-style: none;
 	display: block;
 }
 
-#wrap ul.menu li a {
+#mobile-nav ul.menu li a {
 	display: block;
 	color: #fff;
 	padding: 0 0 0 15px;
@@ -760,11 +770,11 @@ a {
 	height: 40px;
 }
 
-#wrap ul.menu li a:hover, #wrap ul.menu li a.active {
+#mobile-nav ul.menu li a:hover, #mobile-nav ul.menu li a.active {
 	background: #181818;
 }
 
-#wrap ul.menu ul {
+#mobile-nav ul.menu ul {
 	display: block !important;
 	visibility: visible !important;
 	position: relative;
@@ -772,7 +782,7 @@ a {
 	left: auto;
 }
 
-#wrap ul.menu ul a {
+#mobile-nav ul.menu ul a {
 	padding-left: 30px;
 	color: #bbb;
 }
@@ -901,18 +911,91 @@ width: 48%;
 	font-size: 0.9em;
 }
 
-/* 
+/*
  * Frontpage Feature Attendees Carousel Block
  */
 
-.front #main #block-views-attendees-block-1.block {
+.front #main #block-views-queues-block.block {
   width: 99%;
   height: auto
 }
-.field-content.featured { text-align: center }
-.field-content.featured .attendee-fullname a { color: #fff }
-.field-content.featured .attendee-fullname { 
+.view-queues .views-field-field-profile-last .field-content,
+.view-queues .views-field-field-profile-irc .field-content { text-align: center }
+.view-queues .views-field-field-profile-last .field-content a { color: #fff }
+.view-queues .views-field-field-profile-last .field-content {
   background-color: #285e88;
   font-size: 90%
 }
-.field-content.featured .attendee-nickname { font-size: 0.8em }
+.view-queues .views-field-field-profile-irc .field-content { font-size: 0.8em }
+
+/*
+ * Team page
+ */
+
+.team-page .section {
+	margin-top: 1em;
+}
+
+@media (min-width: 700px) {
+	.team-page .section {
+		margin-top: 2em;
+	}
+}
+
+#main > div.section > div > div.panel-flexible.panels-flexible-14.clearfix > div > div > div > div.panel-pane.pane-views.pane-team {
+	width: 100%;
+}
+
+@media (min-width: 700px) {
+	#content > div > div > div.panel-flexible.panels-flexible-14.clearfix {
+		max-width: 100%;
+		margin: 0 auto;
+	}
+}
+
+.view-team .views-row {
+	height: 340px;
+  margin-bottom: 1em;
+}
+
+@media (min-width: 470px) {
+  .view-team .views-row:nth-of-type(odd) {
+    width: 47.619047619%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(even) {
+    width: 47.619047619%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
+@media (min-width: 620px) {
+  .view-team .views-row:nth-of-type(1n) {
+    width: 30%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(2n) {
+    width: 30%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 35%;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(3n) {
+    width: 30%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
