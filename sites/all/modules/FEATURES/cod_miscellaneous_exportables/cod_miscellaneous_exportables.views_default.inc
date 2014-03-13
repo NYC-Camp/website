@@ -106,17 +106,6 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_presenters']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Session Time Slot(s) */
-  $handler->display->display_options['fields']['field_session_timeslot']['id'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot']['field'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot']['label'] = '';
-  $handler->display->display_options['fields']['field_session_timeslot']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_session_timeslot']['settings'] = array(
-    'link' => 0,
-  );
-  $handler->display->display_options['fields']['field_session_timeslot']['delta_offset'] = '0';
   /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
@@ -176,7 +165,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
-  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_timeslot_session_target_id';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_time_target_id';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -203,10 +192,10 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['id'] = 'field_session_timeslot_target_id';
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['field'] = 'field_session_timeslot_target_id';
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['required'] = TRUE;
+  $handler->display->display_options['relationships']['field_session_time_target_id']['id'] = 'field_session_time_target_id';
+  $handler->display->display_options['relationships']['field_session_time_target_id']['table'] = 'field_data_field_session_time';
+  $handler->display->display_options['relationships']['field_session_time_target_id']['field'] = 'field_session_time_target_id';
+  $handler->display->display_options['relationships']['field_session_time_target_id']['required'] = TRUE;
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_room_assignment_target_id']['id'] = 'field_room_assignment_target_id';
   $handler->display->display_options['relationships']['field_room_assignment_target_id']['table'] = 'field_data_field_room_assignment';
@@ -356,16 +345,15 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Speaker(s) */
-  $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['label'] = '';
-  $handler->display->display_options['fields']['field_speakers']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_speakers']['settings'] = array(
-    'link' => 1,
+  /* Field: Content: Presenters */
+  $handler->display->display_options['fields']['field_presenters']['id'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['table'] = 'field_data_field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['field'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['label'] = '';
+  $handler->display->display_options['fields']['field_presenters']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_presenters']['settings'] = array(
+    'link' => 0,
   );
-  $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
   /* Field: Content: Summit Session */
   $handler->display->display_options['fields']['field_summit_session']['id'] = 'field_summit_session';
   $handler->display->display_options['fields']['field_summit_session']['table'] = 'field_data_field_summit_session';
@@ -375,24 +363,11 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_summit_session']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Content: Session Time Slot(s) */
-  $handler->display->display_options['fields']['field_session_timeslot_1']['id'] = 'field_session_timeslot_1';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['field'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['label'] = '';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['empty'] = 'This session has been accepted but is not yet scheduled.';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['settings'] = array(
-    'link' => 0,
-  );
-  $handler->display->display_options['fields']['field_session_timeslot_1']['delta_offset'] = '0';
   /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_slot_datetime_1']['id'] = 'field_slot_datetime_1';
   $handler->display->display_options['fields']['field_slot_datetime_1']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime_1']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime_1']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime_1']['element_label_colon'] = FALSE;
@@ -407,7 +382,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime']['element_label_colon'] = FALSE;
@@ -432,7 +407,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
-  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -545,34 +520,20 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Speaker(s) */
-  $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['label'] = '';
-  $handler->display->display_options['fields']['field_speakers']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_speakers']['settings'] = array(
-    'link' => 1,
-  );
-  $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
-  /* Field: Content: Session Time Slot(s) */
-  $handler->display->display_options['fields']['field_session_timeslot_1']['id'] = 'field_session_timeslot_1';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['field'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['label'] = '';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['empty'] = 'This session has been accepted but is not yet scheduled.';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['settings'] = array(
+  /* Field: Content: Presenters */
+  $handler->display->display_options['fields']['field_presenters']['id'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['table'] = 'field_data_field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['field'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['label'] = '';
+  $handler->display->display_options['fields']['field_presenters']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_presenters']['settings'] = array(
     'link' => 0,
   );
-  $handler->display->display_options['fields']['field_session_timeslot_1']['delta_offset'] = '0';
   /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_slot_datetime_1']['id'] = 'field_slot_datetime_1';
   $handler->display->display_options['fields']['field_slot_datetime_1']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime_1']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime_1']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime_1']['element_label_colon'] = FALSE;
@@ -587,7 +548,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime']['element_label_colon'] = FALSE;
@@ -607,13 +568,6 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_experience']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_experience']['delta_limit'] = '3';
   $handler->display->display_options['fields']['field_experience']['delta_offset'] = '0';
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
-  $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['label'] = '';
-  $handler->display->display_options['fields']['field_track']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_track']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Sticky */
   $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
@@ -624,7 +578,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
-  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_time_target_id';
   /* Sort criterion: Content: Room assignment (field_room_assignment) */
   $handler->display->display_options['sorts']['field_room_assignment_target_id']['id'] = 'field_room_assignment_target_id';
   $handler->display->display_options['sorts']['field_room_assignment_target_id']['table'] = 'field_data_field_room_assignment';
@@ -724,34 +678,20 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Speaker(s) */
-  $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['label'] = '';
-  $handler->display->display_options['fields']['field_speakers']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_speakers']['settings'] = array(
-    'link' => 1,
-  );
-  $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
-  /* Field: Content: Session Time Slot(s) */
-  $handler->display->display_options['fields']['field_session_timeslot_1']['id'] = 'field_session_timeslot_1';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['field'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['label'] = '';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['empty'] = 'This session has been accepted but is not yet scheduled.';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['settings'] = array(
+  /* Field: Content: Presenters */
+  $handler->display->display_options['fields']['field_presenters']['id'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['table'] = 'field_data_field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['field'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['label'] = '';
+  $handler->display->display_options['fields']['field_presenters']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_presenters']['settings'] = array(
     'link' => 0,
   );
-  $handler->display->display_options['fields']['field_session_timeslot_1']['delta_offset'] = '0';
   /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_slot_datetime_1']['id'] = 'field_slot_datetime_1';
   $handler->display->display_options['fields']['field_slot_datetime_1']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime_1']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime_1']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime_1']['element_label_colon'] = FALSE;
@@ -766,7 +706,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime']['element_label_colon'] = FALSE;
@@ -786,14 +726,6 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_experience']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_experience']['delta_limit'] = '3';
   $handler->display->display_options['fields']['field_experience']['delta_offset'] = '0';
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
-  $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['label'] = '';
-  $handler->display->display_options['fields']['field_track']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_track']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_track']['hide_empty'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Sticky */
   $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
@@ -804,7 +736,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
-  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['relationship'] = 'field_session_time_target_id';
   /* Sort criterion: Content: Room assignment (field_room_assignment) */
   $handler->display->display_options['sorts']['field_room_assignment_target_id']['id'] = 'field_room_assignment_target_id';
   $handler->display->display_options['sorts']['field_room_assignment_target_id']['table'] = 'field_data_field_room_assignment';
@@ -931,34 +863,20 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Speaker(s) */
-  $handler->display->display_options['fields']['field_speakers']['id'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['table'] = 'field_data_field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['field'] = 'field_speakers';
-  $handler->display->display_options['fields']['field_speakers']['label'] = '';
-  $handler->display->display_options['fields']['field_speakers']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_speakers']['settings'] = array(
-    'link' => 1,
-  );
-  $handler->display->display_options['fields']['field_speakers']['delta_offset'] = '0';
-  /* Field: Content: Session Time Slot(s) */
-  $handler->display->display_options['fields']['field_session_timeslot_1']['id'] = 'field_session_timeslot_1';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['field'] = 'field_session_timeslot';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['label'] = '';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_session_timeslot_1']['empty'] = 'This session has been accepted but is not yet scheduled.';
-  $handler->display->display_options['fields']['field_session_timeslot_1']['settings'] = array(
+  /* Field: Content: Presenters */
+  $handler->display->display_options['fields']['field_presenters']['id'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['table'] = 'field_data_field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['field'] = 'field_presenters';
+  $handler->display->display_options['fields']['field_presenters']['label'] = '';
+  $handler->display->display_options['fields']['field_presenters']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_presenters']['settings'] = array(
     'link' => 0,
   );
-  $handler->display->display_options['fields']['field_session_timeslot_1']['delta_offset'] = '0';
   /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_slot_datetime_1']['id'] = 'field_slot_datetime_1';
   $handler->display->display_options['fields']['field_slot_datetime_1']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime_1']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime_1']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime_1']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime_1']['element_label_colon'] = FALSE;
@@ -973,7 +891,7 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
   $handler->display->display_options['fields']['field_slot_datetime']['field'] = 'field_slot_datetime';
-  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_timeslot_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_time_target_id';
   $handler->display->display_options['fields']['field_slot_datetime']['label'] = '';
   $handler->display->display_options['fields']['field_slot_datetime']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_slot_datetime']['element_label_colon'] = FALSE;
@@ -993,13 +911,6 @@ function cod_miscellaneous_exportables_views_default_views() {
   $handler->display->display_options['fields']['field_experience']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_experience']['delta_limit'] = '3';
   $handler->display->display_options['fields']['field_experience']['delta_offset'] = '0';
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_track']['id'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['table'] = 'field_data_field_track';
-  $handler->display->display_options['fields']['field_track']['field'] = 'field_track';
-  $handler->display->display_options['fields']['field_track']['label'] = '';
-  $handler->display->display_options['fields']['field_track']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_track']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
