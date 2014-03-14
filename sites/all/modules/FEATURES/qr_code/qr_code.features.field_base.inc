@@ -20,26 +20,16 @@ function qr_code_field_default_field_bases() {
     'field_permissions' => array(
       'type' => 0,
     ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
+    'foreign keys' => array(),
+    'indexes' => array(),
     'locked' => 0,
-    'module' => 'text',
+    'module' => 'barcode',
     'settings' => array(
-      'max_length' => 255,
+      'dbsize' => 512,
+      'encoding' => 'QRCODE',
     ),
     'translatable' => 0,
-    'type' => 'text',
+    'type' => 'barcode_field',
   );
 
   return $field_bases;

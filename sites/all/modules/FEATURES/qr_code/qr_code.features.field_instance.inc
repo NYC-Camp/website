@@ -15,8 +15,8 @@ function qr_code_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'value' => '[mobilecode #preset="small"][current-user:field-profile-first][/mobilecode]',
-        'format' => 'mobile_codes_formatting',
+        'value' => '[current-user:mail]
+[current-user:field-profile-first] [current-user:field-profile-last]',
       ),
     ),
     'deleted' => 0,
@@ -29,10 +29,16 @@ function qr_code_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 24,
+      ),
+      'grid' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'listing' => array(
         'label' => 'above',
@@ -52,16 +58,15 @@ function qr_code_field_default_field_instances() {
     'label' => 'Mobile Code',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 1,
+      'barcode_height' => 200,
+      'barcode_image_format' => 'jpg',
       'user_register_form' => 0,
     ),
     'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
+      'active' => 0,
+      'module' => 'barcode',
+      'settings' => array(),
+      'type' => 'barcode_textarea',
       'weight' => 9,
     ),
   );

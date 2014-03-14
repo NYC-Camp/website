@@ -9,11 +9,11 @@
  */
 function qr_code_default_rules_configuration() {
   $items = array();
-  $items['rules_default_value_and_text_format_for_field_mobile_code_'] = entity_import('rules_config', '{ "rules_default_value_and_text_format_for_field_mobile_code_" : {
-      "LABEL" : "Default value and text format for field_mobile_code ",
+  $items['rules_default_value_for_field_mobile_code_'] = entity_import('rules_config', '{ "rules_default_value_for_field_mobile_code_" : {
+      "LABEL" : "Default value for field_mobile_code ",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "COD", "COD Extras" ],
+      "TAGS" : [ "NYC Camp", "QR Code" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "user_view" : [] },
       "IF" : [
@@ -21,13 +21,8 @@ function qr_code_default_rules_configuration() {
       ],
       "DO" : [
         { "data_set" : {
-            "data" : [ "account:field-mobile-code:format" ],
-            "value" : "mobile_codes_formatting"
-          }
-        },
-        { "data_set" : {
-            "data" : [ "account:field-mobile-code:value" ],
-            "value" : "[mobilecode #preset=\\u0022small\\u0022][current-user:field-profile-first][\\/mobilecode]"
+            "data" : [ "account:field-mobile-code" ],
+            "value" : "[account:field-profile-first][account:field-profile-last]\\r\\n[account:mail]\\r\\n"
           }
         }
       ]

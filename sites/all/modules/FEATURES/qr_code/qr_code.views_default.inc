@@ -12,7 +12,7 @@ function qr_code_views_default_views() {
 
   $view = new view();
   $view->name = 'qr_code';
-  $view->description = 'Personalized qr code in the user profile tab';
+  $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'users';
   $view->human_name = 'QR code';
@@ -38,10 +38,6 @@ function qr_code_views_default_views() {
   $handler->display->display_options['fields']['field_mobile_code']['field'] = 'field_mobile_code';
   $handler->display->display_options['fields']['field_mobile_code']['label'] = '';
   $handler->display->display_options['fields']['field_mobile_code']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_mobile_code']['type'] = 'mobile_codes';
-  $handler->display->display_options['fields']['field_mobile_code']['settings'] = array(
-    'mobile_codes_preset' => 'block_node_url',
-  );
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -61,8 +57,7 @@ function qr_code_views_default_views() {
 return TRUE;
 } elseif((arg(0) == \'user\' && is_numeric(arg(1)) && arg(2) == \'qr-code\')) {
 drupal_set_message(t(\'You may view your qr-code only. QR codes are not publicly shared.\'), \'warning\');
-}
-';
+}';
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';

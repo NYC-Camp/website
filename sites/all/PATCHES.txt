@@ -14,3 +14,7 @@ NODE
 COD_SESSION
   * Timeslots not visible on session create form
     https://drupal.org/comment/7782453#comment-7782453
+
+BARCODE
+  * Update barcode field using rules
+    https://drupal.org/node/1608378
