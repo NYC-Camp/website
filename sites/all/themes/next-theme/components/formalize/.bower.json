@@ -1,0 +1,13 @@
+{
+  "name": "formalize",
+  "homepage": "https://github.com/nathansmith/formalize",
+  "_release": "1471ba0e40",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1471ba0e4030bb80ee6122d926ba3ba407fe7038"
+  },
+  "_source": "git://github.com/nathansmith/formalize.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/nathansmith/formalize"
+}
