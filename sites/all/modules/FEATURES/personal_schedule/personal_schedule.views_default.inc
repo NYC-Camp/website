@@ -34,6 +34,13 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'field_slot_datetime',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
   $handler->display->display_options['row_plugin'] = 'fields';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -59,14 +66,25 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['relationships']['field_session_time_target_id']['id'] = 'field_session_time_target_id';
   $handler->display->display_options['relationships']['field_session_time_target_id']['table'] = 'field_data_field_session_time';
   $handler->display->display_options['relationships']['field_session_time_target_id']['field'] = 'field_session_time_target_id';
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['id'] = 'field_session_timeslot_target_id';
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['table'] = 'field_data_field_session_timeslot';
-  $handler->display->display_options['relationships']['field_session_timeslot_target_id']['field'] = 'field_session_timeslot_target_id';
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  /* Field: Content: Date and time */
+  $handler->display->display_options['fields']['field_slot_datetime']['id'] = 'field_slot_datetime';
+  $handler->display->display_options['fields']['field_slot_datetime']['table'] = 'field_data_field_slot_datetime';
+  $handler->display->display_options['fields']['field_slot_datetime']['field'] = 'field_slot_datetime';
+  $handler->display->display_options['fields']['field_slot_datetime']['relationship'] = 'field_session_time_target_id';
+  $handler->display->display_options['fields']['field_slot_datetime']['label'] = '';
+  $handler->display->display_options['fields']['field_slot_datetime']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_slot_datetime']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_slot_datetime']['settings'] = array(
+    'format_type' => 'day',
+    'fromto' => 'value',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
   /* Field: Content: Session Time(s) */
   $handler->display->display_options['fields']['field_session_time']['id'] = 'field_session_time';
   $handler->display->display_options['fields']['field_session_time']['table'] = 'field_data_field_session_time';
@@ -106,11 +124,21 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Content: Date and time (field_slot_datetime) */
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['id'] = 'field_slot_datetime_value';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['table'] = 'field_data_field_slot_datetime';
+  $handler->display->display_options['sorts']['field_slot_datetime_value']['field'] = 'field_slot_datetime_value';
+  /* Contextual filter: User: Uid */
+  $handler->display->display_options['arguments']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['arguments']['uid_1']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['arguments']['uid_1']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['uid_1']['title'] = '%1';
+  $handler->display->display_options['arguments']['uid_1']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid_1']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid_1']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid_1']['summary_options']['items_per_page'] = '25';
   /* Contextual filter: Flags: User uid */
   $handler->display->display_options['arguments']['uid']['id'] = 'uid';
   $handler->display->display_options['arguments']['uid']['table'] = 'flag_content';
