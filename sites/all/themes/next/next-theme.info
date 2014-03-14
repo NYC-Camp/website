@@ -1,5 +1,5 @@
-name =  next-theme
-description =  next-theme theme based on the Aurora base theme.
+name =  Next
+description =  Next theme based on the Aurora base theme.
 core = 7.x
 base theme = aurora
 
