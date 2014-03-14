@@ -384,7 +384,11 @@ div.view-sponsorship-options-title td.views-field-title a {
 .personal-schedule-outer {
 	margin-bottom: 12px;
 	padding-bottom: 12px;
-	border-bottom: 1px solid #285E88;
+}
+
+.page-user-schedule span.date-display-single {
+  font-family: 'Exo', sans-serif;
+  font-weight: bold;
 }
 
 /* PROMOS */
