@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the nyccamp_cod_sponsors feature.
+ */
+
+include_once 'nyccamp_cod_sponsors.features.inc';

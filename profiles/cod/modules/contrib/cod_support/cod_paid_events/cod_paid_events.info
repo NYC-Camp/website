@@ -25,10 +25,9 @@ features[field_instance][] = node-event-field_event_product
 features[field_instance][] = node-event-field_paid_event
 features[registration_type][] = paid_event
 
-
-; Information added by drush on 2013-11-26
-version = "7.x-1.0-alpha4+0-dev"
+; Information added by  packaging script on 2013-11-21
+version = "7.x-1.0-alpha4"
 core = "7.x"
 project = "cod_support"
-datestamp = "1385485749"
+datestamp = "1385019088"
 

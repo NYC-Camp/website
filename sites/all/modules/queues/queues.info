@@ -1,0 +1,16 @@
+name = Queues
+Description = Entity for building queues of entities
+core = 7.x
+
+dependencies[] = ctools
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = views
+
+files[] = queues.admin.inc
+files[] = queues.entity.inc
+files[] = queues.type.entity.inc
+files[] = views/handlers/views_handler_field_queues_revision_link.inc
+files[] = views/handlers/views_handler_field_queue_link.inc
+files[] = views/handlers/views_handler_field_queue_publish.inc
+php = 5.3

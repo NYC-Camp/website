@@ -260,13 +260,25 @@ function node_type_form_validate($form, &$form_state) {
 
   // Work out what the type was before the user submitted this form
   $old_type = $form_state['values']['old_type'];
+  $orig_type = trim($form_state['values']['orig_type']);
 
   $types = node_type_get_names();
 
   if (!$form_state['values']['locked']) {
+    // No content type should have a type value equal to the orig_type value
+    // of another content type.
+    $invalid_type = FALSE;
+    if ($type->type != $orig_type) {
+      $infos = node_type_get_types();
+      foreach ($infos as $info) {
+        if ($type->type == $info->orig_type) {
+	  $invalid_type = TRUE;
+	}
+      }
+    }
     // 'theme' conflicts with theme_node_form().
     // '0' is invalid, since elsewhere we check it using empty().
-    if (in_array($type->type, array('0', 'theme'))) {
+    if (in_array($type->type, array('0', 'theme')) || $invalid_type) {
       form_set_error('type', t("Invalid machine-readable name. Enter a name other than %invalid.", array('%invalid' => $type->type)));
     }
   }

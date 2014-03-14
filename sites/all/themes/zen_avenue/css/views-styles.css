@@ -3,6 +3,12 @@
  * Views Styling
  */
 
+/*
+ * Flexslider (Featured Attendees View)
+ *
+ */
+.view-queues .flexslider .slides > li { margin-right: 10px }
+.view-queues .flexslider { margin: 0 0 -20px }
 
 /*
  * Views' admin tabs

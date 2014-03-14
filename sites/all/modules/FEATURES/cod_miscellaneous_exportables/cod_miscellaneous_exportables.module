@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file
+ * Code for the COD Miscellaneous Exportables feature.
+ */
+
+include_once 'cod_miscellaneous_exportables.features.inc';
+
+/**
+ * Implements hook_form_alter()
+ */
+function cod_miscellaneous_exportables_form_alter(&$form, &$form_state, $form_id) {
+  $node = menu_get_object();
+  $url = base_path() .'node/add/session';
+
+  // For the time being hide the Session Time Slot(s) field on the session
+  // node form since we're using the Session Time(s) field instead.
+  // TODO: look at this field in Basic page, Event, and Schedule Item
+  if ($url === '/node/add/session') {
+    $form['field_session_timeslot']['#access'] = 0;
+  } elseif (arg(0) == 'node' && arg(2) == 'edit' && $node->type == 'session') {
+    $form['field_session_timeslot']['#access'] = 0;
+  }
+}

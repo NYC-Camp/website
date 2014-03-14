@@ -101,6 +101,8 @@
  *   http://drupal.org/node/223440 and http://drupal.org/node/1089656
  */
 
+define('MAILCHIMP_LISTS_GROUPING_LABEL', 'My Interests');
+define('MAILCHIMP_USERS_LISTS_GROUPING_LABEL', 'Interests');
 
 /**
  * Override or insert variables into the maintenance page template.
@@ -137,6 +139,18 @@ function STARTERKIT_preprocess_html(&$variables, $hook) {
   //$variables['classes_array'] = array_diff($variables['classes_array'], array('class-to-remove'));
 }
 // */
+
+function zen_avenue_preprocess_html(&$variables, $hook) {
+  $meta = array(
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property' => 'og:description',
+      'content' => "NYC Camp ('nice' camp) is an annual conference featuring talks, industry summits and code sprinting all aimed at accelerated learning and contributing to Drupal and related open source projects."
+    ),
+  );
+
+  drupal_add_html_head($meta, 'meta_og_description');
+}
 
 /**
  * Override or insert variables into the page templates.
@@ -224,3 +238,57 @@ function STARTERKIT_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+/**
+ * Implements hook_menu_local_task_alter()
+ *
+ * @param $data
+ * @param $router_item
+ * @param $root_path
+ */
+function zen_avenue_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  foreach($data['tabs'][0]['output'] as $key=>$tab) {
+    if ($data['tabs'][0]['output'][$key]['#link']['title'] == 'Newsletter Subscriptions') {
+      $data['tabs'][0]['output'][$key]['#link']['title'] = MAILCHIMP_USERS_LISTS_GROUPING_LABEL;
+    }
+  }
+ }
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function zen_avenue_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($form['mailchimp_lists']['#title'])) {
+    $form['mailchimp_lists']['#title'] = MAILCHIMP_LISTS_GROUPING_LABEL;
+  }
+}
+
+/**
+ * Implements theme_field__field_type().
+ */
+
+function zen_avenue_field__field_slides__session($variables) {
+  $output = '';
+
+  // Render the label, if it's not hidden.
+  if (!$variables['label_hidden']) {
+    $output .= '<div class="field-label"' . $variables['title_attributes'] . '>' . $variables['label'] . ':&nbsp;</div>';
+  }
+
+  // Render the items.
+  $output .= '<div class="field-items"' . $variables['content_attributes'] . '>';
+  foreach ($variables['items'] as $delta => $item) {
+    $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+    $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '><a id="slide">' . drupal_render($item) . '</a></div>';
+  }
+  $output .= '</div>';
+
+  // Render the top-level DIV.
+  $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
+  return $output;
+}
