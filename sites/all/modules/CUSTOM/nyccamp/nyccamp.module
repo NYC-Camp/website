@@ -40,7 +40,7 @@ function _nyccamp_ss_block_content() {
   } else {
     $block .= '<div class="register-now">' . l(t('Submit a Session'), 'node/add/session') . '</div>';
   }
-  
+
   $block .= '<br /><p>' . l(t('View Proposed Sessions'), 'program/sessions/proposed') . '</p>';
 
   return $block;
