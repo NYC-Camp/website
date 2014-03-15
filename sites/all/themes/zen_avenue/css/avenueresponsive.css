@@ -47,6 +47,7 @@
 		top: auto;
 		left: auto;
 		width: 100%;
+        height: 60px;
 		z-index: 1;
 	}
 
@@ -109,22 +110,14 @@
 
     .region-sidebar-first {
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: auto;
-        /* Trick with streching height to the end of page*/
-        margin-bottom: -99999px;
-        padding-bottom: 99999px;
+        top: 60px;
+        width: 100%;
+        height: 0;
         z-index: 100;
-        -webkit-transition: left .3s ease-out;
-        -moz-transition: left .3s ease-out;
-        -ms-transition: left .3s ease-out;
-        -o-transition: left .3s ease-out;
-        transition: left .3s ease-out;
     }
 
     .scheduleslide .region-sidebar-first {
-        left: 0;
+        height: auto;
 	}
 
     .region-sidebar-first h2.block-title {

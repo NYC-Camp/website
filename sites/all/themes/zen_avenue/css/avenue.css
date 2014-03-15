@@ -425,7 +425,6 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	-webkit-box-shadow: inset -2px 0 2px #06253e;
 	box-shadow: inset -2px 0 2px #06253e;
 	background-color: #06253e;
-	bottom: 0;
 	color: #eee;
 	font-size: 13px;
 	margin-bottom: -99999px;
@@ -689,12 +688,7 @@ a {
 
 /* Mobile menu START */
 #mobile-nav {
-	-webkit-transition: left .3s ease-out;
-  -moz-transition: left .3s ease-out;
-  -ms-transition: left .3s ease-out;
-  -o-transition: left .3s ease-out;
-  transition: left .3s ease-out;
-  background-color: #fff;
+    background-color: #fff;
 }
 
 #min-menu, #min-schedule {
@@ -726,21 +720,17 @@ a {
 #mobile-nav {
 	display: block;
 	position: absolute;
-	top: 0;
-	left: -100%;
-	width: 16em;
+	top: 60px;
+	width: 100%;
+    height: 0;
 	background: #1f1f1f;
 	overflow: hidden;
 	padding-top: 0;
 	z-index: 1000;
-	height: 1000px;
 }
 
 .sideslide #mobile-nav {
-	left: 0;
-    /* Trick with streching height to the end of page*/
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
+    height: auto;
 }
 
 .mobileTitle {
