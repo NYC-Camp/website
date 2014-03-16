@@ -15,8 +15,8 @@ function qr_code_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'value' => '[current-user:mail]
-[current-user:field-profile-first] [current-user:field-profile-last]',
+        'value' => '[current-user:field-profile-first] [current-user:field-profile-last]
+[current-user:field_profile_org]',
       ),
     ),
     'deleted' => 0,

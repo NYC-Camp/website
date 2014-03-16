@@ -22,7 +22,7 @@ function qr_code_default_rules_configuration() {
       "DO" : [
         { "data_set" : {
             "data" : [ "account:field-mobile-code" ],
-            "value" : "[account:field-profile-first][account:field-profile-last]\\r\\n[account:mail]\\r\\n"
+            "value" : "[account:field-profile-first] [account:field-profile-last]\\r\\n[account:field-profile-org]\\r\\n"
           }
         }
       ]
