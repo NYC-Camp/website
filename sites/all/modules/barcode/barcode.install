@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ *   Install file for barcode module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function barcode_uninstall() {
+  // Delete variables.
+  variable_del('barcode_default_path');
+  variable_del('barcode_encoding');
+  variable_del('barcode_font');
+}
+
+/**
+ * Implements hook_field_schema().
+ */
+function barcode_field_schema($field) {
+  if(isset($field['settings']['dbsize'])) {
+    $columns = array(
+      'value' => array('type' => 'varchar', 'length' => $field['settings']['dbsize'], 'not null' => FALSE),
+    );
+  }
+  else {
+    $columns = array(
+      'value' => array('type' => 'varchar', 'length' => 255, 'not null' => FALSE),
+    );
+  }
+  
+  return array('columns' => $columns);
+}
+
+/**
+ * Implements hook_install().
+ */
+function barcode_install() {
+  // Create the default barcode directory and ensure it's writable.
+  $path = file_build_uri('barcodes');
+  if (file_prepare_directory($path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    variable_set('barcode_default_path', $path);
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function barcode_requirements($phase) {
+  $requirements = array();
+  if ($phase != 'runtime') {
+    return $requirements;
+  }
+
+  // Create the styles directory and ensure it's writable.
+  $settings = barcode_get_settings();
+  $created = file_prepare_directory($settings['default_path'], FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+
+  if (!$created) {
+    $requirements['barcode_dirs'] = array(
+      'value' => t('Missing directory'),
+      'severity' => REQUIREMENT_ERROR,
+      'description' => t("The barcode module's default directory %barcode-dir can not be created.", array('%barcode-dir' => $settings['default_path'])),
+    );
+  }
+  else {
+    $requirements['barcode_dirs'] = array(
+      'value' => t('Barcode directory exists (%path).', array('%path' => $settings['default_path'])),
+      'severity' => REQUIREMENT_OK,
+    );
+  }
+  $requirements['barcode_dirs']['title'] = t('Barcode module directories');
+
+  // Image library check.
+  if (!function_exists("imagecreate")) {
+    $requirements['barcode_image_library'] = array(
+      'value' => t('Missing image library'),
+      'severity' => REQUIREMENT_ERROR,
+      'description' => t('The barcode module needs GD library support.'),
+    );
+  }
+  else {
+    $requirements['barcode_image_library'] = array(
+      'value' => t('Image library exists.'),
+      'severity' => REQUIREMENT_OK,
+    );
+  }
+  $requirements['barcode_image_library']['title'] = t('Barcode image library');
+
+  return $requirements;
+}

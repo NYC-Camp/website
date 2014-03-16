@@ -1,0 +1,273 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mobile_codes_schema() {
+  $schema['mobile_codes_blocks'] = array(
+    'export' => array(
+      'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
+      'identifier' => 'block',
+      'default hook' => 'default_mobile_codes_block',
+      'api' => array(
+        'owner' => 'mobile_codes',
+        'api' => 'default_mobile_codes_blocks',
+        'minimum_version' => 2,
+        'current_version' => 2,
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => '', // @TODO
+      ),
+      'label' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => '', // @TODO
+      ),
+      'preset' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'description' => '', // @TODO
+      ),
+      'data' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      ),
+    ),
+    'unique keys' => array(
+      'name' => array('name')
+    ),
+    'primary key' => array('name'),
+  );
+
+  $schema['mobile_codes_presets'] = array(
+    'export' => array(
+      'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
+      'identifier' => 'preset',
+      'default hook' => 'default_mobile_codes_preset',
+      'api' => array(
+        'owner' => 'mobile_codes',
+        'api' => 'default_mobile_codes_presets',
+        'minimum_version' => 2,
+        'current_version' => 2,
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => '', // @TODO
+      ),
+      'provider' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'description' => '', // @TODO
+      ),
+      'defaults' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      ),
+      'extras' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      ),
+    ),
+    'unique keys' => array(
+      'name' => array('name')
+    ),
+    'primary key' => array('name'),
+  );
+
+  $schema['mobile_codes_providers'] = array(
+    'export' => array(
+      'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'name',
+      'identifier' => 'provider',
+      'default hook' => 'default_mobile_codes_provider',
+      'api' => array(
+        'owner' => 'mobile_codes',
+        'api' => 'default_mobile_codes_providers',
+        'minimum_version' => 2,
+        'current_version' => 2,
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'description' => '', // @TODO
+      ),
+      'url' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => '', // @TODO
+      ),
+      'parameters' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      )
+    ),
+    'primary key' => array('name'),
+    'unique keys' => array(
+      'name' => array('name')
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function mobile_codes_uninstall() {
+  variable_del('mobile_codes_block_node_url_preset');
+  variable_del('mobile_codes_block_user_vcard_preset');
+  variable_del('mobile_codes_settings');
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function mobile_codes_update_6200() {
+  // Remove 'mobile_codes' table.
+  db_drop_table('mobile_codes');
+
+  // Modify 'mobile_codes_presets' table and data.
+  db_drop_field('mobile_codes_presets', 'pid');
+  db_add_field('mobile_codes_presets', 'provider', array('type' => 'varchar', 'length' => 255, 'description' => ''));
+  db_change_field('mobile_codes_presets', 'data', 'defaults', array('type' => 'text', 'size' => 'medium', 'not null' => TRUE, 'serialize' => TRUE, 'description' => ''));
+  $results = db_select('mobile_codes_presets', 'mcp')
+    ->fields('mcp')
+    ->condition('provider', NULL)
+    ->execute();
+  foreach ($results as $result) {
+    $old = unserialize($result->defaults);
+    $provider = "nokia_{$old['type']}";
+    $name = drupal_strtolower($result->name);
+
+    $size = $old['type'] = 'qr'
+      ? array('s' => 2, 'm' => 4, 'l' => 6)
+      : array('s' => 0.12, 'm' => 0.18, 'l' => 0.25);
+    $defaults = serialize(array('size' => $size[strtolower($old['size'])]));
+
+    db_update('mobile_codes_presets')
+      ->fields(array(
+        'name' => $name,
+        'provider' => $provider,
+        'defaults' => $defaults,
+      ))
+      ->condition('name', $name)
+      ->execute();
+  }
+
+  // Add 'mobile_codes_providers' table.
+  db_create_table('mobile_codes_providers', array(
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'description' => '', // @TODO
+      ),
+      'url' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => '', // @TODO
+      ),
+      'parameters' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      )
+    ),
+    'primary key' => array('name'),
+    'unique keys' => array(
+      'name' => array('name')
+    ),
+  ));
+
+  // Delete variables.
+  variable_del('mobile_codes_flush');
+}
+
+/**
+ * Add 'mobile_codes_blocks' table and add 'extras' column to
+ * 'mobile_codes_presets' table.
+ */
+function mobile_codes_update_7200() {
+  // Add 'mobile_codes_blocks' table.
+  db_create_table('mobile_codes_blocks', array(
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => '', // @TODO
+      ),
+      'label' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => '', // @TODO
+      ),
+      'preset' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'description' => '', // @TODO
+      ),
+      'data' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'serialize' => TRUE,
+        'description' => '', // @TODO
+      ),
+    ),
+    'unique keys' => array(
+      'name' => array('name')
+    ),
+    'primary key' => array('name'),
+  ));
+
+  // Add 'extras' column to 'mobile_codes_presets' table.
+  db_add_field('mobile_codes_presets', 'extras', array(
+    'type' => 'text',
+    'size' => 'medium',
+    'serialize' => TRUE,
+    'description' => '', // @TODO
+  ));
+}
