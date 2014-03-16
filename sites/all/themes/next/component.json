@@ -1,8 +1,0 @@
-{
-  "name": "next-theme",
-  "version": "1.0.0",
-  "dependencies": {
-    "formalize": "git://github.com/nathansmith/formalize"
-  },
-  "devDependencies": {}
-}
