@@ -111,7 +111,7 @@ function featured_attendees_views_default_views() {
   $handler->display->display_options['filters']['field_user_featured_attendee_value']['table'] = 'field_data_field_user_featured_attendee';
   $handler->display->display_options['filters']['field_user_featured_attendee_value']['field'] = 'field_user_featured_attendee_value';
   $handler->display->display_options['filters']['field_user_featured_attendee_value']['value'] = array(
-    0 => '0',
+    1 => '1',
   );
 
   /* Display: Attendees - Featured - Set Order */
