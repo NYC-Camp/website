@@ -919,18 +919,18 @@ width: 48%;
  * Frontpage Feature Attendees Carousel Block
  */
 
-.front #main #block-views-queues-block.block {
+.front #main #block-views-attendees-featured-block-1.block {
   width: 99%;
   height: auto
 }
-.view-queues .views-field-field-profile-last .field-content,
-.view-queues .views-field-field-profile-irc .field-content { text-align: center }
-.view-queues .views-field-field-profile-last .field-content a { color: #fff }
-.view-queues .views-field-field-profile-last .field-content {
+.view-attendees-featured .views-field-field-profile-last .field-content,
+.view-attendees-featured .views-field-field-profile-irc .field-content { text-align: center }
+.view-attendees-featured .views-field-field-profile-last .field-content a { color: #fff }
+.view-attendees-featured .views-field-field-profile-last .field-content {
   background-color: #285e88;
   font-size: 90%
 }
-.view-queues .views-field-field-profile-irc .field-content { font-size: 0.8em }
+.view-attendees-featured .views-field-field-profile-irc .field-content { font-size: 0.8em }
 
 /*
  * Team page
@@ -1051,3 +1051,23 @@ div.panel-pane.pane-views.pane-team {
 .team-page .views-field-field-profile-last {
   display: inline-block;
 }
+
+/*
+ * Directions page
+ */
+
+.google-maps-wrapper {
+  position: relative;
+  padding-bottom: 75%;
+  height: 0;
+  overflow: hidden;
+}
+
+.google-maps-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
