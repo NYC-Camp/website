@@ -331,7 +331,7 @@ ini_set('session.cookie_lifetime', 2000000);
  * between your various domains. Make sure to always start the $cookie_domain
  * with a leading dot, as per RFC 2109.
  */
-$cookie_domain = '.nyccamp.org';
+# $cookie_domain = '.nyccamp.org';
 
 /**
  * Variable overrides:
@@ -571,3 +571,13 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  */
 # $conf['pressflow_smart_start'] = TRUE;
 
+/**
+ * Permits sessions to work across www and the apex (aka naked) domain.
+ */
+if (isset($_SERVER['PANTHEON_ENVIRONMENT']) && $_SERVER['PANTHEON_ENVIRONMENT'] === 'live') {
+  if ($_SERVER['HTTP_HOST'] == 'nyccamp.org' || $_SERVER['HTTP_HOST'] == 'live-nyccamp2014.gotpantheon.com') {
+    header('HTTP/1.0 301 Moved Permanently');
+    header('Location: http://www.nyccamp.org'. $_SERVER['REQUEST_URI']);
+    exit();
+  }
+}
