@@ -55,7 +55,9 @@ function nycreg_callback($arg) {
   $result = $query->execute();
 
   if (isset($result['user'])) {
-    $users = user_load_multiple(array_keys($result['user']));
+    $users = array(
+      'list' => array_values(user_load_multiple(array_keys($result['user']))),
+    );
     drupal_json_output($users);
   }
 }
