@@ -515,7 +515,7 @@ function cod_events_field_default_field_instances() {
           'open' => '',
         ),
         'settings' => array(
-          'from_address' => 'example@example.com',
+          'from_address' => variable_get('site_mail', ini_get('sendmail_from')),
           'multiple_registrations' => 0,
         ),
         'status' => 1,
