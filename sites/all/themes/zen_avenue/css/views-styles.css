@@ -7,8 +7,21 @@
  * Flexslider (Featured Attendees View)
  *
  */
-.view-attendees .flexslider .slides > li { margin-right: 10px }
-.view-attendees .flexslider { margin: 0 0 -20px }
+.view-attendees-featured .flexslider .slides > li { margin-right: 10px }
+.view-attendees-featured .flexslider {
+  margin: 0 0 -10px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none
+}
+.view-attendees-featured .flex-direction-nav a {
+  width: 30px;
+  height: 30px;
+  margin: -20px 0 0;
+  top: 45%
+}
+.view-attendees-featured .flex-direction-nav a:before { font-size: 23px }
 
 /*
  * Views' admin tabs

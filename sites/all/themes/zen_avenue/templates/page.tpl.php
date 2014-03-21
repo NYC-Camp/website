@@ -128,7 +128,7 @@
 
   <?php if ($is_front): ?>
     <?php if($page['sidebar_first']) { 
-        print render($page['sidebar_first']);
+	 print render($page['sidebar_first']);
       } 
     ?>
   <?php endif; ?>

@@ -51,8 +51,8 @@ h1, h2, .register-now, #site-name {
 }
 
 
-/* 
-COLORS 
+/*
+COLORS
   blue = #3298d7
   green = #55a40e
   red = #d63105
@@ -222,6 +222,10 @@ html body.admin-menu #header {
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1em;
 	margin: 5px 0 10px;
+}
+
+h3 {
+	line-height: 1.5em;
 }
 
 h1#page-title {
@@ -734,7 +738,7 @@ a {
 
 .sideslide #mobile-nav {
 	left: 0;
-	height: 4000px;
+	height: 1000px;
 }
 
 .mobileTitle {
@@ -911,18 +915,159 @@ width: 48%;
 	font-size: 0.9em;
 }
 
-/* 
+/*
  * Frontpage Feature Attendees Carousel Block
  */
 
-.front #main #block-views-attendees-block-1.block {
+.front #main #block-views-attendees-featured-block-1.block {
   width: 99%;
   height: auto
 }
-.field-content.featured { text-align: center }
-.field-content.featured .attendee-fullname a { color: #fff }
-.field-content.featured .attendee-fullname { 
+.view-attendees-featured .views-field-field-profile-last .field-content,
+.view-attendees-featured .views-field-field-profile-irc .field-content { text-align: center }
+.view-attendees-featured .views-field-field-profile-last .field-content a { color: #fff }
+.view-attendees-featured .views-field-field-profile-last .field-content {
   background-color: #285e88;
   font-size: 90%
 }
-.field-content.featured .attendee-nickname { font-size: 0.8em }
+.view-attendees-featured .views-field-field-profile-irc .field-content { font-size: 0.8em }
+
+/*
+ * Team page
+ */
+
+.team-page .section {
+  margin-top: 1em;
+}
+
+@media (min-width: 700px) {
+  .team-page .section {
+    margin-top: 2em;
+  }
+}
+
+div.panel-pane.pane-views.pane-team {
+  width: 100%;
+}
+
+@media (min-width: 700px) {
+  #content > div > div > div.panel-flexible.panels-flexible-14.clearfix {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 620px) {
+  .team-page #main ul {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+  }
+}
+
+.view-team .views-row {
+  height: 340px;
+}
+
+@media (max-width: 469px) {
+  .view-team .views-row {
+    width: 68%;
+    margin: 0 auto 1em auto;
+  }
+}
+
+@media (min-width: 470px) {
+  .view-team .views-row {
+    margin-bottom: 1em;
+  }
+
+  .view-team .views-row:nth-of-type(odd) {
+    width: 47.619047619%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(even) {
+    width: 47.619047619%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
+@media (min-width: 620px) {
+  .view-team .views-row:nth-of-type(1n) {
+    width: 32.0261437908%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(2n) {
+    width: 32.0261437908%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 33.9869281046%;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(3n) {
+    width: 32.0261437908%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
+@media (min-width: 1060px) {
+  .view-team .views-row:nth-of-type(1n) {
+    width: 23.63636%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(2n) {
+    width: 23.63636%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 38.18182%;
+    clear: right;
+  }
+  .view-team .views-row:nth-of-type(3n) {
+    width: 23.63636%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: right;
+  }
+}
+
+.team-page .views-field-field-profile-first,
+.team-page .views-field-field-profile-last {
+  display: inline-block;
+}
+
+/*
+ * Directions page
+ */
+
+.google-maps-wrapper {
+  position: relative;
+  padding-bottom: 75%;
+  height: 0;
+  overflow: hidden;
+}
+
+.google-maps-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
