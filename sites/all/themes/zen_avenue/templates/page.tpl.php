@@ -72,7 +72,6 @@
 
 <div id="page-wrapper">
 	<div id="mobile-nav" class="inactive">
-      <div class="mobileTitle"><a href="/">NYCcamp</a></div>
       <?php print render($page['navigation']); ?>
     </div>
   <div id="page">
