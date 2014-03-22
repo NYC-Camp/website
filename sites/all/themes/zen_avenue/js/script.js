@@ -36,22 +36,13 @@
       $("body").removeClass("scheduleslide");
       event.stopPropagation();
       event.preventDefault();
-      $('#main-wrapper').bind('click touchend', closeMobileNav);
     });
     $("#min-schedule a").click(function(event){
       $("body").toggleClass("scheduleslide");
       $("body").removeClass("sideslide");
       event.stopPropagation();
       event.preventDefault();
-      $('#main-wrapper').bind('click touchend', closeMobileNav);
     });
-
-    //close mobile navs on the click outside of nav area
-    function closeMobileNav() {
-      $("body").removeClass("sideslide");
-      $("body").removeClass("scheduleslide");
-      $('#main-wrapper').unbind('click touchend');
-    }
   });
 
 })(jQuery, Drupal, this, this.document);
