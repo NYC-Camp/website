@@ -71,7 +71,7 @@
 ?>
 
 <div id="page-wrapper">
-	<div id="mobile-nav" class="inactive">
+    <div id="mobile-nav" class="inactive">
       <?php print render($page['navigation']); ?>
     </div>
   <div id="page">
@@ -102,8 +102,8 @@
       </div><!-- /#name-and-slogan -->
     <?php endif; ?>
 
-    <div id="min-menu"><a href="#">Menu</a></div>
-    <div id="min-schedule"><a href="#">Schedule</a></div>
+    <div id="min-menu"><a href="#" class="icon-menu"></a></div>
+    <div id="min-schedule"><a href="#" class="icon-calendar"></a></div>
     <?php print theme('links__system_main_menu', array(
       'links' => $main_menu,
       'attributes' => array(

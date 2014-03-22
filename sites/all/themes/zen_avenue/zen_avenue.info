@@ -66,6 +66,7 @@ stylesheets[all][] = css/avenueresponsive.css
 stylesheets[all][] = instagram/instagram.css
 ;stylesheets[all][] = css/colorbox.css
 stylesheets[all][] = css/print.css
+stylesheets[all][] = fonts/nyccamp/style.css
 
 ; Built-in conditional stylesheet support has been removed from Zen 7.x-5.x.
 ; Instead, Zen now adds conditional-comment-included classes to the html

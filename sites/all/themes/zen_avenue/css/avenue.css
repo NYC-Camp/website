@@ -692,29 +692,43 @@ a {
 }
 
 #min-menu, #min-schedule {
-	display: none;
-	float: right;
-	margin: 21px 0 0 24px;
+    display: none;
+    float: right;
+    margin: 21px 0 0 24px;
+    color: white;
+}
+.sideslide #min-menu, .scheduleslide #min-schedule {
+    color: #878787;
 }
 
+.icon-close2 {
+    color: white;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
 #min-menu a {
-	background: url(../images/responsive-menu.png) scroll no-repeat 0 0 transparent;
-	background-size: 25px 20px;
-	line-height: 60px;
-	display: block;
-	width: 25px;
-	height: 20px;
-	text-indent: -99999px;
+	/*background: url(../images/responsive-menu.png) scroll no-repeat 0 0 transparent;*/
+	/*background-size: 25px 20px;*/
+	display: inline-block;
+    /*width: 25px;*/
+    /*height: 20px;*/
+    font-size: 2em;
+    line-height: 0.9;
+    color: inherit;
+    /*text-indent: -99999px;*/
 }
 
 #min-schedule a {
-    background: url(../images/calendar-icon.png) scroll no-repeat 0 0 transparent;
-    background-size: 20px 20px;
-    line-height: 60px;
-    display: block;
-    width: 20px;
-    height: 20px;
-    text-indent: -99999px;
+    /*background: url(../images/calendar-icon.png) scroll no-repeat 0 0 transparent;*/
+    /*background-size: 20px 20px;*/
+    display: inline-block;
+    /*width: 20px;*/
+    /*height: 20px;*/
+    font-size: 1.5em;
+    line-height: 1.2;
+    color: inherit;
+    /*text-indent: -99999px;*/
 }
 
 #mobile-nav {
