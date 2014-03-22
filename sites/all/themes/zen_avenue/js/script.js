@@ -36,14 +36,14 @@
       $("body").removeClass("scheduleslide");
       event.stopPropagation();
       event.preventDefault();
-      $('html').bind('click', closeMobileNav);
+      $('html').bind('click touchend', closeMobileNav);
     });
     $("#min-schedule a").click(function(event){
       $("body").toggleClass("scheduleslide");
       $("body").removeClass("sideslide");
       event.stopPropagation();
       event.preventDefault();
-      $('html').bind('click', closeMobileNav);
+      $('html').bind('click touchend', closeMobileNav);
     });
 
     $('#mobile-nav, .region-sidebar-first').click(function(event){
@@ -54,7 +54,7 @@
     function closeMobileNav() {
       $("body").removeClass("sideslide");
       $("body").removeClass("scheduleslide");
-      $('html').unbind('click');
+      $('html').unbind('click touchend');
     }
   });
 
