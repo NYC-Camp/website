@@ -132,7 +132,7 @@ function personal_schedule_views_default_views() {
   $handler->display->display_options['arguments']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['arguments']['uid_1']['table'] = 'users';
   $handler->display->display_options['arguments']['uid_1']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['arguments']['uid_1']['relationship'] = 'uid';
   $handler->display->display_options['arguments']['uid_1']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['uid_1']['title'] = '%1';
   $handler->display->display_options['arguments']['uid_1']['default_argument_type'] = 'fixed';
