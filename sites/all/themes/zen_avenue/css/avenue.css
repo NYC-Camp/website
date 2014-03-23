@@ -1055,3 +1055,93 @@ div.panel-pane.pane-views.pane-team {
   height: 100%;
 }
 
+/* Partners Pages */
+.partners #main #content {
+  width: 100%;
+  float: none;
+}
+
+.partners #main #content .panel-pane {
+  padding: 1em 0;
+  clear: left
+}
+
+.partners .panels-flexible-row-18-main-row {
+  background: #FFF;
+  padding: .5em 2em 1em;
+}
+
+.partners #main #content .panel-pane ul {
+  list-style: none;
+  padding: 0;
+}
+
+.partners #main #content .panel-pane ul li {
+  padding: 1em 1em 1.75em 1em;
+  width: 33.333333%;
+  float: left;
+  text-align: center;
+}
+
+.partners #main #content .panel-pane ul li.views-row-first {
+  padding-left: 0;
+}
+
+.partners #main #content .panel-pane ul li.views-row-last {
+  padding-right: 0;
+}
+
+.partners #main #content .panel-pane ul li:nth-child(3n + 1) {
+  clear: left;
+}
+
+.partners #main #content .panel-pane.pane-sponsors-lead ul li {
+  width: 100%;
+  float: none;
+}
+
+.partners #main #content .panel-pane.pane-partners-title ul li {
+  width: 50%;
+  float: left;
+}
+
+.partners #main #content .panel-pane.pane-partners-title ul li:nth-child(3n) {
+  clear: left;
+}
+
+.partners #main #content .panel-pane.pane-partners-title ul li h3 {
+  color: #3F4854;
+}
+
+.partners #main #content .panel-pane.pane-partners-title ul li:nth-child(3n + 1) {
+  clear: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .partners #main #content .panel-pane ul li {
+    width: 50%;
+    float: left;
+  }
+
+  .partners #main #content .panel-pane.pane-sponsors-lead ul li {
+    width: 100%;
+    float: none;
+  }
+
+  .partners #main #content .panel-pane ul li:nth-child(3n + 1) {
+    clear: none;
+  }
+
+  .partners #main #content .panel-pane ul li:nth-child(3n) {
+    clear: left;
+  }
+
+  .partners #main #content .panel-pane.pane-partners-title ul li {
+    width: 100%;
+    float: none;
+  }
+
+  .partners #main #content .panel-pane.pane-partners-title ul li:nth-child(3n) {
+    clear: none;
+  }
+}
