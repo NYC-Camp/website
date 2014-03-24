@@ -1,0 +1,15 @@
+name = jEditable
+description = Provides methods and field formatters for using the jEditable edit-in-place plugin
+dependencies[] = field
+package = User Interface
+core = 7.x
+
+; Files that contain classes.
+files[] = includes/views_handler_field_jeditable.inc
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "jeditable"
+datestamp = "1380583795"
+
