@@ -56,3 +56,22 @@ function nyccamp_form_alter(&$form, $form_state, $form_id) {
     $form['submit']['#value'] = 'Buy';
   }
 }
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function nyccamp_rules_action_info() {
+  $actions['nyccamp_remove_messages'] = array(
+    'label' => t('Remove all the system messages'),
+    'group' => t('NYC Camp custom actions'),
+  );
+  return $actions;
+}
+
+/**
+ * Custom action to remove system messages
+ */
+function nyccamp_remove_messages() {
+  // Retrieve all messages and clear the queue
+  drupal_get_messages();
+}
