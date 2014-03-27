@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * @file
+ * Set PHP memory limit by role.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function role_memory_limit_init() {
+  // If module is enabled.
+  if (variable_get("role_memory_limit_status", 0)) {
+    global $user;
+
+    // If command line (drush).
+    if (php_sapi_name() == 'cli') {
+      $mb = variable_get("role_memory_limit_role_cli", 0);
+    }
+    // If superadmin.
+    elseif ($user->uid == 1) {
+      $mb = variable_get("role_memory_limit_role_admin", 0);
+    }
+    // Else check the users roles.
+    elseif ($user->roles) {
+      foreach ($user->roles as $role) {
+        $mb = variable_get(role_memory_limit_var_name($role), 0);
+      }
+    }
+
+    if ($mb) {
+      if ($mb != "-1") {
+        $mb .= "M";
+      }
+
+      ini_set("memory_limit", $mb);
+    }
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function role_memory_limit_permission() {
+  return array(
+    'administer role_memory_limit' => array(
+      'title' => t('Administer Role memory limit'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function role_memory_limit_menu() {
+  $items['admin/config/development/role_memory_limit'] = array(
+    'title' => 'Role memory limit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('role_memory_limit_settings_form'),
+    'file' => 'role_memory_limit.admin.inc',
+    'access arguments' => array('administer role_memory_limit'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_user_role_delete().
+ */
+function role_memory_limit_user_role_delete($role) {
+  variable_del(role_memory_limit_var_name($role->name));
+}
+
+/**
+ * Generates variable name for a role.
+ *
+ * @param string $role
+ *   A string containing role name.
+ *
+ * @return string
+ *   A reformated string.
+ */
+function role_memory_limit_var_name($role) {
+  return 'role_memory_limit_role_' . preg_replace('/\s+/', '_', drupal_strtolower($role));
+}

@@ -1,0 +1,4 @@
+name = NYC Camp Field Formatter View
+description =  Alters the behavior of the Conference View block depending on a user's registration status.
+package = COD Extras
+core = 7.x

@@ -1,0 +1,339 @@
+<?php
+/**
+ * @file
+ * Drupal module implementing New Relic
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function new_relic_rpm_menu() {
+  $items['admin/content/new-relic-rpm'] = array(
+    'title' => 'New Relic RPM deployment',
+    'description' => "Create a new deployment for this site's App.",
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('new_relic_rpm_deploy'),
+    'access arguments' => array('create new relic rpm deployments'),
+    'file' => 'new_relic_rpm.settings.inc',
+  );
+  $items['admin/config/development/new-relic-rpm'] = array(
+    'title' => 'New Relic RPM Settings',
+    'description' => 'Alter settings and mange your New Relic RPM Integration.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('new_relic_rpm_settings'),
+    'access arguments' => array('administer new relic rpm'),
+    'file' => 'new_relic_rpm.settings.inc',
+  );
+  $items['admin/reports/new-relic-rpm'] = array(
+    'title' => 'New Relic RPM reports',
+    'description' => 'View RPM reports and statistics.',
+    'page callback' => 'new_relic_rpm_reporting',
+    'access arguments' => array('view new relic rpm reports'),
+    'file' => 'new_relic_rpm.reports.inc',
+  );
+  $items['admin/reports/new-relic-rpm/details/%'] = array(
+    'title' => 'Application Details',
+    'description' => 'Get details for a specific application.',
+    'page callback' => 'new_relic_rpm_reporting_details',
+    'page arguments' => array(4, 5),
+    'access arguments' => array('view new relic rpm reports'),
+    'file' => 'new_relic_rpm.reports.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function new_relic_rpm_permission() {
+  return array(
+    'administer new relic rpm' => array(
+      'title' => t('Administer new relic rpm'),
+    ),
+    'view new relic rpm reports' => array(
+      'title' => t('View new relic rpm reports'),
+    ),
+    'create new relic rpm deployments' => array(
+      'title' => t('Create new relic rpm deployments'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * This is used to set cron tasks to be not tracked by RPM if so desired.
+ */
+function new_relic_rpm_cron() {
+  $cron_tracking = variable_get('new_relic_rpm_track_cron', 'norm');
+  new_relic_rpm_set_job_state($cron_tracking);
+}
+
+/**
+ * Implements hook_init().
+ *
+ * Sets New Relic error and exceptions handler.
+ */
+function new_relic_rpm_init() {
+  if (variable_get('new_relic_rpm_override_exception_handler', FALSE) && function_exists('newrelic_notice_error')) {
+    set_exception_handler('_new_relic_rpm_exception_handler');
+  }
+}
+
+/**
+ * Provides custom PHP exception handling.
+ *
+ * Will invoke newrelic_notice_error() to forward the exception to New Relic.
+ *
+ * @param $exception
+ *   The exception object that was thrown.
+ */
+function _new_relic_rpm_exception_handler($exception) {
+  require_once DRUPAL_ROOT . '/includes/errors.inc';
+
+  try {
+
+    // Forward the exception to New Relic.
+    newrelic_notice_error(NULL, $exception);
+    // Set flag to prevent duplicate logging by watchdog.
+    $arr_error = _drupal_decode_exception($exception);
+    $arr_error['new_relic_already_logged'] = TRUE;
+
+    // Log the message to the watchdog and return an error page to the user.
+    _drupal_log_error($arr_error, TRUE);
+  }
+  catch (Exception $exception2) {
+    // Another uncaught exception was thrown while handling the first one.
+    // If we are displaying errors, then do so with no possibility of a further uncaught exception being thrown.
+    if (error_displayable()) {
+      print '<h1>Additional uncaught exception thrown while handling exception.</h1>';
+      print '<h2>Original</h2><p>' . _drupal_render_exception_safe($exception) . '</p>';
+      print '<h2>Additional</h2><p>' . _drupal_render_exception_safe($exception2) . '</p><hr />';
+    }
+  }
+}
+
+/**
+ * Implements hook_boot().
+ *
+ * This is used to set various RPM settings by URL.
+ */
+function new_relic_rpm_boot() {
+
+  $ignore_urls = variable_get('new_relic_rpm_ignore_urls', '');
+  $bg_urls = variable_get('new_relic_rpm_bg_urls', '');
+  $exclu_urls = variable_get('new_relic_rpm_exclusive_urls', '');
+
+  // Handle cases where this getting called from command line and q isn't set.
+  $path = isset($_GET['q']) ? $_GET['q'] : '';
+
+  if (!empty($exclu_urls)) {
+    if (!new_relic_rpm_page_match($path, $exclu_urls)) {
+      return new_relic_rpm_set_job_state('ignore');
+    }
+  }
+
+  if (!empty($ignore_urls)) {
+    if (new_relic_rpm_page_match($path, $ignore_urls)) {
+      return new_relic_rpm_set_job_state('ignore');
+    }
+  }
+
+  if (!empty($bg_urls)) {
+    if (new_relic_rpm_page_match($path, $bg_urls)) {
+      return new_relic_rpm_set_job_state('bg');
+    }
+  }
+}
+
+/**
+ * Implements hook_watchdog().
+ */
+function new_relic_rpm_watchdog(array $log_entry) {
+  global $base_url;
+
+  // Don't do anything if the new relic extension is not available.
+  if (!function_exists('newrelic_notice_error')) {
+    return;
+  }
+
+  // Skip if already logged.
+  if (!empty($log_entry['variables']['new_relic_already_logged'])) {
+    return;
+  }
+
+  // Check if the severity is supposed to be logged.
+  if (!in_array($log_entry['severity'], variable_get('new_relic_rpm_watchdog_severities', array()))) {
+    return;
+  }
+
+  $severity_list = watchdog_severity_levels();
+
+  $message = "@message | Severity: (@severity) @severity_desc | Type: @type | Request URI:  @request_uri | Referrer URI: @referer_uri | User: (@uid) @name | IP Address: @ip";
+
+  $message = strtr($message, array(
+    '@severity' => $log_entry['severity'],
+    '@severity_desc' => $severity_list[$log_entry['severity']],
+    '@type' => $log_entry['type'],
+    '@ip' => $log_entry['ip'],
+    '@request_uri' => $log_entry['request_uri'],
+    '@referer_uri' => $log_entry['referer'],
+    '@uid' => $log_entry['uid'],
+    '@name' => user_format_name($log_entry['user']),
+    '@message' => strip_tags(strtr($log_entry['message'], is_array($log_entry['variables']) ? $log_entry['variables'] : array())),
+  ));
+
+  newrelic_notice_error($message);
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function new_relic_rpm_set_job_state($setting) {
+  static $newrelic_module;
+
+  if (!isset($newrelic_module)) {
+    $newrelic_module = function_exists('newrelic_background_job');
+  }
+
+  // If newrelic module isn't loaded into php, error and return.
+  if (!$newrelic_module) {
+    // Only throw error if we've booted far enough to watchdog.
+    // i.e. drush updatedb
+    if (function_exists('module_implements')) {
+      watchdog('New Relic RPM', 'New Relic RPM PHP module not enabled.', array(), WATCHDOG_ERROR);
+    }
+    return;
+  }
+
+  switch ($setting) {
+    case 'bg':
+      newrelic_background_job(TRUE);
+      break;
+
+    case 'ignore':
+      newrelic_ignore_transaction(TRUE);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_modules_enabled().
+ */
+function new_relic_rpm_modules_enabled($modules) {
+  // Make the Deploy call to New Relic.
+  if (!empty($modules)) {
+    new_relic_rpm_module_deploy($modules, NULL);
+  }
+}
+
+/**
+ * Implements hook_modules_disabled().
+ */
+function new_relic_rpm_modules_disabled($modules) {
+  // Make the Deploy call to New Relic.
+  if (!empty($modules)) {
+    new_relic_rpm_module_deploy(NULL, $modules);
+  }
+}
+
+/**
+ * Log module enable/disable actions as a deploy call to New Relic RPM.
+ */
+function new_relic_rpm_module_deploy($new_modules, $disable_modules) {
+  // If the API Key and/or App name is/are not set, there is no sense in
+  // attempting to create deployments.
+  if (variable_get('new_relic_rpm_module_deployment', FALSE) &&
+      ini_get('newrelic.appname') &&
+      variable_get('new_relic_rpm_api_key', '')) {
+    $modules_installed = !empty($new_modules);
+    $modules_removed = !empty($disable_modules);
+
+    if ($modules_installed) {
+      $m_inst = 'Modules Installed: ' . implode(', ', $new_modules ) . "\n";
+    }
+    else {
+      $m_inst = '';
+    }
+
+    if ($modules_removed) {
+      $m_remv = 'Modules Removed: ' . implode(', ', $disable_modules) . "\n";
+    }
+    else {
+      $m_remv = '';
+    }
+
+    _new_relic_rpm_deploy('Drupal Module Install/Uninstall',
+      'Drupal modules were installed: ' . ($modules_installed ? 'YES' : 'NO') . ' and uninstalled: ' . ($modules_removed ? 'YES' : 'NO'),
+      $m_inst . $m_remv);
+  }
+}
+
+/**
+ * Send deployments to New Relic's web API.
+ */
+function _new_relic_rpm_deploy($user, $description, $changelog, $revision = NULL) {
+  $post_vars['deployment[application_id]'] = ini_get('newrelic.appname');
+  $post_vars['deployment[user]'] = $user;
+  $post_vars['deployment[description]'] = $description;
+  $post_vars['deployment[changelog]'] = $changelog;
+  if (isset($revision)) {
+    $post_vars['deployment[revision]'] = $revision;
+  }
+  $deployments = new_relic_rpm_curl('https://rpm.newrelic.com/deployments.xml', $post_vars);
+
+  watchdog('New Relic RPM', 'Module install/uninstall action logged as deployment. Log data: %details', array('%details' => $deployments));
+}
+
+/**
+ * This is the generic cURL function all New Relic Web API calls go through.
+ */
+function new_relic_rpm_curl($url, $post = array()) {
+
+  $api_key = variable_get('new_relic_rpm_api_key', '');
+
+  // Set the header with the API key.
+  $headers[] = "x-api-key: {$api_key}";
+
+  // Set up the cURL request.
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+  if (!empty($post)) {
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+  }
+  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+  $return_data = curl_exec($ch);
+
+  if (stristr($return_data, 'Access denied')) {
+    return FALSE;
+  }
+
+  return $return_data;
+}
+
+/**
+ * Check if a path matches any pattern in a set of patterns.
+ *
+ * This is a direct copy of drupal_match_path without the static cache since we
+ * don't need it. This is needed because we need our hook_boot to be able to
+ * operate before path.inc has been bootstrapped.
+ *
+ * @param $path
+ *   The path to match.
+ * @param $patterns
+ *   String containing a set of patterns separated by \n, \r or \r\n.
+ *
+ * @return
+ *   1 if there is a match, 0 if there is not a match.
+ */
+function new_relic_rpm_page_match($path, $patterns) {
+  $regexp = '/^(' . preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1' . preg_quote(variable_get('site_frontpage', 'node'), '/') . '\2'), preg_quote($patterns, '/')) . ')$/';
+  return preg_match($regexp, $path);
+}

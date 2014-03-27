@@ -1,0 +1,18 @@
+name = Time Field
+description = Implements a time field (HH:MM), with optional to time and weekly repeat value.
+core = 7.x
+package = Fields
+dependencies[] = libraries
+files[] = views/timefield_handler_field_timefield.inc
+files[] = views/timefield_plugin_style_minical.inc
+files[] = views/timefield_handler_field_timefield_duration.inc
+files[] = views/timefield_handler_sort_timefield_duration.inc
+files[] = views/timefield_handler_filter_timefield_duration.inc
+files[] = timefield.test
+
+; Information added by drupal.org packaging script on 2012-12-24
+version = "7.x-1.0-alpha2"
+core = "7.x"
+project = "timefield"
+datestamp = "1356309026"
+
