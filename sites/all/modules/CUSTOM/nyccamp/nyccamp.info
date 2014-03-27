@@ -1,4 +1,4 @@
 name = NYC Camp
-description = A registration block and a field formatter for the Registration view.
+description = Miscellaneous code for the nyccamp.org website
 package = COD Extras
 core = 7.x
