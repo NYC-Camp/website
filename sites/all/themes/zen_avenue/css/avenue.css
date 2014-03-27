@@ -442,7 +442,7 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 
 .region-sidebar-first h2.block-title, .region-sidebar-second h2.block-title {
 	color: #fff;
-	padding: 0 0 5px;
+	padding: 0 0 20px;
 	margin: 0;
 	font-size: 11px;
 	background: none;
@@ -645,14 +645,6 @@ div.views-field-edit-node {
 	top: 5px;
 	right: 5px;
 	font-size: 0.8em;
-}
-
-.view-header {
-	margin: 0;
-	padding: 0 0 20px;
-	width: 100%;
-	clear: both;
-	overflow: hidden;
 }
 
 .view-empty {

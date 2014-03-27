@@ -1,0 +1,66 @@
+<?php
+/**
+ * @file
+ * Uninstall functions for the role_memory_limit module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function role_memory_limit_install() {
+  db_update("system")
+    ->fields(array("weight" => "-1000"))
+    ->condition('type', 'module')
+    ->condition("name", "role_memory_limit", "=")
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function role_memory_limit_uninstall() {
+  variable_del("role_memory_limit_status");
+  variable_del("role_memory_limit_role_admin");
+  variable_del("role_memory_limit_role_cli");
+
+  module_load_include("module", "role_memory_limit", "role_memory_limit");
+
+  foreach (user_roles() as $role) {
+    variable_del(role_memory_limit_var_name($role));
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function role_memory_limit_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+
+  if ($phase == "install") {
+    $requirements['role_memory_limit'] = array(
+      'title' => $t("Role memory limit"),
+    );
+
+    if (ini_set("memory_limit", ini_get('memory_limit'))) {
+      $requirements['role_memory_limit']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['role_memory_limit']['severity'] = REQUIREMENT_ERROR;
+      $requirements['role_memory_limit']['description'] = $t("Your web server does not allow changing PHP memory limit by using the PHP function ini_set('memory_limit'), there for you cannot use the Role memory limit module.");
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Updates module weight to -1000.
+ */
+function role_memory_limit_update_7100() {
+  db_update("system")
+    ->fields(array("weight" => "-1000"))
+    ->condition('type', 'module')
+    ->condition("name", "role_memory_limit", "=")
+    ->execute();
+}

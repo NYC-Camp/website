@@ -1,0 +1,11 @@
+.jeditable-textarea form {
+  width: 100%;
+  display: block;
+}
+
+.jeditable-textarea form textarea {
+  min-height: 40px;
+  min-width: 100% !important;
+  display: block;
+  font-size: 0.9em;
+}
