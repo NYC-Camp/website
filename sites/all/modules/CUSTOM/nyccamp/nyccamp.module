@@ -45,3 +45,33 @@ function _nyccamp_ss_block_content() {
 
   return $block;
 }
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function nyccamp_form_alter(&$form, $form_state, $form_id) {
+  if (substr($form_id, 0, 30) == 'commerce_cart_add_to_cart_form') {
+    // TODO: fix AJAX when radios are used.
+    $form['product_id']['#type'] = 'radios';
+    $form['submit']['#value'] = 'Buy';
+  }
+}
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function nyccamp_rules_action_info() {
+  $actions['nyccamp_remove_messages'] = array(
+    'label' => t('Remove all the system messages'),
+    'group' => t('NYC Camp custom actions'),
+  );
+  return $actions;
+}
+
+/**
+ * Custom action to remove system messages
+ */
+function nyccamp_remove_messages() {
+  // Retrieve all messages and clear the queue
+  drupal_get_messages();
+}

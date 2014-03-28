@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file Commerce Invoice Email code
+ */
+
+/**
+ * Implements hook_enable()
+ */
+function commerce_invoice_email_enable() {
+  // Deactivate default commerce rules to send invoice email
+  $rules_config = rules_config_load('commerce_invoice_email');
+  $rules_config->active = FALSE;
+  $rules_config->save();
+}
+
+/**
+ * Implements hook_disable()
+ */
+function commerce_invoice_email_disable() {
+  // Activate default commerce rules to send invoice email
+  $rules_config = rules_config_load('commerce_invoice_email');
+  $rules_config->active = TRUE;
+  $rules_config->save();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function commerce_invoice_email_form_variable_group_form_alter(&$form, &$form_state) {
+  if ($form_state['build_info']['args'][0] == 'commerce_email') {
+    $form['tokens'] = array(
+      '#markup' => theme('token_tree', array('token_types' => array('commerce-order', 'commerce-customer-profile', 'commerce-invoice'), '#global_types' => FALSE)),
+      '#weight' => 99999
+    );
+  }
+}

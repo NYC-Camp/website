@@ -1,0 +1,7 @@
+
+This is a cheque module for Drupal Commerce.
+
+Installation
+1. Install the module
+2. Enable the Rule for Commerce Cheque via Store > Configuration > Payment settings
+3. Write down the user instructions such as the address where the check should be sent.
