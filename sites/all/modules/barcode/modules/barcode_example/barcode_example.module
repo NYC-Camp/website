@@ -1,0 +1,45 @@
+<?php
+
+function barcode_example_menu() {
+  $items['barcode_example'] = array(
+    'title' => 'Barcode example',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('barcode_example_example'),
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function barcode_example_example($form, &$form_state) {
+  $encoding = variable_get('barcode_encoding', 'EAN-13');
+
+  if (isset($form_state['barcode'])) {
+    $form['barcode_image'] = array(
+      '#markup' => theme('barcode_image', array('barcode_value' => $form_state['barcode'], 'encoding' => $encoding)),
+    );
+  }
+
+  $settings = url('admin/config/media/barcode', array(
+    'query' => array('destination' => 'barcode_example'),
+  ));
+
+  $form['barcode'] = array(
+    '#type' => 'barcode',
+    '#title' => t('Barcode'),
+    '#description' => t('Enter a number to generate a barcode image using the %encoding encoding. You can change which encoding is used in the <a href="@settings">Barcode settings page</a>.', array('%encoding' => $encoding, '@settings' => $settings)),
+    '#encoding' => $encoding,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Show the barcode'),
+  );
+
+  return $form;
+}
+
+function barcode_example_example_submit($form, &$form_state) {
+  $form_state['barcode'] = $form_state['values']['barcode'];
+  $form_state['rebuild'] = TRUE;
+}
+
