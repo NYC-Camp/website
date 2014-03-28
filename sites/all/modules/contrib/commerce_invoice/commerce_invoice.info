@@ -1,0 +1,25 @@
+; $Id$
+name = Invoice
+description = Generate an invoice
+dependencies[] = rules
+dependencies[] = commerce_order
+package = Commerce (contrib)
+core = 7.x
+
+; Module includes
+files[] = includes/commerce_invoice.controller.inc
+
+; Views includes
+files[] = includes/views/commerce_invoice.views.inc
+
+; Views handlers
+files[] = includes/views/handlers/commerce_invoice_handler_field_invoice.inc
+files[] = includes/views/handlers/commerce_invoice_handler_field_invoice_type.inc
+files[] = includes/views/handlers/commerce_invoice_handler_filter_invoice_type.inc
+
+; Information added by drupal.org packaging script on 2012-02-09
+version = "7.x-1.0-alpha3"
+core = "7.x"
+project = "commerce_invoice"
+datestamp = "1328783141"
+
