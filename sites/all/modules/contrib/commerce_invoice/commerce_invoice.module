@@ -1,0 +1,260 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Generates the invoice and allows you to display an invoice id in views
+ */
+ 
+// Invoice number generation methods
+
+// One single number, never regenerated
+define('COMMERCE_INVOICE_METHOD_INFINITE', '[invoice_id]');
+
+// Invoice id is regenerated every year
+define('COMMERCE_INVOICE_METHOD_YEAR', 'Y-[invoice_id]');
+
+// Invoice id is regenerated every month
+define('COMMERCE_INVOICE_METHOD_MONTH', 'Y-m-[invoice_id]');
+ 
+/**
+ * Implements hook_entity_info().
+ */
+function commerce_invoice_entity_info() {
+  $return = array(
+    'commerce_invoice' => array(
+      'label' => t('Commerce Invoice'),
+      'controller class' => 'CommerceInvoiceEntityController',
+      'base table' => 'commerce_invoice',
+      'fieldable' => FALSE,
+      'entity keys' => array(
+        'id' => 'invoice_id',
+        'bundle' => 'type',
+        'label' => 'invoice_number', // TODO: Update to use a custom callback.
+      ),
+      'bundle keys' => array(
+        'bundle' => 'type',
+      ),
+      'bundles' => array(
+        'commerce_invoice' => array(
+          'label' => t('Invoice', array(), array('context' => 'a drupal commerce invoice')),
+        ),
+      ),
+      'load hook' => 'commerce_invoice_load',
+      'view modes' => array(
+        'administrator' => array(
+          'label' => t('Administrator'),
+          'custom settings' => FALSE,
+        ),
+        'customer' => array(
+          'label' => t('Customer'),
+          'custom settings' => FALSE,
+        ),
+      ),
+      'creation callback' => '_commerce_invoice_create',
+      'save callback' => 'commerce_invoice_save',
+      'deletion callback' => 'commerce_invoice_delete',
+      'access callback' => 'commerce_entity_access',
+      'access arguments' => array(
+        'user key' => 'uid',
+        'access tag' => 'commerce_invoice_access',
+      ),
+      'token type' => 'commerce-invoice',
+      'permission labels' => array(
+        'singular' => t('invoice'),
+        'plural' => t('invoices'),
+      ),
+    ),
+  );
+
+  return $return;
+}
+
+/**
+ * Loads an invoice by ID.
+ */
+function commerce_invoice_load($invoice_id) {
+  $invoices = commerce_invoice_load_multiple(array($invoice_id), array());
+  return $invoices ? reset($invoices) : FALSE;
+}
+
+/**
+ * Loads an invoice by order ID
+ */
+function commerce_invoice_load_by_order_id($order_id) {
+  $query = new EntityFieldQuery();
+  
+  $result = $query
+    ->entityCondition('entity_type', 'commerce_invoice')
+    ->propertyCondition('order_id', $order_id)
+    ->execute();
+  return $result ? commerce_invoice_load(reset(array_keys($result['commerce_invoice']))) : FALSE;
+}
+
+/**
+ * Loads multiple invoices by ID or based on a set of matching conditions.
+ *
+ * @see entity_load()
+ *
+ * @param $invoice_ids
+ *   An array of invoice IDs.
+ * @param $conditions
+ *   An array of conditions on the {commerce_invoice} table in the form
+ *     'field' => $value.
+ * @param $reset
+ *   Whether to reset the internal invoice loading cache.
+ *
+ * @return
+ *   An array of invoice objects indexed by invoice_id.
+ */
+function commerce_invoice_load_multiple($invoice_ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('commerce_invoice', $invoice_ids, $conditions, $reset);
+}
+
+/**
+ * Returns an initialized invoice object.
+ *
+ * @param $uid
+ *   The uid of the owner of the invoice.
+ * @param $order_id
+ *   The ID of the order the invoice belongs to (if available).
+ * @param $type
+ *   The type of the invoice; defaults to the standard 'invoice' type.
+ *
+ * @return
+ *   An invoice object with all default fields initialized.
+ */
+function commerce_invoice_new($uid = 0, $order_id = 0, $type = 'commerce_invoice') {
+  return entity_get_controller('commerce_invoice')->create(array('uid' => $uid, 'order_id' => $order_id, 'type' => $type));
+}
+
+/**
+ * Creation callback for the Entity module.
+ */
+function _commerce_invoice_create($values = array()) {
+  // Create a new invoice
+  $invoice = commerce_invoice_new();
+
+  $wrapper = entity_metadata_wrapper('commerce_invoice', $invoice);
+
+  return $wrapper->value();
+}
+
+/**
+ * Saves an invoice.
+ *
+ * @param $invoice
+ *   The full invoice object to save.
+ *
+ * @return
+ *   The saved invoice object.
+ */
+function commerce_invoice_save($invoice) {
+  return entity_get_controller('commerce_invoice')->save($invoice);
+}
+
+/**
+ * Deletes an invoice by ID.
+ *
+ * @param $invoice
+ *   The ID of the invoice to delete.
+ *
+ * @return
+ *   TRUE on success, FALSE otherwise.
+ */
+function commerce_invoice_delete($invoice_id) {
+  return commerce_invoice_delete_multiple(array($invoice_id));
+}
+
+/**
+ * Deletes multiple invoices by ID.
+ *
+ * @param $invoice_ids
+ *   An array of invoice IDs to delete.
+ *
+ * @return
+ *   TRUE on success, FALSE otherwise.
+ */
+function commerce_invoice_delete_multiple($invoice_ids) {
+  return entity_get_controller('commerce_invoice')->delete($invoice_ids);
+}
+
+/**
+ * Checks invoice access for various operations.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create' or
+ *   'delete'.
+ * @param $invoice
+ *   Optionally an invoice to check access for.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the current user.
+ */
+function commerce_invoice_access($op, $invoice = NULL, $account = NULL) {
+  return commerce_entity_access($op, $invoice, $account, 'commerce_invoice');
+}
+
+/**
+ * Implementation of hook_query_commerce_order_access_alter().
+ */
+function commerce_invoice_query_commerce_invoice_access_alter(QueryAlterableInterface $query) {
+  commerce_entity_access_query_alter($query, 'commerce_invoice');
+}
+
+/**
+ * Implements hook_permission().
+ */
+function commerce_invoice_permission() {
+  return commerce_entity_access_permissions('commerce_invoice') + array(
+    'configure invoice settings' => array(
+      'title' => t('Configure invoice settings'),
+      'description' => t('Allows users to configure invoice settings for the store.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Returns the name of the specified invoice type or all names keyed by type if no
+ *   type is specified.
+ *
+ * @param $type
+ *   The invoice type whose name should be returned; corresponds to the bundle key
+ *     in the invoice entity definition.
+ *
+ * @return
+ *   Either the specified name, defaulting to the type itself if the name is not
+ *   found, or an array of all names keyed by type if no type is passed in.
+ */
+function commerce_invoice_type_get_name($type = NULL) {
+  $names = array();
+
+  $entity = entity_get_info('commerce_invoice');
+
+  foreach ($entity['bundles'] as $key => $value) {
+    $names[$key] = $value['label'];
+  }
+
+  if (empty($type)) {
+    return $names;
+  }
+
+  if (empty($names[$type])) {
+    return check_plain($type);
+  }
+  else {
+    return $names[$type];
+  }
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function commerce_invoice_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'commerce_invoice') . '/includes/views',
+  );
+}
+

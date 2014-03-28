@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_enable()
+ */
+function commerce_email_enable() {
+  // Make sure the rules created by commerce have been taken into account
+  drupal_flush_all_caches();
+  // Deactivate default commerce rules to send order email
+  $rules_config = rules_config_load('commerce_checkout_order_email');
+  $rules_config->active = FALSE;
+  $rules_config->save();
+  
+  // Deactivate default commerce rules to create new account
+  $rules_config = rules_config_load('commerce_checkout_new_account');
+  $rules_config->active = FALSE;
+  $rules_config->save();
+  
+  // Add the correct settings to Mail System
+  mailsystem_set(array('variable_email' => 'HTMLMailSystem'));
+}
+
+/**
+ * Implements hook_disable()
+ */
+function commerce_email_disable() {
+  // Activate default commerce rules to send order email
+  $rules_config = rules_config_load('commerce_checkout_order_email');
+  $rules_config->active = TRUE;
+  $rules_config->save();
+  
+  // Activate default commerce rules to create new account
+  $rules_config = rules_config_load('commerce_checkout_new_account');
+  $rules_config->active = TRUE;
+  $rules_config->save();
+  
+  // Remove the settings from MailSystem
+  mailsystem_clear(array('variable_email' => ''));
+}
+

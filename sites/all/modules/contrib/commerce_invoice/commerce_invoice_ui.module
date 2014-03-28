@@ -1,0 +1,159 @@
+<?php
+
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function commerce_invoice_ui_menu() {
+  $items = array();
+  
+  $items['admin/commerce/config/invoice'] = array(
+    'title' => 'Invoice settings',
+    'description' => 'Configure general invoice settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_invoice_settings_form'),
+    'access arguments' => array('configure invoice settings'),
+    'file' => 'includes/commerce_invoice_ui.invoices.inc',
+  );
+  $items['admin/commerce/config/invoice/settings'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  
+  $items['admin/commerce/orders/%commerce_order/invoice'] = array(
+    'title' => 'Invoice',
+    'page callback' => 'commerce_invoice_ui_invoice_view_by_order',
+    'page arguments' => array(3),
+    'access callback' => 'commerce_invoice_ui_access_by_order',
+    'access arguments' => array('view', 3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -5,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+  
+  $items['user/%user/invoices/%commerce_invoice'] = array(
+    'title callback' => 'commerce_invoice_ui_invoice_title',
+    'title arguments' => array(3),
+    'page callback' => 'commerce_invoice_ui_invoice_view',
+    'page arguments' => array(3, 'customer', FALSE),
+    'access callback' => 'commerce_invoice_access',
+    'access arguments' => array('view', 3),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function commerce_invoice_ui_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'commerce_invoice_ui') . '/includes/views',
+  );
+}
+
+/**
+ * Menu item title callback: returns the number of an invoice for its pages.
+ *
+ * @param $invoice
+ *   The invoice object as loaded via the URL wildcard.
+ * @return
+ *   A page title of the format "Invoice ##".
+ */
+function commerce_invoice_ui_invoice_title($invoice) {
+  return t('Invoice @number', array('@number' => $invoice->invoice_number));
+}
+
+/**
+ * Sets the breadcrumb for invoice pages.
+ *
+ * @param $view_mode
+ *   The view mode for the current invoice page, 'administrator' or 'customer'.
+ */
+function commerce_invoice_ui_set_breadcrumb($view_mode = 'administrator') {
+  $breadcrumb = array();
+
+  // Create the breadcrumb array based on the view mode.
+  if ($view_mode == 'administrator') {
+    $breadcrumb = array(
+      l(t('Home'), '<front>'),
+      l(t('Administration'), 'admin'),
+      l(t('Store'), 'admin/commerce'),
+      l(t('Orders', array(), array('context' => 'a drupal commerce order')), 'admin/commerce/orders'),
+    );
+  }
+
+  drupal_set_breadcrumb($breadcrumb);
+}
+
+/**
+ * Generate an array for rendering the given invoice.
+ *
+ * @param $invoice
+ *   A fully loaded invoice object.
+ * @param $view_mode
+ *   The view mode for displaying the invoice, 'administrator' or 'customer'.
+ *
+ * @return
+ *   An array as expected by drupal_render().
+ */
+function commerce_invoice_ui_invoice_view($invoice, $view_mode = 'administrator', $breadcrumb = TRUE) {
+  // Set the breadcrumb for the appropriate view mode if specified.
+  if ($breadcrumb) {
+    commerce_invoice_ui_set_breadcrumb();
+  }
+
+  drupal_add_css(drupal_get_path('module', 'commerce_order') . '/theme/commerce_order.css');
+
+  return entity_view('commerce_invoice', array($invoice->invoice_id => $invoice), $view_mode, NULL, TRUE);
+}
+
+/**
+ * Generate an array for rendering the given invoice, based on an order.
+ *
+ * @param $order
+ *   A fully loaded order object.
+ * @param $view_mode
+ *   The view mode for displaying the invoice, 'administrator' or 'customer'.
+ *
+ * @return
+ *   An array as expected by drupal_render().
+ */
+function commerce_invoice_ui_invoice_view_by_order($order, $view_mode = 'administrator', $breadcrumb = TRUE) {
+  $invoice = commerce_invoice_load_by_order_id($order->order_id);
+  
+  if ($invoice) {
+    return commerce_invoice_ui_invoice_view($invoice, $view_mode, $breadcrumb);
+  }
+  else {
+    drupal_set_message(t('The invoice for this order has not been generated yet'), 'warning');
+    return '';
+  }
+}
+
+/**
+ * Checks invoice access based on order id.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create' or
+ *   'delete'.
+ * @param $order
+ *   Optionally an order to check access for.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the current user.
+ */
+function commerce_invoice_ui_access_by_order($op, $order = NULL, $account = NULL) {
+  $invoice = commerce_invoice_load_by_order_id($order->order_id);
+  
+  if ($invoice) {
+    return commerce_invoice_access($op, $invoice, $account, 'commerce_invoice');
+  }
+  else {
+    return FALSE;
+  }
+}
