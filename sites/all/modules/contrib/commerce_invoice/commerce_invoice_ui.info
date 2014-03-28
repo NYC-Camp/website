@@ -1,0 +1,18 @@
+; $Id$
+name = Invoice UI
+description = Exposes invoice configuration
+package = Commerce (contrib)
+core = 7.x
+dependencies[] = contextual
+dependencies[] = field_ui
+dependencies[] = commerce
+dependencies[] = commerce_ui
+dependencies[] = commerce_invoice
+dependencies[] = views
+
+; Information added by drupal.org packaging script on 2012-02-09
+version = "7.x-1.0-alpha3"
+core = "7.x"
+project = "commerce_invoice"
+datestamp = "1328783141"
+

@@ -1,0 +1,14 @@
+name = Commerce Email
+description = Defines Emails - Plain Text or HTML and Multi-language
+package = Commerce (contrib)
+dependencies[] = commerce_checkout
+dependencies[] = variable_email
+dependencies[] = htmlmail
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "commerce_email"
+datestamp = "1380560169"
+

@@ -298,20 +298,23 @@ body.page-sponsors2 h2.pane-title {
 }
 
 div.pane-sponsorship-options-tiers,
-div.pane-sponsorship-options-title {
+div.pane-sponsorship-options-title,
+div.pane-individual-partnership-levels {
   margin-top: 50px;
   border: 1px solid silver;
 }
 
 
 div.view-sponsorship-options-tiers table,
-div.view-sponsorship-options-title table {
+div.view-sponsorship-options-title table,
+div.pane-individual-partnership-levels table {
   background-color: white;
   margin: 0;
 }
 
 div.view-sponsorship-options-tiers th,
-div.view-sponsorship-options-title th {
+div.view-sponsorship-options-title th,
+div.pane-individual-partnership-levels th {
 	font-size: 14px;
 	width: 13%;
 views-field views-field-field-sponsorship-ben-job-fair
@@ -324,22 +327,26 @@ views-field views-field-field-sponsorship-ben-job-fair
 }
 
 div.view-sponsorship-options-tiers td,
-div.view-sponsorship-options-title td {
+div.view-sponsorship-options-title td,
+div.pane-individual-partnership-levels td {
   background-color: white;
   padding: 12px;
 }
 
 div.view-sponsorship-options-tiers tr.odd td,
-div.view-sponsorship-options-title tr.odd td {
+div.view-sponsorship-options-title tr.odd td,
+div.pane-individual-partnership-levels tr.odd td {
   background-color: white;
 }
 
 div.view-sponsorship-options-tiers tr.even td,
-div.view-sponsorship-options-title tr.even td {
+div.view-sponsorship-options-title tr.even td,
+div.pane-individual-partnership-levels tr.even td {
   background-color: #efeef0;
 }
 div.pane-sponsorship-options-tiers h2.pane-title,
-div.pane-sponsorship-options-title h2.pane-title {
+div.pane-sponsorship-options-title h2.pane-title,
+div.pane-individual-partnership-levels h2.pane-title {
   background-color: #285e88;
   margin: 0;
   padding: 20px;
@@ -355,8 +362,9 @@ div.view-sponsorship-options-title th.views-field-field-sponsorship-ben-job-fair
 }
 
 div.view-sponsorship-options-tiers td,
-div.view-sponsorship-options-title td {
-	width: 13%;
+div.view-sponsorship-options-title td,
+div.pane-individual-partnership-levels td {
+  width: 13%;
   font-size: 11px;
   vertical-align: top;
   text-align: center;
@@ -367,23 +375,28 @@ div.view-sponsorship-options-title td.views-field-field-sponsorship-ben-job-fair
 	width: 8%;
 }
 div.view-sponsorship-options-tiers th.views-field-title,
-div.view-sponsorship-options-title th.views-field-title {
-   width: 16%;
+div.view-sponsorship-options-title th.views-field-title,
+div.pane-individual-partnership-levels th.views-field-title {
+  width: 16%;
 }
 
+div.view-individual-partnership-levels .view-header {
+  padding: 1%;
+}
 div.view-sponsorship-options-tiers td.views-field-title,
 div.view-sponsorship-options-tiers td.views-field-title a,
 div.view-sponsorship-options-title td.views-field-title,
-div.view-sponsorship-options-title td.views-field-title a {
-	width: 16%;
+div.view-sponsorship-options-title td.views-field-title a,
+div.pane-individual-partnership-levels td.views-field-title,
+div.pane-individual-partnership-levels td.views-field-title a {
+  width: 16%;
   font-size: 14px;
   font-weight: bold;
-  color: green;
-  text-align: right;
+  color: green
 }
 .personal-schedule-outer {
-	margin-bottom: 12px;
-	padding-bottom: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
 }
 
 .page-user-schedule span.date-display-single {

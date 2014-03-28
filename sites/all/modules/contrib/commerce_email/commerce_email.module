@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * @file
+ * Defines additional menu item and order html email functonality.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function commerce_email_menu() {
+  $items = array();
+
+  $items['admin/commerce/config/email'] = array(
+    'title' => 'Emails',
+    'description' => 'Administer commerce emails',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('variable_group_form', 'commerce_email'),
+    'access arguments' => array('configure store'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 99,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme()
+ */
+function commerce_email_theme() {
+  return array(
+    'commerce_email_order_items' => array(
+      'variables' => array('commerce_order_wrapper' => NULL),
+    ),
+  );
+}
+
+/**
+ * Theme function for the commerce order.
+ */
+function theme_commerce_email_order_items($variables) {
+  $table = commerce_email_prepare_table($variables['commerce_order_wrapper']);
+  return theme('table', $table);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function commerce_email_form_variable_group_form_alter(&$form, &$form_state) {
+  if ($form_state['build_info']['args'][0] == 'commerce_email') {
+    $form['tokens'] = array(
+      '#markup' => theme('token_tree', array('token_types' => array('commerce-order', 'commerce-customer-profile'), '#global_types' => FALSE)),
+      '#weight' => 99999
+    );
+  }
+}
+
+/**
+ * Returns a rendered email of the commerce order
+ * or an array of the table details
+ *
+ * @param $order
+ *   The commerce order object
+ *   
+ * @param $theme
+ * (optional) Defaults to TRUE
+ *   Flag to return the contents of the order
+ *   as a themed html table or an array suitable for theme('table' ...)
+ *   
+ * @return
+ *   String containing the rendered order table
+ *   or an array suitable for theme('table' ...)
+ */
+function commerce_email_order_items($order, $theme = TRUE) {
+  $wrapper = entity_metadata_wrapper('commerce_order', $order);
+
+  if ($theme) {
+    return theme('commerce_email_order_items', array('commerce_order_wrapper' => $wrapper));
+  }
+  else {
+    return commerce_email_prepare_table($wrapper);
+  }
+}
+
+/**
+ * Returns the labels and values of any attributes
+ * selected on the product.
+ *
+ * @param $product_id
+ *   A commerce product id
+ *
+ * @return
+ *   String containing the attributes
+ */
+function commerce_email_order_item_attributes($product_id) {
+  $product = commerce_product_load($product_id);
+  $product_wrapper = entity_metadata_wrapper('commerce_product', $product);
+
+  $instances = field_info_instances('commerce_product', $product->type);
+  $attr = array();
+  foreach ($instances as $name => $instance) {
+    $commerce_cart_settings = commerce_cart_field_instance_attribute_settings($instance);
+    if ($commerce_cart_settings['attribute_field'] == 1) {
+      $field = field_info_field($instance['field_name']);
+      if (!empty($product_wrapper->$field['field_name']->value()->name)) {
+        $attr[] = htmlentities($instance['label'] . ': ' . $product_wrapper->$field['field_name']->value()->name, ENT_QUOTES, "UTF-8");
+      }
+    }
+  }
+
+  $title_attr = '';
+  if (!empty($attr)) {
+    $title_attr .= '<br /><em>' . join("<br />", $attr) . '</em>';
+  }
+
+  return $title_attr;
+}
+
+/**
+ * Returns a table header and rows for theming.
+ *
+ * @param $wrapper
+ *   A metadata-wrapped commerce_order entity
+ *
+ * @return array
+ *   Array suitable for use by theme('table' ...)
+ */
+function commerce_email_prepare_table($wrapper) {
+  $currency_code = $wrapper->commerce_order_total->currency_code->value();
+  $amount = number_format(commerce_currency_amount_to_decimal($wrapper->commerce_order_total->amount->value(), $currency_code), 2);
+
+  $header = array(
+    array('data' => t('Product'), 'style' => array('text-align: left;')),
+    array('data' => t('Qty'), 'style' => array('text-align: left;')),
+    array('data' => t('Price (@currency_code)', array('@currency_code' => $currency_code)), 'style' => array('text-align: left;'))
+  );
+
+  $rows = array();
+  foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+    
+    switch ($line_item_wrapper->type->value()) {
+      case 'product':
+        // Special treatment for a product, since we want to get the title from
+        // from the product entity instead of the line item.
+        $title = htmlentities($line_item_wrapper->commerce_product->title->value(), ENT_QUOTES, "UTF-8");
+        $title .= commerce_email_order_item_attributes($line_item_wrapper->commerce_product->product_id->value());
+        
+        $rows[] = array(
+          'data' => array(
+            array('data' => $title, 'style' => array('text-align: left;')),
+            array('data' => $line_item_wrapper->quantity->value(), 'style' => array('text-align: left;')),
+            array('data' => number_format(commerce_currency_amount_to_decimal($line_item_wrapper->commerce_unit_price->amount->value(), $currency_code), 2), 'style' => array('text-align: left;')),
+          )
+        );
+        break;
+      default:
+        // Use this for any other line item.
+        $rows[] = array(
+          'data' => array(
+            array('data' => htmlentities($line_item_wrapper->line_item_label->value(), ENT_QUOTES, "UTF-8"), 'style' => array('text-align: left;')),
+            array('data' => 1, 'style' => array('text-align: left;')),
+            array('data' => number_format(commerce_currency_amount_to_decimal($line_item_wrapper->commerce_unit_price->amount->value(), $currency_code), 2), 'style' => array('text-align: left;')),
+          )
+        );
+        break;
+    }
+  }
+  
+  $data = $wrapper->commerce_order_total->data->value();
+  if (!empty($data['components'])) {
+    
+    foreach ($data['components'] as $key => &$component) {
+      
+      if ($data['components'][$key]['name'] == 'base_price') {
+        $rows[] = array(
+          'data' => array(
+            ' ',
+            array('data' => t('Subtotal:'), 'style' => array('font-weight: bold; text-align: right;')),
+            array('data' => number_format(commerce_currency_amount_to_decimal($data['components'][$key]['price']['amount'], $currency_code), 2), 'style' => array('font-weight: bold; text-align: left;')),
+          )
+        );
+      }
+      elseif (preg_match('/^tax\|/', $data['components'][$key]['name'])) {
+        $rows[] = array(
+          'data' => array(
+            ' ',
+            array('data' => $data['components'][$key]['price']['data']['tax_rate']['display_title'] . ':', 'style' => array('font-weight: bold; text-align: right;')),
+            array('data' => number_format(commerce_currency_amount_to_decimal($data['components'][$key]['price']['amount'], $currency_code), 2), 'style' => array('font-weight: bold; text-align: left;')),
+          )
+        ); 
+      }
+    }
+  }
+
+  $rows[] = array(
+    'data' => array(
+      ' ',
+      array('data' => t('Total:'), 'style' => array('font-weight: bold; text-align: right;')),
+      array('data' => $amount, 'style' => array('font-weight: bold; text-align: left;')),
+    )
+  );
+
+  return array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => array('width: 50%; border: 1px solid #ddd;')));
+}
