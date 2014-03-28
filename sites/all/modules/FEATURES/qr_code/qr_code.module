@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ * Code for the QR code feature.
+ */
+
+include_once 'qr_code.features.inc';
+
+/**
+ * Implements hook_form_alter()
+ */
+function qr_code_form_alter(&$form, &$form_state, $form_id) {
+  $url = base_path() . 'user/%/edit';
+
+  // The contents of the Mobile code are changed (on the fly) at
+  // admin/config/people/accounts/fields/field_mobile_code
+  if ($form_id == 'user_profile_form' && $url === '/user/%/edit') {
+    $form['field_mobile_code']['#access'] = 0;
+  }
+}
