@@ -621,6 +621,10 @@ div.vertical-tabs {
 	margin: 1em 0 1em 0;
 }
 
+form.commerce-add-to-cart input[type="submit"] {
+  font-size: 0.8em;
+  padding: 3px 25px;
+}
 /* Animated throbber */
 html.js input.form-autocomplete {
   background-position: 100% 7px; /* LTR */
