@@ -1,0 +1,31 @@
+name = Barcode
+description = Implements a barcode form element. Generate a barcode image on the fly. Supports many barcode symbologies.
+core = 7.x
+package = Fields
+
+files[] = barcode.module
+files[] = barcode.install
+files[] = includes/barcode.plugins.inc
+files[] = includes/barcode.admin.inc
+files[] = includes/barcode.theme.inc
+
+; Supported barcodes
+files[] = plugins/i25.inc
+files[] = plugins/s2o5.inc
+files[] = plugins/ean8.inc
+files[] = plugins/ean.inc
+files[] = plugins/codabar.inc
+files[] = plugins/code93.inc
+files[] = plugins/code39.inc
+files[] = plugins/code128.inc
+files[] = plugins/postnet.inc
+files[] = plugins/upce.inc
+
+configure = admin/config/media/barcode
+
+; Information added by drupal.org packaging script on 2011-10-21
+version = "7.x-2.1"
+core = "7.x"
+project = "barcode"
+datestamp = "1319177728"
+
