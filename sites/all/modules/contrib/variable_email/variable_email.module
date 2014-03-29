@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file Variable Email code
+ */
+
+function variable_email_variables_list() {
+  $variables = variable_get_info();
+  $list = array();
+  foreach ($variables as $key => $variable) {
+    if ($variable['type'] == 'user_mail' || $variable['type'] == 'mail_text' || $variable['type'] == 'mail_html') {
+      $list[$key] = str_replace('_[mail_part]', '', $variable['name']);
+    }
+  }
+  return $list;
+}
+
+/**
+ * Implements hook_mail().
+ *
+ * Set's the message subject and body as configured.
+ */
+function variable_email_mail($key, &$message, $params) {
+
+  $message['subject'] .= str_replace(array("\r", "\n"), '', $params['subject']);
+  $message['body'][] = $params['message'];
+}

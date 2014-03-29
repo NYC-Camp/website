@@ -31,6 +31,15 @@ function qr_code_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['label'] = 'About the QR code';
+  $handler->display->display_options['footer']['area']['content'] = '<strong>About the QR code</strong>
+<br><br>
+We\'re thinking of using this <a href="http://en.wikipedia.org/wiki/QR_code">QR code</a> to expedite registration at the UN. Currently the QR code contains your first name, your last name, and your organization.';
+  $handler->display->display_options['footer']['area']['format'] = 'filtered_html';
   /* Field: User: Mobile Code */
   $handler->display->display_options['fields']['field_mobile_code']['id'] = 'field_mobile_code';
   $handler->display->display_options['fields']['field_mobile_code']['table'] = 'field_data_field_mobile_code';

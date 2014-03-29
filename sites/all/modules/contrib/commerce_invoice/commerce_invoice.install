@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function commerce_invoice_schema() {
+  $schema = array();
+  $schema['commerce_invoice'] = array(
+    'description' => 'The base table for invoices.',
+    'fields' => array(
+      'invoice_id' => array(
+        'description' => 'The primary identifier for an invoice.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'invoice_number' => array(
+        'description' => 'The invoice number displayed to the customer.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The type of this invoice.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that owns this invoice.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'order_id' => array(
+        'description' => 'The order id.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the invoice was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the invoice was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('invoice_id')
+  );
+  return $schema;
+}
+
+/**
+ * Add the uid field to the schema
+ */
+function commerce_invoice_update_7101(&$sandbox) {
+  if (!db_field_exists('commerce_invoice', 'uid')) {
+    $uid = array(
+      'description' => 'The {users}.uid that owns this invoice.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    );
+    db_add_field('commerce_invoice', 'uid', $uid);
+    $result = db_select('commerce_invoice', 'c')
+      ->fields('c')
+      ->execute();
+    while ($record = $result->fetchAssoc()) {
+      $invoice_id = $record['invoice_id'];
+      $order_id = $record['order_id'];
+      $order_result = db_select('commerce_order', 'c')
+        ->fields('c')
+        ->condition('order_id', $order_id)
+        ->execute();
+      $order_fields = $order_result->fetchAssoc();
+      db_update('commerce_invoice')
+        ->fields(array(
+          'uid' => $order_fields['uid'],
+        ))
+        ->condition('invoice_id', $invoice_id)
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Add the type field to the schema
+ */
+function commerce_invoice_update_7100(&$sandbox) {
+  // Add type
+  if (!db_field_exists('commerce_invoice', 'type')) {
+    $type = array(
+      'description' => 'The type of this invoice.',
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    );
+    db_add_field('commerce_invoice', 'type', $type);
+    db_update('commerce_invoice')
+      ->fields(array(
+        'type' => 'commerce_invoice',
+      ))
+      ->execute();
+  }
+}

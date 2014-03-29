@@ -1,0 +1,286 @@
+<?php
+
+/**
+ * @file
+ * Provides a Pay by Cheque payment method for Drupal commerce
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function commerce_cheque_menu() {
+  $items = array();
+
+  // Add a menu item for capturing authorizations.
+  $items['admin/commerce/orders/%commerce_order/payment/%commerce_payment_transaction/cheque-cash'] = array(
+    'title' => 'Cash',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_cheque_cash_form', 3, 5),
+    'access callback' => 'commerce_cheque_cash_access',
+    'access arguments' => array(3, 5),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE,
+    'weight' => 2,
+  );
+  
+  $items['admin/commerce/config/commerce-cheque'] = array(
+    'title' => 'Cheque settings',
+    'description' => 'Override the title of the Commerce Cheque Payment method',
+    'access arguments' => array('configure store'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_cheque_admin_config')
+  );
+    
+
+  return $items;
+}
+
+/**
+ * Form builder; The settings form for commerce cheque.
+ *
+ * @ingroup forms
+ * @see system_settings_form()
+ */
+function commerce_cheque_admin_config() {
+  $form['commerce_cheque_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#default_value' => variable_get('commerce_cheque_title', 'Cheque'),
+    '#description' => t('Override the default title of the commerce cheque payment method.'),
+  );
+
+  return system_settings_form($form);
+}
+/**
+ * User access callback for cashing cheque
+ */
+function commerce_cheque_cash_access($order, $transaction) {
+  // Return FALSE if the transaction isn't with a Cheque
+  if ($transaction->payment_method != 'commerce_cheque') {
+    return FALSE;
+  }
+  else {
+    if ($transaction->status == COMMERCE_PAYMENT_STATUS_PENDING) {
+      // Allow access if the user can update payments on this order.
+      return commerce_payment_transaction_access('update', $transaction);
+    }
+    else {
+      return FALSE;
+    }
+  }
+}
+
+/**
+ * Form to cash a cheque
+ */
+function commerce_cheque_cash_form($form, &$form_state, $order, $transaction) {
+  $form_state['order'] = $order;
+  $form_state['transaction'] = $transaction;
+
+  // Load and store the payment method instance for this transaction.
+  $payment_method = commerce_payment_method_instance_load($transaction->instance_id);
+  $form_state['payment_method'] = $payment_method;
+  
+  $form['information'] = array(
+    '#markup' => t('Cashing the cheque means that the cheque has been verified and cashed').'<br />'
+  );
+  // Get default values
+  if (isset($transaction->payload)){
+    // Most recent element
+    $default = array_pop($transaction->payload);
+  }
+  // Cheque date
+  // Use date field if available
+  if(module_exists('date')){
+    module_load_include('inc', 'date', 'date_api_elements');
+    $form['cheque_date'] = array(
+      '#title' =>  t('Cheque date'),
+      '#description' => t('Enter cheque date here'),
+      '#type' => 'date_popup',
+      '#default_value' => isset($default['cheque_date']) ? $default['cheque_date'] : date("Y-m-d"),
+      '#date_type' => DATE_DATETIME,
+      '#date_timezone' => date_default_timezone(),
+      '#date_format' => 'Y-m-d',
+      '#date_increment' => 1,
+      '#date_year_range' => '-3:+3',
+    );
+  }else{
+    $form['cheque_date'] = array(
+      '#title' => t('Cheque date'),
+      '#type' => 'textfield',
+      '#description' => t('Enter cheque date here'),
+      '#default_value' => isset($default['cheque_date']) ? $default['cheque_date'] : date("Y-m-d"),
+      '#size' => 48,
+    );
+  }
+  // Payee name
+  $form['payee_name'] = array(
+    '#title' => t('Payee name'),
+    '#type' => 'textfield',
+    '#description' => t('Enter cheque payee name here'),
+    '#default_value' => isset($default['payee_name']) ? $default['payee_name'] : '',
+    '#size' => 60,
+  );
+  // Cheque reference
+  $form['reference'] = array(
+    '#title' => t('Reference'),
+    '#type' => 'textfield',
+    '#description' => t('Enter cheque reference number here'),
+    '#default_value' => $transaction->remote_id,
+    '#size' => 32,
+  );
+  // Cheque status
+  $form['cheque_status'] = array(
+    '#title' => t('Cheque status'),
+    '#type' => 'select',
+    '#description' => t('Select the cheque deposit status here'),
+    '#options' => drupal_map_assoc(array('Received', 'Deposited', 'Cleared')),
+    '#default_value' => $transaction->remote_status,
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Cash')
+  );
+  
+  return $form;
+}
+
+function commerce_cheque_cash_form_submit($form, &$form_state) {
+  $transaction = $form_state['transaction'];
+  $order = $form_state['order'];
+  $payload = array();
+  if (!empty($form_state['values']['cheque_status'])) {
+    $transaction->remote_status = $form_state['values']['cheque_status'];
+    switch($form_state['values']['cheque_status']){
+      case 'Received':
+          $transaction->message = t('The cheque for this order has been received');
+          $transaction->status = COMMERCE_PAYMENT_STATUS_PENDING;
+        break;
+      case 'Deposited':
+          $transaction->message = t('The cheque for this order has been deposited');
+          $transaction->status = COMMERCE_PAYMENT_STATUS_PENDING;
+        break;
+      case 'Cleared':
+          $transaction->message = t('The cheque for this order has been cleared');
+          $transaction->status = COMMERCE_PAYMENT_STATUS_SUCCESS;
+        break;
+    }
+  }else{
+    // Assume success as default status
+    $transaction->message = t('The cheque for this order has been cashed');
+    $transaction->status = COMMERCE_PAYMENT_STATUS_SUCCESS;
+  }
+  if (!empty($form_state['values']['reference'])) {
+    $transaction->remote_id = $form_state['values']['reference'];
+  }
+  if (!empty($form_state['values']['payee_name'])) {
+    $payload['payee_name'] = $form_state['values']['payee_name'];
+  }
+  if (!empty($form_state['values']['cheque_date'])) {
+    $payload['cheque_date'] = $form_state['values']['cheque_date'];
+  }
+  if($payload){
+    $transaction->payload[REQUEST_TIME] = $payload; // Add additional fields
+  }
+  commerce_payment_transaction_save($transaction);
+  $form_state['redirect'] = 'admin/commerce/orders/'.$order->order_id.'/payment';
+}
+
+/**
+ * Implements hook_commerce_payment_method_info().
+ */
+function commerce_cheque_commerce_payment_method_info() {
+  $payment_methods = array();
+
+  $payment_methods['commerce_cheque'] = array(
+    'title' => variable_get('commerce_cheque_title', 'Cheque'),
+    'description' => t('Pay by cheque'),
+    'active' => TRUE,
+  );
+
+  return $payment_methods;
+}
+
+/**
+ * Payment method callback: settings form.
+ */
+function commerce_cheque_settings_form($settings = NULL) {
+  
+  $settings = (array) $settings + array(
+    'information' => ''
+  );
+  
+  $form = array();
+  
+  $form['information'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Information'),
+    '#description' => t('Information you would like to be shown to users when they select this payment method, such as the address where they should send the cheque'),
+    '#default_value' => $settings['information']
+  );
+  
+  return $form;
+}
+
+/**
+ * Payment method callback: checkout form.
+ */
+function commerce_cheque_submit_form($payment_method, $pane_values, $checkout_pane, $order) {
+  $form = array();
+
+  if (!empty($payment_method['settings']['information'])) {
+    $form['commerce_cheque_description'] = array(
+      '#markup' => $payment_method['settings']['information']
+    );
+  }
+  
+  // Need to create a dummy value to solve http://drupal.org/node/1230666
+  // Probably an issue in the main commerce module
+  $form['dummy'] = array(
+    '#type' => 'hidden',
+    '#value' => 'dummy'
+  );
+
+  
+  return $form;
+}
+
+/**
+ * Payment method callback: checkout form validation.
+ */
+function commerce_cheque_submit_form_validate($payment_method, $pane_form, $pane_values, $order, $form_parents = array()) {
+  
+}
+
+/**
+ * Payment method callback: checkout form submission.
+ */
+function commerce_cheque_submit_form_submit($payment_method, $pane_form, $pane_values, $order, $charge) {
+  $order->data['commerce_cheque'] = $pane_values;
+
+  commerce_cheque_transaction($payment_method, $order, $charge);
+}
+
+/**
+ * Creates a cheque payment transaction for the specified charge amount.
+ *
+ * @param $payment_method
+ *   The payment method instance object used to charge this payment.
+ * @param $order
+ *   The order object the payment applies to.
+ * @param $charge
+ *   An array indicating the amount and currency code to charge.
+ */
+function commerce_cheque_transaction($payment_method, $order, $charge) {
+  $transaction = commerce_payment_transaction_new('commerce_cheque', $order->order_id);
+  $transaction->instance_id = $payment_method['instance_id'];
+  $transaction->amount = $charge['amount'];
+  $transaction->currency_code = $charge['currency_code'];
+  $transaction->status = COMMERCE_PAYMENT_STATUS_PENDING;
+  $transaction->message = t('This order is waiting for the cheque to be cashed.');
+
+  commerce_payment_transaction_save($transaction);
+}
+
+
