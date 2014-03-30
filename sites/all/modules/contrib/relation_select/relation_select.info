@@ -1,0 +1,21 @@
+name = Relation Select
+description = A form element to create and edit relations
+dependencies[] = relation
+dependencies[] = views
+dependencies[] = subform
+package = "Relation"
+core = 7.x
+
+; Views
+files[] = includes/relation_select.views.inc
+files[] = includes/relation_select.views_default.inc
+files[] = includes/relation_select_plugin_style.inc
+
+; Theme
+files[] = theme/theme.inc
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "relation_select"
+datestamp = "1380625486"
+

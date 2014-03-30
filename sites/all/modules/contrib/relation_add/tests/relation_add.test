@@ -1,0 +1,167 @@
+<?php
+
+/**
+ * @file
+ * Tests for Relation Add module.
+ */
+
+/**
+ * Tests Relation Add.
+ *
+ * Create nodes, add relations and verify that they are related.
+ */
+class RelationAddTestCase extends RelationTestCase {
+  protected $sleep = FALSE;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Relation Add test',
+      'description' => 'Tests Relation Add.',
+      'group' => 'Relation Add',
+    );
+  }
+
+  function setUp() {
+    $this->sleep = TRUE;
+    parent::setUp('relation_add');
+
+    // Add node edit role
+    $roles = $this->web_user->roles;
+    $role = array_shift($roles);
+    $permissions = array(
+      'administer nodes',
+      'bypass node access',
+    );
+
+    user_role_grant_permissions($role, $permissions);
+
+    $this->createRelationAddFieldWithInstance('node', 'article', 'reladd', array('symmetric' => 'symmetric'));
+  }
+
+  /**
+   * Create a demo text field and an instance of it.
+   */
+  function createRelationAddFieldWithInstance($entity, $bundle, $field_name, $relation_types) {
+    // Setup a field and instance
+    $this->field_name = $field_name;
+    $this->field = array('field_name' => $this->field_name, 'type' => 'relation_add');
+    field_create_field($this->field);
+
+    $this->instance = array(
+      'field_name' => $this->field_name,
+      'entity_type' => $entity,
+      'bundle' => $bundle,
+      'label' => $this->randomName() . '_label',
+      'settings' => array(
+        'relation_type' => $relation_types,
+      ),
+      'widget' => array(
+        'type' => 'relation_add',
+        'settings' => array(
+          'relation_endpoint_label' => 'endpoint',
+          'relation_endpoint_custom_label' => '',
+          'relation_endpoint_label_delta' => '',
+          'relation_endpoint_search_by_id' => '',
+        ),
+      ),
+      'display' => array(
+        'full' => array(
+          'type' => 'text_default',
+        ),
+      ),
+    );
+    field_create_instance($this->instance);
+  }
+
+  /**
+   * Tests relation add field.
+   */
+  function testRelationAddCRU() {
+    $node = array(
+      'type' => 'article',
+      'promote' => 1,
+      'title' => 'Boy',
+    );
+    $node['reladd']['und'][0] = array(
+      'relation_type' => 'symmetric',
+      'endpoints' => array(
+        LANGUAGE_NONE => array(
+          0 => array('entity_type' => 'node', 'entity_id' => $this->node1->nid),
+        ),
+      ),
+    );
+
+    // Create new node and relation
+    $node = $this->drupalCreateNode($node);
+    $reladd_field_items = field_get_items('node', $node, 'reladd');
+
+    $found_this_endpoint = FALSE;
+    $found_target_endpoint = FALSE;
+    foreach ($reladd_field_items[0]['endpoints'][LANGUAGE_NONE] as $endpoint) {
+      if ($endpoint['entity_type'] == 'node' && $endpoint['entity_id'] == $node->nid) {
+        $found_this_endpoint = TRUE;
+      }
+      if ($endpoint['entity_type'] == 'node' && $endpoint['entity_id'] == $this->node1->nid) {
+        $found_target_endpoint = TRUE;
+      }
+    }
+
+    $this->assertTrue($found_this_endpoint && $found_target_endpoint, 'Relation created.');
+
+    // Update node relation
+    $node->reladd[LANGUAGE_NONE][0]['endpoints'][LANGUAGE_NONE][0]['entity_id'] = $this->node4->nid;
+    node_save($node);
+
+    $relation = relation_load($node->reladd[LANGUAGE_NONE][0]['rid'], NULL, TRUE);
+    $this->assertTrue(!empty($relation), 'Relation load successfull.');
+
+    $found_this_endpoint = FALSE;
+    $found_target_endpoint = FALSE;
+    if (!empty($relation)) {
+      foreach ($relation->endpoints[LANGUAGE_NONE] as $endpoint) {
+        if ($endpoint['entity_type'] == 'node' && $endpoint['entity_id'] == $node->nid) {
+          $found_this_endpoint = TRUE;
+        }
+        if ($endpoint['entity_type'] == 'node' && $endpoint['entity_id'] == $this->node4->nid) {
+          $found_target_endpoint = TRUE;
+        }
+      }
+      $this->assertTrue($found_this_endpoint && $found_target_endpoint, 'Relation update successfull.');
+    }
+  }
+
+  /**
+   * UI tests relation add field.
+   */
+  function testRelationAddUI() {
+    $langcode = LANGUAGE_NONE;
+    $title_key = "title";
+    $body_key = "body[$langcode][0][value]";
+    $relation_key = "reladd[$langcode][0][relation_options][targets][target_2]";
+
+    // Create node to edit.
+    $edit = array();
+    $edit[$title_key] = $this->randomName(8);
+    $edit[$body_key] = $this->randomName(16);
+    $edit[$relation_key] = $this->node1->title . ' [node:' . $this->node1->nid . ']';
+
+    $this->drupalPost('node/add/article', $edit, t('Save'));
+    $this->assertText($this->node1->title, 'Relation on the node page.');
+
+    $this->clickLink(t('Edit'));
+    $edit = array();
+
+    $edit[$relation_key] = $this->node4->title . ' [node:' . $this->node4->nid . ']';
+    $this->drupalPost(NULL, $edit, t('Save'));
+
+    $this->assertText($this->node4->title, 'Relation on the node page.');
+
+    $this->clickLink(t('Edit'));
+    $edit = array();
+
+    $edit['reladd[' . $langcode . '][0][delete]'] = 1;
+    $this->drupalPost(NULL, $edit, t('Save'));
+
+    $this->assertNoText($this->node4->title, 'Relation on the node page.');
+  }
+}
