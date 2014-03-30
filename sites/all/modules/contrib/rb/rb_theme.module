@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * A necessary file for letting Drupal know this is a module. All functionality
+ * goes into rb_theme.rules.inc.
+ */
+
+/**
+ * Implement hook_preprocess_html().
+ */
+function rb_misc_preprocess_html(&$vars) {
+  // Check if the rule has set the static variable
+  if(rb_theme_static('head_title')) {
+    $vars['head_title'] = rb_theme_static('head_title');
+  }
+  if(rb_theme_static('classes_array')) {
+    // Split the variable to an array on new lines
+    $classes = explode( "\n", rb_theme_static('classes_array'));
+    foreach($classes as $class) {
+      // Add each class to the classes_array, sanitze the class using
+      // drupal_html_class
+      $vars['classes_array'][] = drupal_html_class($class);
+    }   
+  }
+}
+
+/**
+ * Helper function to store a value in a static variable.
+ *
+ * @param $name
+ *     The name of the value to store.
+ * @param $value
+ *     The value to store, if omitted stored value for $name is returned.
+ * @return
+ *     If $value is not passed, the value stored for $name is returned.
+ */
+function rb_theme_static($name, $value = null) {
+  static $rb_theme_static;
+  if (is_null($value) && isset($rb_theme_static[$name])) {
+    return $rb_theme_static[$name];
+  }
+  elseif (is_null($value) && !isset($rb_theme_static[$name])) {
+    return FALSE;
+  }
+  $rb_theme_static[$name] = $value;
+}

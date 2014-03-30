@@ -1,0 +1,15 @@
+core = "7.x"
+dependencies[] = "example_rule_promotion_syncronization"
+dependencies[] = "rules"
+description = "An example rule, automatically creating a promotion when an article is created."
+features[rules_config][] = "rules_actions_on_article_creation"
+features[rules_config][] = "rules_create_promotion"
+name = "Example rules: Create promotion"
+package = "Features"
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+

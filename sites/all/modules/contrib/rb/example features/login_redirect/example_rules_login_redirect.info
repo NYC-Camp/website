@@ -1,0 +1,14 @@
+core = "7.x"
+dependencies[] = "rules"
+description = "An example rule, redirecting administrators to the content overview page on login, and non-administrators to the front page."
+features[rules_config][] = "rules_login_redirect_for_administrators"
+features[rules_config][] = "rules_login_redirect_for_non_administrators"
+name = "Example rules: Login redirect"
+package = "Features"
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+

@@ -1,0 +1,14 @@
+name = Rules Bonus: Views
+description = "Provides some integration between Views and Rules"
+package = Rules
+core = 7.x
+dependencies[] = rules
+dependencies[] = views
+files[] = views/rb_views_plugin_argument_validate_rules_component.inc
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+

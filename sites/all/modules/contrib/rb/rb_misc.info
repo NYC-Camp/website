@@ -1,0 +1,13 @@
+name = "Rules Bonus: Miscellaneous"
+description = "Some miscellaneous additional functionality for Rules."
+package = "Rules"
+core = "7.x"
+dependencies[] = rules
+files[] = rb_misc.rules.inc
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+

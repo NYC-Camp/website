@@ -1,0 +1,18 @@
+core = "7.x"
+dependencies[] = "comment"
+dependencies[] = "features"
+dependencies[] = "list"
+dependencies[] = "rules"
+description = "An example rule, allowing users to optionally be notified when comments are posted to their content."
+features[field][] = "user-user-field_user_comment_notify"
+features[rules_config][] = "rules_notify_node_author_on_new_comments"
+name = "Notify node authors about new comments"
+package = "Features"
+php = "5.2.4"
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+
