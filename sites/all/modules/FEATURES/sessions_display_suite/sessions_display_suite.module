@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Sessions display suite feature.
+ */
+
+include_once 'sessions_display_suite.features.inc';
