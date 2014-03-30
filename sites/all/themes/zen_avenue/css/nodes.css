@@ -30,15 +30,7 @@
   position: relative; /* Otherwise these elements will appear below the "Unpublished" text. */
 }
 
-#content > div > div > div.field.field-name-ds-user-picture.field-type-ds.field-label-hidden {
-  float: left;
-  margin: 0 18px 6px 0;
-  width: 110px;
-}
-
-#content > div > div > div.field.field-name-submitted-by.field-type-ds.field-label-hidden {
-  text-transform: uppercase;
-  font-size: 12px;
-  line-height: 1.5em;
-  margin: 0 0 1.5em;
+#content > div > div > div.group-right > div.field.field-name-add-to-my-sessions-flag.field-type-ds.field-label-hidden {
+  text-align: center;
+  font-weight: bold;
 }
