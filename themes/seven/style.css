@@ -1004,24 +1004,27 @@ div.add-or-remove-shortcuts {
 
 /* ADMIN - SESSIONS - Scheduling */
 
+.pane-admin-schedling-slots,
 .pane-admin-sessions-for-scheduling {
 	border: 1px solid silver;
 }
 
+.pane-admin-schedling-slots h2.pane-title,
 .pane-admin-sessions-for-scheduling h2.pane-title {
 	font-size: 1.3em;
 	font-weight: bold;
 	background-color: #f5f5f5;
 	padding: .5em;
-	margin: 0;
+	margin: 0 0 .5em;
+	border-bottom: 1px solid silver;
 }
 
-.view-admin-sessions-for-scheduling {
-}
+/* Sessions */
 
 .view-admin-sessions-for-scheduling .view-filters {
 	padding-left: .75em;
 	padding-right: .75em;
+	padding-bottom: .5em;
 }
 
 .view-admin-sessions-for-scheduling #edit-type-wrapper  {
@@ -1042,10 +1045,33 @@ div.add-or-remove-shortcuts {
 	display: inline-block;
 }
 
+.view-admin-sessions-for-scheduling .view-filters #edit-title-wrapper {
+	width: 35%;
+	padding-right: .5em;
+}
+
+.view-admin-sessions-for-scheduling .view-filters .views-widget {
+	width: 100%;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.view-admin-sessions-for-scheduling .view-filters .form-item {
+	padding-top: .25em;
+	padding-bottom: 0;
+}
+
+
+.view-admin-sessions-for-scheduling .view-filters #edit-title {
+	width: 95%;
+}
+
 .view-admin-sessions-for-scheduling .view-filters input.form-submit {
-	font-size: .9em;
-	padding: 3px 5px;
-	margin: 2.2em 0 0 1em;
+	font-size: .85em;
+	padding: 2px 5px;
+	margin: 2em 0 0 1em;
 	border-radius: 5px;
 	float: none;
 }
@@ -1074,20 +1100,117 @@ div.add-or-remove-shortcuts {
 	line-height: 1.5em;
 }
 
-
-
 .view-admin-sessions-for-scheduling .views-row .views-label {
 	display: inline-block;
 	font-weight: bold;
 }
 
-.view-admin-sessions-for-scheduling .views-row .views-field-field-presenters .field-content,
-.view-admin-sessions-for-scheduling .views-row .views-field-field-session-track .field-content,
-.view-admin-sessions-for-scheduling .views-row .views-field-field-session-track .field-content,
-.view-admin-sessions-for-scheduling .views-row .views-field-field-experience .field-content,
-.view-admin-sessions-for-scheduling .views-row .views-field-field-session-other-info .field-content,
-.view-admin-sessions-for-scheduling .views-row .views-field-field-event-type .field-content {
+
+
+/* Schedule Slots */
+
+.pane-admin-schedling-slots .view-header {
+	float: right;
+	width: 10em;
+	margin: .5em;
+	border: 1px solid gray;
+	background-color: #4e6da0;
+}
+
+.pane-admin-schedling-slots .view-header a {
+	font-size: .85em;
+	padding: .25em;
+	color: white;
+}
+
+.view-grouping {
+}
+
+.pane-admin-schedling-slots .view-content {
+	vertical-align: top;
+}
+
+.pane-admin-schedling-slots .view-content .item-list {
+	width: 23%;
 	display: inline-block;
+	vertical-align: top;
+	margin: .5em;
+	border: 1px solid silver;
+	background-color: #fafafa;
+}
+
+.pane-admin-schedling-slots .view-content .item-list h3 {
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  padding: .5em;
+  margin: 0 0 .5em;
+	border-bottom: 1px solid silver;
+}
+
+.pane-admin-schedling-slots .view-content .item-list ul {
+	margin: 0;
+}
+
+.pane-admin-schedling-slots .view-content .item-list ul li {
+	list-style: none;
+}
+
+.pane-admin-schedling-slots .view-content .item-list ul li.schedule-slot {
+	padding: .25em .5em;
+}
+
+.view-grouping .view-grouping-content {
+	border: 1px solid silver;
+	margin: .5em;
+}
+
+.view-grouping .view-grouping-content .view-grouping-content {
+	border: none;
+	margin: 0;
+}
+
+
+
+.view-grouping .view-grouping-header {
+	font-size: 1.3em;
+	font-weight: bold;
+	background-color: #f5f5f5;
+	padding: .5em;
+	margin: 0 0 .5em;
+	border-bottom: 1px solid silver;
+}
+
+.view-grouping .view-grouping .view-grouping-header {
+	font-size: 1em;
+}
+
+.schedule-slot,
+.schedule-slot a {
+	font-size: .9em;
+}
+
+.schedule-slot h4 {
+	margin: 0;
+}
+
+.unscheduled {
+	border: 1px solid red;
+	padding: .5em;
+	
+	color: red;
+	background-color: #fcf9f9;
+}
+
+.scheduled {
+	border: 1px solid green;
+	padding: .5em;
+	color: green;
+	background-color: #f4faf5;
+}
+
+.scheduled a {
+	color: green;	
 }
 
 
