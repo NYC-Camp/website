@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * The most basic parts of the Rules mechanisms for the Think Twice rules.
+ */
+
+/**
+ * Helper for the 'rb_thinktwice_action_page_alter' action.
+ * Implements hook_page_alter().
+ */
+function rb_thinktwice_page_alter(&$page) {
+  $alter = &drupal_static('rb_page_alter', array());
+
+  // If our action, rb_thinktwice_action_page_alter executed...
+  if (!empty($alter)) {
+    foreach ($alter as $index => $values) {
+      drupal_array_set_nested_value($page,
+        // set this property in $page:
+        explode(':', $alter[$index]['property']),
+        // with this value:
+        $alter[$index]['value']);
+    }
+  }
+}

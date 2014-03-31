@@ -1,0 +1,13 @@
+name = Batched Rules
+description = Provides a batched rule set component to rules.
+package = Rules
+core = 7.x
+files[] = rb_batch.rules.inc
+dependencies[] = rules
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+

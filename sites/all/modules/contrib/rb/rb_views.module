@@ -1,0 +1,218 @@
+<?php
+/**
+ * @file
+ * Globally available functions for Rules' Views integration.
+ */
+
+function rb_views_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'rb_views') . '/views',
+  );
+}
+
+/**
+ * Implements of hook_views_pre_execute().
+ *
+ * @param $view
+ *   The view object that is going to be executed.
+ */
+function rb_views_views_pre_build($view) {
+  // Get a light-weight and easy-to-handle representation of the view.
+  $view_representation = rb_views_create_view_representation($view);
+
+  // Call the Rules event, passing along the view representation.
+  rules_invoke_event('rb_views_event_view_execute', $view_representation);
+
+  // Update the original view according to changes in the representation.
+  rb_view_update_real_view($view, $view_representation);
+}
+
+/**
+ * Implements of hook_views_pre_render().
+ *
+ * @param $view
+ *   The view object that is going to be rendered.
+ */
+function rb_views_views_pre_render($view) {
+  $view_representation = rb_views_create_view_representation($view);
+  rules_invoke_event('rb_views_event_view_render', $view_representation);
+  rb_view_update_real_view($view, $view_representation);
+}
+
+/**
+ * Implements of hook_views_post_render().
+ *
+ * @param $view
+ *   The view object that has been rendered.
+ */
+function rb_views_views_post_render($view, $output, $cache) {
+  $view_representation = rb_views_create_view_representation($view);
+  rules_invoke_event('rb_views_event_view_complete', $view_representation);
+  rb_view_update_real_view($view, $view_representation);
+}
+
+/**
+ * Creates a new view representation array from a given view object.
+ *
+ * This object is used to avoid having Rules copying the quite large view data
+ * object when doing different operations. And also to make a few view
+ * properties easier to access.
+ *
+ * @param $view
+ *   The full view object. (This is passed by reference to avoid copying the
+ *   actual view just for creating a light-weight representation.)
+ * @return
+ *   An array with a few view properties relevant for Rules.
+ */
+function rb_views_create_view_representation(view $view) {
+  $view_representation = new stdClass();
+  // Set all simple non-writable properties.
+  foreach (rb_views_get_nonwritable_representation_properties() as $representation_property => $view_property) {
+    $view_representation->$representation_property = $view->$view_property;
+  }
+
+  // Set all simple writable properties, too.
+  foreach (rb_views_get_writable_representation_properties() as $representation_property => $view_property) {
+    $view_representation->$representation_property = $view->$view_property;
+  }
+
+  // Set the handler properties.
+  foreach (rb_views_get_views_handlers() as $handler_type => $handler_label) {
+	if(isset($view->$handler_type)) {
+      $view_representation->$handler_type = array_keys($view->$handler_type);
+    }
+  }
+
+  return $view_representation;
+}
+
+/**
+ * Updates a view object according to any changes made to a view representation.
+ *
+ * @param $view
+ *   The view to update. Passed by argument.
+ * @param $view_representation
+ *   The view representation, containing information about any updates that
+ *   should be make to the view.
+ */
+function rb_view_update_real_view(view $view, $view_representation) {
+  // Update all simple (writable) properties.
+  foreach (rb_views_get_writable_representation_properties() as $representation_property => $view_property) {
+    $view->$view_property = $view_representation->$representation_property;
+  }
+
+  // Check each handler type, to see if any handler has been modified.
+  foreach (rb_views_get_views_handlers() as $handler_name => $handler_label) {
+    if (isset($view->{$handler_name}) && (array_keys($view->{$handler_name}) != $view_representation->{$handler_name})) {
+      // If handlers of a type has been modified, build a new list of handler
+      // instances according to the view representation, and update the real
+      // view.
+      $updated_handlers = array();
+      foreach ($view_representation->{$handler_name} as $handler_id) {
+        $updated_handlers[$handler_id] = $view->{$handler_name}[$handler_id];
+      }
+      $view->{$handler_name} = $updated_handlers;
+    }
+  }
+}
+
+/**
+ * Returns an array of non-handler properties for view representations.
+ *
+ * The returned array is keyed with the representation name, with each value
+ * being the property name used in the real view.
+ */
+function rb_views_get_nonwritable_representation_properties() {
+  return array(
+    'machine_name' => 'name',
+    'display' => 'current_display',
+    'human_name' => 'human_name',
+    'base_table' => 'base_table',
+    'total_rows' => 'total_rows',
+  );
+}
+
+/**
+ * Returns an array of non-handler properties for view representations.
+ *
+ * The returned array is keyed with the representation name, with each value
+ * being the property name used in the real view.
+ */
+function rb_views_get_writable_representation_properties() {
+  return array(
+    'args' => 'args',
+    'current_page' => 'current_page',
+    'items_per_page' => 'items_per_page',
+    'offset' => 'offset',
+  );
+}
+
+/**
+ * Returns a list of all handler types for Views, plus handler labels.
+ */
+function rb_views_get_views_handlers() {
+  return array(
+    'field' => t('View field'),
+    'argument' => t('Contextual filter'),
+    'sort' => t('Sort criteria'),
+    'filter' => t('Filter'),
+    'relationship' => t('Relationship'),
+    'header' => t('Header'),
+    'footer' => t('Footer'),
+    'empty' => t('No result reaction'),
+  );
+}
+
+/**
+ * Class defining the Views argument validator plugin.
+ */
+class RbViewsArgumentValidator extends RulesRuleSet {
+
+  protected $itemName = 'views argument validator';
+
+  /**
+   * Override to set the provided and required variables to fixed sets.
+   */
+  public function __construct($variables = array(), $providesVars = array()) {
+    // Set some fixed variables used by this type of plugin. (Editing of these
+    // is disabled.)
+    $variables = array(
+      'arg' => array(
+        'type' => 'text',
+        'label' => t('Argument'),
+      ),
+      'args' => array(
+        'type' => 'list<text>',
+        'label' => t('All arguments'),
+      ),
+      'validation' => array(
+        'type' => 'boolean',
+        'label' => t('Validation value'),
+        'parameter' => FALSE,
+      ),
+    );
+
+    $providesVars = array('arg', 'args', 'validation');
+
+    parent::__construct($variables);
+    // The provided vars of a component are the names of variables, which should
+    // be provided to the caller. See rule().
+    if ($providesVars) {
+      $this->info['provides'] = $providesVars;
+    }
+  }
+}
+
+/**
+ * Class defining the UI for the Views argument validator plugin.
+ */
+class RbViewsArgumentValidatorUI extends RulesRuleSetUI {
+  // Override form to hide the variables settings.
+  public function form(&$form, &$form_state, $options = array(), $iterator = NULL) {
+    // Pass an iterator just iterating over the rules, thus no further child
+    // elements will be displayed.
+    parent::form($form, $form_state, $options, $this->element->getIterator());
+    $form['settings']['vars']['#access'] = FALSE;
+  }
+}

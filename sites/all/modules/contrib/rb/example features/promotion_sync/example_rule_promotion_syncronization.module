@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Example rule: Promotion syncronization feature.
+ */
+
+include_once('example_rule_promotion_syncronization.features.inc');
