@@ -993,3 +993,101 @@ div.add-or-remove-shortcuts {
   -webkit-border-radius: 8px;
   border-radius: 8px;
 }
+
+
+
+
+
+
+
+
+
+/* ADMIN - SESSIONS - Scheduling */
+
+.pane-admin-sessions-for-scheduling {
+	border: 1px solid silver;
+}
+
+.pane-admin-sessions-for-scheduling h2.pane-title {
+	font-size: 1.3em;
+	font-weight: bold;
+	background-color: #f5f5f5;
+	padding: .5em;
+	margin: 0;
+}
+
+.view-admin-sessions-for-scheduling {
+}
+
+.view-admin-sessions-for-scheduling .view-filters {
+	padding-left: .75em;
+	padding-right: .75em;
+}
+
+.view-admin-sessions-for-scheduling #edit-type-wrapper  {
+	display: inline-block;
+}
+
+.view-admin-sessions-for-scheduling #edit-type-wrapper .edit_type_chosen {
+	width: 150px;
+}
+
+.view-admin-sessions-for-scheduling .view-filters .views-exposed-form label {
+	display: inline-block;	
+}
+
+.view-admin-sessions-for-scheduling .view-filters .views-exposed-form .views-exposed-widget {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+
+.view-admin-sessions-for-scheduling .view-filters input.form-submit {
+	font-size: .9em;
+	padding: 3px 5px;
+	margin: 2.2em 0 0 1em;
+	border-radius: 5px;
+	float: none;
+}
+
+
+.view-admin-sessions-for-scheduling .view-content {
+	height: 600px;
+	overflow: scroll;
+	padding-left: .75em;
+	padding-right: .75em;
+}
+
+.view-admin-sessions-for-scheduling .views-row {
+	border: 1px solid silver;
+	padding: .5em;
+	font-size: .8em;
+	margin-bottom: 1em;
+	background-color: #f5f5f5;
+	line-height: 1.5em;	
+}
+
+.view-admin-sessions-for-scheduling .views-row .views-field-title {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding-bottom: .25em;
+	line-height: 1.5em;
+}
+
+
+
+.view-admin-sessions-for-scheduling .views-row .views-label {
+	display: inline-block;
+	font-weight: bold;
+}
+
+.view-admin-sessions-for-scheduling .views-row .views-field-field-presenters .field-content,
+.view-admin-sessions-for-scheduling .views-row .views-field-field-session-track .field-content,
+.view-admin-sessions-for-scheduling .views-row .views-field-field-session-track .field-content,
+.view-admin-sessions-for-scheduling .views-row .views-field-field-experience .field-content,
+.view-admin-sessions-for-scheduling .views-row .views-field-field-session-other-info .field-content,
+.view-admin-sessions-for-scheduling .views-row .views-field-field-event-type .field-content {
+	display: inline-block;
+}
+
+
