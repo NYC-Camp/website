@@ -949,7 +949,6 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 
 .page-user .view-mode-full .field-name-field-profile-irc .field-label,
 .page-user .view-mode-full .field-name-field-skill-level .field-label {	
-	width: 15%;
 	text-align: right;
 	padding-right: .35em;
 	display: inline-block;
