@@ -31,7 +31,8 @@ h2.block-title {
 }
 .node-type-session .field-name-field-experience,
 .node-type-session .field-name-field-session-other-info,
-.node-type-session .field-name-field-session-track
+.node-type-session .field-name-field-session-track,
+.node-type-session .field-name-field-session-topics
 {
   margin-left: 12px;
   margin-top: 12px;
