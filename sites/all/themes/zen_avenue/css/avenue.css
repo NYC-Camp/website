@@ -310,6 +310,10 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	margin: -15px -15px 15px;
 }
 
+.node-type-session #main .block h2.block-title {
+  margin: -15px -15px 9px;
+}
+
 .page-program .panel-pane .view-content {
 	padding: 15px;
 	overflow: hidden;
