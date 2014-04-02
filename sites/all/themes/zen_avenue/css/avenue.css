@@ -1066,3 +1066,10 @@ div.panel-pane.pane-views.pane-team {
   height: 100%;
 }
 
+/*
+ * Lead sponsor block
+ */
+
+#block-views-sponsors-lead-block {
+	background-color: white;
+}
