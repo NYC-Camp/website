@@ -1027,3 +1027,66 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 
 
 
+
+
+/* SCHEDULE - Sessions */
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes {
+	background-color: white;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .view-grouping-header {
+	color: white;
+	background-color: gray;
+	font-weight: bold;
+	padding: .5em;
+	font-size: 1.25em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .view-grouping-content {
+	padding: .5em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes h3 {
+	font-weight: bold;
+	font-size: 1em;
+	width: 20%;
+}
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .item-list {
+	border-top: 1px solid silver;
+	padding: .5em;
+	margin-top: .5em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes ul {
+	margin-left: 15%!important;
+	display: block;
+}
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes ul li {
+	width: 23%;
+	display: inline-block;
+	vertical-align: top;
+	font-size: .85em;
+	border-left: 1px solid silver;
+	margin: 1em;
+	padding: .5em .5em .5em .75em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 {
+	margin-top: 0;
+	margin-bottom: .25em;
+}
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 a {
+	font-weight: bold;
+	font-size: .9em;
+}
+
+
+
