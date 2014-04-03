@@ -1074,7 +1074,7 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 
 
 .page-program-sessions-schedule .view-schedule-sessions-keynotes ul li {
-	width: 23%;
+	width: 20%;
 	display: inline-block;
 	vertical-align: top;
 	font-size: .85em;
@@ -1092,6 +1092,21 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 .page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 a {
 	font-weight: bold;
 	font-size: .9em;
+}
+
+@media (max-width:480px) {
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes h3 {
+		width: 20%;
+	}
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes ul {
+		margin-left: 15%!important;
+	}
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes ul li {
+		width: 80%;
+	}
 }
 
 
