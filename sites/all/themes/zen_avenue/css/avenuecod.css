@@ -1,3 +1,9 @@
+/* GENERAL */
+
+.bold {
+	font-weight: bold;
+}
+
 #main .block, .view-nyccamp-schedule .view-grouping, .region-live .block.last, .page-program .panel-pane .view, .profile-fieldgroup, #edit-picture {
 	box-shadow: 0 1px 2px #eee;
 	background: #fff;
