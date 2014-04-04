@@ -1073,3 +1073,20 @@ div.panel-pane.pane-views.pane-team {
 #block-views-sponsors-lead-block {
 	background-color: white;
 }
+
+/*
+ * DevOps Schedule
+ */
+
+#DevOpsSchedule {
+  max-width: 100%;
+}
+#DevOpsSchedule .title-row {
+  text-align: center;
+}
+#DevOpsSchedule p {
+  background-color: transparent;
+  color: black;
+  font-family: arial;
+}
+
