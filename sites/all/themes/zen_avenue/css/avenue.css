@@ -1087,8 +1087,8 @@ div.panel-pane.pane-views.pane-team {
 }
 
 #DevOpsSchedule tr td:nth-child(1) {
-	font-weight: bold;
-	font-size: .85em;
+  font-weight: bold;
+  font-size: .85em;
 }
 
 
@@ -1102,10 +1102,10 @@ div.panel-pane.pane-views.pane-team {
 }
 
 #DevOpsSchedule h4 {
-	line-height: 1.4em;
-	margin: 5px 0 3px;
-	font-weight: bold;
-	font-size: .95em;
+  line-height: 1.4em;
+  margin: 5px 0 3px;
+  font-weight: bold;
+  font-size: .95em;
 }
 
 #DevOpsSchedule p {
