@@ -143,7 +143,7 @@ function mailchimp_update_user($list, $email, $merge_vars, $message = TRUE, $mca
     $success = $mcapi->listUpdateMember($list->mc_list_id, $email, $merge_vars);
 
     if ($success && $message) {
-      //drupal_set_message(t('You have updated your settings in %list.', array('%list' => $list->label)));
+      drupal_set_message(t('You have updated your settings in %list.', array('%list' => $list->label)));
     }
 
     // Clear user cache:
