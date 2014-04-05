@@ -38,7 +38,8 @@ h2.block-title {
 .node-type-session .field-name-field-experience,
 .node-type-session .field-name-field-session-other-info,
 .node-type-session .field-name-field-session-track,
-.node-type-session .field-name-field-session-topics
+.node-type-session .field-name-field-session-topics,
+.node-type-session .field-name-field-summit-session
 {
   margin-left: 12px;
   margin-top: 12px;
@@ -1095,12 +1096,18 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 .page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 {
 	margin-top: 0;
 	margin-bottom: .25em;
+  line-height: 18px;
 }
-
 
 .page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 a {
 	font-weight: bold;
 	font-size: .9em;
+}
+
+.page-program-sessions-schedule .field-name-field-presenters,
+.page-program-sessions-schedule .field-name-field-session-track {
+  line-height: 16px;
+  padding-top: 6px;
 }
 
 @media (max-width:480px) {
@@ -1118,5 +1125,7 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 	}
 }
 
-
-
+/* User Profile */
+.page-user #content > div > ul > li.tabs-primary__tab.is-active > a {
+  color: green;
+}
