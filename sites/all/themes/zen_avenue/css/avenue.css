@@ -1082,15 +1082,15 @@ div.panel-pane.pane-views.pane-team {
   max-width: 100%;
 }
 
-#DevOpsSchedule .title-row {
+#DevOpsSchedule th {
   text-align: center;
+  font-size: .95em;
+	font-weight: normal;
 }
 
 #DevOpsSchedule tr td:nth-child(1) {
-  font-weight: bold;
-  font-size: .85em;
+  font-size: .8em;
 }
-
 
 #DevOpsSchedule tr td:nth-child(2),
 #DevOpsSchedule tr td:nth-child(3) {
