@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * The most basic parts of the Rules mechanisms for affecting blocks goes here.
+ */
+
+function rb_block_block_list_alter(&$blocks) {
+  // Get any blocks added or modified by Rules Bons: Block.
+  $modified_blocks = &drupal_static('rb_block_blocks', array());
+  $disabled_blocks = &drupal_static('rb_block_disabled', array());
+
+  // Add/change the modified blocks.
+  $blocks = $modified_blocks + $blocks;
+
+  // Remove the disabled blocks.
+  foreach($disabled_blocks as $key => $block) {
+    if (isset($blocks[$key])) {
+      unset($blocks[$key]);
+    }
+  }
+}

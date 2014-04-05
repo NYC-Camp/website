@@ -1,0 +1,194 @@
+<?php
+/**
+ * @file
+ * A necessary file for letting Drupal know this is a module. All functionality
+ * goes into rb_misc.rules.inc.
+ */
+
+/**
+ * Implements hook_page_manager_variant_operations().
+ *
+ * This function adds a new vertical tab on the Page manager admin pages, with a
+ * checkbox to turn on and off the Rules trigger functionality.
+ */
+function rb_misc_page_manager_variant_operations_alter(&$operations, $handler) {
+  $operations['children']['reactions'] = array(
+    'title' => t('Reactions'),
+    'description' => t('Trigger Rules reactions when this variant is loaded'),
+    'form' => 'rb_misc_page_manager_variant_trigger_form',
+    'submit' => 'rb_misc_page_manager_variant_trigger_form_submit',
+  );
+}
+
+/**
+ * Configuration form to turn on/off Rules triggers on Page manager variants.
+ */
+function rb_misc_page_manager_variant_trigger_form($form, &$form_state) {
+  $default_value = (isset($form_state['handler']->conf['rb_misc_trigger']))
+    ? $form_state['handler']->conf['rb_misc_trigger']
+    : 0;
+  $form['rb_misc_trigger'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create a Rules event for this variant'),
+    '#description' => t('This option makes this custom page appear as an event
+      in Rules. The configuration of conditions and reactions are made at in the
+      Rules configuration interface.'),
+    '#default_value' => $default_value,
+  );
+
+  return $form;
+}
+
+/**
+ * The submit procedure for Rules trigger functionaligy on PM variants.
+ */
+function rb_misc_page_manager_variant_trigger_form_submit(&$form, &$form_state) {
+  $form_state['handler']->conf['rb_misc_trigger']
+    = $form_state['values']['rb_misc_trigger'];
+}
+
+/**
+ * Helper function to build a simple array of all Rules-supported entity types.
+ *
+ * Acutally, this list is built based on which entity types are recognized by
+ * Entity API. Since Rules relies on Entity API for entity metadata, this should
+ * be perfectly allright.
+ *
+ * @staticvar <array> $rb_misc_entity_keys
+ *   An array with keys and values both set to the entity name, as declared to
+ *   Entity API.
+ * @param <boolean> $reset
+ *   Parameter that may be used to force reloading of the list, rather than
+ *   fetching the static result.
+ * @return <array>
+ *   The array of entity names (being the static variable described above).
+ */
+function rb_misc_entity_keys($reset = FALSE) {
+  static $rb_misc_entity_keys;
+
+  // Build the list of entity keys only if necessary.
+  if (!is_array($rb_misc_entity_keys || $reset)) {
+    $rb_misc_entity_keys = array();
+    foreach (entity_get_info() as $name => $entity) {
+      $rb_misc_entity_keys[$name] = $name;
+    }
+  }
+
+  return $rb_misc_entity_keys;
+}
+
+/**
+ * Implements hook_ctools_render_alter().
+ *
+ * This alter function is called when Page manager content is rendered. It
+ * checks if the called custom page variant has Rules event triggering enabled,
+ * and if so calls the event – sending along context objects as parameters.
+ */
+function rb_misc_ctools_render_alter(&$info, &$page, &$context) {
+  // To avoid unnecessary load, first check if the invoked variant is a Rules
+  // triggering variant.
+
+  if (isset($context['handler']->conf['rb_misc_trigger'])
+    && $context['handler']->conf['rb_misc_trigger']) {
+
+    // Invoke the event together with the fully loaded context entities from the
+    // variant being used.
+
+    rules_invoke_event_by_args('rb_misc_trigger_' . $context['handler']->name,
+      rb_misc_load_variant_context_entities($context['handler'], $context['contexts'])
+    );
+  }
+}
+
+/**
+ * Helper function to get a list of all configured context objects in variant.
+ *
+ * This function catches the *types* of entities in a Page manager variant, used
+ * to declare the trigger events for Rules.
+ *
+ * @param <array> $task
+ *   A task array, as defined and provided by CTools.
+ * @param <object> $handler
+ *   A task handler object, as defined and provided by CTools.
+ * @return <array>
+ *   An array matching the format Rules uses to declare variables provided by
+ *   events. The key names (used for variable names) are based on the somewhat
+ *   cumbersome IDs of the context objects in Page manager.
+ */
+function rb_misc_list_variant_context_entities($task, $subtask, $handler) {
+  // Include some files that may not be loaded when this function is called from
+  // outside Page manager.
+  ctools_include('context', 'ctools', 'includes');
+  ctools_include('context-task-handler', 'ctools', 'includes');
+
+  // Get a list of all entity types supported by Rules, and a list of all
+  // objects provided as contexts in the variant.
+  $supported_entity_types = rb_misc_entity_keys();
+  $potential_entities = ctools_context_handler_get_all_contexts($task, $subtask, $handler);
+
+  // Build an array of all context objects that Rules can handle.
+  $entities = array();
+  foreach ($potential_entities as $entity_name => $potential_entity) {
+
+    // Check the types for each potential variable, to see if any matches the
+    // types handles by Rules (or, rather, Entity API).
+    foreach ($potential_entity->type as $type) {
+      if (isset($supported_entity_types[$type])) {
+        // The variable name cannot contain colon or dashes.
+        $id = str_replace(':', '__', $entity_name);
+        $id = str_replace('-', '_', $id);
+        $entities[$id] = array(
+          'label' => $potential_entity->identifier,
+          'type' => $type,
+        );
+      }
+    }
+  }
+
+  return $entities;
+}
+
+/**
+ * Helper function to fetch fully loaded context objects from a PM variant.
+ *
+ * @param <object> $handler
+ *   The variant (task) handler, as defined and provided by CTools.
+ * @param <array> $base_contexts
+ *   An array of contexts loaded by arguments in the Page manager variant.
+ * @return <array>
+ *   A keyed array of entity objects, with their Rules configuration names used
+ *   as keys.
+ */
+function rb_misc_load_variant_context_entities($handler, $base_contexts) {
+  // Get a list of all entity types supported by Rules, and a list of fully
+  // loaded objects provided as contexts in the variant.
+  $supported_entity_types = rb_misc_entity_keys();
+  $potential_entities = ctools_context_handler_get_handler_contexts($base_contexts, $handler);
+
+  // Build the list of objects to send as variables to Rules.
+  $entities = array();
+  foreach ($potential_entities as $entity_name => $potential_entity) {
+
+    // Check the types for each potential entity, to see if any matches the
+    // types handles by Rules (or, rather, Entity API).
+    foreach ($potential_entity->type as $type) {
+      if (isset($supported_entity_types[$type])) {
+        // The variable name cannot contain colon or dashes.
+        $id = str_replace(':', '__', $entity_name);
+        $id = str_replace('-', '_', $id);
+        $entities[$id] = $potential_entity->data;
+      }
+    }
+  }
+
+  return $entities;
+}
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function rb_misc_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}

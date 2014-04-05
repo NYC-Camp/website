@@ -310,6 +310,10 @@ h2.title-inspiration, .node-type-blog h1#page-title {
 	margin: -15px -15px 15px;
 }
 
+.node-type-session #main .block h2.block-title {
+  margin: -15px -15px 9px;
+}
+
 .page-program .panel-pane .view-content {
 	padding: 15px;
 	overflow: hidden;
@@ -1060,5 +1064,29 @@ div.panel-pane.pane-views.pane-team {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+/*
+ * Lead sponsor block
+ */
+
+#block-views-sponsors-lead-block {
+	background-color: white;
+}
+
+/*
+ * DevOps Schedule
+ */
+
+#DevOpsSchedule {
+  max-width: 100%;
+}
+#DevOpsSchedule .title-row {
+  text-align: center;
+}
+#DevOpsSchedule p {
+  background-color: transparent;
+  color: black;
+  font-family: arial;
 }
 

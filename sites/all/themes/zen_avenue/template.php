@@ -160,12 +160,29 @@ function zen_avenue_preprocess_html(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("page" in this case.)
  */
-/* -- Delete this line if you want to use this function
-function STARTERKIT_preprocess_page(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
+function zen_avenue_preprocess_page(&$variables, $hook) {
+  // check if the user is logged in
+  global $user;
+  if ($user->uid) {
+    // Logged in user
+  } else {
+    // Not logged in
+    // if not logged in then give generic custom titles.
+    //allow customization of user / login / password page titles
+    if (arg(0) == 'user' && arg(1) == 'login') {
+      drupal_set_title(t('Log in'));
+    }
+    if (arg(0) == 'user') {
+      drupal_set_title(t('Log in'));
+    }
+    if (arg(0) == 'user' && arg(1) == 'password') {
+      drupal_set_title(t('Request new password'));
+    }
+    if (arg(0) == 'user' && arg(1) == 'register') {
+      drupal_set_title(t('Create new account'));
+    }
+  }
 }
-// */
-
 /**
  * Override or insert variables into the node templates.
  *

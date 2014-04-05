@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Provides a batched rule set component to rules.
+ *
+ * @see rb_batch.rules.inc
+ */
+
+/**
+ * Batch operation which will take over execution of each rule.
+ */
+function rb_batch_operation_rule_evaluate($rule, RulesState $initial_state, &$context) {
+  // Check wether we have use the initial state or is there already a modified
+  // state in batch's runtime context, otherwise initial state is used.
+  $state = (isset($context['results']['state']) ? $context['results']['state'] : $initial_state);
+  // Execute rule evaluation.
+  $rule->evaluate($state);
+  // Save current rules state for later batch operations.
+  $context['results']['state'] = $state;
+  // Check wether there are context changes made by "Alter batch context"
+  // action. Parameters of the actions call would be saved in rules state.
+  $context['message'] = (isset($state->currentArguments['batch_context_message'])
+    ? $state->currentArguments['batch_context_message']
+    : $rule->label);
+  $context['finished'] = (isset($state->currentArguments['batch_context_finished'])
+    ? $state->currentArguments['batch_context_finished']
+    : TRUE);
+  // Clean up, to make shure that everything processed will be saved.
+  $state->cleanUp($rule);
+}

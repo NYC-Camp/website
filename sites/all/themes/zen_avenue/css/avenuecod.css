@@ -1,3 +1,9 @@
+/* GENERAL */
+
+.bold {
+	font-weight: bold;
+}
+
 #main .block, .view-nyccamp-schedule .view-grouping, .region-live .block.last, .page-program .panel-pane .view, .profile-fieldgroup, #edit-picture {
 	box-shadow: 0 1px 2px #eee;
 	background: #fff;
@@ -13,6 +19,31 @@ h2.block-title {
 	text-transform: uppercase;
 }
 
+.node-type-session h2.block-title {
+  color: #fff;
+  font-size: 16px;
+  padding: 15px;
+  margin: 0;
+  text-transform: none;
+}
+.node-type-session .field .field-label {
+  font-weight: bold;
+  line-height: 27px;
+}
+.node-type-session .field-name-field-accepted
+{
+  margin-left: 12px;
+  margin-top: 20px;
+}
+.node-type-session .field-name-field-experience,
+.node-type-session .field-name-field-session-other-info,
+.node-type-session .field-name-field-session-track,
+.node-type-session .field-name-field-session-topics,
+.node-type-session .field-name-field-summit-session
+{
+  margin-left: 12px;
+  margin-top: 12px;
+}
 h2.block-title a {
 	color: #fff;
 }
@@ -817,3 +848,284 @@ h2.feature-title {
 
 
 
+
+
+/* SESSIONS - Full */
+
+body.node-type-session .field-name-field-presenters {
+	padding: .5em;
+	border-top: 1px solid #dcdcdc;
+	border-left: 1px solid #dcdcdc;
+	border-right: 1px solid #dcdcdc;
+	background-color: white;
+}
+
+body.node-type-session .field-name-field-presenters .field-name-ds-user-picture {
+	width: 35%;
+	float: right;
+	margin-bottom: 1em;
+	margin-left: .5em;
+}
+
+body.node-type-session .field-name-field-presenters .field-name-ds-user-picture img {
+	width: 100%;
+	height: auto;
+	border: 1px solid #dcdcdc;
+}
+
+
+body.node-type-session .field-name-field-presenters .field-name-field-profile-first, 
+body.node-type-session .field-name-field-presenters .field-name-field-profile-last {
+	display: inline-block;
+	padding-right: .25em;
+	font-weight: bold;
+}
+
+body.node-type-session .field-name-field-presenters .field-name-name a {
+}
+
+body.node-type-session .field-name-field-presenters .field-name-field-profile-org {
+	color: gray;
+}
+
+body.node-type-session .field-name-field-presenters .field-name-field-profile-job-title {
+	color: gray;	
+  font-size: 80%;
+}
+
+body.node-type-session #block-views-session-schedule-details-block {
+	color: gray;	
+  border-bottom: 1px solid #dcdcdc;
+  border-left: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
+	margin-bottom: 0;
+}
+
+.ds-2col-stacked > .group-left {
+  float: left;
+  width: 50%;
+  padding-right: 6px;
+}
+
+body.node-type-session #block-views-session-schedule-details-block block__title block-title {
+	
+}
+
+body.node-type-session .field-name-block-session-schedule-details .views-field-field-schedule-slot-conf-day {
+	font-weight: bold;
+  padding-top: 12px;
+
+}
+
+/* USER PROFILES - Full */  
+
+.page-user .view-mode-full .field-name-field-profile-first,
+.page-user .view-mode-full .field-name-field-profile-last {
+	display: inline-block;
+	padding-right: .25em;
+	font-weight: bold;
+	font-size: 2em;
+	padding-bottom: .1em;
+} 
+
+.page-user .view-mode-full .field-name-name {
+	font-size: 1.15em;
+	font-weight: bold;
+	color: gray;
+}
+
+.page-user .view-mode-full .field-name-ds-user-picture {
+	float: right;
+	margin-left: .5em;
+	width: 40%;
+	height: auto;
+}
+
+.page-user .view-mode-full .field-name-ds-user-picture img {
+  border: 1px solid #dcdcdc;	
+  width: 100%;
+	height: auto;
+}
+
+.page-user .view-mode-full .field-name-field-profile-org {
+	margin-top: 1.5em;
+	margin-bottom: .25em;
+}
+
+.page-user .view-mode-full .field-name-field-profile-job-title {
+	color: gray;	
+  font-size: .85em;
+	margin-bottom: 1em;
+}
+
+.page-user .view-mode-full .field-name-field-bio {
+	margin-top: 1.5em;
+	color: gray;
+	margin-bottom: 1.5em;
+}
+
+.page-user .view-mode-full .field-name-field-profile-irc .field-label,
+.page-user .view-mode-full .field-name-field-skill-level .field-label {	
+	text-align: right;
+	padding-right: .35em;
+	display: inline-block;
+}
+
+.page-user .view-mode-full .field-name-field-profile-irc .field-items,
+.page-user .view-mode-full .field-name-field-skill-level .field-items {
+	display: inline-block;	
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted {
+  padding: 1em !important;
+  border: 1px solid #dcdcdc;
+  background-color: white;	
+  font-size: .9em;
+	width: 50%;
+	display: inline-block;
+	margin-top: 1.5em;
+}.
+
+
+.page-user .view-mode-full .view-user-sessions-submitted h2 {
+
+}
+
+.page-user .view-mode-full .views-field-title {
+	font-weight: bold;
+	font-size: 1.15em;
+	margin-bottom: .25em;
+}
+
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-row-odd,
+.page-user .view-mode-full .view-user-sessions-submitted .views-row-even {
+	border-top: 1px solid #c9c9c9;
+	padding-top: 1em;
+	margin-top: 1em;
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-label {
+	font-weight: bold;
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-accepted {
+	margin-bottom: .5em;
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-accepted .views-label,
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-accepted .field-content {
+	display: inline-block;
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-schedule-slot-conf-day .views-label {
+	margin-bottom: .15em;	
+}
+
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-schedule-slot-conf-day .field-content,
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-schedule-slot-sch-tim-slot,
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-room-building,
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-schedule-slot-room,
+.page-user .view-mode-full .view-user-sessions-submitted .views-field-field-event-subtitle {
+	padding-left: 5%;
+	margin-bottom: .15em;
+}
+
+
+
+
+
+/* PARTNERS - Spotlight */
+
+#block-views-partners-slideshow-block-2 {
+	background-color: white !important;
+}
+
+
+
+
+
+/* SCHEDULE - Sessions */
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes {
+	background-color: white;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .view-grouping-header {
+	color: white;
+	background-color: gray;
+	font-weight: bold;
+	padding: .5em;
+	font-size: 1.25em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .view-grouping-content {
+	padding: .5em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes h3 {
+	font-weight: bold;
+	font-size: 1em;
+	width: 20%;
+}
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes .item-list {
+	border-top: 1px solid silver;
+	padding: .5em;
+	margin-top: .5em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes ul {
+	margin-left: 15%!important;
+	display: block;
+}
+
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes ul li {
+	width: 20%;
+	display: inline-block;
+	vertical-align: top;
+	font-size: .85em;
+	border-left: 1px solid silver;
+	margin: 1em;
+	padding: .5em .5em .5em .75em;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 {
+	margin-top: 0;
+	margin-bottom: .25em;
+  line-height: 18px;
+}
+
+.page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 a {
+	font-weight: bold;
+	font-size: .9em;
+}
+
+.page-program-sessions-schedule .field-name-field-presenters,
+.page-program-sessions-schedule .field-name-field-session-track {
+  line-height: 16px;
+  padding-top: 6px;
+}
+
+@media (max-width:480px) {
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes h3 {
+		width: 20%;
+	}
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes ul {
+		margin-left: 15%!important;
+	}
+
+	.page-program-sessions-schedule .view-schedule-sessions-keynotes ul li {
+		width: 80%;
+	}
+}
+
+/* User Profile */
+.page-user #content > div > ul > li.tabs-primary__tab.is-active > a {
+  color: green;
+}

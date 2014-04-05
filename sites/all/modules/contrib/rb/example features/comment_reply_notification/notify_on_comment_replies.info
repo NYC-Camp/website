@@ -1,0 +1,17 @@
+core = "7.x"
+dependencies[] = "comment"
+dependencies[] = "features"
+dependencies[] = "list"
+dependencies[] = "rules"
+description = "An example rule, allowing notifications when replies are posted to comments."
+features[field][] = "comment-comment_node_article-field_comment_notify"
+features[rules_config][] = "rules_notify_on_comment_replies"
+name = "Notify on comment replies"
+package = "Features"
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "rb"
+datestamp = "1380624844"
+
