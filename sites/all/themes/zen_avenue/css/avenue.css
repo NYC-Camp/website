@@ -1081,12 +1081,43 @@ div.panel-pane.pane-views.pane-team {
 #DevOpsSchedule {
   max-width: 100%;
 }
-#DevOpsSchedule .title-row {
+
+#DevOpsSchedule th {
+  text-align: center;
+  font-size: .95em;
+	font-weight: normal;
+}
+
+#DevOpsSchedule tr td:nth-child(1) {
+  font-size: .8em;
+}
+
+#DevOpsSchedule tr td:nth-child(2),
+#DevOpsSchedule tr td:nth-child(3) {
+  width: 42%;
+}
+
+#DevOpsSchedule .td-no-border {
+	text-align: center;
+	border: none;
+}
+
+#DevOpsSchedule .center-text {
   text-align: center;
 }
+
+#DevOpsSchedule h4 {
+  line-height: 1.4em;
+  margin: 5px 0 3px;
+  font-weight: bold;
+  font-size: .95em;
+}
+
 #DevOpsSchedule p {
   background-color: transparent;
-  color: black;
   font-family: arial;
+  margin: 0;
+  font-size: .9em;
 }
+
 

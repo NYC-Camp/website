@@ -1033,8 +1033,6 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 
 
 
-
-
 /* PARTNERS - Spotlight */
 
 #block-views-partners-slideshow-block-2 {
@@ -1042,11 +1040,7 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 }
 
 
-
-
-
 /* SCHEDULE - Sessions */
-
 
 .page-program-sessions-schedule .view-schedule-sessions-keynotes {
 	background-color: white;
@@ -1129,3 +1123,208 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 .page-user #content > div > ul > li.tabs-primary__tab.is-active > a {
   color: green;
 }
+
+/* FEATURED EVENTS */
+
+.page-node-1085 #page {
+	background-color: white;
+}
+
+.node-session.view-mode-featured .field-name-field-session-image {
+	width: 100%;
+	text-align: right;
+	background-color: #010101;
+	margin-bottom: 1em;
+	padding: 0;
+}
+
+.node-session.view-mode-featured .group-session-featured-header {
+	clear: both;
+	padding: 1em 0 0 1.5em;
+	position: relative;
+	border: none;
+	width: 50%;
+	margin-bottom: -11em;
+	height: 11em;
+	overflow: visible;
+}
+
+.node-session.view-mode-featured .group-session-featured-header img {
+	width: 100%;
+	height: auto;
+}
+
+.node-session.view-mode-featured .field-name-title h2 {
+	color: white;
+	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-weight: 200;
+	margin-top: 0;
+}
+
+.node-session.view-mode-featured .field-name-field-event-subtitle {
+	color: white;
+	font: 1.35em/1.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-weight: 400;
+}
+
+.node-session.view-mode-featured .field-name-block-session-schedule-details {
+	width: 50%;
+	float: right;
+	display: block;
+	clear: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+.node-session.view-mode-featured .field-name-body {
+	clear: left;
+}
+
+.node-session.view-mode-featured .field-name-add-to-my-sessions-flag {
+	width: 50%;
+	float: right;
+	color: white;
+	background-color: green;
+	display: block;
+	text-align: center;
+	line-height: 1.6em;
+	clear: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+.node-session.view-mode-featured .field-name-add-to-my-sessions-flag a {
+	color: white;
+}
+
+
+
+/* SCHEDULE - Event Schedule */
+
+.view-schedule-event-eva {
+
+}
+
+.view-schedule-event-eva h2.title {
+	font: bold 1.25em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	color: #3c3c3c;
+}
+
+.view-schedule-event-eva .field-name-title h4 {
+	font-weight: bold;
+	margin-bottom: .25em;
+}
+
+.view-schedule-event-eva .views-row {
+	margin-top: 1em;
+	clear: both;
+}
+
+.view-schedule-event-eva .field-name-field-schedule-slot-sch-tim-slot {
+	width: 15%;
+	display: inline-block;
+	vertical-align: top;
+	font-size: .85em;
+	font-weight: bold;
+}
+
+.view-schedule-event-eva .view-mode-schedule .field-name-field-schedule-slot-session-evnt {
+	width: 85%;
+	display: inline-block;
+	border-left: 1px solid silver;
+	padding-left: 1em;
+}
+
+.view-schedule-event-eva .view-mode-schedule .field-name-field-event-subtitle {
+	margin-bottom: .5em;
+}
+
+.view-schedule-event-eva .view-mode-schedule .field-name-field-event-subtitle .field-item {
+	font-size: 14px;
+	margin-bottom: 0;
+	margin-bottom: .25em;
+	font-weight: normal;
+	font-style: normal;
+}
+
+.view-schedule-event-eva .view-mode-schedule .field-name-field-presenters,
+.view-schedule-event-eva .view-mode-schedule .field-name-field-session-track,
+.view-schedule-event-eva .view-mode-schedule .field-name-field-experience,
+.view-schedule-event-eva .view-mode-schedule .field-name-add-to-my-sessions {
+	font-size: .85em;
+	margin-bottom: .25em;
+}
+
+/* SCHEDULE - User Profile */
+
+.user-profile.view-mode-schedule div {
+	vertical-align: top;
+	font-size: .975em;
+}
+
+.user-profile.view-mode-schedule .field-name-ds-user-picture {
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	margin-right: .5em;
+	margin-bottom: .5em;
+	float: left;
+}
+
+.user-profile.view-mode-schedule .field-name-ds-user-picture img {
+	border: 1px solid silver;
+	width: 100%;
+	height: auto;	
+}
+
+.user-profile.view-mode-schedule .field-name-field-profile-first,
+.user-profile.view-mode-schedule .field-name-field-profile-last {
+	font-weight: bold;
+}
+
+.user-profile.view-mode-schedule .field-name-field-profile-first,
+.user-profile.view-mode-schedule .field-name-field-profile-last,
+.user-profile.view-mode-schedule .field-name-name {
+	display: inline-block;
+	padding-right: .25em;
+}
+
+.user-profile.view-mode-schedule .field-name-name {
+	clear: right;
+}
+
+.user-profile.view-mode-schedule .field-name-field-profile-org {
+	color: gray;
+}
+
+.user-profile.view-mode-schedule .field-name-field-profile-job-title {
+	color: gray;
+	font-style: italic;
+}
+
+/* SCHEDULE - Personal Schedule Button */
+
+.field-name-add-to-my-sessions-flag {
+	margin-top: .75em;
+}
+
+.field-name-add-to-my-sessions-flag span.flag-wrapper {
+	font-size: .8em;
+	background-color: green;
+	border-bottom: 2px solid #025502;
+	padding: .3em .75em;
+}
+
+.field-name-add-to-my-sessions-flag span.flag-wrapper a  {
+	color: white;
+	text-transform: capitalize;
+}
+
+.field-name-add-to-my-sessions-flag .flag-unflagged-message {
+	margin-top: 1.25em;
+	color: red;
+}
+
+.field-name-add-to-my-sessions-flag .flag-flagged-message {
+	margin-top: 1.25em;
+	color: green;
