@@ -1033,8 +1033,6 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 
 
 
-
-
 /* PARTNERS - Spotlight */
 
 #block-views-partners-slideshow-block-2 {
@@ -1042,11 +1040,7 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 }
 
 
-
-
-
 /* SCHEDULE - Sessions */
-
 
 .page-program-sessions-schedule .view-schedule-sessions-keynotes {
 	background-color: white;
@@ -1129,7 +1123,6 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 .page-user #content > div > ul > li.tabs-primary__tab.is-active > a {
   color: green;
 }
-
 
 /* FEATURED EVENTS */
 
