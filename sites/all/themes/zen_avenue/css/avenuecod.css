@@ -1110,4 +1110,77 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 }
 
 
+/* FEATURED EVENTS */
+
+.page-node-1085 #page {
+	background-color: white;
+}
+
+.node-session.view-mode-featured .field-name-field-session-image {
+	width: 100%;
+	text-align: right;
+	background-color: #010101;
+	margin-bottom: 1em;
+	padding: 0;
+}
+
+.node-session.view-mode-featured .group-session-featured-header {
+	clear: both;
+	padding: 1em 0 0 1.5em;
+	position: relative;
+	border: none;
+	width: 50%;
+	margin-bottom: -11em;
+	height: 11em;
+	overflow: visible;
+}
+
+.node-session.view-mode-featured .group-session-featured-header img {
+	width: 100%;
+	height: auto;
+}
+
+.node-session.view-mode-featured .field-name-title h2 {
+	color: white;
+	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-weight: 200;
+	margin-top: 0;
+}
+
+.node-session.view-mode-featured .field-name-field-event-subtitle {
+	color: white;
+	font: 1.35em/1.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-weight: 400;
+}
+
+.node-session.view-mode-featured .field-name-block-session-schedule-details {
+	width: 50%;
+	float: right;
+	display: block;
+	clear: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+.node-session.view-mode-featured .field-name-body {
+	clear: left;
+}
+
+
+.node-session.view-mode-featured .field-name-add-to-my-sessions-flag {
+	width: 50%;
+	float: right;
+	color: white;
+	background-color: green;
+	display: block;
+	text-align: center;
+	line-height: 1.6em;
+	clear: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+.node-session.view-mode-featured .field-name-add-to-my-sessions-flag a {
+	color: white;
+}
 
