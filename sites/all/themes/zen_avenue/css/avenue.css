@@ -1097,7 +1097,12 @@ div.panel-pane.pane-views.pane-team {
   width: 42%;
 }
 
-#DevOpsSchedule .two-column-title {
+#DevOpsSchedule .td-no-border {
+	text-align: center;
+	border: none;
+}
+
+#DevOpsSchedule .center-text {
   text-align: center;
 }
 
