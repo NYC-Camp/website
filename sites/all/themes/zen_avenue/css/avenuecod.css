@@ -19,6 +19,31 @@ h2.block-title {
 	text-transform: uppercase;
 }
 
+.node-type-session h2.block-title {
+  color: #fff;
+  font-size: 16px;
+  padding: 15px;
+  margin: 0;
+  text-transform: none;
+}
+.node-type-session .field .field-label {
+  font-weight: bold;
+  line-height: 27px;
+}
+.node-type-session .field-name-field-accepted
+{
+  margin-left: 12px;
+  margin-top: 20px;
+}
+.node-type-session .field-name-field-experience,
+.node-type-session .field-name-field-session-other-info,
+.node-type-session .field-name-field-session-track,
+.node-type-session .field-name-field-session-topics,
+.node-type-session .field-name-field-summit-session
+{
+  margin-left: 12px;
+  margin-top: 12px;
+}
 h2.block-title a {
 	color: #fff;
 }
@@ -836,7 +861,7 @@ body.node-type-session .field-name-field-presenters {
 }
 
 body.node-type-session .field-name-field-presenters .field-name-ds-user-picture {
-	width: 25%;
+	width: 35%;
 	float: right;
 	margin-bottom: 1em;
 	margin-left: .5em;
@@ -870,11 +895,16 @@ body.node-type-session .field-name-field-presenters .field-name-field-profile-jo
 
 body.node-type-session #block-views-session-schedule-details-block {
 	color: gray;	
-  font-size: 80%;
   border-bottom: 1px solid #dcdcdc;
   border-left: 1px solid #dcdcdc;
   border-right: 1px solid #dcdcdc;
 	margin-bottom: 0;
+}
+
+.ds-2col-stacked > .group-left {
+  float: left;
+  width: 50%;
+  padding-right: 6px;
 }
 
 body.node-type-session #block-views-session-schedule-details-block block__title block-title {
@@ -883,28 +913,9 @@ body.node-type-session #block-views-session-schedule-details-block block__title 
 
 body.node-type-session .field-name-block-session-schedule-details .views-field-field-schedule-slot-conf-day {
 	font-weight: bold;
+  padding-top: 12px;
+
 }
-
-
-body.node-type-session .field-name-field-accepted,
-body.node-type-session .field-name-field-session-track .field-label,
-body.node-type-session .field-name-field-session-track a,
-body.node-type-session .field-name-field-experience,
-body.node-type-session .field-name-field-session-other-info {
-	font-size: 80%;
-}
-
-
-body.node-type-session .field-name-field-accepted .field-label,
-body.node-type-session .field-name-field-session-track .field-label,
-body.node-type-session .field-name-field-experience .field-label,
-body.node-type-session .field-name-field-session-other-info .field-label {	
-	width: 35%;
-	text-align: right;
-	padding-right: .35em;
-}
-
-
 
 /* USER PROFILES - Full */  
 
@@ -955,7 +966,6 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 
 .page-user .view-mode-full .field-name-field-profile-irc .field-label,
 .page-user .view-mode-full .field-name-field-skill-level .field-label {	
-	width: 15%;
 	text-align: right;
 	padding-right: .35em;
 	display: inline-block;
@@ -1086,12 +1096,18 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 .page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 {
 	margin-top: 0;
 	margin-bottom: .25em;
+  line-height: 18px;
 }
-
 
 .page-program-sessions-schedule .view-schedule-sessions-keynotes li h4 a {
 	font-weight: bold;
 	font-size: .9em;
+}
+
+.page-program-sessions-schedule .field-name-field-presenters,
+.page-program-sessions-schedule .field-name-field-session-track {
+  line-height: 16px;
+  padding-top: 6px;
 }
 
 @media (max-width:480px) {
@@ -1109,70 +1125,7 @@ body.node-type-session .field-name-field-session-other-info .field-label {
 	}
 }
 
-
-/* FEATURED EVENTS/KEYNOTES */
-
-.node-session.view-mode-featured .field-name-field-session-image {
-	width: 100%;
-	text-align: right;
-	background-color: #010101;
-	margin-bottom: 1em;
-	padding: 0;
+/* User Profile */
+.page-user #content > div > ul > li.tabs-primary__tab.is-active > a {
+  color: green;
 }
-
-.node-session.view-mode-featured .group-session-featured-header {
-	clear: both;
-	padding: 1em 0 0 1.5em;
-	position: relative;
-	border: none;
-	width: 50%;
-	margin-bottom: -11em;
-	height: 11em;
-	overflow: visible;
-}
-
-.node-session.view-mode-featured .group-session-featured-header img {
-	width: 100%;
-	height: auto;
-}
-
-.node-session.view-mode-featured .field-name-title h2 {
-	color: white;
-	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	font-weight: 200;
-	margin-top: 0;
-}
-
-.node-session.view-mode-featured .field-name-field-event-subtitle {
-	color: white;
-	font: 1.35em/1.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	font-weight: 400;
-}
-
-.node-session.view-mode-featured .field-name-block-session-schedule-details {
-	width: 50%;
-	float: right;
-	display: block;
-	clear: right;
-	margin-left: 1em;
-	margin-bottom: 1em;
-}
-
-.node-session.view-mode-featured .field-name-add-to-my-sessions-flag {
-	width: 50%;
-	float: right;
-	color: white;
-	background-color: green;
-	display: block;
-	text-align: center;
-	line-height: 1.6em;
-	clear: right;
-	margin-left: 1em;
-	margin-bottom: 1em;
-}
-
-.node-session.view-mode-featured .field-name-add-to-my-sessions-flag a {
-	color: white;
-}
-
-
