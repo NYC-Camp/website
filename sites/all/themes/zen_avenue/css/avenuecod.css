@@ -1308,6 +1308,7 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 	margin-top: .75em;
 }
 
+.page-user-my-sessions span.flag-wrapper,
 .field-name-add-to-my-sessions-flag span.flag-wrapper {
 	font-size: .8em;
 	background-color: green;
@@ -1315,16 +1316,39 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 	padding: .3em .75em;
 }
 
+.page-user-my-sessions span.flag-wrapper a,
 .field-name-add-to-my-sessions-flag span.flag-wrapper a  {
 	color: white;
 	text-transform: capitalize;
 }
 
+.page-user-my-sessions .flag-unflagged-message,
 .field-name-add-to-my-sessions-flag .flag-unflagged-message {
 	margin-top: 1.25em;
 	color: red;
 }
 
+.page-user-my-sessions .flag-flagged-message,
 .field-name-add-to-my-sessions-flag .flag-flagged-message {
 	margin-top: 1.25em;
 	color: green;
+}
+
+/* SCHEDULE - Personal Registrations Button */
+
+.page-user-my-sessions div.views-field.views-field-delete-registration > span,
+.page-user-my-registration div.views-field.views-field-delete-registration > span,
+.page-user-my-registration div.views-field.views-field-nothing > span {
+  font-size: .8em;
+  background-color: green;
+  border-bottom: 2px solid #025502;
+  padding: .3em .75em;
+}
+
+.page-user-my-registration .views-field.views-field-nothing a,
+.page-user-my-registration .views-field.views-field-delete-registration a,
+.page-user-my-sessions .views-field.views-field-delete-registration a {
+  color: white;
+  text-transform: capitalize;
+}
+
