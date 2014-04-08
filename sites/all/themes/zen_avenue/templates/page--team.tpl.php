@@ -150,9 +150,6 @@
       <?php print render($page['content']); ?>
       <?php // print $feed_icons; ?>
     </div><!-- /.section, /#content -->
-    <div id="aside" class="column">
-      <?php print render($page['aside']); ?>
-    </div><!-- /.column, /#aside -->
   </div><!-- /#main -->
 
   <?php if ($is_front): ?>
