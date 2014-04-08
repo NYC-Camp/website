@@ -1432,8 +1432,8 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 
 /* SCHEDULE - Personal Registrations Button */
 
-.page-user-my-sessions div.views-field.views-field-delete-registration > span,
-.page-user-my-registration div.views-field.views-field-delete-registration > span,
+
+.view-id-registrations_current_user div.views-field.views-field-delete-registration > span,
 .page-user-my-registration div.views-field.views-field-nothing > span {
   font-size: .8em;
   background-color: green;
@@ -1442,13 +1442,11 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
 }
 
 .page-user-my-registration .views-field.views-field-nothing a,
-.page-user-my-registration .views-field.views-field-delete-registration a,
-.page-user-my-sessions .views-field.views-field-delete-registration a {
+.view-id-registrations_current_user div.views-field.views-field-delete-registration a {
   color: white;
   text-transform: capitalize;
 }
-.page-user-my-registration .view-display-id-registrations h3,
-.page-user-my-registration .view.view-registrations-current-user h3,
-.page-user-my-sessions .view.view-registrations-current-user h3 {
+.view-registrations-current-user.view-id-registrations_current_user h3,
+.view-display-id-registrations h3 {
   margin: 18px 0 0px;
 }
