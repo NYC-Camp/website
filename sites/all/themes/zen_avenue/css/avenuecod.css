@@ -287,18 +287,36 @@ div.pane-sponsors-summits {
 	text-align: center;
 }
 
+
+body.page-partners.not-front #page {
+	background-color: white;
+}
+
+body.page-partners.not-front #content {
+    float: left;
+    padding: 0 6% 0 0;
+    width: 100%;
+}
+
+body.page-partners div.pane-sponsors-keynote h2.pane-title,
+body.page-partners div.pane-sponsors-summits h2.pane-title
+body.page-partners div.pane-sponsors-keynote h2.pane-title,
+body.page-partners div.pane-sponsors-summits h2.pane-title,
 body.page-sponsors div.pane-sponsors-keynote h2.pane-title,
-body.page-sponsors div.pane-sponsors-summits h2.pane-title
+body.page-sponsors div.pane-sponsors-summits h2.pane-title,
 body.page-sponsors2 div.pane-sponsors-keynote h2.pane-title,
 body.page-sponsors2 div.pane-sponsors-summits h2.pane-title {
 	width: 50%;
 }
 
+body.page-partners div.pane-views,
 body.page-sponsors div.pane-views,
 body.page-sponsors2 div.pane-views {
 	border-top: 1px solid gray;
 }
 
+
+body.page-partners h2.pane-title,
 body.page-sponsors h2.pane-title,
 body.page-sponsors2 h2.pane-title {
 	color: gray;
@@ -311,6 +329,84 @@ body.page-sponsors2 h2.pane-title {
 	width: 30%;
 	text-align: left;
 }
+
+body.page-partners .views-responsive-grid {
+	text-align: center;
+}
+
+body.page-partners .views-field-field-sponsor-logo {
+	padding: 1em;
+}
+
+body.page-partners .view-sponsors-lead,
+body.page-partners .pane-sponsors-core,
+body.page-partners .pane-sponsors-contributing,
+body.page-partners .pane-sponsors-supporting,
+body.page-partners .pane-sponsors-community {
+	margin-bottom: 1em;
+}
+
+
+
+body.page-partners .view-sponsors-lead .views-column,
+body.page-partners .pane-sponsors-core .views-column,
+body.page-partners .pane-sponsors-contributing .views-column,
+body.page-partners .pane-sponsors-supporting .views-column,
+body.page-partners .pane-sponsors-community .views-column {
+	display: inline-block;	
+}
+
+body.page-partners .view-sponsors-lead .views-column {
+	width: 40%;
+}
+
+body.page-partners .pane-sponsors-core .views-column {
+	width: 26%;	
+}
+
+body.page-partners .pane-sponsors-core .views-column .views-field-field-sponsor-logo {
+	padding: 2em;
+}
+
+
+
+body.page-partners .pane-sponsors-contributing .views-column {
+	width: 23%;	
+}
+
+body.page-partners .pane-sponsors-supporting .views-column {
+	width: 20%;	
+}
+
+body.page-partners .pane-sponsors-community .views-column {
+	width: 15%;	
+}
+
+.view-partners-title .views-row {
+	padding-right: 15%;
+	padding-left: 15%;
+	margin-bottom: 2em;
+}
+
+.view-partners-title {
+	padding-top: 1em;
+}
+
+.view-partners-title .views-row .views-field-title {
+	text-align: center;
+	font-size: .85em;
+}
+
+body.page-partners .pane-block-12 {
+	border-top: 1px solid gray;
+}
+
+body.page-partners .pane-block-12 h2 {
+	width: 50%;
+	margin-bottom: 1px;
+}
+
+
 
 
 /* ATTENDEES */
