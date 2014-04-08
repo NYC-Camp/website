@@ -1351,4 +1351,8 @@ body.node-type-session .field-name-block-session-schedule-details .views-field-f
   color: white;
   text-transform: capitalize;
 }
-
+.page-user-my-registration .view-display-id-registrations h3,
+.page-user-my-registration .view.view-registrations-current-user h3,
+.page-user-my-sessions .view.view-registrations-current-user h3 {
+  margin: 18px 0 0px;
+}
