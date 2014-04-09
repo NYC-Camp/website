@@ -64,3 +64,18 @@ function nyccamp_remove_messages() {
   // Retrieve all messages and clear the queue
   drupal_get_messages();
 }
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ */
+function nyccamp_block_view_alter(&$data, $block) {
+  switch ($block->delta) {
+    case 'events_schedule_summits-block':
+      $data['subject'] = l(t('Summits (Fri Apr 11)'), '2014/summits');
+      break;
+    case 'events_schedule_trainings-block':
+      $data['subject'] = l(t('Trainings (Thu Apr 10)'), 'trainings');
+      break;
+  }
+}
