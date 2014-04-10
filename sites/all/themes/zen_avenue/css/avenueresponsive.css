@@ -120,21 +120,12 @@
         height: auto;
 	}
 
-    .region-sidebar-first h2.block-title {
-        padding: 0;
-        font-size: 13px;
-    }
-
     .region-sidebar-first h3 {
         margin: 0 0 7px;
     }
 
 	.region-sidebar-first .block:hover {
 		background: none;
-	}
-	
-	.region-sidebar-first h2.block-title {
-		color: inherit;
 	}
 
 	#main .block {
@@ -231,7 +222,7 @@
 		overflow-x: scroll;
 	}
 
-	#block-block-11 p, .region-sidebar-first h2, .region-sidebar-first h2.block-title, .region-sidebar-first div.view-header h2 a {
+	#block-block-11 p, .region-sidebar-first div.view-header h2 a {
 		color: inherit;
 	}
 	

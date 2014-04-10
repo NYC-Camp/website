@@ -103,7 +103,9 @@
     <?php endif; ?>
 
     <div id="min-menu"><a href="#">Menu</a></div>
-    <div id="min-schedule"><a href="#">Schedule</a></div>
+    <?php if ($is_front): ?>
+      <div id="min-schedule"><a href="#">Schedule</a></div>
+    <?php endif; ?>
     <?php print theme('links__system_main_menu', array(
       'links' => $main_menu,
       'attributes' => array(
@@ -126,9 +128,9 @@
   <?php endif; ?>
 
   <?php if ($is_front): ?>
-    <?php if($page['sidebar_first']) { 
+    <?php if($page['sidebar_first']) {
 	 print render($page['sidebar_first']);
-      } 
+      }
     ?>
   <?php endif; ?>
 
