@@ -47,19 +47,20 @@ function nycreg_callback($arg) {
     $start = $_REQUEST['start'];
   }
 
-
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'user')
-    ->propertyCondition('status', 1)
-    ->range($start, $limit);
-  $result = $query->execute();
-
-  if (isset($result['user'])) {
-    $users = array(
-      'list' => array_values(user_load_multiple(array_keys($result['user']))),
-    );
-    drupal_json_output($users);
+  // First get all the users...
+  $users = array('list' => array());
+  $sql = "SELECT u.uid AS uid,  u.name AS name, u.mail AS mail, fpf.field_profile_first_value AS field_profile_first, fpl.field_profile_last_value AS field_profile_last FROM {users} u
+  LEFT JOIN {field_data_field_profile_first} fpf ON fpf.entity_id = u.uid AND fpf.entity_type = 'user' AND fpf.delta = 0
+  LEFT JOIN {field_data_field_profile_last} fpl ON fpl.entity_id = u.uid AND fpl.entity_type = 'user' AND fpl.delta = 0
+  INNER JOIN {registration} r ON r.user_uid = u.uid AND r.entity_id = 564 AND r.entity_type = 'node'
+  WHERE u.status = 1 AND u.uid > 1
+  ORDER BY u.uid ASC
+  LIMIT ".$start.", ".$limit;
+  $result = db_query($sql);
+  foreach ($result as $row) {
+    $users['list'][] = $row;
   }
+  drupal_json_output($users);
 }
 
 function nycreg_access() {
