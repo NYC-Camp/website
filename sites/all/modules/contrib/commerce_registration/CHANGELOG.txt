@@ -1,0 +1,84 @@
+March 20, 2012 2:31PM EST
+Issue #1482738 by jpontani: add helper function to determine if there is even a
+registration field on a product, and whether that field's value is a valid
+registration_type; add calls to new helper function to only show
+commerce_registration settings/forms/options for products that have a
+registration field and a valid registration_type for that field.
+
+March 19, 2012 4:27PM EST
+Issue #1481546 and #1482912 by jpontani: add checks to make sure a registration
+entity exists in the order data array before trying to save it; remove
+hook_commerce_checkout_complete, instead leave logic up to the user to decide
+when a registration should be saved (confirmed), such as default rule when the
+order is first paid in full; add registration_status calls where needed.
+
+March 15, 2012 4:53PM EST
+by jpontani: fix commerce product registration settings submit handler to use
+registraton submit handler properly with correct data in form_state; fix
+commerce product registration settings form to have #states properly on the
+form since the parents changed.
+
+March 15, 2012 4:44PM EST
+Issue #1484204 by jpontani: custom submit handler for multiple products on a
+display node.
+
+March 15, 2012 2:54PM EST
+Issue #1481546 by jpontani, mrfelton: added add_to_cart validation to check
+status prior to adding to cart; if a product is not available for
+registration, an error message is shown and the product is NOT added to the
+cart.
+
+March 15, 2012 1:55PM EST
+Issue #1481546 by jpontani, mrfelton: changing validate and submit handlers to
+use registration's handlers for them; use new scheduling feature for allowing
+registrations for products based on open/close dates.
+
+March 13, 2012 1:47PM EST
+Issue #1472958 by jpontani: override theme_registration to add the Commerce
+Order ID if it exists on the registration, otherwise it just returns the normal
+theme_registration results.
+
+March 12, 2012 1:45PM EST
+Issue #1476490 by jpontani: added display review_pane for Registrations; change
+review pane to use this new display.
+
+March 12, 2012 1:16PM EST
+Issue #1479014 by jpontani: loop through product field on node properly to get
+all product ids; add div wrappers with classes around registration listing to
+allow CSS styling; change 'und' to LANGUAGE_NONE in two spots
+
+March 12, 2012 1:01PM EST
+Issue #1478980 by jpontani: add a second display to view to not require the
+Commerce Order relationship to list all registrations; add a second tab on the
+Admin Registrations page to show All Registrations; add optional VBO column to
+view if VBO module exists.
+
+March 12, 2012 12:13PM EST
+Issue #1478750 by jpontani: removing t() from admin view page, it is
+unnecessary to translate only html.
+
+March 9, 2012 7:13PM EST
+Issue #1472954 by jpontani: Manage Registrations now shows on product display
+type nodes with proper listing/settings/email forms and handlers to accomodate
+multiple products on a single node.
+
+March 9, 2012 5:47PM EST
+Issue #1460256 by jpontani: add registration availability to manage display for
+products with a registration field.
+
+March 8, 2012 5:34PM EST
+by jpontani: checking if the entity exists in the order data array, and
+preventing error message if it doesn't.
+
+March 8, 2012 5:18PM EST
+Issue #1473462 by jpontani: removing the registration_save as it causes
+validation issues, instead defaulting the registration_id to 0, this should be
+overwritten since IS_NEW is set to true on a new registration object.
+
+March 8, 2012 4:51PM EST
+Issue #1473462 by jpontani: remove dsm call from previous commit.
+
+March 8, 2012 4:50PM EST
+Issue #1473462 by jpontani: save the registration on the submit portion of it's
+info, otherwise it will throw an error since registration_id is not set until
+save.
