@@ -26,7 +26,8 @@ h2.block-title {
   margin: 0;
   text-transform: none;
 }
-.node-type-session .field .field-label, .views-field-field-schedule-slot-room {
+.node-type-session .field .field-label, .views-label-field-schedule-slot-room,
+.views-label-field-schedule-slot-sch-tim-slot {
   font-weight: bold;
   line-height: 27px;
 }
