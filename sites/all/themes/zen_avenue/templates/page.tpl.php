@@ -126,9 +126,9 @@
   <?php endif; ?>
 
   <?php if ($is_front): ?>
-    <?php if($page['sidebar_first']) { 
+    <?php if($page['sidebar_first']) {
 	 print render($page['sidebar_first']);
-      } 
+      }
     ?>
   <?php endif; ?>
 
@@ -149,7 +149,7 @@
           <?php print render($title_suffix); ?>
           <?php print render($tabs); ?>
           <?php print render($page['content']); ?>
-          <?php // print $feed_icons; ?>
+          <?php print $feed_icons; ?>
         </div>
       </div><!-- /.section, /#content -->
       <div id="aside" class="column">
@@ -159,9 +159,9 @@
   </div><!-- /#main-wrapper -->
 
   <?php if ($is_front): ?>
-    <?php if($page['sidebar_second']) { 
+    <?php if($page['sidebar_second']) {
         print render($page['sidebar_second']);
-      } 
+      }
     ?>
   <?php endif; ?>
 
