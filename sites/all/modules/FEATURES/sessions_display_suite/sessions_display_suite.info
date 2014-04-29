@@ -1,0 +1,16 @@
+name = Sessions display suite
+description = Captures a minimum of configurations when display suite is acting on sessions.
+core = 7.x
+package = NYC Camp
+version = 7.x-1.0
+project = sessions_display_suite
+dependencies[] = ctools
+dependencies[] = ds
+dependencies[] = image
+features[ctools][] = ds:ds:1
+features[ds_field_settings][] = node|session|default
+features[ds_fields][] = add_to_my_schedule_flag
+features[ds_fields][] = login_or_register_display_suite
+features[ds_layout_settings][] = node|session|default
+features[features_api][] = api:2
+features[image][] = user_picture_display_suite

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the COD Extras Scheduling feature.
+ */
+
+include_once 'cod_extras_scheduling.features.inc';

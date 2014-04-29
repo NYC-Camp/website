@@ -29,3 +29,8 @@
 .lt-ie8 .comment-unpublished > * {
   position: relative; /* Otherwise these elements will appear below the "Unpublished" text. */
 }
+
+#content > div > div > div.group-right > div.field.field-name-add-to-my-sessions-flag.field-type-ds.field-label-hidden {
+  text-align: center;
+  font-weight: bold;
+}

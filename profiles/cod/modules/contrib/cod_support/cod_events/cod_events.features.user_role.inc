@@ -13,7 +13,7 @@ function cod_events_user_default_roles() {
   // Exported role: attendee manager.
   $roles['attendee manager'] = array(
     'name' => 'attendee manager',
-    'weight' => 4,
+    'weight' => 5,
   );
 
   return $roles;

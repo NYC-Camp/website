@@ -25,17 +25,18 @@ function podcasts_field_group_info() {
     'children' => array(
       0 => 'field_podcast_date',
       1 => 'field_podcast_description',
-      2 => 'field_podcast_image',
-      3 => 'field_podcast_file',
+      2 => 'field_podcast_file',
+      3 => 'field_podcast_image',
       4 => 'field_podcast_intro',
-      5 => 'title',
+      5 => 'field_podcast_video',
+      6 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-podcast-general field-group-tab',
         'required_fields' => 1,
       ),
     ),

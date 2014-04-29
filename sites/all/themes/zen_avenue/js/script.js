@@ -12,32 +12,38 @@
 // - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
 (function ($, Drupal, window, document, undefined) {
 
-	// Instagram block
-	$(document).ready(function() {
-		$(".instagram").instagram({
-			hash: 'nyccamp',
-			show: '9',
-			clientId: '5d11182acc7f44739c96ca8d2f7b8ac9'
-	  });
-	});
-
-/*
+  // Instagram block
   $(document).ready(function() {
-    $(".colorbox-instagram").colorbox({
+    $(".instagram").instagram({
+      hash: 'nyccamp',
+      show: '9',
+      clientId: '5d11182acc7f44739c96ca8d2f7b8ac9'
     });
   });
-*/
 
-	$(window).load(function () {
-	 	$('div.instagram-placeholder').each( function(i) {
-	  	if( i % 4 != 3 )
-	    return
-		 	$(this).addClass('last')
-		})
-	});
-
-  $(window).load(function() {
-    $('.flexslider').flexslider();
+  $(window).load(function () {
+  $('div.instagram-placeholder').each( function(i) {
+    if( i % 4 != 3 )
+    return
+      $(this).addClass('last')
+    })
   });
-  
+
+  // Mobile menus
+  $(document).ready(function () {
+    $("#min-menu a").click(function(event){
+      $("body").toggleClass("sideslide");
+      $("body").removeClass("scheduleslide");
+      event.stopPropagation();
+      event.preventDefault();
+    });
+    $("#min-schedule a").click(function(event){
+      $("body").toggleClass("scheduleslide");
+      $("body").removeClass("sideslide");
+      event.stopPropagation();
+      event.preventDefault();
+    });
+
+  });
+
 })(jQuery, Drupal, this, this.document);

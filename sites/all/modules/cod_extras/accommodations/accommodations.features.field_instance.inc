@@ -10,6 +10,62 @@
 function accommodations_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'node-accomodation-field_accommodation_location'
+  $field_instances['node-accomodation-field_accommodation_location'] = array(
+    'bundle' => 'accomodation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'location_cck',
+        'settings' => array(),
+        'type' => 'location_default',
+        'weight' => 5,
+      ),
+      'full' => array(
+        'label' => 'hidden',
+        'module' => 'location_cck',
+        'settings' => array(),
+        'type' => 'location_default',
+        'weight' => 3,
+      ),
+      'listing' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'map' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_accommodation_location',
+    'label' => 'Location',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'location_cck',
+      'settings' => array(),
+      'type' => 'location',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-accomodation-field_accomodation_description'
   $field_instances['node-accomodation-field_accomodation_description'] = array(
     'bundle' => 'accomodation',
@@ -28,7 +84,7 @@ function accommodations_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'listing' => array(
         'label' => 'above',
@@ -47,7 +103,7 @@ function accommodations_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'node',
@@ -89,7 +145,7 @@ function accommodations_field_default_field_instances() {
           'image_style' => 'full_content',
         ),
         'type' => 'image',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'listing' => array(
         'label' => 'above',
@@ -112,10 +168,14 @@ function accommodations_field_default_field_instances() {
         'weight' => 1,
       ),
       'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => 'content',
+          'image_style' => 'thumbnail',
+        ),
+        'type' => 'image',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -163,7 +223,7 @@ function accommodations_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'listing' => array(
         'label' => 'above',
@@ -179,10 +239,11 @@ function accommodations_field_default_field_instances() {
         'weight' => 2,
       ),
       'teaser' => array(
-        'label' => 'above',
+        'label' => 'hidden',
+        'module' => 'link',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
+        'type' => 'link_default',
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -214,7 +275,7 @@ function accommodations_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -236,7 +297,7 @@ function accommodations_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'listing' => array(
         'label' => 'above',
@@ -252,10 +313,9 @@ function accommodations_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
+        'type' => 'hidden',
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'node',
@@ -307,6 +367,7 @@ function accommodations_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Description');
   t('Image');
+  t('Location');
   t('Please enter the Description for this Accomodation');
   t('Please enter the Teaser for this Accomodation');
   t('Please enter the Website link for this Accomodation');

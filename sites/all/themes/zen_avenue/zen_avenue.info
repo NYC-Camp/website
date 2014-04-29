@@ -64,7 +64,6 @@ stylesheets[all][] = css/avenuetabs.css
 stylesheets[all][] = css/avenuecod.css
 stylesheets[all][] = css/avenueresponsive.css
 stylesheets[all][] = instagram/instagram.css
-stylesheets[all][] = flexslider/flexslider.css
 ;stylesheets[all][] = css/colorbox.css
 stylesheets[all][] = css/print.css
 
@@ -83,7 +82,6 @@ stylesheets[all][] = css/print.css
 ; Optionally add some JavaScripts to your theme.
 ;scripts[] = js/smoothscroll.js
 scripts[] = instagram/jquery.instagram.js
-scripts[] = flexslider/jquery.flexslider-min.js
 ;scripts[] = js/jquery.colorbox-min.js
 scripts[] = js/script.js
 
@@ -107,10 +105,10 @@ regions[navigation]     = Navigation (mobile nav)
 regions[header]         = Header (main navigation)
 regions[featured]       = Featured
 regions[help]           = Help
-regions[sidebar_first]  = First sidebar (Left sidebar)
-regions[live]           = Live content (appears on front page only)
+regions[sidebar_first]  = First sidebar (use for front page only)
+regions[live]           = Live content (use for front page only)
 regions[content]        = Content
-regions[sidebar_second] = Second sidebar (below content on front, sidebar on inner pages)
+regions[sidebar_second] = Second sidebar (use for front page only)
 regions[aside]          = Aside (below content on front, sidebar on inner pages)
 regions[footer]         = Footer
 regions[bottom]         = Page bottom

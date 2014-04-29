@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * @file
+ * Install file for timefield module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function timefield_field_schema($field) {
+
+  $db_columns = array();
+
+  // We are using an integer to store time values.  This in not a UNIX timestamp
+  // however, rather offset from 12:00 AM midnight.  Values that are greater
+  // than 24 * 60 * 60, or the value of 24-hour period are condidered +1 day.
+  $db_columns['value'] = array(
+    'type' => 'int',
+    'not null' => FALSE,
+  );
+
+  // If second time is needed for 'To time', just make a copy of the first one.
+  if (!empty($field['settings']['totime'])) {
+    $db_columns['value2'] = $db_columns['value'];
+  }
+
+  // If a weekly schedule option selected add in additional columns.
+  if (!empty($field['settings']['weekly_summary'])) {
+
+    $db_columns += array(
+      'label' => array(
+        'description' => 'A label for this weekly schedule',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
+      'mon' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'tue' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'wed' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'thu' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'fri' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'sat' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'sun' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+    );
+  }
+
+  return array('columns' => $db_columns);
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function timefield_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'runtime') {
+    $t = get_t();
+    $libraries = libraries_get_libraries();
+
+    if (array_key_exists('jquery.timepicker', $libraries)) {
+      $requirements['jquery_timepicker'] = array(
+        'title' => $t('jQuery Timepicker plugin'),
+        'severity' => REQUIREMENT_OK,
+        'value' => $t('jQuery Timepicker plugin is installed'),
+      );
+    }
+    else {
+      $requirements['jquery_timepicker'] = array(
+        'title' => $t('jQuery Timepicker plugin'),
+        'value' => $t('jQuery Timepicker plugin is not installed'),
+        'severity' => REQUIREMENT_INFO,
+        'description' => $t('While not a requirement, timefield module\'s utility is greatly enhanced by including the !link', array('!link' => l($t("jQuery Timepicker plugin"), "http://fgelinas.com/code/timepicker"))),
+      );
+    }
+  }
+
+  return $requirements;
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Featured Attendees feature.
+ */
+
+include_once 'featured_attendees.features.inc';

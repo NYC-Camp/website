@@ -1,0 +1,56 @@
+<?php
+/**
+ * @file
+ * Install and uninstall functions as well as schema definition for the Mollom module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function new_relic_rpm_install() {
+  // Set New Relic RPM module's weight to very low so we can trigger job state
+  // changes early. This can be important in cases like hook_cron().
+  // TODO Please review the conversion of this statement to the D7 database API syntax.
+  /* db_query("UPDATE {system} SET weight = -20 WHERE name = 'new_relic_rpm'") */
+  db_update('system')
+  ->fields(array(
+    'weight' => -20,
+  ))
+  ->condition('name', 'new_relic_rpm')
+  ->execute();
+}
+
+/**
+ * Implemenation of hook enable().
+ *
+ * This checks for the existence of the New Relic RPM PHP extension by checking
+ * for functions. If it is not found, the module is uninstalled.
+ */
+function new_relic_rpm_enable() {
+  if (!function_exists('newrelic_background_job')) {
+    drupal_set_message(t('The New Relic RPM PHP extension is missing. This extension must be installed and functional on your server before this module can be enabled. Visit <a href="@installation-guide">New Relic for PHP installation instructions</a> for assistance.', array('@installation-guide' => url('https://newrelic.com/docs/php/new-relic-for-php#installation'))), 'error');
+    module_disable(array('new_relic_rpm'));
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function new_relic_rpm_uninstall() {
+
+  // Remove variables.
+  variable_del('new_relic_rpm_track_cron');
+  variable_del('new_relic_rpm_ignore_urls');
+  variable_del('new_relic_rpm_bg_urls');
+  variable_del('new_relic_rpm_exclusive_urls');
+  variable_del('new_relic_rpm_api_key');
+  variable_del('new_relic_rpm_module_deployment');
+  variable_del('new_relic_rpm_app_name');
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function new_relic_rpm_update_last_removed() {
+  return 6002;
+}

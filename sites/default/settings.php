@@ -52,6 +52,11 @@
  * @see conf_path()
  */
 
+// @see example.settings.local.php in sites/default for example.
+if (file_exists('sites/default/settings.local.php')) {
+  require 'sites/default/settings.local.php';
+}
+
 /**
  * Database settings:
  *
@@ -210,7 +215,6 @@
  *   );
  * @endcode
  */
-$databases = array();
 
 /**
  * Access control for update.php script.
@@ -278,6 +282,12 @@ $drupal_hash_salt = '';
  */
 
 /**
+  * Hide only notices from the UI from undefined variables in modules
+  * See https://github.com/NYC-Camp/website/issues/14 for info
+  */
+ini_set('error_reporting', 'E_ALL ^ E_NOTICE');
+
+/**
  * Some distributions of Linux (most notably Debian) ship their PHP
  * installations with garbage collection (gc) disabled. Since Drupal depends on
  * PHP's garbage collection for clearing sessions, ensure that garbage
@@ -321,7 +331,7 @@ ini_set('session.cookie_lifetime', 2000000);
  * between your various domains. Make sure to always start the $cookie_domain
  * with a leading dot, as per RFC 2109.
  */
-# $cookie_domain = '.example.com';
+# $cookie_domain = '.nyccamp.org';
 
 /**
  * Variable overrides:
@@ -561,3 +571,13 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  */
 # $conf['pressflow_smart_start'] = TRUE;
 
+/**
+ * Permits sessions to work across www and the apex (aka naked) domain.
+ */
+if (isset($_SERVER['PANTHEON_ENVIRONMENT']) && $_SERVER['PANTHEON_ENVIRONMENT'] === 'live') {
+  if ($_SERVER['HTTP_HOST'] == 'nyccamp.org' || $_SERVER['HTTP_HOST'] == 'live-nyccamp2014.gotpantheon.com') {
+    header('HTTP/1.0 301 Moved Permanently');
+    header('Location: http://www.nyccamp.org'. $_SERVER['REQUEST_URI']);
+    exit();
+  }
+}

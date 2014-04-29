@@ -14,7 +14,21 @@ function cod_session_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ant_pattern_time_slot';
-  $strongarm->value = '[node:field_slot_datetime]';
+  $strongarm->value = '<?php
+
+$start = $node->field_slot_datetime[\'und\'][0][\'value\'];
+$utc_start = strtotime($start);
+$tz_start = $utc_start-240*60;
+
+$end = $node->field_slot_datetime[\'und\'][0][\'value2\'];
+$utc_end = strtotime($end);
+$tz_end = $utc_end-240*60;
+
+$start_formatted = date(\'j F, Y h:i\', $tz_start);
+$end_formatted = date(\'h:i\', $tz_end);
+return $start_formatted . \' to \' . $end_formatted;
+
+?>    ';
   $export['ant_pattern_time_slot'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -168,7 +182,7 @@ function cod_session_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_page';
-  $strongarm->value = 0;
+  $strongarm->value = '2';
   $export['comment_page'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -272,9 +286,109 @@ function cod_session_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__page';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'listing' => array(
+        'custom_settings' => TRUE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+      'intro' => array(
+        'custom_settings' => TRUE,
+      ),
+      'grid' => array(
+        'custom_settings' => FALSE,
+      ),
+      'registration' => array(
+        'custom_settings' => FALSE,
+      ),
+      'map' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(
+        'title' => array(
+          'weight' => '1',
+        ),
+        'path' => array(
+          'weight' => '1',
+        ),
+      ),
+      'display' => array(),
+    ),
+  );
+  $export['field_bundle_settings_node__page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__room';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'listing' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'grid' => array(
+        'custom_settings' => FALSE,
+      ),
+      'intro' => array(
+        'custom_settings' => FALSE,
+      ),
+      'registration' => array(
+        'custom_settings' => FALSE,
+      ),
+      'map' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
@@ -297,42 +411,14 @@ function cod_session_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__schedule_item';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
-      ),
-      'listing' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'rss' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
-        'custom_settings' => FALSE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
+    'view_modes' => array(),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '3',
         ),
       ),
       'display' => array(),
@@ -364,13 +450,25 @@ function cod_session_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
       'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'grid' => array(
+        'custom_settings' => FALSE,
+      ),
+      'intro' => array(
+        'custom_settings' => FALSE,
+      ),
+      'map' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+      'registration' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -380,13 +478,10 @@ function cod_session_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '9',
-        ),
-        'mollom' => array(
-          'weight' => '10',
+          'weight' => '54',
         ),
         'redirect' => array(
-          'weight' => '8',
+          'weight' => '57',
         ),
       ),
       'display' => array(),
@@ -419,12 +514,6 @@ function cod_session_strongarm() {
         'custom_settings' => FALSE,
       ),
       'token' => array(
-        'custom_settings' => TRUE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -447,7 +536,8 @@ function cod_session_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_page';
   $strongarm->value = array(
-    0 => 'main-menu',
+    0 => 'menu-footer-menu',
+    1 => 'main-menu',
   );
   $export['menu_options_page'] = $strongarm;
 
@@ -607,7 +697,7 @@ function cod_session_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_page';
-  $strongarm->value = FALSE;
+  $strongarm->value = 0;
   $export['node_submitted_page'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -642,7 +732,7 @@ function cod_session_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_session_pattern';
-  $strongarm->value = '[node:og_group_ref]/session/[node:title]';
+  $strongarm->value = 'session/[node:title]';
   $export['pathauto_node_session_pattern'] = $strongarm;
 
   return $export;

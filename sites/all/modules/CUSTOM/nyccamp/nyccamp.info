@@ -1,0 +1,4 @@
+name = NYC Camp
+description = Miscellaneous code for the nyccamp.org website
+package = COD Extras
+core = 7.x

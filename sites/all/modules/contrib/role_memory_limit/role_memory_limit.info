@@ -1,0 +1,11 @@
+name = Role memory limit
+description = Allows you to set PHP memory limit by role.
+core = 7.x
+configure = admin/config/development/role_memory_limit
+
+; Information added by drupal.org packaging script on 2013-03-07
+version = "7.x-1.3"
+core = "7.x"
+project = "role_memory_limit"
+datestamp = "1362663850"
+

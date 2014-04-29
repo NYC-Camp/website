@@ -1,0 +1,9 @@
+name = Queues Workbench
+Description = Workbench & State Machine support for Queues Entities
+core = 7.x
+
+dependencies[] = queues
+dependencies[] = workbench_workflows
+dependencies[] = views
+php = 5.3
+file[] = plugins/queues_state_machine.inc
