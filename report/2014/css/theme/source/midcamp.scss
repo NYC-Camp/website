@@ -1,0 +1,104 @@
+/**
+ * Default theme for reveal.js.
+ *
+ * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+
+// Include theme-specific fonts
+@font-face {
+  font-family: 'flamamediumregular';
+  src: url('../../lib/font/flamamedium.eot');
+  src: url('../../lib/font/flamamedium.eot?#iefix') format('embedded-opentype'),
+       url('../../lib/font/flamamedium.woff') format('woff'),
+       url('../../lib/font/flamamedium.ttf') format('truetype'),
+       url('../../lib/font/flamamedium.svg#flamamediumregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,500,700,600);
+
+// Override theme settings (see ../template/settings.scss)
+// Theme Specific Colors
+$grey: #5F5F5F;
+$light-grey: #EEEEEE;
+
+$off-white: #F8F6F4;
+$white: #FCFCFC;
+$black: #1A1A1A;
+
+$true-white: #FFF;
+$true-black: #000;
+
+$aqua: #0084B2;
+$deep-aqua: #18545E;
+$muted-aqua: #27546B;
+$light-aqua: #6CD2EA;
+
+$red: #DF1F26;
+
+// Background of the presentation
+$backgroundColor: $light-aqua;
+
+// Primary/body text
+$mainFont: 'Raleway', 'Verdana', 'Lucida Grande', 'Gill Sans', 'Arial', 'Helvetica', sans-serif;
+$mainFontSize: 36px;
+$mainColor: #eee;
+
+// Headings
+$headingMargin: 0 0 20px 0;
+$headingFont: $mainFont;
+$headingColor: #eee;
+$headingLineHeight: 0.9em;
+$headingLetterSpacing: 0.02em;
+$headingTextTransform: uppercase;
+$headingTextShadow: 0px 0px 6px rgba(0,0,0,0.2);
+$linkShadow: 2px 4px 4px rgba($black, 0.3);
+
+// Links and actions
+$linkColor: $deep-aqua;
+$linkColorHover: $aqua;
+
+// Text selection
+$selectionBackgroundColor: $aqua;
+$selectionColor: $light-aqua;
+
+// Background generator
+@mixin bodyBackground() {
+  @include radial-gradient( $aqua, $light-aqua );
+  
+  &:before {
+    content: '';
+    background-image: url('../../lib/image/background.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    
+    .midwest & {
+      background-image: url('../../lib/image/background__midwest.jpg');
+    }
+  }
+}
+
+// Theme template ------------------------------ 
+@import "../template/theme";
+// ---------------------------------------------
+
+// Theme Specific Markup -----------------------
+@import "../template/midcamp-style";
+// ---------------------------------------------
