@@ -1,0 +1,173 @@
+// Branding Bar across the top of the presentation
+.top-bar {
+  width: 90%;
+  margin: 0 auto;
+  vertical-align: bottom;
+  position: relative;
+  z-index: 500;
+  
+  &:after {
+    content: '';
+    border-bottom: 1px solid $white;
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 120px;
+    right: 0;
+    bottom: auto;
+    left: 0;
+  }
+  
+  .midwest & {
+    display: none;
+  }
+}
+
+[role="branding"] {
+  color: $white;
+  font-family: $mainFont;
+}
+
+.branding--logo {
+  display: inline-block;
+  float: left;
+}
+
+.logo__image {
+  display: inline-block;
+  position: relative;
+  top: 0.5em;
+  margin-right: 1em;
+  
+  > img {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+}
+
+.logo__site-name {
+  display: inline-block;
+  font-family: 'flamamediumregular', sans-serif;
+  font-size: 48px;
+  line-height: 64px;
+  margin: 1em 0 0;
+  
+  a:link,
+  a:visited,
+  a:hover,
+  a:focus {
+    color: $white;
+    text-decoration: none;
+  }
+}
+
+.session--info {
+  display: inline-block;
+  float: right;
+  
+  @for $i from 1 through 6 {
+    h#{$i} {
+      font-weight: normal;
+      line-height: 64px;
+      margin: 48px 0 0;
+    }
+  }
+}
+
+.session__title,
+.session__presenter {
+  display: inline-block;
+}
+
+.session__presenter {
+  text-transform: uppercase;
+}
+// END Branding Bar ----------------------------
+
+// MidCamp Camp title Slide --------------------
+.camp--branding {}
+
+.reveal section img.camp--logo {
+  background: transparent;
+  border: medium none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  margin: 0 0 1em;
+}
+
+.reveal {
+  h1.camp--title {
+    font-family: 'flamamediumregular', sans-serif;
+    text-transform: none;
+  }
+  
+  h2.presentation--title {
+    margin: 1.5em auto 0.5em;
+    text-transform: none;
+  }
+}
+
+// END Camp title slide ------------------------
+
+// List Styles
+ul {
+  li {
+    list-style-image: url('../../lib/image/content/star.png');
+    list-style-type: square;
+    padding-left: 0.5em !important;
+    
+    li {
+      list-style-image: url('../../lib/image/content/star_grey.png');
+    }
+  }
+}
+
+// Reveal Overrides ----------------------------
+.reveal {
+  .progress {
+    span {
+      background-color: $red;
+    }
+  }
+  
+  .slides {
+    text-align: left;
+  }
+  
+  .camp-slide,
+  .title-slide,
+  .media-slide {
+    text-align: center;
+  }
+  
+  h1 {
+    font-weight: 900;
+  }
+  
+  h2 {
+    font-weight: 700;
+  }
+  
+  h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+  
+  p, li {
+    font-weight: 500;
+  }
+  
+  p {
+    margin-bottom: 1.5em;
+  }
+  
+  .invert {
+    h1, h2, h3, h4, h5, h6, p {
+      color: #333;
+      text-shadow: 0px 0px 6px rgba(255,255,255,1);
+    }
+  }
+}
+// ---------------------------------------------

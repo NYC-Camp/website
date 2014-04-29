@@ -1,0 +1,293 @@
+/**
+ * Default theme for reveal.js.
+ *
+ * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,500,700,600);
+@font-face {
+  font-family: 'flamamediumregular';
+  src: url("../../lib/font/flamamedium.eot");
+  src: url("../../lib/font/flamamedium.eot?#iefix") format("embedded-opentype"), url("../../lib/font/flamamedium.woff") format("woff"), url("../../lib/font/flamamedium.ttf") format("truetype"), url("../../lib/font/flamamedium.svg#flamamediumregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+body {
+  background: #0084b2;
+  background: -moz-radial-gradient(center, circle cover, #6cd2ea 0%, #0084b2 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #6cd2ea), color-stop(100%, #0084b2));
+  background: -webkit-radial-gradient(center, circle cover, #6cd2ea 0%, #0084b2 100%);
+  background: -o-radial-gradient(center, circle cover, #6cd2ea 0%, #0084b2 100%);
+  background: -ms-radial-gradient(center, circle cover, #6cd2ea 0%, #0084b2 100%);
+  background: radial-gradient(center, circle cover, #6cd2ea 0%, #0084b2 100%);
+  background-color: #6cd2ea; }
+  body:before {
+    content: '';
+    background-image: url("../../lib/image/background.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1; }
+    .midwest body:before {
+      background-image: url("../../lib/image/background__midwest.jpg"); }
+
+.reveal {
+  font-family: "Raleway", "Verdana", "Lucida Grande", "Gill Sans", "Arial", "Helvetica", sans-serif;
+  font-size: 36px;
+  font-weight: normal;
+  letter-spacing: -0.02em;
+  color: #eeeeee; }
+
+::selection {
+  color: #6cd2ea;
+  background: #0084b2;
+  text-shadow: none; }
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  margin: 0 0 20px 0;
+  color: #eeeeee;
+  font-family: "Raleway", "Verdana", "Lucida Grande", "Gill Sans", "Arial", "Helvetica", sans-serif;
+  line-height: 0.9em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); }
+
+.reveal h1 {
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); }
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a:not(.image) {
+  color: #18545e;
+  text-decoration: none;
+  text-shadow: 2px 4px 4px rgba(26, 26, 26, 0.3);
+  -webkit-transition: all .15s ease;
+  -moz-transition: all .15s ease;
+  -ms-transition: all .15s ease;
+  -o-transition: all .15s ease;
+  transition: all .15s ease; }
+
+.reveal a:not(.image):hover {
+  color: #0084b2;
+  text-shadow: none;
+  border: none; }
+
+.reveal .roll span:after {
+  color: #fff;
+  background: #081e21; }
+
+/*********************************************
+ * IMAGES
+ *********************************************/
+.reveal section img {
+  margin: 15px 0px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 4px solid #eeeeee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  -ms-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear; }
+
+.reveal a:hover img {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #18545e;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
+
+/*********************************************
+ * NAVIGATION CONTROLS
+ *********************************************/
+.reveal .controls div.navigate-left,
+.reveal .controls div.navigate-left.enabled {
+  border-right-color: #18545e; }
+
+.reveal .controls div.navigate-right,
+.reveal .controls div.navigate-right.enabled {
+  border-left-color: #18545e; }
+
+.reveal .controls div.navigate-up,
+.reveal .controls div.navigate-up.enabled {
+  border-bottom-color: #18545e; }
+
+.reveal .controls div.navigate-down,
+.reveal .controls div.navigate-down.enabled {
+  border-top-color: #18545e; }
+
+.reveal .controls div.navigate-left.enabled:hover {
+  border-right-color: #0084b2; }
+
+.reveal .controls div.navigate-right.enabled:hover {
+  border-left-color: #0084b2; }
+
+.reveal .controls div.navigate-up.enabled:hover {
+  border-bottom-color: #0084b2; }
+
+.reveal .controls div.navigate-down.enabled:hover {
+  border-top-color: #0084b2; }
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+.reveal .progress {
+  background: rgba(0, 0, 0, 0.2); }
+
+.reveal .progress span {
+  background: #18545e;
+  -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  -ms-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  -o-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+/*********************************************
+ * SLIDE NUMBER
+ *********************************************/
+.reveal .slide-number {
+  color: #18545e; }
+
+.top-bar {
+  width: 90%;
+  margin: 0 auto;
+  vertical-align: bottom;
+  position: relative;
+  z-index: 500; }
+  .top-bar:after {
+    content: '';
+    border-bottom: 1px solid #fcfcfc;
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 120px;
+    right: 0;
+    bottom: auto;
+    left: 0; }
+  .midwest .top-bar {
+    display: none; }
+
+[role="branding"] {
+  color: #fcfcfc;
+  font-family: "Raleway", "Verdana", "Lucida Grande", "Gill Sans", "Arial", "Helvetica", sans-serif; }
+
+.branding--logo {
+  display: inline-block;
+  float: left; }
+
+.logo__image {
+  display: inline-block;
+  position: relative;
+  top: 0.5em;
+  margin-right: 1em; }
+  .logo__image > img {
+    display: inline-block;
+    vertical-align: bottom; }
+
+.logo__site-name {
+  display: inline-block;
+  font-family: 'flamamediumregular', sans-serif;
+  font-size: 48px;
+  line-height: 64px;
+  margin: 1em 0 0; }
+  .logo__site-name a:link,
+  .logo__site-name a:visited,
+  .logo__site-name a:hover,
+  .logo__site-name a:focus {
+    color: #fcfcfc;
+    text-decoration: none; }
+
+.session--info {
+  display: inline-block;
+  float: right; }
+  .session--info h1 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+  .session--info h2 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+  .session--info h3 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+  .session--info h4 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+  .session--info h5 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+  .session--info h6 {
+    font-weight: normal;
+    line-height: 64px;
+    margin: 48px 0 0; }
+
+.session__title,
+.session__presenter {
+  display: inline-block; }
+
+.session__presenter {
+  text-transform: uppercase; }
+
+.reveal section img.camp--logo {
+  background: transparent;
+  border: medium none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  margin: 0 0 1em; }
+
+.reveal h1.camp--title {
+  font-family: 'flamamediumregular', sans-serif;
+  text-transform: none; }
+.reveal h2.presentation--title {
+  margin: 1.5em auto 0.5em;
+  text-transform: none; }
+
+ul li {
+  list-style-image: url("../../lib/image/content/star.png");
+  list-style-type: square;
+  padding-left: 0.5em !important; }
+  ul li li {
+    list-style-image: url("../../lib/image/content/star_grey.png"); }
+
+.reveal .progress span {
+  background-color: #df1f26; }
+.reveal .slides {
+  text-align: left; }
+.reveal .camp-slide,
+.reveal .title-slide,
+.reveal .media-slide {
+  text-align: center; }
+.reveal h1 {
+  font-weight: 900; }
+.reveal h2 {
+  font-weight: 700; }
+.reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+  font-weight: 600; }
+.reveal p, .reveal li {
+  font-weight: 500; }
+.reveal p {
+  margin-bottom: 1.5em; }
+.reveal .invert h1, .reveal .invert h2, .reveal .invert h3, .reveal .invert h4, .reveal .invert h5, .reveal .invert h6, .reveal .invert p {
+  color: #333;
+  text-shadow: 0px 0px 6px white; }
