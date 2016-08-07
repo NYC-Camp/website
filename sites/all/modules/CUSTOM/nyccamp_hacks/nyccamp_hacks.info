@@ -1,0 +1,6 @@
+name = NYC Camp Hacks
+description = This module shouldn't be here lulz
+version = 7.x-1.x-dev
+core = 7.x
+
+files[] = nyccamp_hacks.module
