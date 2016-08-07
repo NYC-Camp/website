@@ -1,6 +1,0 @@
-Journal 7.x-1.0, 2010-01-07
----------------------------
-
-Issue #1091616 by DamienMcKenna: Changed some coding standard stuff.
-Issue #1091612 by czigor: Fix for settings form when there are no corresponding fields.
-
