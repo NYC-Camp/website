@@ -1,10 +1,10 @@
-NYCCamp.org Website
+NYCCamp.org Website for Developers
 ===================
 
 Welcome!
 
 
-About
+About :
 -----
 
 This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
@@ -15,7 +15,7 @@ The website itself is hosted on Pantheon.  Code is continuously mirrored from Gi
 
 ONLY push commits to the GitHub repo.  Do NOT push code to the Pantheon Repo.
 
-Environments
+Environment :
 ------------
 
 - *Live:* [http://nyccamp.org](http://nyccamp.org)
@@ -24,17 +24,17 @@ Environments
 
 Environments are managed through the [Pantheon Dashboard](https://dashboard.getpantheon.com/sites/a1afbb9f-3cbb-4fe0-22f8-7da39984db4c).
 
-Project Management
+Project Management :
 ------------------
 
-### Chat
+### Chat -->
 
 Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
-### Issues
+### Issues -->
 
 Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http://github.com/NYC-Camp/website/issues).
 
-### Wiki
+### Wiki -->
 
 More info on development processes, etc can be found on the project wiki at [http://github.com/NYC-Camp/website/wiki](http://github.com/NYC-Camp/website/wiki).
