@@ -4,7 +4,7 @@ NYCCamp.org Website
 Welcome!
 
 
-About
+About the website
 -----
 
 This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
@@ -15,7 +15,7 @@ The website itself is hosted on Pantheon.  Code is continuously mirrored from Gi
 
 ONLY push commits to the GitHub repo.  Do NOT push code to the Pantheon Repo.
 
-Environments
+Environments of tne website
 ------------
 
 - *Live:* [http://nyccamp.org](http://nyccamp.org)
