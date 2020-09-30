@@ -2,8 +2,9 @@
 
 /**
  * @file
- * PHP page for handling incoming XML-RPC requests from clients.
+ * PHP page  for handling incoming XML-RPC requests from clients.
  */
+
 
 /**
  * Root directory of Drupal installation.
