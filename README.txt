@@ -11,9 +11,12 @@ CONTENTS OF THIS FILE
 ABOUT DRUPAL
 ------------
 
-Drupal is an open source content management platform supporting a variety of
-websites ranging from personal weblogs to large community-driven websites. For
-more information, see the Drupal website at http://drupal.org/, and join the
+Drupal is a free and open-source web content management framework written in PHP
+and distributed under the GNU General Public License.Drupal provides a back-end
+framework for at least 2.3% of all websites worldwide– ranging from personal 
+blogs to corporate, political, and government sites. Systems also use Drupal
+for knowledge management and for business collaboration.For more information,
+see the Drupal website at http://drupal.org/, and join the
 Drupal community at http://drupal.org/community.
 
 Legal information about Drupal:
