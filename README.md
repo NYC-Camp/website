@@ -1,13 +1,13 @@
 NYCCamp.org Website
 ===================
 
-Welcome!
+Welcome to NYCCamp!
 
 
 About
 -----
 
-This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
+This repository contains the code for the [NYCCamp.org](http://nyccamp.org) website.
 
 The source code is hosted on [GitHub](http://github.com/NYC-Camp/website).
 
