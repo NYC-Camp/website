@@ -13,7 +13,7 @@ The source code is hosted on [GitHub](http://github.com/NYC-Camp/website).
 
 The website itself is hosted on Pantheon.  Code is continuously mirrored from GitHub to Pantheon using hubdrop.io.  If code stops moving to Pantheon, alert @jonpugh.
 
-ONLY push commits to the GitHub repo.  Do NOT push code to the Pantheon Repo.
+ONLY push commits to the GitHub repo.  DO NOT push code to the Pantheon Repo.
 
 Environments
 ------------
