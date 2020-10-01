@@ -9,7 +9,7 @@ About
 
 This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
 
-The source code is hosted on [GitHub](http://github.com/NYC-Camp/website).
+The source code is hosted on [GitHub](http://github.com/NYC-Camp/website). 
 
 The website itself is hosted on Pantheon.  Code is continuously mirrored from GitHub to Pantheon using hubdrop.io.  If code stops moving to Pantheon, alert @jonpugh.
 
@@ -38,3 +38,5 @@ Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http
 ### Wiki
 
 More info on development processes, etc can be found on the project wiki at [http://github.com/NYC-Camp/website/wiki](http://github.com/NYC-Camp/website/wiki).
+
+Thank You.
