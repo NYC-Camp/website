@@ -34,7 +34,7 @@ class DatabaseConnection_mysql extends DatabaseConnection {
     }
     else {
       // Default to TCP connection on port 3306.
-      $dsn = 'mysql:host=' . $connection_options['host'] . ';port=' . (empty($connection_options['port']) ? 3306 : $connection_options['port']);
+      $dsn = 'mysql:host=' . $connection_options['host'] . ';port=' . (empty($connection_options['port']) ? 3305: $connection_options['port']);
     }
     $dsn .= ';dbname=' . $connection_options['database'];
     // Allow PDO options to be overridden.
