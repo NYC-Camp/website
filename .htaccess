@@ -10,7 +10,7 @@
 # Don't show directory listings for URLs which map to a directory.
 Options -Indexes
 
-# Follow symbolic links in this directory.
+# Follow the symbolic links in this directory.
 Options +FollowSymLinks
 
 # Make Drupal handle any 404 errors.
