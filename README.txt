@@ -96,20 +96,20 @@ More about themes:
 DEVELOPING FOR DRUPAL
 ---------------------
 
-Drupal contains an extensive API that allows you to add to and modify the
-functionality of your site. The API consists of "hooks", which allow modules to
-react to system events and customize Drupal's behavior, and functions that
-standardize common operations such as database queries and form generation. The
-flexible hook architecture means that you should never need to directly modify
-the files that come with Drupal core to achieve the functionality you want;
-instead, functionality modifications take the form of modules.
+Drupal contains a broad API that permits you to add to and change the 
+usefulness of your site. The API comprises of "snares", which permit modules to 
+respond to framework occasions and modify Drupal's conduct, and capacities that 
+normalize regular tasks, for example, information base inquiries and structure age. The 
+adaptable snare design implies that you ought to never need to straightforwardly change 
+the documents that accompany Drupal center to accomplish the usefulness you need; 
+rather, usefulness alterations appear as modules.
 
-When you need new functionality for your Drupal site, search for existing
-contributed modules. If you find a module that matches except for a bug or an
-additional needed feature, change the module and contribute your improvements
-back to the project in the form of a "patch". Create new custom modules only
-when nothing existing comes close to what you need.
+At the point when you need new usefulness for your Drupal site, look for existing 
+contributed modules. On the off chance that you discover a module that matches aside from a bug or an 
+extra required component, change the module and contribute your enhancements 
+back to the task as a "fix". Make new custom modules as it were 
 
+when nothing existing approaches what you need.
 More about developing:
  * Search for existing contributed modules:
    http://drupal.org/project/modules
