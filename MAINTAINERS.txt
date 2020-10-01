@@ -4,7 +4,7 @@ encouraged to submit issues and changes (patches) to improve Drupal, and to
 contribute in other ways -- see http://drupal.org/contribute to find out how.
 
 Branch maintainers
-------------------
+---------------------
 
 The Drupal Core branch maintainers oversee the development of Drupal as a whole.
 The branch maintainers for Drupal 7 are:
