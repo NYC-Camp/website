@@ -1,7 +1,7 @@
 NYCCamp.org Website
 ===================
 
-Welcome!
+Welcome! to NYe Casino Campaings- one of the largest Drupal Camp in the World
 
 
 About
