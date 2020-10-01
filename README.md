@@ -1,7 +1,7 @@
 NYCCamp.org Website
 ===================
 
-Welcome!
+Welcome to NYCCamp.org!
 
 
 About
