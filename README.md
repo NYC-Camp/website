@@ -33,6 +33,13 @@ Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
 ### Issues
 
+If there is something wrong with the content on that web site,
+feel free to
+[file an issue with this repository](https://github.com/NYC-Camp/website/issues),
+or formulate a pull request.
+Note that most pages will come with an edit link in the bottom right corner.
+This is the website repository for the O-Botics organization.
+
 Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http://github.com/NYC-Camp/website/issues).
 
 ### Wiki
