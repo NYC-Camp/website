@@ -27,11 +27,11 @@ Environments are managed through the [Pantheon Dashboard](https://dashboard.getp
 Project Management
 ------------------
 
-### Chat
+## Chat
 
 Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
-### Issues
+## Issues
 
 Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http://github.com/NYC-Camp/website/issues).
 
