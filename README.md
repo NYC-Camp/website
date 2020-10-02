@@ -4,7 +4,7 @@ NYCCamp.org Website
 Welcome!
 
 
-About
+About:-
 -----
 
 This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
@@ -27,14 +27,14 @@ Environments are managed through the [Pantheon Dashboard](https://dashboard.getp
 Project Management
 ------------------
 
-### Chat
+### Chat:-
 
 Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
-### Issues
+### Issues:-
 
 Issues are tracked on GitHub at [http://github.com/NYC-Camp/website/issues](http://github.com/NYC-Camp/website/issues).
 
-### Wiki
+### Wiki:-
 
 More info on development processes, etc can be found on the project wiki at [http://github.com/NYC-Camp/website/wiki](http://github.com/NYC-Camp/website/wiki).
