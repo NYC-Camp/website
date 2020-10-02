@@ -1,7 +1,7 @@
 
 Drupal 7.32, 2014-10-15
 ----------------------
-- Fixed security issues (SQL injection). See SA-CORE-2014-005.
+- Fixed security issues (SQL injection). please See SA-CORE-2014-005.
 
 Drupal 7.31, 2014-08-06
 ----------------------
