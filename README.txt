@@ -4,6 +4,7 @@ CONTENTS OF THIS FILE
 
  * About Drupal
  * Configuration and features
+ *applications 
  * Installation profiles
  * Appearance
  * Developing for Drupal
