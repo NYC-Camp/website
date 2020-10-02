@@ -8,10 +8,10 @@ CONTENTS OF THIS FILE
  * Appearance
  * Developing for Drupal
 
-ABOUT DRUPAL
+ABOUT DRUPAL -
 ------------
 
-Drupal is an open source content management platform supporting a variety of
+Drupal is an open- source content management platform supporting a variety of
 websites ranging from personal weblogs to large community-driven websites. For
 more information, see the Drupal website at http://drupal.org/, and join the
 Drupal community at http://drupal.org/community.
@@ -22,7 +22,7 @@ Legal information about Drupal:
  * Learn about the Drupal trademark and logo policy:
    http://drupal.com/trademark
 
-CONFIGURATION AND FEATURES
+CONFIGURATION AND FEATURES -
 --------------------------
 
 Drupal core (what you get when you download and extract a drupal-x.y.tar.gz or
@@ -44,7 +44,7 @@ More about configuration:
    http://drupal.org/project/modules
  * See also: "Developing for Drupal" for writing your own modules, below.
 
-INSTALLATION PROFILES
+INSTALLATION PROFILES-
 ---------------------
 
 Installation profiles define additional steps (such as enabling modules,
@@ -78,7 +78,7 @@ More about installation profiles and distributions:
  * Develop your own installation profile or distribution:
    http://drupal.org/developing/distributions
 
-APPEARANCE
+APPEARANCE -
 ----------
 
 In Drupal, the appearance of your site is set by the theme (themes are
