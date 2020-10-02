@@ -12,9 +12,9 @@ ABOUT DRUPAL
 ------------
 
 Drupal is an open source content management platform supporting a variety of
-websites ranging from personal weblogs to large community-driven websites. For
-more information, see the Drupal website at http://drupal.org/, and join the
-Drupal community at http://drupal.org/community.
+websites ranging from personal weblogs to large community-driven websites.
+For more information, see the Drupal website at http://drupal.org/, and join
+the Drupal community at http://drupal.org/community.
 
 Legal information about Drupal:
  * Know your rights when using Drupal:
@@ -121,3 +121,6 @@ More about developing:
    http://drupal.org/best-practices
  * Refer to the API documentation:
    http://api.drupal.org/api/drupal/7
+   
+   
+   THANK YOU.....
