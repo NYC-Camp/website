@@ -7,6 +7,7 @@ CONTENTS OF THIS FILE
  * Installation profiles
  * Appearance
  * Developing for Drupal
+ *and dont forgot to provide your valuable review to us
 
 ABOUT DRUPAL
 ------------
