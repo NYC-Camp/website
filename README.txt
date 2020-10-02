@@ -1,5 +1,5 @@
 
-CONTENTS OF THIS FILE
+CONTENTS OF THESE FILES ARE:-
 ---------------------
 
  * About Drupal
@@ -97,11 +97,11 @@ DEVELOPING FOR DRUPAL
 ---------------------
 
 Drupal contains an extensive API that allows you to add to and modify the
-functionality of your site. The API consists of "hooks", which allow modules to
-react to system events and customize Drupal's behavior, and functions that
+functionality of your site. The API consists of "hooks", which allows modules to
+react to system events and customize Drupal's behavior and functions that
 standardize common operations such as database queries and form generation. The
 flexible hook architecture means that you should never need to directly modify
-the files that come with Drupal core to achieve the functionality you want;
+the files that come with Drupal core to achieve the functionality you want
 instead, functionality modifications take the form of modules.
 
 When you need new functionality for your Drupal site, search for existing
