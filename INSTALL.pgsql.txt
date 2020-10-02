@@ -42,3 +42,4 @@ Note that the database must be created with UTF-8 (Unicode) encoding.
 
    Do this for as many schemas as you need. See default.settings.php for
    instructions on how to set which tables use which schemas.
+   For more knowledge about schema, go to this wikipedia page : https://en.wikipedia.org/wiki/Database_schema
