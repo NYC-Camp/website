@@ -4,7 +4,7 @@ NYCCamp.org Website
 Welcome!
 
 
-About
+About Us
 -----
 
 This repo contains the code for the [NYCCamp.org](http://nyccamp.org) website.
