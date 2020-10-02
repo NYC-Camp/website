@@ -17,7 +17,6 @@ Drupal 7.30, 2014-07-24
   DRUPAL-PSA-2014-002.
 - Numerous API documentation improvements.
 - Additional automated test coverage.
-
 Drupal 7.29, 2014-07-16
 ----------------------
 - Fixed security issues (multiple vulnerabilities). See SA-CORE-2014-003.
