@@ -1,7 +1,7 @@
 NYCCamp.org Website
 ===================
 
-Welcome!
+Welcome!an amazing project.
 
 
 About
