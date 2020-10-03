@@ -22,7 +22,7 @@ Legal information about Drupal:
  * Learn about the Drupal trademark and logo policy:
    http://drupal.com/trademark
 
-CONFIGURATION AND FEATURES
+FEATURES AND CONFIGURATION
 --------------------------
 
 Drupal core (what you get when you download and extract a drupal-x.y.tar.gz or
@@ -93,7 +93,7 @@ More about themes:
  * Develop your own theme:
    http://drupal.org/documentation/theme
 
-DEVELOPING FOR DRUPAL
+DEVELOPMENT FOR DRUPAL
 ---------------------
 
 Drupal contains an extensive API that allows you to add to and modify the
