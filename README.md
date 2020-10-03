@@ -1,4 +1,4 @@
-NYCCamp.org Website
+NYCCamp.org Website - An amazing nyc camp 
 ===================
 
 Welcome!
