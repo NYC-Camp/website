@@ -1,7 +1,6 @@
 NYCCamp.org Website
 ===================
-
-Welcome!
+HELLO WELCOME TO MY AWESOME  WEBSITE!!!!
 
 
 About
@@ -29,7 +28,7 @@ Project Management
 
 ### Chat
 
-Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
+Join us at #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
 ### Issues
 
