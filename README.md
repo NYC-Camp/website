@@ -27,7 +27,6 @@ Environments are managed through the [Pantheon Dashboard](https://dashboard.getp
 Project Management
 ------------------
 
-## Chat
 
 Join us in #nyccamp on [IRC](ircs://chat.freenode.net) to chat about NYC Camp.
 
